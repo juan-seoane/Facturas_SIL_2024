@@ -1,6 +1,5 @@
 {
     "java.project.sourcePaths": [
-        "src/facturas",
         "src"
     ],
     "java.project.outputPath": "bin",
