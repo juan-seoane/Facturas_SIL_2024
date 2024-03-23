@@ -5,12 +5,7 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": {
         "include": [
-            "lib/**/*.jar",
-            "c:\\Users\\juans\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib/**/*.jar",
-            "c:\\Users\\juans\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\jai_imageio-1.1.1.jar",
-            "c:\\Users\\juans\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\java-ocr-api-15.3.0.3.jar",
-            "c:\\Users\\juans\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\aocr.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib/**/*.jar"
+            "lib/**/*.jar"
         ],
         "exclude": [
             "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JTattoo.jar",
