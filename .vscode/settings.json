@@ -5,54 +5,12 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": {
         "include": [
-            "lib/**/*.jar"
+            "lib/**/*.jar",
+            "d:\\Program Files\\JavaJDK\\javafx-sdk-21.0.2\\lib\\**\\*.jar"
         ],
         "exclude": [
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JTattoo.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\aocr.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\asprise-ocr-java-15.3.1-trial-windows\\aocr.jar",
-            "lib/aocr.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\barbecue-1.5-beta1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-anim.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-awt-util.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-bridge.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-css.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-dom.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-ext.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-gvt.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-parser.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-script.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-svg-dom.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-svggen.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-util.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\batik-xml.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\castor-1.2.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\commons-collections-3.2.1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\commons-collections-3.2.1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\commons-digester3-3.2.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\commons-logging-1.1.1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\commons-logging-1.1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\commons-digester-1.7.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\commons-digester3-3.2-with-deps.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\groovy-1.8.1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\itext-1.3.1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\itext-2.1.7.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\jai_imageio-1.1.1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\jasperreports-1.3.2.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\jasperreports-3.1.0.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\jasperreports-3.5.3.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\jasperreports-4.7.1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\java-ocr-api-15.3.0.3.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\jaxen-1.1.1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\jcommon-1.0.15.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\jfreechart-1.0.12.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\jpa.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\CopyLibs\\org-netbeans-modules-java-j2seproject-copylibstask.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\png-encoder-1.5.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\rhino-1.7R1.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\xalan.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\xml-apis-ext.jar",
-            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\JasperReports\\xml-apis.jar"
+            "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\**\\*.jar"
+
         ]
     }
 }
