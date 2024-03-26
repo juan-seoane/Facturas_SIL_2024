@@ -18,6 +18,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import modelo.Config;
 import modelo.Contrasenha;
 
@@ -41,14 +42,14 @@ public class Acceso extends Application implements Initializable{
         TextArea vent = txtArea;
         for (Contrasenha contr : Config.getConfig("ADMIN").getContrasenhas()){
             System.out.println("Datos introducidos : "+ userF.getText()+ " - "+passF.getText());
-            vent.appendText("\nDatos introducidos : "+ userF.getText()+ " - "+passF.getText());
+            imprimir("\nDatos introducidos : "+ userF.getText()+ " - "+passF.getText());
                 //System.out.println("con la contraseña guardada : "+ pass.getUsuario() + " - " +pass.getContrasenha().toUpperCase());
             if (userF.getText().toUpperCase().trim().equals(contr.getUsuario().toUpperCase()) && (passF.getText().toUpperCase().trim().equals(contr.getContrasenha().toUpperCase())))
             {
                
                 Acceso.aceptado = true;
                 
-                Acceso.txtArea.setText("...Entrando");
+                imprimir("...Entrando");
             
                 System.out.println("OK, entrando...");
 
@@ -60,7 +61,7 @@ public class Acceso extends Application implements Initializable{
                 //txtArea.appendText("\nDatos incorrectas...pero pase...!");
 
                 System.out.println("Usuario y Contraseña incorrectos... Repita, por favor");
-                txtArea.appendText("\nDatos incorrectos...Por favor vuelva a intentarlo...");
+                imprimir("\nDatos incorrectos...Por favor vuelva a intentarlo...");
                 reintentar();
             
             }
@@ -69,11 +70,11 @@ public class Acceso extends Application implements Initializable{
                     txtUsuario.setText(" ");
                     txtPassword.setText(" ");
                     userF.requestFocus();
-                    vent.appendText("Usuario o Contraseña incorrectos,\nvuelva a intentarlo!");
+                    imprimir("Usuario o Contraseña incorrectos,\nvuelva a intentarlo!");
             }else{
                     
                     this.usuario = txtUsuario.getText();
-                    Acceso.txtArea.appendText("\n\n...Pulse una tecla para continuar");
+                    imprimir("\n\n...Pulse una tecla para continuar");
                     //TODO: Pedir el foco y esperar el evento de pulsar una tecla
                     System.out.println("El acceso fue aceptado después de probar() ...");
                     //Thread.sleep(2000);
@@ -91,7 +92,7 @@ private void reintentar() {
 
     public static boolean entrar(){
         if (Acceso.aceptado){
-            System.out.println("Acceso aceptado");
+            imprimir("Acceso aceptado");
         }
         return Acceso.aceptado;
     }
@@ -121,7 +122,7 @@ private void reintentar() {
 
 
     public static void imprimir(String cont) {
-        Acceso.txtArea.appendText("\n"+cont);
+        txtArea.appendText("\n"+cont);
     }
 
     @Override
