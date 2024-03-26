@@ -9,6 +9,7 @@ import controladores.Controlador;
 import modelo.Config;
 import ui.AccesoJFX;
 import ui.Splash;
+import views.*;
 
 import javafx.application.Application;
 
