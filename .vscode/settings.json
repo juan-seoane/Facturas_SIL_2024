@@ -6,11 +6,16 @@
     "java.project.referencedLibraries": {
         "include": [
             "lib/**/*.jar",
-            "d:\\Program Files\\JavaJDK\\javafx-sdk-21.0.2\\lib\\**\\*.jar"
+            "d:\\Program Files\\JavaJDK\\javafx-sdk-21.0.2\\lib\\**\\*.jar",
+            "d:\\Program Files\\JavaJDK\\javafx-sdk-21\\javafx-sdk-21.0.2\\lib/**/*.jar",
+            "c:\\Program Files\\Java\\jre-1.8\\lib\\jfxswt.jar",
+            "c:\\Program Files\\Java\\jre-1.8\\lib\\ext\\jfxrt.jar"
         ],
         "exclude": [
             "d:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_last\\lib\\**\\*.jar"
-
         ]
-    }
+    },
+    "javafx.libPath": "D:\\Program Files\\JavaJDK\\javafx-sdk-21\\javafx-sdk-21.0.2\\lib",
+    "java.dependency.showMembers": true,
+    "java.project.explorer.showNonJavaResources": false
 }

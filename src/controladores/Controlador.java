@@ -187,7 +187,7 @@ public class Controlador extends Thread {
                         cd.setEstado(0);
                         cd.visible(false);
                         ccj.visible(false);
-                        pc.reset();
+                        PanelControl.reset();
                         break;
                     case 2 :
                         seccion = DIST;
@@ -195,7 +195,7 @@ public class Controlador extends Thread {
                         cd.setEstado(1);
                         cd.visible(true);
                         ccj.visible(false);
-                        pc.reset();
+                        PanelControl.reset();
                         break;
                     case 3 :
                         seccion = NOTAS;
@@ -204,7 +204,7 @@ public class Controlador extends Thread {
                         cd.visible(false);
                         ccj.visible(false);
                         verNotas();                            
-                        pc.reset();
+                        PanelControl.reset();
                         break;
                     case 4 :
                         seccion = CONFIG;
@@ -214,7 +214,7 @@ public class Controlador extends Thread {
                         ccj.visible(false);
                         VentanaConfig vc = new VentanaConfig();
                         vc.setVisible(true);
-                        pc.reset();
+                        PanelControl.reset();
                         break;
                     case 5:
                         seccion = CAJA;
@@ -222,11 +222,11 @@ public class Controlador extends Thread {
                         cfct.visible(false);
                         cd.setEstado(0);
                         cd.visible(false);                           
-                        pc.reset();
+                        PanelControl.reset();
                         break;
                     case 6:  
                         autosave();
-                        pc.reset();
+                        PanelControl.reset();
                         break;
                     case 7:
                         if (PanelControl.getModo() == NAV){
@@ -239,7 +239,7 @@ public class Controlador extends Thread {
                                 cfct.visible(true);
                             }
                         }
-                        pc.reset();
+                        PanelControl.reset();
                         break;
                     default:
                         break;       

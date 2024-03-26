@@ -40,13 +40,13 @@ public class PanelControl extends javax.swing.JFrame {
         initComponents();
         startup();
         this.setTitle("Panel Control : "+Config.getConfig().getUsuario());
-        this.lblTrimestre.setText(Config.getConfig().getAnho().getTrimestre()+"");
-        this.lblAnho.setText(Config.getConfig().getAnho().getAnho()+"");
-        this.lblEntradas.setText(ModeloFacturas.getNumeroFacturas()+"");
+        PanelControl.lblTrimestre.setText(Config.getConfig().getAnho().getTrimestre()+"");
+        PanelControl.lblAnho.setText(Config.getConfig().getAnho().getAnho()+"");
+        PanelControl.lblEntradas.setText(ModeloFacturas.getNumeroFacturas()+"");
         this.toFront();
         this.setAlwaysOnTop(true);
         this.setAutoRequestFocus(false);
-        this.modo = Controlador.NAV;
+        PanelControl.modo = Controlador.NAV;
     }
 
     /**
@@ -281,20 +281,20 @@ public class PanelControl extends javax.swing.JFrame {
     }
     
     public static void setNumfacturas(int i){
-        lblEntradas.setText(i +"");
+        PanelControl.lblEntradas.setText(i +"");
     }
     public static void setAño(int i){
-        lblAnho.setText(i+"");
+        PanelControl.lblAnho.setText(i+"");
     }
     public static void setTrimestre(int i){
-        lblTrimestre.setText(i+"");
+        PanelControl.lblTrimestre.setText(i+"");
     }
     public void setUsuario(String user){
         this.setTitle("Panel Control : "+Config.getConfig().getUsuario());
     }
     
     public static int getModo(){
-        return modo;
+        return PanelControl.modo;
     }
     
     private void btnCFGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCFGActionPerformed
