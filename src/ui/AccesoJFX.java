@@ -1,5 +1,6 @@
 package ui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -14,11 +15,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import modelo.Config;
 import modelo.Contrasenha;
 
-public class AccesoJFX implements Initializable{
+public class AccesoJFX extends Application implements Initializable{
  
     @FXML private TextField txtUsuario;
     @FXML private PasswordField txtPassword;
@@ -119,5 +121,24 @@ private void reintentar() {
 
     public void imprimir(String cont) {
         this.txtArea.appendText("\n"+cont);
+    }
+
+    @Override
+    public void start(Stage arg0) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("../views/Acceso.fxml"));
+        Parent root = new AnchorPane();
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            System.out.println("Error al asignar a root el archivo .fxml");
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(root);
+        //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
+        Stage ventanaAcceso = new Stage();
+        ventanaAcceso.setScene(scene);
+        ventanaAcceso.setTitle("Acceso a FacturasSIL");
+        ventanaAcceso.show();
     }
 }
