@@ -15,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import modelo.Config;
 import modelo.Contrasenha;
@@ -126,19 +125,20 @@ private void reintentar() {
     @Override
     public void start(Stage arg0) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("../views/Acceso.fxml"));
-        Parent root = new AnchorPane();
+        loader.setLocation(getClass().getResource("Acceso.fxml"));
+        
         try {
+            Parent root;
             root = loader.load();
+            Scene scene = new Scene(root);
+            //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
+            Stage ventanaAcceso = new Stage();
+            ventanaAcceso.setScene(scene);
+            ventanaAcceso.setTitle("Acceso a FacturasSIL");
+            ventanaAcceso.show();
         } catch (IOException e) {
-            System.out.println("Error al asignar a root el archivo .fxml");
+            System.out.println("Error al generar la GUI de Acceso");
             e.printStackTrace();
-        }
-        Scene scene = new Scene(root);
-        //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
-        Stage ventanaAcceso = new Stage();
-        ventanaAcceso.setScene(scene);
-        ventanaAcceso.setTitle("Acceso a FacturasSIL");
-        ventanaAcceso.show();
+        }   
     }
 }
