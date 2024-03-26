@@ -8,12 +8,12 @@ import java.util.logging.Logger;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+
 public class Contrasenha implements Serializable{
 
   private String usuario;
   private String contrasenha;
   private SecretKey key;
-  private String enc;
   
 public Contrasenha(){
 	

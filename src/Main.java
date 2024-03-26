@@ -5,7 +5,7 @@ import com.jtattoo.plaf.graphite.GraphiteLookAndFeel;
 
 import controladores.Controlador;
 import modelo.Config;
-import ui.Acceso;
+import ui.AccesoFX;
 import ui.Splash;
 
 
