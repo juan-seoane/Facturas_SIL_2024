@@ -13,7 +13,6 @@ import modelo.Config;
 import ui.Acceso;
 
 import ui.Splash;
-import views.*;
 
 import javafx.application.Application;
 
