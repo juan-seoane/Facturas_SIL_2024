@@ -177,7 +177,7 @@ public class ControladorFacturas extends Thread {
         int i = tabla.getIndice();
         List<Factura> lista = m.leerFacturas();
         if (i > 0) {
-            /** TODO : LO DEJAMOS AQUÍ, HAY QUE AJUSTAR EL VISOR PARA QUE SELECCIONE LA FACTURA ADECUADA DESDPUÉS DE ACTIVAR EL FILTRO */
+            /** TODO : HAY QUE AJUSTAR EL VISOR PARA QUE SELECCIONE LA FACTURA ADECUADA DESDPUES DE ACTIVAR EL FILTRO */
             int nuevoindice = i-1;
 //            //System.out.println("Actualizando Visor!");
             actualizarVisor(nuevoindice);
