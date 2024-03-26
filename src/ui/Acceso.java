@@ -133,7 +133,7 @@ private void reintentar() {
         System.out.println("Current Working Directory at Acceso is = " + directoryName);
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("../ui/Acceso.fxml"));
+        loader.setLocation(getClass().getResource("./Acceso.fxml"));
         
         try {
             Parent root;
