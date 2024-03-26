@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import ui.Acceso;
+
 
 public class Contrasenha implements Serializable{
 
@@ -24,7 +26,11 @@ public Contrasenha(){
             Logger.getLogger(Contrasenha.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println( "La nueva contraseña es  : "+ this.contrasenha);
+        try{
+            Acceso.imprimir( "La nueva contraseña es  : "+ this.contrasenha);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
 
   }
   

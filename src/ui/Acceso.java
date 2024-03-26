@@ -26,7 +26,7 @@ public class Acceso extends Application implements Initializable{
     @FXML private TextField txtUsuario;
     @FXML private PasswordField txtPassword;
     @FXML private Button btnOK;
-    @FXML private TextArea txtArea;
+    @FXML private static TextArea txtArea;
     
     
     @FXML public static boolean aceptado = false;
@@ -43,12 +43,12 @@ public class Acceso extends Application implements Initializable{
             System.out.println("Datos introducidos : "+ userF.getText()+ " - "+passF.getText());
             vent.appendText("\nDatos introducidos : "+ userF.getText()+ " - "+passF.getText());
                 //System.out.println("con la contraseña guardada : "+ pass.getUsuario() + " - " +pass.getContrasenha().toUpperCase());
-            if (userF.getText().toUpperCase().trim().equals(contr.getUsuario()) && (passF.getText().toUpperCase().equals(contr.getContrasenha())))
+            if (userF.getText().toUpperCase().trim().equals(contr.getUsuario().toUpperCase()) && (passF.getText().toUpperCase().trim().equals(contr.getContrasenha().toUpperCase())))
             {
                
                 Acceso.aceptado = true;
                 
-                vent.setText("...Entrando");
+                Acceso.txtArea.setText("...Entrando");
             
                 System.out.println("OK, entrando...");
 
@@ -73,7 +73,7 @@ public class Acceso extends Application implements Initializable{
             }else{
                     
                     this.usuario = txtUsuario.getText();
-                    txtArea.appendText("\n\n...Pulse una tecla para continuar");
+                    Acceso.txtArea.appendText("\n\n...Pulse una tecla para continuar");
                     //TODO: Pedir el foco y esperar el evento de pulsar una tecla
                     System.out.println("El acceso fue aceptado después de probar() ...");
                     //Thread.sleep(2000);
@@ -115,13 +115,13 @@ private void reintentar() {
     
     @FXML 
     public void cerrar(){
-        Stage stage = (Stage) this.txtArea.getScene().getWindow();
+        Stage stage = (Stage) Acceso.txtArea.getScene().getWindow();
         stage.close();
     }
 
 
-    public void imprimir(String cont) {
-        this.txtArea.appendText("\n"+cont);
+    public static void imprimir(String cont) {
+        Acceso.txtArea.appendText("\n"+cont);
     }
 
     @Override
