@@ -253,7 +253,7 @@ public class Config implements Serializable{
         p_config.getRutas().remove("CFG");
 //        config.getRutas().put("FCT","datos/"+user+"/FCT"+config.anho.getAnho()+config.anho.getTrimestre()+".fct");
 //	config.getRutas().put("RS","datos/"+user+"/RS.rs");
-        p_config.getRutas().put("CFG","config/"+this.usuario.toUpperCase()+"/config.cfg");
+        p_config.getRutas().put("CFG","config/"+Config.usuario.toUpperCase()+"/config.cfg");
 //        config.getRutas().put("CJA","datos/"+user+"/CJA"+config.anho.getAnho()+config.anho.getTrimestre()+".cja");
         setRutas(p_config.getRutas());
 	      setTiposGasto(p_config.getTiposGasto());
@@ -267,7 +267,7 @@ public class Config implements Serializable{
   public static boolean reinicializarConfig(String user){
         if (new Config(user)!= null)
             return true;
-        return false;
+        
         
   }
   
@@ -280,7 +280,7 @@ public class Config implements Serializable{
         p_rutas.remove("CFG");
 //        rutas.put("FCT","datos/"+usuario+"/FCT"+anho.getAnho()+anho.getTrimestre()+".fct");
 //	rutas.put("RS","datos/"+usuario+"/RS.rs");
-        p_rutas.put("CFG","config/"+this.usuario+"/config.cfg");
+        p_rutas.put("CFG","config/"+Config.usuario+"/config.cfg");
 //        rutas.put("CJA","datos/"+usuario+"/CJA"+anho.getAnho()+anho.getTrimestre()+".cja");
   this.setRutas(p_rutas);
 	this.setTiposGasto(p_tiposGasto);

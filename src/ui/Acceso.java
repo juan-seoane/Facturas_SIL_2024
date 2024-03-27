@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import modelo.Config;
@@ -102,7 +103,7 @@ private void reintentar() {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         
-        txtArea.setText("...introduzca sus credenciales");
+        //txtArea.setText("...introduzca sus credenciales");
     }
 // De la clase de la que hereda, Application
     public static void main() {
@@ -128,15 +129,16 @@ private void reintentar() {
     @Override
     public void start(Stage arg0) {
 
-        Path path = Paths.get("");
-        String directoryName = path.toAbsolutePath().toString();
-        System.out.println("Current Working Directory at Acceso is = " + directoryName);
+        //Path path = Paths.get("");
+        //String directoryName = path.toAbsolutePath().toString();
+        //System.out.println("Current Working Directory at Acceso is = " + directoryName);
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("./Acceso.fxml"));
+        loader.setLocation(getClass().getResource("../ui/Acceso.fxml"));
         
         try {
-            Parent root;
+            Parent root; //= new AnchorPane();
+            
             root = loader.load();
             Scene scene = new Scene(root);
             //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
@@ -147,6 +149,6 @@ private void reintentar() {
         } catch (IOException e) {
             System.out.println("Error al generar la GUI de Acceso");
             e.printStackTrace();
-        }   
+       }   
     }
 }
