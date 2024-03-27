@@ -267,7 +267,7 @@ public class Config implements Serializable{
   public static boolean reinicializarConfig(String user){
         if (new Config(user)!= null)
             return true;
-        
+       return false; 
         
   }
   
