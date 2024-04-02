@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-import ui.Acceso;
+import ui.fxcontrollers.Acceso;
 
 
 public class Contrasenha implements Serializable{

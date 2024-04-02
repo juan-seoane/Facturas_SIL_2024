@@ -10,16 +10,23 @@ import com.jtattoo.plaf.graphite.GraphiteLookAndFeel;
 
 import controladores.Controlador;
 import modelo.Config;
-import ui.Acceso;
-
 import ui.Splash;
-
+import ui.fxcontrollers.Acceso;
+import ui.fxcontrollers.Acceso2;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class Main {
     
     static Controlador ctr;
     public static Acceso acceso;
+    public static Acceso2 acceso2;
+    public static String usuario;
+    public static boolean credsOK;
   
     public static void main(String[] args) {
 
@@ -44,28 +51,32 @@ public class Main {
         Application.launch(Acceso.class, args);
          
          
-         while(!Acceso.entrar()){
-            System.out.println("");
-         } 
-         System.out.println("Acceso: superado");
-         
-         if (Config.getConfig(acceso.getUsuario())!=null){ 
-           
-            JOptionPane.showMessageDialog(null, "Bienvenido a Facturas SIL!");   
-            initcomponents();
-            ctr = new Controlador();
-            Acceso.imprimir("Arrancando Controlador Principal");
-            ctr.start();
-            acceso.cerrar();
-            //TODO: revisar todos los métodos estáticos del programa 
-        }else{
-            System.out.println("No se ha podido iniciar la aplicación");
-            Acceso.imprimir("No se ha podido iniciar la aplicación...La aplicacion se cerrará!");
-            
-            System.exit(0);
+        while((acceso!=null) && !acceso.entrar() && (Acceso.intentos < 5)){
+            System.out.println("");   
         }
+        usuario = Acceso.getUsuario();
+        
+        credsOK = true;
+
+        System.out.println("Acceso: superado");
+        //TODO: Arreglar esta chapuza(uso 'admin' para comprobar otras cosas)
+        if (Config.getConfig(usuario)!=null){ 
+        
+            Acceso2.setUsuario(usuario);
+
+            //initcomponents();
+            ctr = new Controlador();
+            Acceso2.imprimir(Acceso2.getCanvas() , "\n[Main.java>Acceso2] Arrancando Controlador Principal");
+            ctr.start();
+        
+            
+        }else{
+            System.out.println("[Main.java] No se ha podido iniciar la aplicación");
+            System.exit(0);
+        }       
     }
-/*
+
+    /*
     private static void mostrarRuta() {
         String nombreArchivo1 = "D:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_2024\\src\\Main.java";
         String nombreArchivo2 = "D:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_2024\\src\\ui\\Acceso.java";
