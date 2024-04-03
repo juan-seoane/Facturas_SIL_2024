@@ -8,6 +8,7 @@ import org.w3c.dom.events.KeyboardEvent;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import modelo.Config;
@@ -67,11 +69,11 @@ public class Acceso extends Application implements Initializable{
 
                 cambiarEscena(Acceso.scene2);
 
-                Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 2024!");
+                Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 2024!\nPulse una tecla para continuar...");
                 System.out.println("[Acceso.java: intentos<5 y cred OK]...OK, entrando...");
 
                 esperar();
-                System.exit(0);
+               //System.exit(0);
 
 
             }else if(intentos<5){
@@ -91,29 +93,17 @@ public class Acceso extends Application implements Initializable{
 
                 System.out.println("[Acceso.java: intentos>=5 y cred NO] El proceso de Autenticación ha fallado!");
                 System.out.println("[Acceso.java] El programa se cerrará!");
-//TODO: Estoy probando si recoge el Canvas (el textArea) en la segunda escena...
+
                 Acceso.imprimir( Acceso.getCanvas(), "\nEl proceso de Autenticación ha fallado!");
-                Acceso.imprimir( Acceso.getCanvas(), "\nEl programa se cerrará!");
+                Acceso.imprimir( Acceso.getCanvas(), "\nEl programa se cerrará!\nPulse cualquier tecla para continuar...");
 
                 esperar();
                 System.exit(0); 
                             
             }
-            
-
-            if (Acceso.aceptado){
-
-                //Acceso.usuario = txtUsuario.getText();
-                
-                //TODO: Hacer el TextArea autoscrollable
-                //TODO: La ventana mostrará el desarrollo de la carga de controladores y al final se cerrará
-                //Main.usuario = this.usuario;   
-                
-                //System.exit(0);
-                
-            }
         }
     }
+
     private Scene crearScene1 () throws IOException{
         FXMLLoader loader1 = new FXMLLoader();
         loader1.setLocation(getClass().getResource("../fxviews/Acceso.fxml"));
@@ -149,9 +139,15 @@ public class Acceso extends Application implements Initializable{
         //ventanaAcceso.initModality(Modality.APPLICATION_MODAL);
         Acceso.ventanaAcceso.setResizable(false);
         Acceso.ventanaAcceso.setTitle("Acceso a FacturasSIL");
-        //Acceso.ventanaAcceso.show();
-
-        //TODO: Definir Acceso.canvasAcceso otra vez
+        
+//TODO: 03/04/24 - A ver dónde se coloca la inicialización de este listener para que no de error
+        Acceso.ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
+            public void handle(KeyEvent ke){
+                System.out.println("Key Pressed: " + ke.getCode());
+                pulsartecla();
+                ke.consume(); // <-- stops passing the event to next node
+            }  
+         });
          
     }
 
@@ -174,11 +170,7 @@ public class Acceso extends Application implements Initializable{
  
         canvasAcceso = this.txtArea;
         System.out.println("[Acceso - initialize()] canvasAcceso activado: " + (canvasAcceso!=null) );
-       //TODO: 03/04/24 18:21 - Me quedo aquí, a punto de hacer el listener este...(repasar)
-        // canvasAcceso.setOnKeyPressed(new function(){
-        //        pulsartecla();
-         //   }
-        //);
+       
     }    
 
     public static String getUsuario() {
@@ -192,13 +184,18 @@ public class Acceso extends Application implements Initializable{
     @FXML 
     private void esperar() throws InterruptedException{
         Stage stage = (Stage) Acceso.getCanvas().getScene().getWindow();
-        stage.wait();
+        try{
+            stage.wait();
+        }catch(IllegalMonitorStateException imse){
+//TODO: 03/04/24 - Lo dejo aquí, parece que la excepción se produce porque no para (.wait()) el hilo (Thread) adecuado...
+            //imse.printStackTrace();
+            System.out.println("Se ha producido la excepción en el stage.wait()");
+        }
     }
-
-    
-  //  private void pulsartecla(KeyboardEvent ev){
- //       notifyAll();
- //   }
+        
+    private void pulsartecla(){
+        notifyAll();
+    }
 
     public static void imprimir(TextArea tA, String cont) {
         tA.appendText("\n"+cont);
