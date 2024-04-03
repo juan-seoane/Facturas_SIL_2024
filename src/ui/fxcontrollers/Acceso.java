@@ -196,9 +196,9 @@ public class Acceso extends Application implements Initializable{
     }
 
     
-    private void pulsartecla(KeyboardEvent ev){
-        notifyAll();
-    }
+  //  private void pulsartecla(KeyboardEvent ev){
+ //       notifyAll();
+ //   }
 
     public static void imprimir(TextArea tA, String cont) {
         tA.appendText("\n"+cont);
