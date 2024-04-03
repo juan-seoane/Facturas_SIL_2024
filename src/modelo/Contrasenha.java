@@ -27,7 +27,7 @@ public Contrasenha(){
         }
         
         try{
-            Acceso.imprimir( "La nueva contraseña es  : "+ this.contrasenha);
+            Acceso.imprimir(Acceso.getCanvas(), "La nueva contraseña es  : "+ this.contrasenha);
         }catch(Exception ex){
             ex.printStackTrace();
         }
