@@ -144,7 +144,7 @@ public class Acceso extends Application implements Initializable{
                 try {
                     pulsartecla();
                 } catch (Exception e) {
-                    System.out.println("[Acceso.java>cambiarEscena] Excepción manejando el KeyEvent")
+                    System.out.println("[Acceso.java>cambiarEscena] Excepción manejando el KeyEvent");
                 }
                 ke.consume(); // <-- stops passing the event to next node
             }  
