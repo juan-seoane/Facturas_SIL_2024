@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.w3c.dom.events.KeyboardEvent;
-
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -71,10 +70,7 @@ public class Acceso extends Application implements Initializable{
 
                 Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 2024!\nPulse una tecla para continuar...");
                 System.out.println("[Acceso.java: intentos<5 y cred OK]...OK, entrando...");
-
-                esperar();
-               //System.exit(0);
-
+                Acceso.ventanaAcceso.requestFocus();  
 
             }else if(intentos<5){
                 //puentear el acceso
@@ -95,11 +91,8 @@ public class Acceso extends Application implements Initializable{
                 System.out.println("[Acceso.java] El programa se cerrará!");
 
                 Acceso.imprimir( Acceso.getCanvas(), "\nEl proceso de Autenticación ha fallado!");
-                Acceso.imprimir( Acceso.getCanvas(), "\nEl programa se cerrará!\nPulse cualquier tecla para continuar...");
-
-                esperar();
-                System.exit(0); 
-                            
+                Acceso.imprimir( Acceso.getCanvas(), "\nEl programa se cerrará!\nPulse cualquier tecla para continuar..."); 
+                Acceso.ventanaAcceso.requestFocus();                       
             }
         }
     }
@@ -140,7 +133,6 @@ public class Acceso extends Application implements Initializable{
         Acceso.ventanaAcceso.setResizable(false);
         Acceso.ventanaAcceso.setTitle("Acceso a FacturasSIL");
         
-//TODO: 03/04/24 - A ver dónde se coloca la inicialización de este listener para que no de error
         Acceso.ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
             public void handle(KeyEvent ke){
                 System.out.println("Key Pressed: " + ke.getCode());
@@ -181,20 +173,11 @@ public class Acceso extends Application implements Initializable{
         return Acceso.canvasAcceso;
     }
 
-    @FXML 
-    private void esperar() throws InterruptedException{
-        Stage stage = (Stage) Acceso.getCanvas().getScene().getWindow();
-        try{
-            stage.wait();
-        }catch(IllegalMonitorStateException imse){
-//TODO: 03/04/24 - Lo dejo aquí, parece que la excepción se produce porque no para (.wait()) el hilo (Thread) adecuado...
-            //imse.printStackTrace();
-            System.out.println("Se ha producido la excepción en el stage.wait()");
-        }
-    }
-        
     private void pulsartecla(){
-        notifyAll();
+        //Stage stage = (Stage) Acceso.getCanvas().getScene().getWindow();
+        //stage.notify();
+        //Acceso.ventanaAcceso.notify();
+        Acceso.ventanaAcceso.close();
     }
 
     public static void imprimir(TextArea tA, String cont) {
@@ -206,6 +189,9 @@ public class Acceso extends Application implements Initializable{
 
         Acceso.ventanaAcceso = primaryStage;
         Acceso.ventanaAcceso.setTitle("Acceso a FacturasSIL");
+
+        // prevent automatic exit of application when last window is closed
+        Platform.setImplicitExit(false);
 
         Acceso.scene1 = crearScene1();
         Acceso.scene2 = crearScene2();
