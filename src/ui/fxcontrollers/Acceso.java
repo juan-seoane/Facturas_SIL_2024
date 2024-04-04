@@ -136,7 +136,12 @@ public class Acceso extends Application implements Initializable{
         Acceso.ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
             public void handle(KeyEvent ke){
                 System.out.println("Key Pressed: " + ke.getCode());
-                pulsartecla();
+                try {
+                    pulsartecla();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 ke.consume(); // <-- stops passing the event to next node
             }  
          });
@@ -173,11 +178,10 @@ public class Acceso extends Application implements Initializable{
         return Acceso.canvasAcceso;
     }
 
-    private void pulsartecla(){
-        //Stage stage = (Stage) Acceso.getCanvas().getScene().getWindow();
-        //stage.notify();
-        //Acceso.ventanaAcceso.notify();
-        Acceso.ventanaAcceso.close();
+    private void pulsartecla() throws Exception{
+
+        //Acceso.ventanaAcceso.close();
+        Platform.exit();
     }
 
     public static void imprimir(TextArea tA, String cont) {
