@@ -31,29 +31,27 @@ public class Main {
         window.run();
         window.setAlwaysOnTop(true);
         window.setVisible(false);
-        /*
-        Path path = Paths.get("");
-        String directoryName = path.toAbsolutePath().toString();
-        System.out.println("Current Working Directory at Main is = " + directoryName);
-        mostrarRuta();
-        */
+   
         Application.launch(Acceso.class);
-         
-         
+               
         while((acceso!=null) && !acceso.entrar() && (Acceso.intentos < 5)){
-            System.out.println("");   
+            //TODO: El while debe tener contenido, si no, falla... Buscar algo equivalente a la línea siguiente...
+            System.out.println("");
+            //usuario = Acceso.getUsuario().toLowerCase();   
         }
-        usuario = Acceso.getUsuario();
         
-        credsOK = true;
-
+        usuario = Acceso.usuario.toLowerCase();
+        
         System.out.println("Acceso: superado para el usuario " + usuario);
-        //TODO: Arreglar esta chapuza(uso 'admin' para comprobar otras cosas)
+
         if (Config.getConfig(usuario)!=null){ 
 
             //initcomponents();
             ctr = new Controlador();
-            //Acceso.imprimir(Acceso.getCanvas() , "\n[Main.java>Acceso2] Arrancando Controlador Principal");
+            //TODO: Estaría bien una ventana en la que se relatase el arranque del programa...
+            
+            //
+            Acceso.imprimir(Acceso.getCanvas() , "\n[Main.java>Acceso2] Arrancando Controlador Principal");
             System.out.println("[Main.java] Arrancando Controlador Principal");
             ctr.start();
         
@@ -64,25 +62,6 @@ public class Main {
         }       
     }
 
-    /*
-    private static void mostrarRuta() {
-        String nombreArchivo1 = "D:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_2024\\src\\Main.java";
-        String nombreArchivo2 = "D:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_2024\\src\\ui\\Acceso.java";
-        String nombreArchivo3 = "D:\\OneDrive\\Documentos\\GitHub\\Facturas_SIL_2024\\src\\views\\Acceso.fxml";
-
-        File fichero1 = new File(nombreArchivo1);
-        File fichero2 = new File(nombreArchivo2);
-        File fichero3 = new File(nombreArchivo3);
-
-        String rutaRel1 = fichero1.getPath();
-        String rutaRel2 = fichero2.getPath();
-        String rutaRel3 = fichero3.getPath();
- 
-        System.out.println("Ruta del archivo Main: "+rutaRel1);
-        System.out.println("Ruta del archivo Acceso.java: "+rutaRel2);
-        System.out.println("Ruta del archivo Acceso.fxml: "+rutaRel3);
-    }
-*/
     public static void initcomponents(){
 
     }

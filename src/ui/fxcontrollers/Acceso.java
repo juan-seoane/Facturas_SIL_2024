@@ -47,54 +47,59 @@ public class Acceso extends Application implements Initializable{
     public static int intentos = 1;
     
     @FXML 
-    public void probar(ActionEvent event) throws InterruptedException{
+    public void probar() throws InterruptedException{
         TextField userF = this.txtUsuario;
         PasswordField passF = this.txtPassword;
        // Acceso.imprimir(txtArea, "[Acceso.java>probar()]Datos introducidos : "+ userF.getText()+ " - "+passF.getText());
 
-        System.out.println("[Acceso.java>probar()]Contenido del Área de Texto: "+ this.txtArea.getText());
+        //System.out.println("[Acceso.java>probar()]Contenido del Área de Texto: "+ this.txtArea.getText());
         //Acceso.imprimir(this.txtArea, "texto introducido : "+ userF.getText() + " - " +passF.getText()+" - intentos: "+ intentos);
         //System.out.println("texto introducido : "+ userF.getText() + " - " +passF.getText());
         for (Contrasenha contr : Config.getConfig("ADMIN").getContrasenhas()){
             
-            System.out.println("[Acceso.java>probar()>for(contraseñas)]Datos introducidos : usuario: "+ userF.getText()+ " - pass: "+passF.getText());
+            System.out.println("[Acceso.java>probar()>for(contraseñas)]Datos introducidos : usuario: "+ userF.getText()+ " - pass: "+passF.getText() + "Datos obtenidos de Config: " + (Contrasenha)(Config.getConfig("ADMIN").getContrasenhas().toArray()[0]));
 
             //Acceso.imprimir( this.txtArea, "\nDatos introducidos : "+ userF.getText()+ " - "+passF.getText());
                 
-            if ((intentos<5)&&(userF.getText().toUpperCase().trim().equals(contr.getUsuario().toUpperCase()) && (passF.getText().toUpperCase().trim().equals(contr.getContrasenha().toUpperCase()))))
+            if ((Acceso.intentos<5)&&(userF.getText().toUpperCase().trim().equals(contr.getUsuario().toUpperCase()) && (passF.getText().toUpperCase().trim().equals(contr.getContrasenha().toUpperCase()))))
             {
-               
-                Acceso.aceptado = true;
+                acierto();
+                break;
 
-                cambiarEscena(Acceso.scene2);
-
-                Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 2024!\nPulse una tecla para continuar...");
-                System.out.println("[Acceso.java: intentos<5 y cred OK]...OK, entrando...");
-                Acceso.ventanaAcceso.requestFocus();  
-
-            }else if(intentos<5){
-                //puentear el acceso
-                //Acceso.aceptado = true;
-                //System.out.println("Usuario y Contraseña incorrectos...pero pase...");
-                //txtArea.appendText("\nDatos incorrectas...pero pase...!");
-
-                System.out.println("[Acceso.java: intentos<5 y cred NO]Usuario y Contraseña incorrectos... Repita, por favor");
-                Acceso.imprimir(this.txtArea, "\nDatos incorrectos: " + this.txtUsuario.getText() +" - " + this.txtPassword.getText() + "\n...Por favor vuelva a intentarlo... (intentos: "+intentos+")");
-                intentos++;
-                reintentar();
-            
-            }
-            else{
-                cambiarEscena(Acceso.scene2);
-
-                //System.out.println("[Acceso.java: intentos>=5 y cred NO] El proceso de Autenticación ha fallado!");
-                System.out.println("[Acceso.java] El programa se cerrará!");
-
-                Acceso.imprimir( Acceso.getCanvas(), "\nEl proceso de Autenticación ha fallado!");
-                Acceso.imprimir( Acceso.getCanvas(), "\nEl programa se cerrará!\nPulse cualquier tecla para continuar..."); 
-                Acceso.ventanaAcceso.requestFocus();                       
+            }else if(Acceso.intentos>=5){
+                fallo();
+                break;      
             }
         }
+        reintento();
+        
+    }
+
+    private void fallo() {
+        cambiarEscena(Acceso.scene2);
+        //System.out.println("[Acceso.java: intentos>=5 y cred NO] El proceso de Autenticación ha fallado!");
+        System.out.println("[Acceso.java] El programa se cerrará!");
+        Acceso.imprimir( Acceso.getCanvas(), "\nEl proceso de Autenticación ha fallado!");
+        Acceso.imprimir( Acceso.getCanvas(), "\nEl programa se cerrará!\nPulse cualquier tecla para continuar..."); 
+        Acceso.ventanaAcceso.requestFocus(); 
+    }
+
+    private void acierto() {
+        Acceso.usuario=txtUsuario.getText().toUpperCase();
+        Acceso.aceptado = true;
+        cambiarEscena(Acceso.scene2);
+        Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 2024!\nPulse una tecla para continuar...");
+        //System.out.println("[Acceso.java: intentos<5 y cred OK]...OK, entrando...");
+        Acceso.ventanaAcceso.requestFocus();  
+    }
+
+    private void reintento() throws InterruptedException {
+        Acceso.imprimir(this.txtArea, "\nDatos incorrectos: " + this.txtUsuario.getText() +" - " + this.txtPassword.getText() + "\n...Por favor vuelva a intentarlo... (intentos: "+intentos+")");
+        Acceso.intentos++;
+
+        this.txtUsuario.clear();
+        this.txtPassword.clear();
+        this.txtUsuario.requestFocus();
     }
 
     private Scene crearScene1 () throws IOException{
@@ -139,19 +144,12 @@ public class Acceso extends Application implements Initializable{
                 try {
                     pulsartecla();
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    System.out.println("[Acceso.java>cambiarEscena] Excepción manejando el KeyEvent")
                 }
                 ke.consume(); // <-- stops passing the event to next node
             }  
          });
          
-    }
-
-    private void reintentar() {
-        this.txtUsuario.clear();
-        this.txtPassword.clear();
-        this.txtUsuario.requestFocus();
     }
 
     public boolean entrar(){
@@ -171,6 +169,7 @@ public class Acceso extends Application implements Initializable{
     }    
 
     public static String getUsuario() {
+        //Este procedimiento tiene que leer el usuario antes de cerrarse la ventana...
         return Acceso.usuario;
     }
 
@@ -182,6 +181,9 @@ public class Acceso extends Application implements Initializable{
 
         //Acceso.ventanaAcceso.close();
         Platform.exit();
+        if (!entrar()){
+            System.exit(0);
+        }
     }
 
     public static void imprimir(TextArea tA, String cont) {
