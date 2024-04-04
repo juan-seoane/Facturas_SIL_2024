@@ -87,7 +87,7 @@ public class Acceso extends Application implements Initializable{
             else{
                 cambiarEscena(Acceso.scene2);
 
-                System.out.println("[Acceso.java: intentos>=5 y cred NO] El proceso de Autenticación ha fallado!");
+                //System.out.println("[Acceso.java: intentos>=5 y cred NO] El proceso de Autenticación ha fallado!");
                 System.out.println("[Acceso.java] El programa se cerrará!");
 
                 Acceso.imprimir( Acceso.getCanvas(), "\nEl proceso de Autenticación ha fallado!");
@@ -135,7 +135,7 @@ public class Acceso extends Application implements Initializable{
         
         Acceso.ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
             public void handle(KeyEvent ke){
-                System.out.println("Key Pressed: " + ke.getCode());
+                //System.out.println("Key Pressed: " + ke.getCode());
                 try {
                     pulsartecla();
                 } catch (Exception e) {
@@ -166,7 +166,7 @@ public class Acceso extends Application implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {      
  
         canvasAcceso = this.txtArea;
-        System.out.println("[Acceso - initialize()] canvasAcceso activado: " + (canvasAcceso!=null) );
+        //System.out.println("[Acceso - initialize()] canvasAcceso activado: " + (canvasAcceso!=null) );
        
     }    
 
