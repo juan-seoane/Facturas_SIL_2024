@@ -28,6 +28,7 @@ public class Controlador extends Thread {
         
 	private static ControladorFicheros cfch;
 	private static ControladorFacturas cfct;
+
         private static ControladorDistribuidores cd;
         private static ControladorCaja ccj;
         private static ui.fxcontrollers.PanelControl pc;
@@ -43,6 +44,7 @@ public class Controlador extends Thread {
                 cd.start();
                 ccj = ControladorCaja.getControlador();
                 ccj.start();
+                Application.launch(PanelControl.class);
                 pc = PanelControl.getPanelControl();
 //                pc.setVisible(true);
             }
@@ -71,7 +73,7 @@ public class Controlador extends Thread {
             ccj = ControladorCaja.getControlador();
             pc = PanelControl.getPanelControl();
 //            pc.setVisible(true);
-            Application.launch(PanelControl.class);
+            
         }
     }
         
@@ -162,7 +164,7 @@ public class Controlador extends Thread {
     }
     
     public static void verDistribuidor(int index){
-//            PanelControl.getPanelControl().pulsarboton(2);
+        PanelControl.pulsarboton(2);
         seccion = DIST;
         notas.dispose();
         cd.visible(true);
@@ -170,7 +172,7 @@ public class Controlador extends Thread {
     }
     
     public static void verCaja(int index){
-//            PanelControl.getPanelControl().pulsarboton(2);
+        PanelControl.pulsarboton(2);
         seccion = CAJA;
         notas.dispose();
         ccj.visible(true);
@@ -187,7 +189,7 @@ public class Controlador extends Thread {
                     case 1 :
                         seccion = FACT;
                         cfct.visible(true);
-                        cd.setEstado(0);
+                        ControladorDistribuidores.setEstado(0);
                         cd.visible(false);
                         ccj.visible(false);
                         PanelControl.reset();
@@ -195,7 +197,7 @@ public class Controlador extends Thread {
                     case 2 :
                         seccion = DIST;
                         cfct.visible(false);
-                        cd.setEstado(1);
+                        ControladorDistribuidores.setEstado(1);
                         cd.visible(true);
                         ccj.visible(false);
                         PanelControl.reset();
@@ -203,7 +205,7 @@ public class Controlador extends Thread {
                     case 3 :
                         seccion = NOTAS;
                         cfct.visible(false);
-                        cd.setEstado(0);
+                        ControladorDistribuidores.setEstado(0);
                         cd.visible(false);
                         ccj.visible(false);
                         verNotas();                            
@@ -212,7 +214,7 @@ public class Controlador extends Thread {
                     case 4 :
                         seccion = CONFIG;
                         cfct.visible(false);
-                        cd.setEstado(0);
+                        ControladorDistribuidores.setEstado(0);
                         cd.visible(false);
                         ccj.visible(false);
                         VentanaConfig vc = new VentanaConfig();
@@ -223,7 +225,7 @@ public class Controlador extends Thread {
                         seccion = CAJA;
                         ccj.visible(true);
                         cfct.visible(false);
-                        cd.setEstado(0);
+                        ControladorDistribuidores.setEstado(0);
                         cd.visible(false);                           
                         PanelControl.reset();
                         break;

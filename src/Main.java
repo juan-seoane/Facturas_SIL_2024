@@ -51,7 +51,7 @@ public class Main {
             //TODO: Estaría bien una ventana en la que se relatase el arranque del programa...
             
             //
-            Acceso.imprimir(Acceso.getCanvas() , "\n[Main.java>Acceso2] Arrancando Controlador Principal");
+            //Acceso.imprimir(Acceso.getCanvas() , "\n[Main.java>Acceso2] Arrancando Controlador Principal");
             System.out.println("[Main.java] Arrancando Controlador Principal");
             ctr.start();
         

@@ -9,36 +9,34 @@ import modelo.Config;
 import modelo.ModeloFacturas;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-/*TODO: Quitar todos los import de la librería java.awt
-import java.awt.AWTException;
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-*/
-import java.util.ArrayList;
-import java.util.List;
+
+import java.io.IOException;
+import java.net.URL;
 //import javax.swing.JToggleButton;
+import java.util.ResourceBundle;
 
 /**
  *
  * @author juanseoane
  */
-public class PanelControl extends Application{
+public class PanelControl extends Application implements Initializable{
+
+    private static Stage ventanaPCtl;
+
+    private static Scene escena1;
 
     static Image icon;
 //    static TrayIcon trayIcon;
@@ -60,16 +58,16 @@ public class PanelControl extends Application{
 
     private static boolean botonpulsado = false;
     private static int botonactivo = 1;
-    public static PanelControl instancia = null;
+    public static PanelControl instancia;
     public static int modo;
     
     private PanelControl() {
-        initComponents();
-        startup();
+//        initComponents();
+//        startup();
 //        this.setTitle("Panel Control : "+Config.getConfig().getUsuario());
-        PanelControl.lblTrimestre.setText(Config.getConfig().getAnho().getTrimestre()+"");
-        PanelControl.lblAnho.setText(Config.getConfig().getAnho().getAnho()+"");
-        PanelControl.lblEntradas.setText(ModeloFacturas.getNumeroFacturas()+"");
+//        PanelControl.lblTrimestre.setText(Config.getConfig().getAnho().getTrimestre()+"");
+//        PanelControl.lblAnho.setText(Config.getConfig().getAnho().getAnho()+"");
+//        PanelControl.lblEntradas.setText(ModeloFacturas.getNumeroFacturas()+"");
 //        this.toFront();
 //        this.setAlwaysOnTop(true);
 //        this.setAutoRequestFocus(false);
@@ -83,10 +81,11 @@ public class PanelControl extends Application{
      */
      
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    /*
     private void initComponents() {
 
         
-    /*    
+        
         btnFCT = new javax.swing.JButton();
         btnRS = new javax.swing.JButton();
         btnNTS = new javax.swing.JButton();
@@ -99,9 +98,9 @@ public class PanelControl extends Application{
 
         btnautosave = new javax.swing.JButton();
         toggleModo = new javax.swing.JToggleButton();
-*/
-        //jLabel3.setText("jLabel3");
-/*
+
+        jLabel3.setText("jLabel3");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Panel Control");
         setAlwaysOnTop(true);
@@ -268,7 +267,6 @@ public class PanelControl extends Application{
         );
 
         pack();
-*/
 }// </editor-fold>//GEN-END:initComponents
     
     private List<Image> startup(){
@@ -303,10 +301,9 @@ public class PanelControl extends Application{
         }else
           System.out.println("TrayIcon could not be added. SystemTray not supported");
         }
-*/
         return listaIconos;
     }
-
+    */
     public static void setNumfacturas(int i){
         PanelControl.lblEntradas.setText(i +"");
     }
@@ -316,8 +313,8 @@ public class PanelControl extends Application{
     public static void setTrimestre(int i){
         PanelControl.lblTrimestre.setText(i+"");
     }
-    public void setUsuario(String user){
-        //this.setTitle("Panel Control : "+Config.getConfig().getUsuario());
+    public static void setUsuario(String user){
+       PanelControl.lblUsuario.setText(user +"");
     }
     
     public static int getModo(){
@@ -362,18 +359,17 @@ public class PanelControl extends Application{
     }
     @FXML
     private void toggleModopulsado(Event evt) {//GEN-FIRST:event_toggleModoActionPerformed
-/*
-        if (((JToggleButton)(evt.getSource())).isSelected()){
+
+        if (((ToggleButton)(evt.getSource())).isSelected()){
             toggleModo.setText("MODO INGR");
-            toggleModo.setBackground(new Color(240,200,0));
+            toggleModo.setStyle("-fx-background-color: yellow");//240,200,0
             modo = Controlador.INGR;
         }
-        else if (!((JToggleButton)(evt.getSource())).isSelected()){
+        else if (!((ToggleButton)(evt.getSource())).isSelected()){
             toggleModo.setText("MODO NAV");
-            toggleModo.setBackground(new Color(240,240,240));
+            toggleModo.setStyle("-fx-background-color: transparent"); //240,240,240
             modo = Controlador.NAV;
-        }
-*/        
+        }       
         botonactivo = 7;
         botonpulsado = true;
     }
@@ -436,9 +432,43 @@ public class PanelControl extends Application{
 */
     }
 
+    private Scene crearEscena1() throws IOException{
+        FXMLLoader loader1 = new FXMLLoader();
+        loader1.setLocation(getClass().getResource("../fxviews/PanelControl.fxml"));
+        
+       
+        Parent root1 = loader1.load();
+        Scene scene1 = new Scene(root1);
+        //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
+
+        
+        return scene1;
+    }
     @Override
-    public void start(Stage arg0){
+    public void start(Stage primaryStage) throws IOException{
 //TODO: Completar el método start() dentro del controlador de la GUI de JFX PanelControl.java
-     
+
+    PanelControl.ventanaPCtl = primaryStage;
+//    PanelControl.ventanaPCtl.setTitle("Acceso a FacturasSIL");
+
+    // prevent automatic exit of application when last window is closed
+    Platform.setImplicitExit(false);
+
+    PanelControl.escena1 = crearEscena1();
+    PanelControl.ventanaPCtl.setScene(PanelControl.escena1);
+
+    //PanelControl.ventanaPCtl.initModality(Modality.APPLICATION_MODAL);
+    PanelControl.ventanaPCtl.setResizable(false);
+    PanelControl.ventanaPCtl.show();
+    }
+
+    @FXML
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        // TODO: Completar la inicialización de la GUI del PanelControl
+       PanelControl.setAño(Config.getConfig().getAnho().getAnho());
+       PanelControl.setTrimestre(Config.getConfig().getAnho().getTrimestre());
+       PanelControl.setNumfacturas(ModeloFacturas.getNumeroFacturas());
+       PanelControl.setUsuario(Config.getConfig().getUsuario());
     }
 }
