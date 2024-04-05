@@ -1,6 +1,7 @@
 package modelo;
 
 import controladores.*;
+import ui.fxcontrollers.*;
 import ui.*;
 import java.util.*;
 import javax.swing.*;

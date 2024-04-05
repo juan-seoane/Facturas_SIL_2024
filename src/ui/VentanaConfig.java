@@ -4,6 +4,7 @@
  */
 package ui;
 
+import ui.fxcontrollers.*;
 import modelo.*;
 import controladores.*;
 import java.awt.BorderLayout;

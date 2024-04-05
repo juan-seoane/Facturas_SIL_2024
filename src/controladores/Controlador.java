@@ -1,5 +1,6 @@
 package controladores;
 
+import ui.fxcontrollers.PanelControl;
 import ui.*;
 import modelo.*;
 
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 
+import javafx.application.Application;
 
 public class Controlador extends Thread {
     
@@ -28,7 +30,7 @@ public class Controlador extends Thread {
 	private static ControladorFacturas cfct;
         private static ControladorDistribuidores cd;
         private static ControladorCaja ccj;
-        private static PanelControl pc;
+        private static ui.fxcontrollers.PanelControl pc;
         private static VisorNotas notas;
         public static int seccion = FACT;
 	
@@ -42,7 +44,7 @@ public class Controlador extends Thread {
                 ccj = ControladorCaja.getControlador();
                 ccj.start();
                 pc = PanelControl.getPanelControl();
-                pc.setVisible(true);
+//                pc.setVisible(true);
             }
 	}
 	
@@ -68,7 +70,8 @@ public class Controlador extends Thread {
             cd = ControladorDistribuidores.getControlador();
             ccj = ControladorCaja.getControlador();
             pc = PanelControl.getPanelControl();
-            pc.setVisible(true);
+//            pc.setVisible(true);
+            Application.launch(PanelControl.class);
         }
     }
         

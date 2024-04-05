@@ -1,6 +1,7 @@
 package controladores;
 
 import modelo.*;
+import ui.fxcontrollers.*;
 import ui.*;
 import java.util.*;
 import javax.swing.JOptionPane;

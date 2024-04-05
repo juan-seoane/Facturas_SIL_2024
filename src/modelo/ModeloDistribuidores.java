@@ -5,6 +5,7 @@
 package modelo;
 
 import controladores.*;
+import ui.fxcontrollers.*;
 import ui.*;
 import java.util.*;
 import javax.swing.JOptionPane;
@@ -284,7 +285,7 @@ public class ModeloDistribuidores {
         if (tablaemergente.editar()){
             PanelControl.pulsarboton(2);
             ControladorDistribuidores.setEstado(1);
-            PanelControl.getPanelControl().toFront();
+//            PanelControl.getPanelControl().toFront();
         }
         return true;
     }

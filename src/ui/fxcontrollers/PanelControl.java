@@ -2,11 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ui;
+package ui.fxcontrollers;
 
 import controladores.Controlador;
 import modelo.Config;
 import modelo.ModeloFacturas;
+
+import javafx.application.Application;
+import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+/*TODO: Quitar todos los import de la librería java.awt
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Image;
@@ -17,20 +29,35 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+*/
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JToggleButton;
+//import javax.swing.JToggleButton;
 
 /**
  *
  * @author juanseoane
  */
-public class PanelControl extends javax.swing.JFrame {
+public class PanelControl extends Application{
 
     static Image icon;
-    static TrayIcon trayIcon;
-    static PopupMenu popMenu;
+//    static TrayIcon trayIcon;
+    static Popup popMenu;
     
+    @FXML private Button btnFCT;
+    @FXML private Button btnRS;
+    @FXML private Button btnCJA;
+    @FXML private Button btnCFG;
+    @FXML private Button btnNTS;
+
+    @FXML private ToggleButton btnAutosave;
+    @FXML private ToggleButton toggleModo;
+    
+    @FXML private static Label lblEntradas;
+    @FXML private static Label lblTrimestre;
+    @FXML private static Label lblAnho;
+    @FXML private static Label lblUsuario;
+
     private static boolean botonpulsado = false;
     private static int botonactivo = 1;
     public static PanelControl instancia = null;
@@ -39,13 +66,13 @@ public class PanelControl extends javax.swing.JFrame {
     private PanelControl() {
         initComponents();
         startup();
-        this.setTitle("Panel Control : "+Config.getConfig().getUsuario());
+//        this.setTitle("Panel Control : "+Config.getConfig().getUsuario());
         PanelControl.lblTrimestre.setText(Config.getConfig().getAnho().getTrimestre()+"");
         PanelControl.lblAnho.setText(Config.getConfig().getAnho().getAnho()+"");
         PanelControl.lblEntradas.setText(ModeloFacturas.getNumeroFacturas()+"");
-        this.toFront();
-        this.setAlwaysOnTop(true);
-        this.setAutoRequestFocus(false);
+//        this.toFront();
+//        this.setAlwaysOnTop(true);
+//        this.setAutoRequestFocus(false);
         PanelControl.modo = Controlador.NAV;
     }
 
@@ -58,25 +85,23 @@ public class PanelControl extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        
+    /*    
         btnFCT = new javax.swing.JButton();
         btnRS = new javax.swing.JButton();
         btnNTS = new javax.swing.JButton();
         btnCFG = new javax.swing.JButton();
         btnCJA = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        
         lblEntradas = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         lblTrimestre = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         lblAnho = new javax.swing.JLabel();
+
         btnautosave = new javax.swing.JButton();
         toggleModo = new javax.swing.JToggleButton();
-
-        jLabel3.setText("jLabel3");
-
+*/
+        //jLabel3.setText("jLabel3");
+/*
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Panel Control");
         setAlwaysOnTop(true);
@@ -89,7 +114,7 @@ public class PanelControl extends javax.swing.JFrame {
             }
         });
 
-        btnFCT.setText("FCT");
+        //btnFCT.setText("FCT");
         btnFCT.setToolTipText("<html>Entra en el MODO FACTURAS</html>");
         btnFCT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,7 +122,7 @@ public class PanelControl extends javax.swing.JFrame {
             }
         });
 
-        btnRS.setText("R.S.");
+        //btnRS.setText("R.S.");
         btnRS.setToolTipText("<html>Entra en el MODO DISTRIBUIDORES</html>");
         btnRS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,15 +130,14 @@ public class PanelControl extends javax.swing.JFrame {
             }
         });
 
-        btnNTS.setText("NTS");
-        btnNTS.setToolTipText("<html>Abre la VENTANA DE NOTAS<br/>\nde las Facturas y los Distribuidores</html>");
+        //btnNTS.setText("NTS");/        btnNTS.setToolTipText("<html>Abre la VENTANA DE NOTAS<br/>\nde las Facturas y los Distribuidores</html>");
         btnNTS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNTSActionPerformed(evt);
             }
         });
 
-        btnCFG.setText("CFG");
+        //btnCFG.setText("CFG");
         btnCFG.setToolTipText("<html>Abre la VENTANA DE CONFIGURACION<br/>\nEl programa se apaga al salir de ellla,<br/>\npara aplicar los cambios<br/>\nTendrá que volver a ejecutarlo para que<br/>\nestos cambios surtan efecto</html>");
         btnCFG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,14 +145,15 @@ public class PanelControl extends javax.swing.JFrame {
             }
         });
 
-        btnCJA.setText("CAJA");
-        btnCJA.setToolTipText("<html>Entra en el MODO CAJA</html>");
+        //btnCJA.setText("CAJA");
+//        btnCJA.setToolTipText("<html>Entra en el MODO CAJA</html>");
         btnCJA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCJAActionPerformed(evt);
             }
         });
-
+*/
+/*
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -243,22 +268,23 @@ public class PanelControl extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+*/
+}// </editor-fold>//GEN-END:initComponents
     
     private List<Image> startup(){
         
-        popMenu = new PopupMenu();
-        MenuItem item1 = new MenuItem("Exit");
-        popMenu.add(item1);
+//        popMenu = new Popup();
+//        MenuItem item1 = new MenuItem("Exit");
+//        popMenu.add(item1);
         
-        icon = Toolkit.getDefaultToolkit().getImage("imagenes/tray.png");
-        setIconImage(icon);
+//        icon = Toolkit.getDefaultToolkit().getImage("imagenes/tray.png");
+        //setIconImage(icon);
         List<Image> listaIconos = new ArrayList<Image>();
         listaIconos.add(icon);
         
-        trayIcon = new TrayIcon(icon, "Facturas SIL v2.0", popMenu);
+//        trayIcon = new TrayIcon(icon, "Facturas SIL v2.0", popMenu);
 
-               
+/*               
         if (SystemTray.isSupported()) {
           SystemTray tray = SystemTray.getSystemTray();
 
@@ -276,10 +302,11 @@ public class PanelControl extends javax.swing.JFrame {
           }
         }else
           System.out.println("TrayIcon could not be added. SystemTray not supported");
-        
+        }
+*/
         return listaIconos;
     }
-    
+
     public static void setNumfacturas(int i){
         PanelControl.lblEntradas.setText(i +"");
     }
@@ -290,50 +317,52 @@ public class PanelControl extends javax.swing.JFrame {
         PanelControl.lblTrimestre.setText(i+"");
     }
     public void setUsuario(String user){
-        this.setTitle("Panel Control : "+Config.getConfig().getUsuario());
+        //this.setTitle("Panel Control : "+Config.getConfig().getUsuario());
     }
     
     public static int getModo(){
         return PanelControl.modo;
     }
-    
-    private void btnCFGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCFGActionPerformed
+    @FXML    
+    private void btnCFGpulsado(Event evt) {//GEN-FIRST:event_btnCFGActionPerformed
         botonactivo = 4;
         botonpulsado = true;
-    }//GEN-LAST:event_btnCFGActionPerformed
-
-    private void btnNTSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNTSActionPerformed
+    }
+    @FXML
+    private void btnNTSpulsado(Event evt) {//GEN-FIRST:event_btnNTSActionPerformed
         botonactivo = 3;
         botonpulsado = true;
 
-    }//GEN-LAST:event_btnNTSActionPerformed
-
-    private void btnRSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRSActionPerformed
+    }
+    @FXML
+    private void btnRSpulsado(Event evt) {//GEN-FIRST:event_btnRSActionPerformed
         botonactivo = 2;
         botonpulsado = true;
 
-    }//GEN-LAST:event_btnRSActionPerformed
-
-    private void btnFCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFCTActionPerformed
+    }
+    @FXML
+    private void btnFCTpulsado(Event evt) {//GEN-FIRST:event_btnFCTActionPerformed
         botonactivo = 1;
         botonpulsado = true;
-    }//GEN-LAST:event_btnFCTActionPerformed
-
+    }
+/*/
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
-
-    private void btnCJAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCJAActionPerformed
+*/
+    @FXML
+    private void btnCJApulsado(Event evt) {//GEN-FIRST:event_btnCJAActionPerformed
          botonactivo = 5;
         botonpulsado = true;
-    }//GEN-LAST:event_btnCJAActionPerformed
-
-    private void btnautosaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnautosaveActionPerformed
+    }
+    @FXML
+    private void btnAutosavepulsado(Event evt) {//GEN-FIRST:event_btnautosaveActionPerformed
         botonactivo = 6;
         botonpulsado = true;
-    }//GEN-LAST:event_btnautosaveActionPerformed
-
-    private void toggleModoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleModoActionPerformed
+    }
+    @FXML
+    private void toggleModopulsado(Event evt) {//GEN-FIRST:event_toggleModoActionPerformed
+/*
         if (((JToggleButton)(evt.getSource())).isSelected()){
             toggleModo.setText("MODO INGR");
             toggleModo.setBackground(new Color(240,200,0));
@@ -344,9 +373,10 @@ public class PanelControl extends javax.swing.JFrame {
             toggleModo.setBackground(new Color(240,240,240));
             modo = Controlador.NAV;
         }
+*/        
         botonactivo = 7;
         botonpulsado = true;
-    }//GEN-LAST:event_toggleModoActionPerformed
+    }
     
     public int seleccion(){
         return botonactivo;
@@ -360,9 +390,9 @@ public class PanelControl extends javax.swing.JFrame {
     }
     public static void reset(){
         botonpulsado = false;
-        PanelControl.getPanelControl().setAlwaysOnTop(true);
-        PanelControl.getPanelControl().toFront();
-        PanelControl.getPanelControl().repaint();
+//        PanelControl.getPanelControl().setAlwaysOnTop(true);
+//        PanelControl.getPanelControl().toFront();
+//        PanelControl.getPanelControl().repaint();
     }
     public static PanelControl getPanelControl(){
         if (instancia == null)
@@ -379,7 +409,7 @@ public class PanelControl extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
+/*        try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -396,30 +426,19 @@ public class PanelControl extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(PanelControl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
+*/
+/* Create and display the form 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PanelControl().setVisible(true);
+//                new PanelControl().setVisible(true);
             }
         });
+*/
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCFG;
-    private javax.swing.JButton btnCJA;
-    private javax.swing.JButton btnFCT;
-    private javax.swing.JButton btnNTS;
-    private javax.swing.JButton btnRS;
-    private javax.swing.JButton btnautosave;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private static javax.swing.JLabel lblAnho;
-    public static javax.swing.JLabel lblEntradas;
-    private static javax.swing.JLabel lblTrimestre;
-    private javax.swing.JToggleButton toggleModo;
-    // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void start(Stage arg0){
+//TODO: Completar el método start() dentro del controlador de la GUI de JFX PanelControl.java
+     
+    }
 }
