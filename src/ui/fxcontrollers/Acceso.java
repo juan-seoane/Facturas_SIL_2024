@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
@@ -161,11 +162,11 @@ public class Acceso extends Application implements Initializable{
 
     //TODO: Lo de abajo sólo funciona si se implementa el Interfaz "Inicializable" (implements Initilizable)
     @FXML
-    public void initialize(URL location, ResourceBundle resources) {      
- 
+    public void initialize(URL location, ResourceBundle resources) {     
+        //TODO: No sé cómo hacer para poner el foco al arrancar en ese campo de texto... la siguiente línea no funciona
+        //txtUsuario.requestFocus();
         canvasAcceso = this.txtArea;
         //System.out.println("[Acceso - initialize()] canvasAcceso activado: " + (canvasAcceso!=null) );
-       
     }    
 
     public static String getUsuario() {
@@ -183,6 +184,19 @@ public class Acceso extends Application implements Initializable{
         Platform.exit();
         if (!entrar()){
             System.exit(0);
+        }
+    }
+
+    @FXML
+    private void pulsarBotonOK() throws InterruptedException{
+        probar();
+    }
+
+    @FXML
+    private void pulsarEnter(KeyEvent ke) throws InterruptedException{
+        if(ke.getCode()==KeyCode.ENTER){
+            pulsarBotonOK();
+            ke.consume(); // <-- stops passing the event to next node
         }
     }
 

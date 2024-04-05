@@ -88,7 +88,7 @@
                                                       <Cursor fx:constant="TEXT" />
                                                    </cursor>
                                                 </TextField>
-                                                <PasswordField fx:id="txtPassword" maxHeight="-Infinity" prefHeight="10.0" prefWidth="140.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" GridPane.valignment="TOP">
+                                                <PasswordField fx:id="txtPassword" maxHeight="-Infinity" onKeyPressed="#pulsarEnter" prefHeight="10.0" prefWidth="140.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" GridPane.valignment="TOP">
                                                    <font>
                                                       <Font size="18.0" />
                                                    </font>
@@ -104,7 +104,7 @@
                                     </AnchorPane>
                                     <AnchorPane prefHeight="122.0" prefWidth="441.0" style="-fx-background-color: #1e81b0;">
                                        <children>
-                                          <Button fx:id="btnOK" layoutX="215.0" layoutY="22.0" mnemonicParsing="false" onAction="#probar" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #063970;" text="OK" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                          <Button fx:id="btnOK" layoutX="215.0" layoutY="22.0" mnemonicParsing="false" onAction="#pulsarBotonOK" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #063970;" text="OK" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                              <font>
                                                 <Font name="System Bold" size="24.0" />
                                              </font>
