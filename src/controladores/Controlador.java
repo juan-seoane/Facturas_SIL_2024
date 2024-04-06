@@ -8,12 +8,14 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 
-import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
 public class Controlador extends Thread {
     
@@ -26,31 +28,41 @@ public class Controlador extends Thread {
         public static final int NOTAS = 4;
         public static final int CONFIG = 5;
         
-	private static ControladorFicheros cfch;
-	private static ControladorFacturas cfct;
+//	private static ControladorFicheros cfch;
+//	private static ControladorFacturas cfct;
 
-        private static ControladorDistribuidores cd;
-        private static ControladorCaja ccj;
-        private static ui.fxcontrollers.PanelControl pc;
+//        private static ControladorDistribuidores cd;
+//        private static ControladorCaja ccj;
+        public static PanelControl pc;
         private static VisorNotas notas;
         public static int seccion = FACT;
 	
-	public Controlador(){
+	public Controlador() throws IOException{
 		
             if(Config.getConfig()!=null){
-		cfct = ControladorFacturas.getControlador();
-                cfct.start();
-                cd = ControladorDistribuidores.getControlador();
-                cd.start();
-                ccj = ControladorCaja.getControlador();
-                ccj.start();
-                Application.launch(PanelControl.class);
-                pc = PanelControl.getPanelControl();
+//		        cfct = ControladorFacturas.getControlador();
+//                cfct.start();
+//                cd = ControladorDistribuidores.getControlador();
+//                cd.start();
+//                ccj.start();
+                //TODO: 06/04/2024 Tuve que cambiar el controlador de la clase PanelControl a public 
+                Platform.runLater(() ->{
+                    Controlador.pc = PanelControl.getPanelControl();
+                    try {
+                        Controlador.pc.start(new Stage());
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }   
+                }
+            );
+              
+            
 //                pc.setVisible(true);
             }
 	}
-	
-	public ControladorFicheros getControladorFicheros(){
+/*
+    public ControladorFicheros getControladorFicheros(){
 	
 		return Controlador.cfch;
 	}
@@ -64,13 +76,13 @@ public class Controlador extends Thread {
 	
 		return Controlador.ccj;
 	}
-        
+*/        
     public static void reset(){
             
         if(Config.getConfig()!=null){
-            cfct = ControladorFacturas.getControlador();
-            cd = ControladorDistribuidores.getControlador();
-            ccj = ControladorCaja.getControlador();
+//            cfct = ControladorFacturas.getControlador();
+//            cd = ControladorDistribuidores.getControlador();
+//            ccj = ControladorCaja.getControlador();
             pc = PanelControl.getPanelControl();
 //            pc.setVisible(true);
             
@@ -155,29 +167,30 @@ public class Controlador extends Thread {
     }
     
     public static void verFactura(int index){
-//            PanelControl.getPanelControl().pulsarboton(1);
+        PanelControl.pulsarboton(1);
         seccion = FACT;
-        notas.dispose();
+/*        notas.dispose();
         cfct.visible(true);
         cfct.visorVisible(true);
         cfct.actualizarVisor(index); 
-    }
+*/    }
     
     public static void verDistribuidor(int index){
         PanelControl.pulsarboton(2);
         seccion = DIST;
-        notas.dispose();
+ /*       notas.dispose();
         cd.visible(true);
         cd.verRS(index); 
-    }
+*/    }
     
     public static void verCaja(int index){
         PanelControl.pulsarboton(2);
         seccion = CAJA;
-        notas.dispose();
+/*        notas.dispose();
         ccj.visible(true);
         ccj.verCaja(index); 
-    }
+*/    }
+    @Override
     public void run(){
         
         while(true){
@@ -185,68 +198,70 @@ public class Controlador extends Thread {
                 System.out.print("");
             }
             else if (PanelControl.getPanelControl().botonpulsado()){
+                System.out.println("Botón del PnlCtrl pulsado!");
                 switch (PanelControl.getPanelControl().seleccion()){
                     case 1 :
                         seccion = FACT;
-                        cfct.visible(true);
-                        ControladorDistribuidores.setEstado(0);
-                        cd.visible(false);
-                        ccj.visible(false);
+//                        cfct.visible(true);
+//                        ControladorDistribuidores.setEstado(0);
+//                        cd.visible(false);
+//                        ccj.visible(false);
                         PanelControl.reset();
                         break;
                     case 2 :
                         seccion = DIST;
-                        cfct.visible(false);
-                        ControladorDistribuidores.setEstado(1);
-                        cd.visible(true);
-                        ccj.visible(false);
+//                        cfct.visible(false);
+//                        ControladorDistribuidores.setEstado(1);
+//                        cd.visible(true);
+//                        ccj.visible(false);
                         PanelControl.reset();
                         break;
                     case 3 :
                         seccion = NOTAS;
-                        cfct.visible(false);
-                        ControladorDistribuidores.setEstado(0);
-                        cd.visible(false);
-                        ccj.visible(false);
-                        verNotas();                            
+//                        cfct.visible(false);
+//                        ControladorDistribuidores.setEstado(0);
+//                        cd.visible(false);
+//                        ccj.visible(false);
+//                        verNotas();                            
                         PanelControl.reset();
                         break;
                     case 4 :
                         seccion = CONFIG;
-                        cfct.visible(false);
-                        ControladorDistribuidores.setEstado(0);
-                        cd.visible(false);
-                        ccj.visible(false);
-                        VentanaConfig vc = new VentanaConfig();
-                        vc.setVisible(true);
+//                        cfct.visible(false);
+//                        ControladorDistribuidores.setEstado(0);
+//                        cd.visible(false);
+//                        ccj.visible(false);
+//                        VentanaConfig vc = new VentanaConfig();
+//                        vc.setVisible(true);
                         PanelControl.reset();
                         break;
                     case 5:
                         seccion = CAJA;
-                        ccj.visible(true);
-                        cfct.visible(false);
-                        ControladorDistribuidores.setEstado(0);
-                        cd.visible(false);                           
+//                        ccj.visible(true);
+//                        cfct.visible(false);
+//                        ControladorDistribuidores.setEstado(0);
+//                        cd.visible(false);                           
                         PanelControl.reset();
                         break;
                     case 6:  
-                        autosave();
+//                        autosave();
                         PanelControl.reset();
                         break;
                     case 7:
                         if (PanelControl.getModo() == NAV){
                             if (seccion == FACT){
-                                cfct.visible(true);
+//                                cfct.visible(true);
                             }
                         }
                         else {
                             if (seccion == FACT){
-                                cfct.visible(true);
+//                                cfct.visible(true);
                             }
                         }
                         PanelControl.reset();
                         break;
                     default:
+                        PanelControl.reset();
                         break;       
                 }
             }
@@ -279,11 +294,11 @@ public class Controlador extends Thread {
         System.out.println(rutas[2]);
         
         if (opciones[0])
-            cfct.autosave(rutas[0]);
+//            cfct.autosave(rutas[0]);
         if (opciones[1])
-            cd.autosave(rutas[1]);
+//            cd.autosave(rutas[1]);
         if (opciones[2])
-            ccj.autosave(rutas[2]);
+//            ccj.autosave(rutas[2]);
         
         JOptionPane.showMessageDialog(null, "Los ficheros automáticos han sido guardados en: \n"+rutas[0]+"\n"+rutas[1]+"\n"+rutas[2]);
         return true;

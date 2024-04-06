@@ -1,23 +1,27 @@
+import java.io.IOException;
+
 import javax.swing.UIManager;
 
 import com.jtattoo.plaf.graphite.GraphiteLookAndFeel;
 
 import controladores.Controlador;
+import ui.fxcontrollers.PanelControl;
 import modelo.Config;
 import ui.Splash;
 
 import ui.fxcontrollers.Acceso;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 
 public class Main {
     
-    static Controlador ctr;
+    public static Controlador ctr;
     public static Acceso acceso;
     public static String usuario;
     public static boolean credsOK;
   
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         try{
             GraphiteLookAndFeel graphite = new GraphiteLookAndFeel();
@@ -47,9 +51,11 @@ public class Main {
         if (Config.getConfig(usuario)!=null){ 
 
             //initcomponents();
-            ctr = new Controlador();
+
+//TODO: En la siguiente línea devuelve null, en vez de devolver un controlador...            
+            Main.ctr = new Controlador();
             //TODO: Estaría bien una ventana en la que se relatase el arranque del programa...
-            
+
             //
             //Acceso.imprimir(Acceso.getCanvas() , "\n[Main.java>Acceso2] Arrancando Controlador Principal");
             System.out.println("[Main.java] Arrancando Controlador Principal");
@@ -62,7 +68,4 @@ public class Main {
         }       
     }
 
-    public static void initcomponents(){
-
-    }
 }
