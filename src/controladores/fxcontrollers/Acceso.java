@@ -55,6 +55,7 @@ public class Acceso extends Application implements Initializable{
     public void probar() throws InterruptedException{
         TextField userF = this.txtUsuario;
         PasswordField passF = this.txtPassword;
+
         String user = userF.getText();
         String pass = passF.getText();
        // Acceso.imprimir(txtArea, "[Acceso.java>probar()]Datos introducidos : "+ userF.getText()+ " - "+passF.getText());
@@ -62,6 +63,7 @@ public class Acceso extends Application implements Initializable{
         //System.out.println("[Acceso.java>probar()]Contenido del Área de Texto: "+ this.txtArea.getText());
         //Acceso.imprimir(this.txtArea, "texto introducido : "+ userF.getText() + " - " +passF.getText()+" - intentos: "+ intentos);
         //System.out.println("texto introducido : "+ userF.getText() + " - " +passF.getText());
+//TODO: OJO! Usuario siempre se contrasta en mayúsculas (aunque esté escrito en minúsculas)
         ComprobacionesAcceso check = new ComprobacionesAcceso();
         credsOK = check.comprobarCredenciales(user, pass);
 
@@ -83,7 +85,7 @@ public class Acceso extends Application implements Initializable{
     }
 
     private void acierto() {
-        Acceso.usuario=txtUsuario.getText().toUpperCase();
+        Acceso.usuario=txtUsuario.getText();
         Acceso.aceptado = true;
         cambiarEscena(Acceso.scene2);
         Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 2024!\nPulse una tecla para continuar...");
@@ -132,7 +134,7 @@ public class Acceso extends Application implements Initializable{
     }
 
     private void cambiarEscena(Scene es) {
-
+        //TODO: Probando con un elemento de la GUI no estático
         Stage stage = (Stage) this.txtArea.getScene().getWindow();
         
         Acceso.ventanaAcceso = stage;
@@ -253,6 +255,7 @@ public class Acceso extends Application implements Initializable{
             Stage  ventanaPCntrl = new Stage();
     
             ventanaPCntrl.setScene(escena);
+            ventanaPCntrl.setResizable(false);
             ventanaPCntrl.show();
     
             ventanaPCntrl.setOnCloseRequest(e -> System.exit(0));

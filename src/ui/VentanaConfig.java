@@ -798,8 +798,8 @@ public class VentanaConfig extends javax.swing.JFrame {
         if (recogerYgrabarConfig()){
         /** TODO : FALTA GUARDAR EL RESTO DE LA CONFIGURACION */
             JOptionPane.showMessageDialog(null,"CONFIGURACION GUARDADA! \n El programa se cerrará.");
-            PanelControl.setAño(Config.getConfig().getAnho().getAnho());
-            PanelControl.setTrimestre(Config.getConfig().getAnho().getTrimestre());
+            PanelControl.getPanelControl().setAño(Config.getConfig().getAnho().getAnho());
+            PanelControl.getPanelControl().setTrimestre(Config.getConfig().getAnho().getTrimestre());
             PanelControl.getPanelControl().setUsuario(Config.getConfig().getUsuario());
         }
         /** TODO : VentanaConfig: boton OK : aqui faltan operaciones, cambiar el archivo, actualizar el numero de entradas, etc */

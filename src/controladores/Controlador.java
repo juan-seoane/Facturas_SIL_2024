@@ -1,46 +1,33 @@
 package controladores;
 
-import modelo.*;
+import modelo.FicheroAutomatico;
 import modelo.records.Config;
-import ui.*;
-
+import ui.VentanaAutosave;
+import ui.VisorNotas;
 import controladores.fxcontrollers.PanelControl;
-import controladores.ControladorFacturas;
 
 import java.io.IOException;
-import java.util.*;
-
-import java.awt.GridBagLayout;
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import javafx.application.Platform;
-import javafx.stage.Stage;
 
 public class Controlador extends Thread {
     
 	public static final int NAV = 0;
-        public static final int INGR = 1;
+    public static final int INGR = 1;
         
-        public static final int FACT = 1;
-        public static final int DIST = 2;
-        public static final int CAJA = 3;
-        public static final int NOTAS = 4;
-        public static final int CONFIG = 5;
+    public static final int FACT = 1;
+    public static final int DIST = 2;
+    public static final int CAJA = 3;
+    public static final int NOTAS = 4;
+    public static final int CONFIG = 5;
         
-//	    private static ControladorFicheros cfch;
-    	private static ControladorFacturas cfct;
+//	  private static ControladorFicheros cfch;
+    private static ControladorFacturas cfct;
 
-//        private static ControladorDistribuidores cd;
-//        private static ControladorCaja ccj;
-        public static PanelControl pc;
-        private static VisorNotas notas;
-        public static int seccion = FACT;
+//    private static ControladorDistribuidores cd;
+//    private static ControladorCaja ccj;
+    public static PanelControl pc;
+    private static VisorNotas notas;
+    public static int seccion = FACT;
 	
 	public Controlador() throws IOException{
 	
@@ -60,6 +47,7 @@ public class Controlador extends Thread {
     private ControladorFacturas arrancarCfct() {
         
         Controlador.cfct = new ControladorFacturas();
+        Controlador.cfct.setName("Contr_FCT");
         Controlador.cfct.start();
 
         return Controlador.cfct;
@@ -203,7 +191,6 @@ public class Controlador extends Thread {
                     System.out.print("");
                 }
                 else if (PanelControl.getPanelControl().botonpulsado()){
-                    System.out.println("Botón del PnlCtrl pulsado!");
                     switch (PanelControl.getPanelControl().seleccion()){
                         case 1 :
                             seccion = FACT;
@@ -249,7 +236,7 @@ public class Controlador extends Thread {
                             PanelControl.reset();
                             break;
                         case 6:  
-//                        autosave();
+//                            autosave();
                             PanelControl.reset();
                             break;
                         case 7:
@@ -313,7 +300,7 @@ public class Controlador extends Thread {
         JOptionPane.showMessageDialog(null, "Los ficheros automáticos han sido guardados en: \n"+rutas[0]+"\n"+rutas[1]+"\n"+rutas[2]);
         return true;
     }
-    
+
     public static void quit(){
         System.exit(0);
     }

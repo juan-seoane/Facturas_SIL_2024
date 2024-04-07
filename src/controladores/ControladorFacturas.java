@@ -11,6 +11,8 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import net.sf.jasperreports.engine.export.*;
+
+import java.awt.HeadlessException;
 //import com.sun.media.imageioimpl.common.InputStreamAdapter;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -77,11 +79,21 @@ public class ControladorFacturas extends Thread {
 
                         break;
                     case 5: //borrar factura
-                        borrarFacturaVisor();
+                        try {
+                            borrarFacturaVisor();
+                        } catch (NumberFormatException | IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                         visible(true);
                         break;
                     case 6:
-                        guardarNotaVisor();
+                        try {
+                            guardarNotaVisor();
+                        } catch (NumberFormatException | HeadlessException | IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                         visor.reset();
                         visible(true);
                         break;
@@ -230,7 +242,7 @@ public class ControladorFacturas extends Thread {
         return true;
     }
 
-    public boolean borrarFacturaVisor() {
+    public boolean borrarFacturaVisor() throws NumberFormatException, IOException {
         //JOptionPane.showMessageDialog(null,">>>>>>Ha pulsado el boton borrar factura");
         int i = tabla.getIndice();
         //System.out.println(">>>>>>Enviando desde el controlador factura con indice " + i);
@@ -244,7 +256,7 @@ public class ControladorFacturas extends Thread {
         return true;
     }
 
-    public boolean recogerFormyEditar(Factura f) {
+    public boolean recogerFormyEditar(Factura f) throws NumberFormatException, IOException {
 //		JOptionPane.showMessageDialog(null,">>>>>>Enviado :: Indice en Controlador: "+visor.getIndex());
         Factura facturaTemp = m.recogerFormulario(form);
         int sel = m.facturas.indexOf(f);
@@ -258,7 +270,7 @@ public class ControladorFacturas extends Thread {
         return true;
     }
 
-    public boolean recogerFormyAnexar() {
+    public boolean recogerFormyAnexar() throws NumberFormatException, IOException {
         Factura f = m.recogerFormulario(form);  
 
         m.facturas.add(f);
@@ -286,7 +298,7 @@ public class ControladorFacturas extends Thread {
         return true;
     }
     
-    public boolean guardarNotaVisor(){
+    public boolean guardarNotaVisor() throws NumberFormatException, HeadlessException, IOException{
         Factura f = m.getFactura(visor.getIndex());
         f.setNota(visor.getNota());
         if (m.editarFactura((ArrayList<Factura>)m.leerFacturas(),f,visor.getIndex()))

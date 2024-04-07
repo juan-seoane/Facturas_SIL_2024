@@ -1,10 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package controladores.fxcontrollers;
 
+import modelo.ModeloFacturas;
+import modelo.records.Config;
 import controladores.Controlador;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.io.IOException;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -19,13 +21,10 @@ import javafx.scene.image.Image;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 /**
  * @author juanseoane
  */
+
 public class PanelControl implements Initializable{
 
     public static Stage ventanaPCtl;
@@ -41,14 +40,14 @@ public class PanelControl implements Initializable{
     @FXML private Button btnCJA;
     @FXML private Button btnCFG;
     @FXML private Button btnNTS;
-
-    @FXML private ToggleButton btnAutosave;
+    @FXML private Button btnAutosave;
+    
     @FXML private ToggleButton toggleModo;
     
-    @FXML private static Label lblEntradas;
-    @FXML private static Label lblTrimestre;
-    @FXML private static Label lblAnho;
-    @FXML private static Label lblUsuario;
+    @FXML private Label lblEntradas;
+    @FXML private Label lblTrimestre;
+    @FXML private Label lblAnho;
+    @FXML private Label lblUsuario;
 
     private static boolean botonpulsado = false;
     private static int botonactivo = 1;
@@ -57,25 +56,31 @@ public class PanelControl implements Initializable{
     
     public PanelControl() throws IOException {
 
-//        this.toFront();
-//        this.setAlwaysOnTop(true);
-//        this.setAutoRequestFocus(false);
-
         PanelControl.modo = Controlador.NAV;
 
   }
 
-    public static void setNumfacturas(int i){
-        PanelControl.lblEntradas.setText(i +"");
+    @FXML
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
+        // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
+        setAño((Integer)Config.getConfig().getAnho().getAnho());
+        setTrimestre(Config.getConfig().getAnho().getTrimestre());
+        setNumfacturas(ModeloFacturas.getNumeroFacturas());
+        setUsuario(Config.getConfig().getUsuario());
     }
-    public static void setAño(int i){
-        PanelControl.lblAnho.setText(i+"");
+
+    public void setAño(int i) throws NumberFormatException{
+        this.lblAnho.setText(i+"");
     }
-    public static void setTrimestre(int i){
-        PanelControl.lblTrimestre.setText(i+"");
+    public void setNumfacturas(int i) throws NumberFormatException{
+        this.lblEntradas.setText(i +"");
     }
-    public static void setUsuario(String user){
-       PanelControl.lblUsuario.setText(user +"");
+    public void setTrimestre(int i){
+        this.lblTrimestre.setText(i+"");
+    }
+    public void setUsuario(String user){
+       this.lblUsuario.setText(user +"");
     }
     
     public static int getModo(){
@@ -83,23 +88,27 @@ public class PanelControl implements Initializable{
     }
     @FXML    
     private void btnCFGpulsado(Event evt) {//GEN-FIRST:event_btnCFGActionPerformed
+        System.out.println("Boton CFG pulsado!");
         botonactivo = 4;
         botonpulsado = true;
     }
     @FXML
     private void btnNTSpulsado(Event evt) {//GEN-FIRST:event_btnNTSActionPerformed
+        System.out.println("Boton NTS pulsado!");
         botonactivo = 3;
         botonpulsado = true;
 
     }
     @FXML
     private void btnRSpulsado(Event evt) {//GEN-FIRST:event_btnRSActionPerformed
-        botonactivo = 2;
+       
+        System.out.println("Boton DIST pulsado!");        botonactivo = 2;
         botonpulsado = true;
 
     }
     @FXML
     private void btnFCTpulsado(Event evt) {//GEN-FIRST:event_btnFCTActionPerformed
+        System.out.println("Boton FCT pulsado!");
         botonactivo = 1;
         botonpulsado = true;
     }
@@ -110,25 +119,42 @@ public class PanelControl implements Initializable{
 */
     @FXML
     private void btnCJApulsado(Event evt) {//GEN-FIRST:event_btnCJAActionPerformed
+        System.out.println("Boton CJA pulsado!");
         botonactivo = 5;
         botonpulsado = true;
     }
     @FXML
     private void btnAutosavepulsado(Event evt) {//GEN-FIRST:event_btnautosaveActionPerformed
+     
         botonactivo = 6;
         botonpulsado = true;
     }
     @FXML
-    private void toggleModopulsado(Event evt) {//GEN-FIRST:event_toggleModoActionPerformed
+    private void btnAutosavePressed(Event evt) {//GEN-FIRST:event_btnautosaveActionPerformed
+        System.out.println("Boton AutoSave pulsado!");
+        btnAutosavepulsado(evt);
+        ((Button)evt.getSource()).setStyle("-fx-background-color: yellow; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3");
 
+    }
+    @FXML
+    private void btnAutosaveReleased(Event evt) {//GEN-FIRST:event_btnautosaveActionPerformed
+     
+        ((Button)evt.getSource()).setStyle("-fx-background-color: transparent; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3"); 
+
+    }  
+    @FXML
+    private void toggleModopulsado(Event evt) {//GEN-FIRST:event_toggleModoActionPerformed
+        System.out.println("Boton MODO pulsado!");
         if (((ToggleButton)(evt.getSource())).isSelected()){
             toggleModo.setText("MODO INGR");
-            toggleModo.setStyle("-fx-background-color: yellow");//240,200,0
+            toggleModo.setStyle("-fx-background-color: yellow; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3");
+            System.out.println("modo: INGR");
             modo = Controlador.INGR;
         }
         else if (!((ToggleButton)(evt.getSource())).isSelected()){
             toggleModo.setText("MODO NAV");
-            toggleModo.setStyle("-fx-background-color: transparent"); //240,240,240
+            toggleModo.setStyle("-fx-background-color: transparent; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3"); 
+            System.out.println("modo: NAV");
             modo = Controlador.NAV;
         }       
         botonactivo = 7;
@@ -172,15 +198,5 @@ public class PanelControl implements Initializable{
 
         
         return scene1;
-    }
-    
-    @FXML
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
-        // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
-      // PanelControl.setAño(Config.getConfig().getAnho().getAnho());
-      // PanelControl.setTrimestre(Config.getConfig().getAnho().getTrimestre());
-      // PanelControl.setNumfacturas(ModeloFacturas.getNumeroFacturas());
-      // PanelControl.setUsuario(Config.getConfig().getUsuario());
-    }
+    }   
 }

@@ -4,6 +4,8 @@ import controladores.*;
 import controladores.fxcontrollers.*;
 import modelo.records.Config;
 import ui.*;
+
+import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 
@@ -135,7 +137,7 @@ public class ModeloFacturas {
         }
         return lista;
     }
-    public boolean insertarFacturas(ArrayList<Factura> facturas) {
+    public boolean insertarFacturas(ArrayList<Factura> facturas) throws NumberFormatException, IOException {
         if ((numeroFacturas = facturas.size()) > 0) {
             Collections.sort(facturas);
         }
@@ -143,26 +145,26 @@ public class ModeloFacturas {
         for (int i = 0; i < numeroFacturas; i++) {
             facturas.get(i).setID(i + 1);
         }
-        PanelControl.setNumfacturas(numeroFacturas);
+        PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
         return (ficheroFacturas.escribir(facturas));
     }
 
-    public boolean anexarFactura(modelo.Factura factura) {
+    public boolean anexarFactura(modelo.Factura factura) throws NumberFormatException, IOException {
 
         factura.setID(this.ultimaID++);
         this.numeroFacturas++;
-        PanelControl.setNumfacturas(numeroFacturas);
+        PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
         return (ficheroFacturas.anexar(factura));
     } 
 
-    public boolean editarFactura(ArrayList<Factura> listafacturas, Factura factura, int index) {
+    public boolean editarFactura(ArrayList<Factura> listafacturas, Factura factura, int index) throws NumberFormatException, IOException {
 //        //System.out.println("Indice en Modelo : " + index);
 
         listafacturas.set(index, factura);
         Collections.sort(listafacturas);
         if (ficheroFacturas.escribir(listafacturas)) {
             leerFacturas();
-            PanelControl.setNumfacturas(numeroFacturas);
+            PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
             return true;
         }
         return false;
@@ -183,7 +185,7 @@ public class ModeloFacturas {
             JOptionPane.showMessageDialog(null,"No se han actualizado las facturas");
     }
     
-    public boolean borrarFactura(Factura factura, int index) {
+    public boolean borrarFactura(Factura factura, int index) throws NumberFormatException, IOException {
         pilafacturasant.push(factura);
 //        //System.out.println("Indice en Modelo : " + index);
         int res = JOptionPane.showConfirmDialog(null,

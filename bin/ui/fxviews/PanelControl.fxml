@@ -70,17 +70,9 @@
                   <Insets bottom="4.0" top="4.0" />
                </GridPane.margin>
             </Button>
-            <ToggleButton fx:id="btnAutosave" mnemonicParsing="false" onAction="#btnAutosavepulsado" prefHeight="60.0" prefWidth="219.0" style="-fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3;" text="COPIA AUTO" GridPane.columnIndex="4" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets top="4.0" />
-               </GridPane.margin>
+            <ToggleButton fx:id="toggleModo" mnemonicParsing="false" onAction="#toggleModopulsado" prefHeight="60.0" prefWidth="219.0" style="-fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3; -fx-background-color: transparent;" text="MODO NAV" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <font>
-                  <Font name="Arial Black" size="18.0" />
-               </font>
-            </ToggleButton>
-            <ToggleButton fx:id="toggleModo" mnemonicParsing="false" onAction="#toggleModopulsado" prefHeight="60.0" prefWidth="219.0" style="-fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3;" text="MODO NAV" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-               <font>
-                  <Font name="Arial Black" size="18.0" />
+                  <Font name="Arial Black" size="16.0" />
                </font>
                <GridPane.margin>
                   <Insets bottom="4.0" />
@@ -147,6 +139,11 @@
                   <Font size="18.0" />
                </font>
             </Label>
+            <Button fx:id="btnAutosave" mnemonicParsing="false" onMousePressed="#btnAutosavePressed" onMouseReleased="#btnAutosaveReleased" prefHeight="60.0" prefWidth="176.0" style="-fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3; -fx-background-color: transparent;" text="AUTOSAVE" textAlignment="CENTER" GridPane.columnIndex="4">
+               <font>
+                  <Font name="Arial Black" size="18.0" />
+               </font>
+            </Button>
          </children>
       </GridPane>
    </children>
