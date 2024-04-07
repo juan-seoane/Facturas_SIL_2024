@@ -1,10 +1,18 @@
-package modelo;
+package modelo.records;
 
 import java.io.File;
 import java.io.Serializable;
 
 import java.util.*;
 import javax.swing.JOptionPane;
+
+import modelo.Anho;
+import modelo.Concepto;
+import modelo.Fichero;
+import modelo.MisDatos;
+import modelo.TipoGasto;
+import modelo.TipoIVA;
+import modelo.miRS;
 
 public class Config implements Serializable{
 
@@ -20,9 +28,9 @@ public class Config implements Serializable{
   public ArrayList<TipoGasto> tiposGasto;
   public ArrayList<TipoIVA> tiposIVA;
   public ArrayList<Concepto> origenesCaja;
-  private static String usuario;
+  private static String usuario = "ADMIN";
   
-  private Config(){
+  public Config(){
       /** TODO: misDatos se leeran tambien de un archivo misdatos.cfg **/
         System.out.println("Entrando en el constructor genérico privado de la clase Config, usuario " + Config.usuario);
         Fichero<Config> ficheroCFG = new Fichero<Config>("config/"+Config.usuario.toUpperCase()+"/config.cfg");

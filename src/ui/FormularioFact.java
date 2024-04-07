@@ -1,6 +1,8 @@
               package ui;
 
 import modelo.*;
+import modelo.records.Config;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;

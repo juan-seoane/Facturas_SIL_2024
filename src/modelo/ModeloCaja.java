@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import modelo.records.Config;
+
 /**
  *
  * @author Juan Seoane

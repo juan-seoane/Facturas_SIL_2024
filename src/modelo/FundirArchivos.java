@@ -8,6 +8,8 @@ import ui.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JOptionPane;
+
+import modelo.records.Config;
 /**
  *
  * @author Juan Seoane

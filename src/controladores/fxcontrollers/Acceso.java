@@ -1,9 +1,14 @@
-package ui.fxcontrollers;
+package controladores.fxcontrollers;
+
+import modelo.fx.ComprobacionesAcceso;
+import modelo.records.Config;
+import modelo.records.Contrasenha;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import controladores.Controlador;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,9 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
-import modelo.Config;
-import modelo.Contrasenha;
 
 public class Acceso extends Application implements Initializable{
 
@@ -46,34 +48,29 @@ public class Acceso extends Application implements Initializable{
 
     public static String usuario ="";
     public static int intentos = 1;
+
+    private boolean credsOK;
     
     @FXML 
     public void probar() throws InterruptedException{
         TextField userF = this.txtUsuario;
         PasswordField passF = this.txtPassword;
+        String user = userF.getText();
+        String pass = passF.getText();
        // Acceso.imprimir(txtArea, "[Acceso.java>probar()]Datos introducidos : "+ userF.getText()+ " - "+passF.getText());
 
         //System.out.println("[Acceso.java>probar()]Contenido del Área de Texto: "+ this.txtArea.getText());
         //Acceso.imprimir(this.txtArea, "texto introducido : "+ userF.getText() + " - " +passF.getText()+" - intentos: "+ intentos);
         //System.out.println("texto introducido : "+ userF.getText() + " - " +passF.getText());
-        for (Contrasenha contr : Config.getConfig("ADMIN").getContrasenhas()){
-            
-            System.out.println("[Acceso.java>probar()>for(contraseñas)]Datos introducidos : usuario: "+ userF.getText()+ " - pass: "+passF.getText() + "Datos obtenidos de Config: " + (Contrasenha)(Config.getConfig("ADMIN").getContrasenhas().toArray()[0]));
+        ComprobacionesAcceso check = new ComprobacionesAcceso();
+        credsOK = check.comprobarCredenciales(user, pass);
 
-            //Acceso.imprimir( this.txtArea, "\nDatos introducidos : "+ userF.getText()+ " - "+passF.getText());
-                
-            if ((Acceso.intentos<5)&&(userF.getText().toUpperCase().trim().equals(contr.getUsuario().toUpperCase()) && (passF.getText().toUpperCase().trim().equals(contr.getContrasenha().toUpperCase()))))
-            {
-                acierto();
-                break;
-
-            }else if(Acceso.intentos>=5){
-                fallo();
-                break;      
-            }
-        }
-        reintento();
-        
+        if (!credsOK&&Acceso.intentos<5)
+            reintento();
+        else if(!credsOK&&Acceso.intentos>=5)
+            fallo();
+        else 
+            acierto();
     }
 
     private void fallo() {
@@ -102,10 +99,17 @@ public class Acceso extends Application implements Initializable{
         this.txtPassword.clear();
         this.txtUsuario.requestFocus();
     }
+    
+    public boolean entrar(){
+        if(Acceso.aceptado){
+            return true;
+        }
+        return false;
+    }
 
     private Scene crearScene1 () throws IOException{
         FXMLLoader loader1 = new FXMLLoader();
-        loader1.setLocation(getClass().getResource("../fxviews/Acceso.fxml"));
+        loader1.setLocation(getClass().getResource("../../ui/fxviews/Acceso.fxml"));
         
        
         Parent root1 = loader1.load();
@@ -118,7 +122,7 @@ public class Acceso extends Application implements Initializable{
 
     private Scene crearScene2() throws IOException{
         FXMLLoader loader2 = new FXMLLoader();
-        loader2.setLocation(getClass().getResource("../fxviews/Acceso2.fxml"));
+        loader2.setLocation(getClass().getResource("../../ui/fxviews/Acceso2.fxml"));
                
         Parent root2 = loader2.load();
         Scene escena2 = new Scene(root2);
@@ -153,13 +157,6 @@ public class Acceso extends Application implements Initializable{
          
     }
 
-    public boolean entrar(){
-        if(Acceso.aceptado){
-            return true;
-        }
-        return false;
-    }
-
     //TODO: Lo de abajo sólo funciona si se implementa el Interfaz "Inicializable" (implements Initilizable)
     @FXML
     public void initialize(URL location, ResourceBundle resources) {     
@@ -180,11 +177,18 @@ public class Acceso extends Application implements Initializable{
 
     private void pulsartecla() throws Exception{
 
-        //Acceso.ventanaAcceso.close();
-        Platform.exit();
+        iniciarPrograma();
+        
         if (!entrar()){
             System.exit(0);
         }
+    }
+
+    private void iniciarPrograma() throws IOException {
+
+        arrancarControlador();
+        Acceso.ventanaAcceso.close();
+//        Platform.exit();
     }
 
     @FXML
@@ -222,5 +226,44 @@ public class Acceso extends Application implements Initializable{
  
         Acceso.ventanaAcceso.show();
    
+    }
+
+    private void arrancarControlador() throws IOException{
+        
+        cargarPanelControl();
+        
+        Controlador ctrThread =new Controlador();
+        ctrThread.setName("Controlador_Ppal");
+        ctrThread.start();
+
+    }
+
+    private boolean cargarPanelControl(){
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../ui/fxviews/PanelControl.fxml"));
+
+        Parent root;
+        
+        try {
+
+            root = loader.load();
+//            PanelControl pc = loader.getController();
+
+            Scene escena = new Scene(root);
+            Stage  ventanaPCntrl = new Stage();
+    
+            ventanaPCntrl.setScene(escena);
+            ventanaPCntrl.show();
+    
+            ventanaPCntrl.setOnCloseRequest(e -> System.exit(0));
+            
+            return true;
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

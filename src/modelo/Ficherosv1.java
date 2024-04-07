@@ -7,6 +7,8 @@ package modelo;
 import java.io.*;
 import java.util.*;
 import javax.swing.JOptionPane;
+
+import modelo.records.Config;
 /**
  *
  * @author Juan Seoane

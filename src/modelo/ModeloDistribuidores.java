@@ -5,7 +5,8 @@
 package modelo;
 
 import controladores.*;
-import ui.fxcontrollers.*;
+import controladores.fxcontrollers.*;
+import modelo.records.Config;
 import ui.*;
 import java.util.*;
 import javax.swing.JOptionPane;

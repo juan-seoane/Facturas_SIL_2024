@@ -11,9 +11,9 @@ import javax.swing.JOptionPane;
 
 import modelo.Caja;
 import modelo.Concepto;
-import modelo.Config;
 import modelo.Fecha;
 import modelo.Nota;
+import modelo.records.Config;
 
 /**
  *

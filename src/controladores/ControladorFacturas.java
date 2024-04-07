@@ -1,10 +1,12 @@
 package controladores;
 
 import modelo.*;
-import ui.fxcontrollers.*;
+import modelo.records.Config;
 import ui.*;
 import java.util.*;
 import javax.swing.JOptionPane;
+
+import controladores.fxcontrollers.*;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
@@ -28,7 +30,7 @@ public class ControladorFacturas extends Thread {
     private ModeloFacturas m;
     public static VentanaFiltros filtros;
 
-    private ControladorFacturas() {
+    ControladorFacturas() {
         m = ModeloFacturas.getModelo();
         tabla = new TablaFacturas(m.generarVectorFacturas(), m.getColumnas());
         actualizarTabla(0);
@@ -41,7 +43,7 @@ public class ControladorFacturas extends Thread {
         this.filtros = VentanaFiltros.getVentana();
         visible(true);
     }
-
+//TODO : Cambiar la GUI Tabla de Facturas a JavaFX y la clase Factura a Record
     public static ControladorFacturas getControlador() {
 
         if (instancia == null) {
@@ -49,7 +51,7 @@ public class ControladorFacturas extends Thread {
         }
         return instancia;
     }
-
+    @Override
     public void run() {
         while (true) {
             while (!visor.haCambiado() & !form.seHaEnviado() & !form.pasoatras() & !form.pasoadelante() & !tabla.haCambiado()) {
@@ -424,7 +426,7 @@ public class ControladorFacturas extends Thread {
 //            }
 //            else lista4 = lista3;
 //
-//            /** TODO : ACORDARSE DE ACTUALIZAR LOS TOTALES DESPUES DE FILTRAR! */
+//TODO : ACORDARSE DE ACTUALIZAR LOS TOTALES DESPUES DE FILTRAR!
 //            return lista4;
 //        }
 //        return lista;

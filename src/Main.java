@@ -1,18 +1,11 @@
 import java.io.IOException;
-
 import javax.swing.UIManager;
-
+import javafx.application.Application;
 import com.jtattoo.plaf.graphite.GraphiteLookAndFeel;
 
-import controladores.Controlador;
-import ui.fxcontrollers.PanelControl;
-import modelo.Config;
 import ui.Splash;
-
-import ui.fxcontrollers.Acceso;
-
-import javafx.application.Application;
-import javafx.application.Platform;
+import controladores.Controlador;
+import controladores.fxcontrollers.Acceso;
 
 public class Main {
     
@@ -35,37 +28,12 @@ public class Main {
         window.run();
         window.setAlwaysOnTop(true);
         window.setVisible(false);
-   
+   //TODO: Organizar el arranque de las GUI's... A lo mejor puedo invocar el GUI de Acceso con runLater y dejar el Application.launch()para el controlador...
         Application.launch(Acceso.class);
+    //TODO: Desde aquí no debería funcionar hasta que se acable la aplicación JavaFX
+        System.out.println("[Main.java] Aplicación finalizada");
+        System.exit(0);
                
-        while((acceso!=null) && !acceso.entrar() && (Acceso.intentos < 5)){
-            //TODO: El while debe tener contenido, si no, falla... Buscar algo equivalente a la línea siguiente...
-            System.out.println("");
-            //usuario = Acceso.getUsuario().toLowerCase();   
-        }
-        
-        usuario = Acceso.usuario.toLowerCase();
-        
-        System.out.println("Acceso: superado para el usuario " + usuario);
-
-        if (Config.getConfig(usuario)!=null){ 
-
-            //initcomponents();
-
-//TODO: En la siguiente línea devuelve null, en vez de devolver un controlador...            
-            Main.ctr = new Controlador();
-            //TODO: Estaría bien una ventana en la que se relatase el arranque del programa...
-
-            //
-            //Acceso.imprimir(Acceso.getCanvas() , "\n[Main.java>Acceso2] Arrancando Controlador Principal");
-            System.out.println("[Main.java] Arrancando Controlador Principal");
-            ctr.start();
-        
-            
-        }else{
-            System.out.println("[Main.java] No se ha podido iniciar la aplicación");
-            System.exit(0);
-        }       
     }
 
 }

@@ -4,8 +4,9 @@
  */
 package ui;
 
-import modelo.Config;
 import modelo.TipoGasto;
+import modelo.records.Config;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 

@@ -1,4 +1,4 @@
-package modelo;
+package modelo.records;
 
 import java.security.Key;
 import java.io.Serializable;
@@ -8,7 +8,10 @@ import java.util.logging.Logger;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-import ui.fxcontrollers.Acceso;
+import controladores.fxcontrollers.Acceso;
+import modelo.AESCryptoImpl;
+import modelo.CryptoKeyable;
+import modelo.Cryptographical;
 
 
 public class Contrasenha implements Serializable{

@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import modelo.records.Config;
+
 /**
  *
  * @author Juan Seoane

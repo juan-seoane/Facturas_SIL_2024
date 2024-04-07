@@ -5,6 +5,8 @@
 package ui;
 
 import modelo.*;
+import modelo.records.Config;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 

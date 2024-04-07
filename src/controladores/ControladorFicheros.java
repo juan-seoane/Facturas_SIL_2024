@@ -1,6 +1,7 @@
 package controladores;
 
 import modelo.*;
+import modelo.records.Config;
 
 public class ControladorFicheros{
 

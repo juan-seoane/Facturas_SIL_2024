@@ -4,15 +4,19 @@
  */
 package ui;
 
-import ui.fxcontrollers.*;
 import modelo.*;
+import modelo.records.Config;
+import modelo.records.Contrasenha;
 import controladores.*;
+import controladores.fxcontrollers.*;
+
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JFileChooser;
@@ -732,7 +736,12 @@ public class VentanaConfig extends javax.swing.JFrame {
         btnOKConfig.setText("OK - GUARDAR");
         btnOKConfig.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOKConfigActionPerformed(evt);
+                try {
+                    btnOKConfigActionPerformed(evt);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -784,7 +793,7 @@ public class VentanaConfig extends javax.swing.JFrame {
         PanelControl.pulsarboton(1);
     }//GEN-LAST:event_btnCancelarConfigActionPerformed
 
-    private void btnOKConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKConfigActionPerformed
+    private void btnOKConfigActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_btnOKConfigActionPerformed
           
         if (recogerYgrabarConfig()){
         /** TODO : FALTA GUARDAR EL RESTO DE LA CONFIGURACION */

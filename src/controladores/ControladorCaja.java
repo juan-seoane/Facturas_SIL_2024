@@ -1,6 +1,7 @@
 package controladores;
 
 import modelo.*;
+import modelo.records.Config;
 import ui.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

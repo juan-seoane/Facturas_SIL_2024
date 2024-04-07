@@ -1,18 +1,23 @@
 package controladores;
 
-import ui.fxcontrollers.PanelControl;
-import ui.*;
 import modelo.*;
+import modelo.records.Config;
+import ui.*;
 
+import controladores.fxcontrollers.PanelControl;
+import controladores.ControladorFacturas;
+
+import java.io.IOException;
+import java.util.*;
+
+import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.*;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.GridBagLayout;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -28,8 +33,8 @@ public class Controlador extends Thread {
         public static final int NOTAS = 4;
         public static final int CONFIG = 5;
         
-//	private static ControladorFicheros cfch;
-//	private static ControladorFacturas cfct;
+//	    private static ControladorFicheros cfch;
+    	private static ControladorFacturas cfct;
 
 //        private static ControladorDistribuidores cd;
 //        private static ControladorCaja ccj;
@@ -38,30 +43,28 @@ public class Controlador extends Thread {
         public static int seccion = FACT;
 	
 	public Controlador() throws IOException{
-		
-            if(Config.getConfig()!=null){
-//		        cfct = ControladorFacturas.getControlador();
-//                cfct.start();
-//                cd = ControladorDistribuidores.getControlador();
-//                cd.start();
-//                ccj.start();
-                //TODO: 06/04/2024 Tuve que cambiar el controlador de la clase PanelControl a public 
-                Platform.runLater(() ->{
-                    Controlador.pc = PanelControl.getPanelControl();
-                    try {
-                        Controlador.pc.start(new Stage());
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }   
-                }
-            );
-              
+	
+        if(Config.getConfig()!=null){
             
-//                pc.setVisible(true);
-            }
+            arrancarCfct();
+
+ /*           cd = ControladorDistribuidores.getControlador();
+            cd.start();
+            ccj.start();
+            //TODO: 06/04/2024 Tuve que cambiar el controlador de la clase PanelControl a public       
+            pc.setVisible(true);
+*/
+        }
+
 	}
-/*
+    private ControladorFacturas arrancarCfct() {
+        
+        Controlador.cfct = new ControladorFacturas();
+        Controlador.cfct.start();
+
+        return Controlador.cfct;
+    }
+    /*
     public ControladorFicheros getControladorFicheros(){
 	
 		return Controlador.cfch;
@@ -77,10 +80,10 @@ public class Controlador extends Thread {
 		return Controlador.ccj;
 	}
 */        
-    public static void reset(){
+    public static void reset() throws IOException{
             
         if(Config.getConfig()!=null){
-//            cfct = ControladorFacturas.getControlador();
+            cfct = ControladorFacturas.getControlador();
 //            cd = ControladorDistribuidores.getControlador();
 //            ccj = ControladorCaja.getControlador();
             pc = PanelControl.getPanelControl();
@@ -88,7 +91,7 @@ public class Controlador extends Thread {
             
         }
     }
-        
+/*        
     public static void verNotas(){
         seccion = NOTAS;
         notas = new VisorNotas();
@@ -173,7 +176,7 @@ public class Controlador extends Thread {
         cfct.visible(true);
         cfct.visorVisible(true);
         cfct.actualizarVisor(index); 
-*/    }
+    }
     
     public static void verDistribuidor(int index){
         PanelControl.pulsarboton(2);
@@ -181,90 +184,97 @@ public class Controlador extends Thread {
  /*       notas.dispose();
         cd.visible(true);
         cd.verRS(index); 
-*/    }
+    }
     
     public static void verCaja(int index){
         PanelControl.pulsarboton(2);
         seccion = CAJA;
-/*        notas.dispose();
+        notas.dispose();
         ccj.visible(true);
         ccj.verCaja(index); 
-*/    }
+    }
+*/
     @Override
-    public void run(){
+    public void run() {
         
         while(true){
-            if (!PanelControl.getPanelControl().botonpulsado()){
-                System.out.print("");
-            }
-            else if (PanelControl.getPanelControl().botonpulsado()){
-                System.out.println("Botón del PnlCtrl pulsado!");
-                switch (PanelControl.getPanelControl().seleccion()){
-                    case 1 :
-                        seccion = FACT;
+            try {
+                if (!PanelControl.getPanelControl().botonpulsado()){
+                    System.out.print("");
+                }
+                else if (PanelControl.getPanelControl().botonpulsado()){
+                    System.out.println("Botón del PnlCtrl pulsado!");
+                    switch (PanelControl.getPanelControl().seleccion()){
+                        case 1 :
+                            seccion = FACT;
 //                        cfct.visible(true);
 //                        ControladorDistribuidores.setEstado(0);
 //                        cd.visible(false);
 //                        ccj.visible(false);
-                        PanelControl.reset();
-                        break;
-                    case 2 :
-                        seccion = DIST;
+                            PanelControl.reset();
+                            break;
+                        case 2 :
+                            seccion = DIST;
 //                        cfct.visible(false);
 //                        ControladorDistribuidores.setEstado(1);
 //                        cd.visible(true);
 //                        ccj.visible(false);
-                        PanelControl.reset();
-                        break;
-                    case 3 :
-                        seccion = NOTAS;
+                            PanelControl.reset();
+                            break;
+                        case 3 :
+                            seccion = NOTAS;
 //                        cfct.visible(false);
 //                        ControladorDistribuidores.setEstado(0);
 //                        cd.visible(false);
 //                        ccj.visible(false);
 //                        verNotas();                            
-                        PanelControl.reset();
-                        break;
-                    case 4 :
-                        seccion = CONFIG;
+                            PanelControl.reset();
+                            break;
+                        case 4 :
+                            seccion = CONFIG;
 //                        cfct.visible(false);
 //                        ControladorDistribuidores.setEstado(0);
 //                        cd.visible(false);
 //                        ccj.visible(false);
 //                        VentanaConfig vc = new VentanaConfig();
 //                        vc.setVisible(true);
-                        PanelControl.reset();
-                        break;
-                    case 5:
-                        seccion = CAJA;
+                            PanelControl.reset();
+                            break;
+                        case 5:
+                            seccion = CAJA;
 //                        ccj.visible(true);
 //                        cfct.visible(false);
 //                        ControladorDistribuidores.setEstado(0);
 //                        cd.visible(false);                           
-                        PanelControl.reset();
-                        break;
-                    case 6:  
+                            PanelControl.reset();
+                            break;
+                        case 6:  
 //                        autosave();
-                        PanelControl.reset();
-                        break;
-                    case 7:
-                        if (PanelControl.getModo() == NAV){
-                            if (seccion == FACT){
+                            PanelControl.reset();
+                            break;
+                        case 7:
+                            if (PanelControl.getModo() == NAV){
+                                if (seccion == FACT){
 //                                cfct.visible(true);
+                                }
                             }
-                        }
-                        else {
-                            if (seccion == FACT){
+                            else {
+                                if (seccion == FACT){
 //                                cfct.visible(true);
+                                }
                             }
-                        }
-                        PanelControl.reset();
-                        break;
-                    default:
-                        PanelControl.reset();
-                        break;       
+                            PanelControl.reset();
+                            break;
+                        default:
+                            PanelControl.reset();
+                            break;       
+                    }
                 }
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
+            
         }
     }
         

@@ -1,6 +1,9 @@
 package modelo;
 
 import java.util.*;
+
+import modelo.records.Contrasenha;
+
 import java.io.Serializable;
 
 public class MisDatos implements Serializable{
