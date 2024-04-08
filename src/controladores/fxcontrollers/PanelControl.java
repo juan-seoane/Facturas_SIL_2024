@@ -62,12 +62,13 @@ public class PanelControl implements Initializable{
 
     @FXML
     public void initialize(URL arg0, ResourceBundle arg1) {
+
         // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
         // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
         setAño((Integer)Config.getConfig().getAnho().getAnho());
         setTrimestre(Config.getConfig().getAnho().getTrimestre());
         setNumfacturas(ModeloFacturas.getNumeroFacturas());
-        setUsuario(Config.getConfig().getUsuario());
+        setUsuario(Config.getConfig().getUsuario().toLowerCase());
     }
 
     public void setAño(int i) throws NumberFormatException{

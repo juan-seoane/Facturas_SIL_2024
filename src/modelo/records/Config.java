@@ -78,12 +78,12 @@ public class Config implements Serializable{
         File fct = new File(Config.getConfig().getRutaFCT());
         File rs = new File(Config.getConfig().getRutaRS());
         File cja = new File(Config.getConfig().getRutaCJA());
-        
+/*
         if (!fct.exists() || !rs.exists() || !cja.exists()){
             HashMap rutas = Config.getConfig().getRutas();
 
             if (!fct.exists()){
-              /*TODO: seguramente haya que repetir el if por si no existe alguno de los ficheros */
+              //TODO: seguramente haya que repetir el if por si no existe alguno de los ficheros 
                 if (this.rutas!=null){
                   this.rutas.remove("FCT");
                 }else{
@@ -101,15 +101,15 @@ public class Config implements Serializable{
             }
             Config.getConfig().setRutas(rutas);
             recConfig(Config.getConfig().getUsuario(),Config.getConfig());
-        }   
+        }  
+*/ 
   }
   
   private Config(String user){
       /** TODO: misDatos se leeran tambien de un archivo misdatos.cfg **/
       System.out.println("Entrando en el constructor privado de la Configuracion del Usuario "+user);
       Config.usuario = user; 
-      new Config();
-       
+      new Config();    
   }
   
   public static Config getConfig(){

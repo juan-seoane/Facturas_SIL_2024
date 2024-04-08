@@ -258,6 +258,7 @@ public class Acceso extends Application implements Initializable{
             ventanaPCntrl.setResizable(false);
             ventanaPCntrl.show();
     
+            ventanaPCntrl.setAlwaysOnTop(true);
             ventanaPCntrl.setOnCloseRequest(e -> System.exit(0));
             
             return true;

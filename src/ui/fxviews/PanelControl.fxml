@@ -136,10 +136,13 @@
             </ImageView>
             <Label fx:id="lblUsuario" text="usuario" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="23.0" />
                </font>
+               <GridPane.margin>
+                  <Insets top="10.0" />
+               </GridPane.margin>
             </Label>
-            <Button fx:id="btnAutosave" mnemonicParsing="false" onAction="#btnAutosavepulsado" onMousePressed="#btnAutosavePressed" onMouseReleased="#btnAutosaeReleased" prefHeight="60.0" prefWidth="176.0" style="-fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3; -fx-background-color: transparent;" text="AUTOSAVE" textAlignment="CENTER" GridPane.columnIndex="4">
+            <Button fx:id="btnAutosave" mnemonicParsing="false" onAction="#btnAutosavepulsado" onMousePressed="#btnAutosavePressed" onMouseReleased="#btnAutosaveReleased" prefHeight="60.0" prefWidth="176.0" style="-fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3; -fx-background-color: transparent;" text="AUTOSAVE" textAlignment="CENTER" GridPane.columnIndex="4">
                <font>
                   <Font name="Arial Black" size="18.0" />
                </font>
