@@ -1,5 +1,6 @@
 package modelo.records;
-
+// TODO: 09/04/24 - Convertir en Java Record
+//TODO: 09/04/24 - Si las Contraseñas se guardan en formato json, no es necesaria la encriptación
 import java.security.Key;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;

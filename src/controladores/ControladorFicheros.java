@@ -2,7 +2,7 @@ package controladores;
 
 import modelo.*;
 import modelo.records.Config;
-
+// TODO: 09/04/24 - Crear un ControladorFicheros, Singleton, para controlar el Guardado Automático
 public class ControladorFicheros{
 
 	private modelo.Fichero<modelo.Factura> fct;

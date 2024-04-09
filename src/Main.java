@@ -15,7 +15,7 @@ public class Main {
     public static boolean credsOK;
   
     public static void main(String[] args) throws IOException {
-
+        
         try{
             GraphiteLookAndFeel graphite = new GraphiteLookAndFeel();
             UIManager.setLookAndFeel(graphite);

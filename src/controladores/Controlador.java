@@ -28,8 +28,9 @@ public class Controlador extends Thread {
     public static PanelControl pc;
     private static VisorNotas notas;
     public static int seccion = FACT;
-	
-	public Controlador() throws IOException{
+// TODO: 09/04/24 - Reorganizar los hilos que genera (ControladorFCT, ControladorDIST, etc...)
+// TODO: 09/04/24 - Consultar cómo se puede hacer Singleton	
+    public Controlador() throws IOException{
 	
         if(Config.getConfig()!=null){
             
@@ -38,6 +39,7 @@ public class Controlador extends Thread {
  /*           cd = ControladorDistribuidores.getControlador();
             cd.start();
             ccj.start();
+            
             //TODO: 06/04/2024 Tuve que cambiar el controlador de la clase PanelControl a public       
             pc.setVisible(true);
 */

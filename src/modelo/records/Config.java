@@ -29,9 +29,13 @@ public class Config implements Serializable{
   public ArrayList<TipoIVA> tiposIVA;
   public ArrayList<Concepto> origenesCaja;
   private static String usuario = "ADMIN";
-  
+
+// TODO: 09/04/24 - Convertir en Java Record
   public Config(){
-      /** TODO: misDatos se leeran tambien de un archivo misdatos.cfg **/
+      
+      // TODO: 09/04/24 - Cambiar archivo Config al formato json - usar json.jar
+      // TODO: 09/04/24 - Programar método CreacionNuevoUsuario (desde el Acceso)
+      // TODO: misDatos se leeran tambien de un archivo misdatos.cfg 
         System.out.println("Entrando en el constructor genérico privado de la clase Config, usuario " + Config.usuario);
         Fichero<Config> ficheroCFG = new Fichero<Config>("config/"+Config.usuario.toUpperCase()+"/config.cfg");
         System.out.println("Leído el fichero config/" + Config.usuario.toUpperCase()+"/config.cfg");

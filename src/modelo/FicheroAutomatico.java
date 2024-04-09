@@ -1,6 +1,5 @@
 package modelo;
-/**
- *
+/*
  * @author Juan Seoane
  */
 import java.io.*;

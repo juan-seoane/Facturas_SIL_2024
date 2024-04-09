@@ -12,6 +12,8 @@ public class ComprobacionesAcceso {
 	public static boolean passOK = false;
 
 	public boolean comprobarCredenciales(String user, String pass){
+		//TODO: 09/04/24 - Si no existe carpeta de Usuario, preguntar si quiere crear un Nuevo Usuario.
+
 		//TODO: Otra vez tuve que hacer público el constructor de la clase Config...por lo que...¿Singleton...?
 		Config cfg = new Config();
 		for (Contrasenha contr : Config.getConfig(user.toUpperCase()).getContrasenhas()){

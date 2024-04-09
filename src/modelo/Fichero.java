@@ -1,4 +1,3 @@
-
 package modelo;
 
 import java.io.*;
@@ -8,10 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static java.nio.file.StandardCopyOption.*;
-/**
- *
+
+/*
  * @author Juan Seoane
  */
+//TODO: 09/04/24 - Guardar en formato json
 public class Fichero<T> {
 
     public String rutaArchivo;
@@ -137,6 +137,7 @@ public class Fichero<T> {
 	}
 	return false;
     }
+    
     public boolean abrirInputStream() {
         try {
             fis = new FileInputStream(this.fichero);

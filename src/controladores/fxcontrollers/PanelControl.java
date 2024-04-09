@@ -62,7 +62,8 @@ public class PanelControl implements Initializable{
 
     @FXML
     public void initialize(URL arg0, ResourceBundle arg1) {
-
+        // TODO: 09/04/24 - Crear un Controlador general, y decidir cómo abrirá las tablas, etc...
+        // TODO: 09/04/24 - Crear un controladorFicheros en un nuevo hilo para que gestione el Guardado Automático
         // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
         // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
         setAño((Integer)Config.getConfig().getAnho().getAnho());
@@ -183,10 +184,6 @@ public class PanelControl implements Initializable{
             instancia = new PanelControl();
          return instancia;
     }
-    
-    /**
-     * @param args the command line arguments
-     */
 
     private Scene crearEscena1() throws IOException{
         FXMLLoader loader1 = new FXMLLoader();

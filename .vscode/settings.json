@@ -3,18 +3,15 @@
         "src"
     ],
     "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": {
-        "include": [
-            "lib\\**\\*.jar",
-            "d:\\Program Files\\JavaJDK\\javafx-sdk-21.0.2\\lib\\**\\*.jar",
-            "d:\\Program Files\\JavaJDK\\javafx-sdk-21\\javafx-sdk-21.0.2\\lib\\**\\*.jar",
-            "c:\\Program Files\\Java\\jre-1.8\\lib\\jfxswt.jar",
-            "c:\\Program Files\\Java\\jre-1.8\\lib\\ext\\jfxrt.jar"
-        ],
-        "exclude": [
-            
-        ]
-    },
+    "java.project.referencedLibraries": [
+        "lib\\**\\*.jar",
+        "d:\\Program Files\\JavaJDK\\javafx-sdk-21.0.2\\lib\\**\\*.jar",
+        "d:\\Program Files\\JavaJDK\\javafx-sdk-21\\javafx-sdk-21.0.2\\lib\\**\\*.jar",
+        "c:\\Program Files\\Java\\jre-1.8\\lib\\jfxswt.jar",
+        "c:\\Program Files\\Java\\jre-1.8\\lib\\ext\\jfxrt.jar",
+        "d:\\Downloads\\json-20230618-javadoc.jar",
+        "d:\\Downloads\\json-20230618.jar"
+    ],
     "javafx.libPath": "D:\\Program Files\\JavaJDK\\javafx-sdk-21\\javafx-sdk-21.0.2\\lib",
     "java.dependency.showMembers": true,
     "java.project.explorer.showNonJavaResources": true,
