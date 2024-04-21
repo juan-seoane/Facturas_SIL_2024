@@ -35,8 +35,10 @@ public class ComprobacionesAccesoTest {
 
 	}
 	@Test
-	void fileCredsOK(){
+	void fileCredsLeidaOK(){
 		rutaCreds = "./config/creds.json";
 		File f = new File(rutaCreds);
 		var listaContr = Config.leerCredenciales(rutaCreds).creds;
-		assertNotEquals(listaContr.get(0).usuario,listaContr.get(1).us
+		assertNotEquals(listaContr.get(0).usuario,listaContr.get(1).usuario);
+	}
+}

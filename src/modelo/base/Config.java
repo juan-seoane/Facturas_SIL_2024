@@ -259,8 +259,9 @@ public class Config {
 //TODO: 19-04-2024 - Completar formatearComoJSON
 //#region *FORMTR_CM_JSON()
   public String formatearComoJSON() {
+    String resp="";
     // TODO: 12-04-2024 - Falta dar formato JSON a esta config (A lo mejor llega con redefinir y sobrecargar el método toString())
-   
+    return resp;
   }
 //#endregion
 //#region LEER_CFG_JSON()
