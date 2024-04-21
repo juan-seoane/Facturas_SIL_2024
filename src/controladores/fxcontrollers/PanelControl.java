@@ -1,7 +1,7 @@
 package controladores.fxcontrollers;
 
 import modelo.ModeloFacturas;
-import modelo.records.Config;
+import modelo.base.Config;
 import controladores.Controlador;
 
 import java.net.URL;
@@ -53,25 +53,30 @@ public class PanelControl implements Initializable{
     private static int botonactivo = 1;
     public static PanelControl instancia;
     public static int modo;
-    
+    public Config configActual;
+    public String usuarioActual;
+    //TODO: 12-04-2024 - ¿Porqué no puede seguir siendo un Singleton?
+    //TODO: 12-04-2024 - Hay que definir un usuariActual, y una configActual
     public PanelControl() throws IOException {
-
+        this.usuarioActual = Controlador.usuario;
         PanelControl.modo = Controlador.NAV;
+        this.configActual = Config.getConfig(usuarioActual).configActual;
 
   }
-
+//#region INITIALIZE
     @FXML
     public void initialize(URL arg0, ResourceBundle arg1) {
         // TODO: 09/04/24 - Crear un Controlador general, y decidir cómo abrirá las tablas, etc...
         // TODO: 09/04/24 - Crear un controladorFicheros en un nuevo hilo para que gestione el Guardado Automático
         // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
         // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
-        setAño((Integer)Config.getConfig().getAnho().getAnho());
-        setTrimestre(Config.getConfig().getAnho().getTrimestre());
+        // TODO: 12-04-2024 - Lo dejo aquí (19:13H)
+        setAño((Integer)Config.getConfig(usuarioActual).año.año());
+        setTrimestre(Config.getConfig(usuarioActual).año.trimestre());
         setNumfacturas(ModeloFacturas.getNumeroFacturas());
-        setUsuario(Config.getConfig().getUsuario().toLowerCase());
+        setUsuario(Config.getConfig(usuarioActual).getUsuario().toLowerCase());
     }
-
+//#endregion
     public void setAño(int i) throws NumberFormatException{
         this.lblAnho.setText(i+"");
     }
@@ -89,63 +94,63 @@ public class PanelControl implements Initializable{
         return PanelControl.modo;
     }
     @FXML    
-    private void btnCFGpulsado(Event evt) {//GEN-FIRST:event_btnCFGActionPerformed
+    private void btnCFGpulsado(Event evt) {
         System.out.println("Boton CFG pulsado!");
         botonactivo = 4;
         botonpulsado = true;
     }
     @FXML
-    private void btnNTSpulsado(Event evt) {//GEN-FIRST:event_btnNTSActionPerformed
+    private void btnNTSpulsado(Event evt) {
         System.out.println("Boton NTS pulsado!");
         botonactivo = 3;
         botonpulsado = true;
 
     }
     @FXML
-    private void btnRSpulsado(Event evt) {//GEN-FIRST:event_btnRSActionPerformed
-       
-        System.out.println("Boton DIST pulsado!");        botonactivo = 2;
+    private void btnRSpulsado(Event evt) {
+        System.out.println("Boton DIST pulsado!");        
+        botonactivo = 2;
         botonpulsado = true;
 
     }
     @FXML
-    private void btnFCTpulsado(Event evt) {//GEN-FIRST:event_btnFCTActionPerformed
+    private void btnFCTpulsado(Event evt) {
         System.out.println("Boton FCT pulsado!");
         botonactivo = 1;
         botonpulsado = true;
     }
 /*/
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
 */
     @FXML
-    private void btnCJApulsado(Event evt) {//GEN-FIRST:event_btnCJAActionPerformed
+    private void btnCJApulsado(Event evt) {
         System.out.println("Boton CJA pulsado!");
         botonactivo = 5;
         botonpulsado = true;
     }
     @FXML
-    private void btnAutosavepulsado(Event evt) {//GEN-FIRST:event_btnautosaveActionPerformed
+    private void btnAutosavepulsado(Event evt) {
      
         botonactivo = 6;
         botonpulsado = true;
     }
     @FXML
-    private void btnAutosavePressed(Event evt) {//GEN-FIRST:event_btnautosaveActionPerformed
+    private void btnAutosavePressed(Event evt) {
         System.out.println("Boton AutoSave pulsado!");
         btnAutosavepulsado(evt);
         ((Button)evt.getSource()).setStyle("-fx-background-color: yellow; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3");
 
     }
     @FXML
-    private void btnAutosaveReleased(Event evt) {//GEN-FIRST:event_btnautosaveActionPerformed
+    private void btnAutosaveReleased(Event evt) {
      
         ((Button)evt.getSource()).setStyle("-fx-background-color: transparent; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3"); 
 
     }  
     @FXML
-    private void toggleModopulsado(Event evt) {//GEN-FIRST:event_toggleModoActionPerformed
+    private void toggleModopulsado(Event evt) {
         System.out.println("Boton MODO pulsado!");
         if (((ToggleButton)(evt.getSource())).isSelected()){
             toggleModo.setText("MODO INGR");
@@ -179,22 +184,11 @@ public class PanelControl implements Initializable{
 //        PanelControl.getPanelControl().toFront();
 //        PanelControl.getPanelControl().repaint();
     }
+//#region GET_PC()
     public static PanelControl getPanelControl() throws IOException{
         if (instancia == null)
             instancia = new PanelControl();
          return instancia;
     }
-
-    private Scene crearEscena1() throws IOException{
-        FXMLLoader loader1 = new FXMLLoader();
-        loader1.setLocation(getClass().getResource("../../ui/fxviews/PanelControl.fxml"));
-        
-       
-        Parent root1 = loader1.load();
-        Scene scene1 = new Scene(root1);
-        //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
-
-        
-        return scene1;
-    }   
+//#endregion
 }

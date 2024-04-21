@@ -1,17 +1,15 @@
 package controladores.fxcontrollers;
 
 import modelo.fx.ComprobacionesAcceso;
-import modelo.records.Config;
-import modelo.records.Contrasenha;
+import controladores.Controlador;
 
+import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import controladores.Controlador;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,8 +25,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class Acceso extends Application implements Initializable{
-
-    
+   
     private static Stage ventanaAcceso;
 
     private static Scene scene1;
@@ -52,7 +49,7 @@ public class Acceso extends Application implements Initializable{
     private boolean credsOK;
     
     @FXML 
-    public void probar() throws InterruptedException{
+    public void probar() throws InterruptedException, HeadlessException, NullPointerException, IOException{
         TextField userF = this.txtUsuario;
         PasswordField passF = this.txtPassword;
 
@@ -67,9 +64,9 @@ public class Acceso extends Application implements Initializable{
         ComprobacionesAcceso check = new ComprobacionesAcceso();
         credsOK = check.comprobarCredenciales(user, pass);
 
-        if (!credsOK&&Acceso.intentos<5)
+        if (!credsOK&&Acceso.intentos<3)
             reintento();
-        else if(!credsOK&&Acceso.intentos>=5)
+        else if(!credsOK&&Acceso.intentos>=3)
             fallo();
         else 
             acierto();
@@ -103,10 +100,10 @@ public class Acceso extends Application implements Initializable{
     }
     
     public boolean entrar(){
-        if(Acceso.aceptado){
+        if(Acceso.aceptado)
             return true;
-        }
-        return false;
+        else
+            return false;
     }
 
     private Scene crearScene1 () throws IOException{
@@ -194,12 +191,12 @@ public class Acceso extends Application implements Initializable{
     }
 
     @FXML
-    private void pulsarBotonOK() throws InterruptedException{
+    private void pulsarBotonOK() throws InterruptedException, HeadlessException, NullPointerException, IOException{
         probar();
     }
 
     @FXML
-    private void pulsarEnter(KeyEvent ke) throws InterruptedException{
+    private void pulsarEnter(KeyEvent ke) throws InterruptedException, HeadlessException, NullPointerException, IOException{
         if(ke.getCode()==KeyCode.ENTER){
             pulsarBotonOK();
             ke.consume(); // <-- stops passing the event to next node
@@ -229,17 +226,17 @@ public class Acceso extends Application implements Initializable{
         Acceso.ventanaAcceso.show();
    
     }
-
+//#region ARRANCAR_PC
     private void arrancarControlador() throws IOException{
-        
-        cargarPanelControl();
         
         Controlador ctrThread =new Controlador();
         ctrThread.setName("Controlador_Ppal");
         ctrThread.start();
-
+        
+        cargarPanelControl();
     }
-
+//#endregion
+//#region CARGAR_PC
     private boolean cargarPanelControl(){
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../ui/fxviews/PanelControl.fxml"));
@@ -270,4 +267,5 @@ public class Acceso extends Application implements Initializable{
 
         return false;
     }
+//#endregion
 }

@@ -5,12 +5,19 @@
 package modelo;
 
 import ui.*;
+import ui.ventanas.VentanaFiltrosCaja;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import modelo.records.Config;
+import modelo.base.Config;
+import modelo.base.Fichero;
+import modelo.filtros.FiltroConceptoCaja;
+import modelo.filtros.FiltroDebeHaberCaja;
+import modelo.filtros.FiltroFechaCaja;
+import modelo.records.Fecha;
 
 /**
  *

@@ -2,8 +2,21 @@ package modelo;
 
 import controladores.*;
 import controladores.fxcontrollers.*;
-import modelo.records.Config;
+import modelo.base.Config;
+import modelo.base.Fichero;
+import modelo.filtros.FiltroCategoria;
+import modelo.filtros.FiltroDistribuidor;
+import modelo.filtros.FiltroFecha;
+import modelo.records.Extracto;
+import modelo.records.Factura;
+import modelo.records.Fecha;
+import modelo.records.NIF;
+import modelo.records.Nota;
+import modelo.records.RazonSocial;
+import modelo.records.TipoGasto;
+import modelo.records.Totales;
 import ui.*;
+import ui.tablas.TablaFacturas;
 
 import java.io.IOException;
 import java.util.*;
@@ -14,7 +27,8 @@ public class ModeloFacturas {
     private static ModeloFacturas instancia = null;
     public static List<Factura> facturas;
     static Fichero<Factura> ficheroFacturas;
-    Vector<Vector> vectorfacturas;
+    //TODO : 11-04-2024 - Repasar los vectores de Facturas y demás...
+    Vector<Factura> vectorfacturas;
     Stack<Factura> pilafacturasant = new Stack<Factura>();
     Stack<Factura> pilafacturassig = new Stack<Factura>();
     static Vector vectorcolumnas;
@@ -114,7 +128,7 @@ public class ModeloFacturas {
         if (TablaFacturas.filtrosActivos()){
             if (ControladorFacturas.filtros.getChbFiltroFecha().isSelected())
             {
-            String anho = Config.getConfig().getAnho().getAnho()+"";
+            String año = Config.getConfig().año().año()+"";
             FiltroFecha filtro1 = new FiltroFecha(ControladorFacturas.filtros.getFechaInicio(),ControladorFacturas.filtros.getFechaFinal());
             lista2 = filtro1.filtrar(lista);
             }
@@ -149,7 +163,7 @@ public class ModeloFacturas {
         return (ficheroFacturas.escribir(facturas));
     }
 
-    public boolean anexarFactura(modelo.Factura factura) throws NumberFormatException, IOException {
+    public boolean anexarFactura(modelo.records.Factura factura) throws NumberFormatException, IOException {
 
         factura.setID(this.ultimaID++);
         this.numeroFacturas++;
@@ -201,7 +215,7 @@ public class ModeloFacturas {
             return false;
         }
     }
-
+/*
     public Factura recogerFormulario(FormularioFact form) {
         boolean isCIF;
         String letra;
@@ -220,18 +234,19 @@ public class ModeloFacturas {
         if (form.esDevolucion()){
             textoNota = "Devolucion - "+textoNota;
         }
-        int dia = form.getDia();
-        int mes = form.getMes();
-        int anho = form.getAnho();
+        //TODO : 11-04-2024 - Cambiar los datos de los formularios por datos obtenidos de la GUI JFX
+        int dia = form.dia();
+        int mes = form.mes();
+        int año = form.año();
         String numeroFactura = form.getNumeroFactura().toUpperCase();
         String tipoGasto = form.getTipoGasto().toUpperCase();
         boolean esDevolucion = form.esDevolucion();
         form.limpiarFormulario();
 
-        Fecha fecha = new Fecha(dia, mes, anho);
-
-        RazonSocial rs = completarRS(new RazonSocial(1, new NIF(numero, letra, isCIF), razon, new Nota()));
-        /** TODO : HAY UE CONSEGUIR INTRODUCIR TODA LA RAZON SOCIAL COMO APARECE EN DISTRIBUIDORES */
+        Fecha fecha = new Fecha(dia, mes, año);
+//TODO: 11-04-2024 - Necesito un método (estático, a poder ser) para generar automáticamente el ID de cada Nota
+        RazonSocial rs = completarRS(new RazonSocial(1, new NIF(numero, letra, isCIF), razon, new Nota(0,"")));
+        // TODO : HAY QUE CONSEGUIR INTRODUCIR TODA LA RAZON SOCIAL COMO APARECE EN DISTRIBUIDORES 
         ArrayList<Extracto> subfacturas = form.getSubfacturas();
 
         Totales totales = form.getTotales();
@@ -259,23 +274,23 @@ public class ModeloFacturas {
        JOptionPane.showMessageDialog(null,"El distribuidor no concuerda con ninguno de los registrados!");
        return razon;
     }
-    
-    public Vector<Vector> generarVectorFacturas() {
-        vectorfacturas = new Vector<Vector>();
+*/  
+    public Vector<Factura> generarVectorFacturas() {
+        vectorfacturas = new Vector<Factura>();
         if (facturas.size() > 0) {
             for (Factura f : facturas) {
-                vectorfacturas.add(f.toVector());
+                vectorfacturas.add(f);
             }
         } else {
-            vectorfacturas.add(new Factura().toVector());
+            vectorfacturas.add(new Factura());
         }
         return vectorfacturas;
     }
 
-    public static Vector getColumnas() {
-        Vector columnas = new Vector();
-        for (int i = 1; i <= Config.getConfig().getNombresColumnas().size(); i++) {
-            columnas.add(Config.getConfig().getNombresColumnas().get(i));
+    public static Vector<String> getColumnas() {
+        Vector<String> columnas = new Vector<String>();
+        for (int i = 1; i <= Config.getConfig().nombresColumnas().length; i++) {
+            columnas.add(Config.getConfig().nombresColumnas()[i]);
         }
 
         return columnas;

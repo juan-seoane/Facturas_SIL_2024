@@ -6,8 +6,20 @@ package modelo;
 
 import controladores.*;
 import controladores.fxcontrollers.*;
-import modelo.records.Config;
+import modelo.base.Config;
+import modelo.base.Fichero;
+import modelo.filtros.FiltroCategoriaRS;
+import modelo.filtros.FiltroDistribuidorRS;
+import modelo.records.Factura;
+import modelo.records.NIF;
+import modelo.records.Nota;
+import modelo.records.RazonSocial;
+import modelo.records.Totales;
 import ui.*;
+import ui.formularios.FormularioFact;
+import ui.tablas.TablaDistribuidores;
+import ui.ventanas.VentanaDistribuidores;
+
 import java.util.*;
 import javax.swing.JOptionPane;
 

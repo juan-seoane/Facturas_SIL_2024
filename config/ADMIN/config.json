@@ -1,0 +1,25 @@
+{
+	"usuario" : "admin",
+	"misdatos" : "./config/ADMIN/misdatos.json",
+	"nombresColumnas" : [ "ID", "numFact", "Distribuidor", "SubFact", "Base", "IVA", "Total" ],
+	"anchoColumnas" : [ 10, 20, 40, 10, 30, 20, 40],
+	"año" : 2024,
+	"rutas" : 		[
+						{ "FCT" : "./datos/ADMIN/FCT20240.fct", "RS" : "./datos/ADMIN/RS2024.rs", "CJA" : "./datos/ADMIN/CJA20240.cja" }
+					],
+	"tiposGasto" : [
+						{"tipo": "suministros", "descripcion": "Agua, gas, electricidad, etc..."},
+						{"tipo": "alquileres", "descripcion": "Gastos en el alquiler del local"},
+						{"tipo": "gastos", "descripcion": "gastos genéricos"},
+						{"tipo": "compras", "descripcion": "Víveres para la cafetería, etc..."},
+						{"tipo": "varios", "descripcion": "Otros, SGAE, Canal+,..."}
+					],
+	"tiposIVA" : 	[
+						0, 4, 8, 10, 18, 24
+					],
+	"origenesCaja" :[
+						"caja",
+						"máquina de tabaco",
+						"devoluciones"
+					]
+}			

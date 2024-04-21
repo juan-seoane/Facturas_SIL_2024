@@ -1,9 +1,10 @@
 package controladores;
 
-import modelo.FicheroAutomatico;
-import modelo.records.Config;
-import ui.VentanaAutosave;
-import ui.VisorNotas;
+import modelo.base.Config;
+import modelo.base.FicheroAutomatico;
+import ui.ventanas.VentanaAutosave;
+import ui.visores.VisorNotas;
+import controladores.fxcontrollers.Acceso;
 import controladores.fxcontrollers.PanelControl;
 
 import java.io.IOException;
@@ -22,21 +23,25 @@ public class Controlador extends Thread {
         
 //	  private static ControladorFicheros cfch;
     private static ControladorFacturas cfct;
-
+   
 //    private static ControladorDistribuidores cd;
 //    private static ControladorCaja ccj;
     public static PanelControl pc;
     private static VisorNotas notas;
     public static int seccion = FACT;
+
+    public static String usuario;
+
 // TODO: 09/04/24 - Reorganizar los hilos que genera (ControladorFCT, ControladorDIST, etc...)
 // TODO: 09/04/24 - Consultar cómo se puede hacer Singleton	
     public Controlador() throws IOException{
-	
-        if(Config.getConfig()!=null){
-            
+        Controlador.usuario = Acceso.getUsuario();
+        System.out.println("El usuario es "+ Controlador.usuario);
+        if(Config.getConfig(Controlador.usuario)!=null){
+            System.out.println("Procediendo a arrancar el Controlador de Facturas del Usuario "+ Controlador.usuario);
             arrancarCfct();
-
- /*           cd = ControladorDistribuidores.getControlador();
+ /*           
+            cd = ControladorDistribuidores.getControlador();
             cd.start();
             ccj.start();
             
@@ -46,6 +51,7 @@ public class Controlador extends Thread {
         }
 
 	}
+
     private ControladorFacturas arrancarCfct() {
         
         Controlador.cfct = new ControladorFacturas();
@@ -72,7 +78,7 @@ public class Controlador extends Thread {
 */        
     public static void reset() throws IOException{
             
-        if(Config.getConfig()!=null){
+        if(Config.getConfig(Controlador.usuario)!=null){
             cfct = ControladorFacturas.getControlador();
 //            cd = ControladorDistribuidores.getControlador();
 //            ccj = ControladorCaja.getControlador();
@@ -286,7 +292,7 @@ public class Controlador extends Thread {
     }
     
     private boolean copiaseguridad(boolean[] opciones){
-        FicheroAutomatico auto = new FicheroAutomatico(opciones, Config.getConfig().getUsuario(),Config.getConfig().getAnho().getAnho(),Config.getConfig().getAnho().getTrimestre());
+        FicheroAutomatico auto = new FicheroAutomatico(opciones, Config.getConfig(Controlador.usuario).getUsuario(),Config.getConfig(Controlador.usuario).año().año(),Config.getConfig(Controlador.usuario).año().trimestre());
         String [] rutas = auto.getRutas();
         System.out.println(rutas[0]);
         System.out.println(rutas[1]);

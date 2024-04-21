@@ -1,8 +1,18 @@
 package controladores;
 
 import modelo.*;
-import modelo.records.Config;
+import modelo.base.Config;
+import modelo.base.Fichero;
+import modelo.datasources.DistribuidoresDataSource;
+import modelo.records.NIF;
+import modelo.records.Nota;
+import modelo.records.RazonSocial;
 import ui.*;
+import ui.formularios.FormularioFact;
+import ui.formularios.FormularioRS;
+import ui.tablas.TablaDistribuidores;
+import ui.ventanas.VentanaFiltrosRS;
+
 import java.awt.Frame;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

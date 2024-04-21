@@ -5,15 +5,17 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib\\**\\*.jar",
-        "d:\\Program Files\\JavaJDK\\javafx-sdk-21.0.2\\lib\\**\\*.jar",
-        "d:\\Program Files\\JavaJDK\\javafx-sdk-21\\javafx-sdk-21.0.2\\lib\\**\\*.jar",
-        "c:\\Program Files\\Java\\jre-1.8\\lib\\jfxswt.jar",
-        "c:\\Program Files\\Java\\jre-1.8\\lib\\ext\\jfxrt.jar",
-        "d:\\Downloads\\json-20230618-javadoc.jar",
-        "d:\\Downloads\\json-20230618.jar"
+        "lib\\javafx-sdk-21.0.2\\lib\\**\\*.jar",
+        "lib\\JUnit5\\*.jar",
+        "D:\\Program Files\\JavaJDK\\JUnit5\\junit-platform-console-standalone-1.10.0.jar"
     ],
     "javafx.libPath": "D:\\Program Files\\JavaJDK\\javafx-sdk-21\\javafx-sdk-21.0.2\\lib",
     "java.dependency.showMembers": true,
     "java.project.explorer.showNonJavaResources": true,
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "java.test.config": {
+        "name": "JUnit5TestConfig",
+        "vmArgs": [ "-Xmx512M" ],
+        "env": {"key": "value"}
+    }
 }

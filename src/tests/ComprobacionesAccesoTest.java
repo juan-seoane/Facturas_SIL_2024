@@ -1,0 +1,42 @@
+package tests;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+
+import modelo.base.Config;
+
+import modelo.fx.ComprobacionesAcceso;
+
+public class ComprobacionesAccesoTest {
+
+	String rutaCreds;
+
+	@Test
+	void fileCredsIsNotNull(){
+
+		rutaCreds = "./config/creds.json";
+ 		File f = new File(rutaCreds);
+		assertTrue(f.exists());
+
+	}
+
+	@Test
+	void ConfigIsNotNull(){
+
+		//ComprobacionesAcceso test_check = new ComprobacionesAcceso();
+		rutaCreds = "./config/creds.json";
+		File f = new File(rutaCreds);
+		assertNotNull(Config.leerCredenciales(rutaCreds).creds);
+
+	}
+	@Test
+	void fileCredsOK(){
+		rutaCreds = "./config/creds.json";
+		File f = new File(rutaCreds);
+		var listaContr = Config.leerCredenciales(rutaCreds).creds;
+		assertNotEquals(listaContr.get(0).usuario,listaContr.get(1).us

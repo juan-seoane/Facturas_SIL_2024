@@ -1,8 +1,14 @@
 package modelo.fx;
 
+import modelo.base.Config;
+import modelo.base.Contrasena;
+import modelo.base.Fichero;
 import controladores.fxcontrollers.Acceso;
-import modelo.records.Config;
-import modelo.records.Contrasenha;
+
+import java.awt.HeadlessException;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class ComprobacionesAcceso {
 
@@ -10,28 +16,57 @@ public class ComprobacionesAcceso {
 //	private String baseUser = "ADMIN";
 	public static boolean userOK = false;
 	public static boolean passOK = false;
-
-	public boolean comprobarCredenciales(String user, String pass){
+//#region COMPROBAR_CREDENCIALES()
+	public synchronized boolean comprobarCredenciales(String user, String pass) throws HeadlessException, NullPointerException, IOException{
 		//TODO: 09/04/24 - Si no existe carpeta de Usuario, preguntar si quiere crear un Nuevo Usuario.
+		//TODO: 12/04/24 - Para las comprobaciones tanto usuario como contraseña se pasan a mayúsculas (CASE INSENSITIVE)
+		String rutaCreds = "./config/creds.json";
+		String rutaDirPers = "./config/"+user.toUpperCase();
+		String rutaCFG = "./config/"+user.toUpperCase()+"/"+"config.json";
 
-		//TODO: Otra vez tuve que hacer público el constructor de la clase Config...por lo que...¿Singleton...?
-		Config cfg = new Config();
-		for (Contrasenha contr : Config.getConfig(user.toUpperCase()).getContrasenhas()){
-			//TODO: Revisar el modo de comprobación de credenciales    
-				System.out.println("[ComprobacionesAcceso.java>comprobarCredenciales()]Datos introducidos : usuario: "+ user + "  - pass: "+ pass + " > Datos obtenidos de Config: " + contr.getUsuario() +" - " + contr.getContrasenha());
-	
-				Acceso.imprimir(Acceso.getCanvas(), "\nDatos introducidos : " + user + " - " + pass );
-				if (user.toUpperCase().equals(Config.getConfig().getUsuario().toUpperCase())){
-					ComprobacionesAcceso.userOK = true;
-					if(pass.equals(contr.getContrasenha())){
-						ComprobacionesAcceso.passOK = true;
-						return true;
-					}
-					return false;
+		if ( Fichero.dirExists(rutaDirPers) && Fichero.fileExists(rutaCFG) ){
+			// TODO: Si existe el Subdirectorio y el archivo config, lo lee.. (Cambiar por chequear las credenciales del archivo config base)
+			//TODO: Otra vez tuve que hacer público el constructor de la clase Config...por lo que...¿Singleton...?
+			//TODO : 11-04-2024 - Escribir un método estático para leer las credenciales del archivo config base
+			for (Contrasena contr : Config.leerCredenciales(rutaCreds).creds){
+				//TODO: Revisar el modo de comprobación de credenciales    
+					System.out.println("[ComprobacionesAcceso.java>comprobarCredenciales()]\nDatos introducidos : usuario: "+ user + "  - pass: "+ pass + " > Datos obtenidos de Config: " + contr.usuario +" - " + contr.contra);
+
+					Acceso.imprimir(Acceso.getCanvas(), "\nDatos introducidos : " + user + " - " + pass );
+					if (user.toUpperCase().equals(contr.usuario.toUpperCase())){
+						ComprobacionesAcceso.userOK = true;
+						if(pass.toUpperCase().equals(contr.contra.toUpperCase())){
+							ComprobacionesAcceso.passOK = true;
+							return true;
+						}
+						return false;
+				}
+				return false;	
 			}
-			return false;	
+			return false;
+		}else{
+			// Si no existe el fichero, preguntar si quiere crear un Nuevo Usuario
+			int resp = JOptionPane.showConfirmDialog(null, "El usuario no existe. ¿Quiere crear un Nuevo Usuario??", "ATENCIÓN!", JOptionPane.YES_NO_OPTION);
+			if (resp == JOptionPane.YES_OPTION) {
+				Config.getConfig(user);
+				crearNuevoUsuario(user);
+				System.out.println("No existen Usuario, Subdirectorio y archivo Config personal..Creándose...\nLa contrasena será su nombre de Usuario, hasta que la cambie...");
+				JOptionPane.showMessageDialog(null,"La contrasena del nuevo usuario será su nombre de Usuario, hasta que la cambie...");
+				// TODO 09-04-2024: Incluir las nuevas credenciales en el archivo config.json base
+				return true; // Le damos acceso (ya están creados usuario y contrasena)
+			} else {
+				System.out.println("No existe el Usuario...");
+				return false;
+			}
 		}
-		return false;
 	}
+//#endregion
+//#region CREAR_NUEVO_USUARIO()
+	private void crearNuevoUsuario(String user) {
+
+		Config.guardarCredenciales(user);
+	
+	}
+//#endregion
 }
 

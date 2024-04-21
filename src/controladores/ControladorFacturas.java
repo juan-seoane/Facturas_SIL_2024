@@ -1,8 +1,16 @@
 package controladores;
 
 import modelo.*;
-import modelo.records.Config;
+import modelo.base.Config;
+import modelo.base.Fichero;
+import modelo.datasources.FacturasDataSource;
+import modelo.records.Factura;
 import ui.*;
+import ui.formularios.FormularioFact;
+import ui.tablas.TablaFacturas;
+import ui.ventanas.VentanaFiltros;
+import ui.visores.VisorFacturas;
+
 import java.util.*;
 import javax.swing.JOptionPane;
 

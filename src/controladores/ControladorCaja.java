@@ -1,8 +1,14 @@
 package controladores;
 
 import modelo.*;
-import modelo.records.Config;
+import modelo.base.Config;
+import modelo.base.Fichero;
+import modelo.datasources.CajasDataSource;
 import ui.*;
+import ui.formularios.FormularioCaja;
+import ui.tablas.TablaCaja;
+import ui.ventanas.VentanaFiltrosCaja;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
