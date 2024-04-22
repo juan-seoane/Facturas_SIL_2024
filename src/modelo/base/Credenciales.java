@@ -32,12 +32,12 @@ public class Credenciales{
 		for (Contrasena c : this.creds){
 			i++;
 			if (i<this.creds.size())
-				listaContr += c.toString()+",\n";
+				listaContr += "	" + c.toString()+",\n";
 			else
-				listaContr += c.toString()+"\n";
+				listaContr += "	" + c.toString()+"\n";
 				
 		}
 		
-		return ("creds: [ {\n"+listaContr+"\n	]\n}");
+		return ("{\n creds: [\n" + listaContr+"	]\n}");
 	}
 }

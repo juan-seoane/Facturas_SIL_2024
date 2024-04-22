@@ -1,16 +1,6 @@
 {
   "creds": [
-    {
-      "Contrasena": {
-        "usuario": "admin",
-        "contrasena": "admin"
-      }
-    },
-    {
-      "Contrasena": {
-        "usuario": "juan",
-        "contrasena": "1042"
-      }
-    }
+	{"usuario": "admin","contra": "admin"},
+	{"usuario": "juan","contra": "1042"}
   ]
 }

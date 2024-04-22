@@ -1,11 +1,11 @@
 {
 	"razonSocial" : "pruebaSA",
-	"nombre" : "Juan L.",
-	"apellidos" : "Pérez Seoane",
-	"telefono" : "607 36 99 32",
-	"direccion" : "Monte Devesa 42",
-	"codigoPostal" : "15280",
-	"localidad" : "Brión",
+	"nombre" : "nombreDeAdmin",
+	"apellidos" : "apellidosDeAdmin",
+	"telefono" : "600 00 00 00",
+	"direccion" : "direcciónDeAdmin",
+	"codigoPostal" : "10000",
+	"localidad" : "localidadDeAdmin",
 	"pais": "España",
-	"NIF" : "44454841-G"
+	"NIF" : "00000000-X"
 }

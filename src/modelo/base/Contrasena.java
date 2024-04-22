@@ -102,6 +102,6 @@ private static class AESCryptoKey implements CryptoKeyable {
 */
     @Override
     public String toString(){
-        return ("{\n'Contrasena' :{ 'usuario':'"+this.usuario+"','contra':'"+this.contra+"'}\n}");
+        return ("{\"usuario\":\""+this.usuario+"\",\"contra\":\""+this.contra+"\"}");
     }
 }  

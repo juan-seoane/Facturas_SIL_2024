@@ -277,6 +277,8 @@ public class Config {
 //#region LEER_CREDS()
   public static Credenciales leerCredenciales(String ruta){
     String ficheroResp = Fichero.leerJSON(ruta);
+    System.out.println(ficheroResp);
+    
     Gson gson = new Gson();
     // TODO: 11-04-2024 - Revisar esto: Si es Arraylist.class o Contrasena.class
   
