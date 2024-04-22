@@ -1,0 +1,4 @@
+{	
+	"nombresColumnasFCT" : [ "ID", "numFact", "Distribuidor", "SubFact", "Base", "IVA", "Total" ],
+	"anchoColumnasFCT" : [ 10, 20, 40, 10, 30, 20, 40]
+}

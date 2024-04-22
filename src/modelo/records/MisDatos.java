@@ -3,12 +3,12 @@ package modelo.records;
 import java.util.*;
 import modelo.records.*;
 
-
+//TODO: 22-04-2024 - ¿Es necesario el campo ID? ¿No se genera automáticamente?
 public record MisDatos( int ID, NIF nif, String nombre, String razon, String direccion, String CP, String poblacion, String telefono, HashMap<String, String> otrosDatos, Totales totales, Nota nota, String categoria, int[] tiposIVA) implements Comparable<RazonSocial>{
 
 
     public MisDatos() {
-        this(0, new NIF(0000, "A", false), "nombre de la empresa", "nombre Razon Social", "900-000000", "direccion del distribuidor", "99999", "Ourense", null, new Totales(), new Nota( 0, ""), "COMPRAS", null);
+        this(0, new NIF(00000000, "A", false), "nombre de la empresa", "nombre Razon Social", "900-000000", "direccion del distribuidor", "99999", "Ourense", null, new Totales(), new Nota( 0, ""), "COMPRAS", null);
     }
 
     public MisDatos(Integer ID, NIF nif,String razon, Nota nota) {

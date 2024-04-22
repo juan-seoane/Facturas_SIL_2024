@@ -14,7 +14,8 @@ import modelo.records.Concepto;
 import modelo.records.MisDatos;
 import modelo.records.TipoGasto;
 import modelo.records.TipoIVA;
-//TODO: 19-04-2024 - Crear un Java Record 'CONFIG_DATA'
+// TODO: 19-04-2024 - Crear un Java Record 'CONFIG_DATA'
+// TODO: 22-04-2024 - configdata.json y misdatos.json deberían contener un JsonArray de sus respectivos objetos
 public class Config {
 
   public static ArrayList<Config> configuraciones;
