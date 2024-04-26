@@ -1,18 +1,17 @@
 package tests;
 
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import modelo.base.Contrasena;
+import modelo.base.Config;
 import modelo.base.Credenciales;
 import modelo.base.Fichero;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
-import java.util.List;
 
 public class ConfigTest {
 
@@ -45,4 +44,37 @@ public class ConfigTest {
   
 	}
 
+	@Test
+	void ConfigToStringOK(){
+		while(Config.getConfig("TESTuSER")==null){
+			System.out.print("");
+		}
+		Config cfgPrueba = Config.getConfig("TESTuSER");
+		System.out.println(cfgPrueba.toString());
+		assertEquals("TESTuSER", cfgPrueba.usuario);
+
+	}
+
+	@Test
+	void ConfigFilesOK(){
+		while(Config.getConfig("TESTuSER")==null){
+			System.out.print("");
+		}
+		Config cfgPrueba = Config.getConfig("TESTuSER");
+
+		String cfgjson = cfgPrueba.toString();
+		System.out.println(cfgjson);
+
+		String cfgdtjson = cfgPrueba.configData.toJSON();
+		System.out.println(cfgdtjson);
+
+		String msdtsjson = cfgPrueba.misDatos.toJSON();
+		System.out.println(msdtsjson);
+
+		String uidtjson = cfgPrueba.uiData.toJSON();
+		System.out.println(uidtjson);
+
+		assertEquals("TESTuSER", cfgPrueba.usuario);
+	}
+// TODO: 24-04-2024 - crear método toJSON() en cada record anterior, para luego grabar los ficheros
 }

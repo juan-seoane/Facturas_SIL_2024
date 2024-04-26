@@ -19,7 +19,7 @@ public class Credenciales{
 	}
 
 	public static boolean setUsuarioActual(String user){
-		if(!((Config.usuario = user).equals("")))
+		if(!((Config.configActual.usuario = user).equals("")))
 			return true;
 		else
 			return false;

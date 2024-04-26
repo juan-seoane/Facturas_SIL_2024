@@ -1,28 +1,30 @@
 package modelo.base;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 
 import modelo.records.Año;
-import modelo.records.Concepto;
+import modelo.records.ConfigData;
 import modelo.records.MisDatos;
-import modelo.records.TipoGasto;
-import modelo.records.TipoIVA;
+import modelo.records.NIF;
+import modelo.records.Nota;
+import modelo.records.UIData;
 // TODO: 19-04-2024 - Crear un Java Record 'CONFIG_DATA'
 // TODO: 22-04-2024 - configdata.json y misdatos.json deberían contener un JsonArray de sus respectivos objetos
 public class Config {
 
+  public String usuario;
+  public ConfigData configData;
+  public MisDatos misDatos;
+  public UIData uiData;
+
   public static ArrayList<Config> configuraciones;
   public static Config configActual = null;
-  public static String usuario = "ADMIN";
-
-  public MisDatos misdatos;
+/*  
   public String[] nombresColumnas;
   public int[] anchoColumnas;
   public Año año;
@@ -32,26 +34,65 @@ public class Config {
   private ArrayList<TipoIVA> tiposIVA;
   private ArrayList<Concepto> origenesCaja;
 
-  private Config( MisDatos misdatos, String[] nombresColumnas, int[] anchoColumnas, Año año, HashMap<String, String> rutas, ArrayList<TipoGasto> tiposGasto, ArrayList<TipoIVA> tiposIVA, ArrayList<Concepto> origenesCaja){
-    this.misdatos = misdatos;
-    this.nombresColumnas = nombresColumnas;
-    this.anchoColumnas = anchoColumnas;
-    this.rutas = rutas;
-    this.tiposGasto = tiposGasto;
-    this.tiposIVA = tiposIVA;
-    this.origenesCaja = origenesCaja;
+  private Config( String p_user, ConfigData p_configData, MisDatos p_misDatos, UIData p_uiData){
+    this.usuario = p_user;
+    this.configData = p_configData;
+    this.misDatos = p_misDatos;
+    this.uiData = p_uiData;
   }
+*/
 //#region CONSTRUCTOR_NC_DE_CONFIG
   private Config(String user){
-    new Config(new MisDatos(), new String[20], new int[20], new Año(2000,0), new HashMap<String, String>(), new ArrayList<TipoGasto>(), new ArrayList<TipoIVA>(), new ArrayList<Concepto>());
-    Config.usuario = user;
+    
+    this.usuario = user;
+    this.configData = getConfigDataStd();
+    this.misDatos = getMisDatosStd();
+    this.uiData = getUiDataStd();
+    Config.configActual = this;
+
     /** TODO: misDatos se leeran tambien de un archivo misdatos.cfg **/
     System.out.println("Creada la Configuracion [vacía] del Usuario " + user + " con un Constructor No Canónico");
+    // TODO: 23-04-2024 - Aquí está la nueva configuración, ya creada... Luego habría que grabarla en los ficheros config.json, configdata.json, misdatos.json, uidata.json
   }
 //#endregion
+//#region GETTERS DE CONFIGS STANDARD
+// TODO: 23-04-2024 - Arreglar estos getters
+private ConfigData getConfigDataStd() {
+
+  var tiposIVAprueba = new ArrayList<Integer>();
+  tiposIVAprueba.add(0);
+  tiposIVAprueba.add(21);
+  var origenesPrueba = new ArrayList<String>();
+  origenesPrueba.add("caja");
+  origenesPrueba.add("otros");  
+
+  ConfigData cfDataPrueba = new ConfigData("testUser", new Año(2024, 2), new HashMap<String, String>(), tiposIVAprueba, origenesPrueba);
+  return cfDataPrueba;
+  }
+
+private MisDatos getMisDatosStd() {
+
+  MisDatos misDtsPrueba = new MisDatos(0,new NIF(00000000, "X", false),"nombreEmpresaPrueba");
+  return misDtsPrueba;  
+}
+
+private UIData getUiDataStd() {
+
+  var nombresColprueba = new ArrayList<String>();
+  nombresColprueba.add("ID");
+  nombresColprueba.add("numFactura");
+  var anchosColprueba = new ArrayList<Integer>();
+  anchosColprueba.add(10);
+  anchosColprueba.add(100);
+    
+  UIData uiDataPrueba = new UIData(nombresColprueba,anchosColprueba);
+  return uiDataPrueba;
+  }
 //TODO: 18-04-2024- Generar el Java Record "CFG_DATA" para guardar los datos de la Config
 //TODO: 18-04-2024- Hacer un Diagrama de Flujo de todo el proceso de Config, para ajustar
 //TODO: 11-04-2024 - Pensar cómo meter usuario
+//#endregion
+/* 
   private Config(){
     new Config( new MisDatos(), Config.getNombresColumnasStandard(), Config.getAnchoColumnasStandard(), new Año(2000,0), new HashMap<String, String>(), new ArrayList<TipoGasto>(), new ArrayList<TipoIVA>(), new ArrayList<Concepto>());
 // HECHO: 09/04/24 - Cambiar archivo Config al formato json - usar json.jar / gson.jar
@@ -97,7 +138,7 @@ public class Config {
       else
         JOptionPane.showMessageDialog(null,"Ha sucedido un error al grabar la configuración de " + this.usuario);
   }
-//#endregion 
+*/
 //TODO: 11-04-2024 - Parece que, ahora mismo, no tiene sentido llamar a un constructor sin definir el usuario...
 /*
   public static Config getConfig(){
@@ -106,9 +147,11 @@ public class Config {
     return Config.instancia;
   }
 */  
-//#region GET_CONFIG()
+//#region GET_CONFIG(user)
   public static Config getConfig(String user){
     if (Config.configActual == null)
+      new Config(user);
+    else if(!Config.configActual.usuario.equals(user))
       new Config(user);
     return Config.configActual;
   }
@@ -156,24 +199,24 @@ public class Config {
   }
 
   public String getUsuario(){
-    return Config.usuario;
+    return Config.configActual.usuario;
   }
 
   public String getRutaRS(){
 
-    String rs = this.rutas.get("RS");
+    String rs = Config.configActual.configData.rutas().get("RS");
     return rs;
   }
 
   public String getRutaFCT(){
 
-      String fct = this.rutas.get("FCT");
-      System.out.println("Leyendo de ruta "+this.rutas.get("FCT"));
+      String fct = Config.configActual.configData.rutas().get("FCT");
+      System.out.println("Leyendo de ruta "+this.configData.rutas().get("FCT"));
       return fct;
   }
   
   public String getRutaCJA(){
-      String cja = this.rutas.get("CJA");
+      String cja = Config.configActual.configData.rutas().get("CJA");
       return cja;
   }
 
@@ -241,17 +284,25 @@ public class Config {
     else return false;
   }
  */
-//TODO: 20-04-2024 - Cambiar el nombre del archivo base 'config.json' a 'creds.json' y los datos de 'misdatos.json' para 'ADMIN'
+// TODO: 20-04-2024 - Cambiar el nombre del archivo base 'config.json' a 'creds.json' y los datos de 'misdatos.json' para 'ADMIN'
 //TODO: 20-04-2024 - Falta crear misdatos.json (se puede crear un archivo tipo) 
 //TODO: 19-04-2024 - Completar RecConfig  
 //#region *REC_CONFIG()
+// TODO: 23-04-2024 - Aquí debería guardar los 4 archivos JSON: config, configdata, misdatos, uidata...
   public static boolean recConfig(String p_usuario,Config p_config){
-    String rutaYnombre = "config/"+p_usuario.toUpperCase()+"/config.json";
-    //TODO: 20-04-2024 - Rehacer 'datosFormateados', enviar la config a formatearse como JSON, o incluir una std_config 
-    String datosFormateados = p_config.formatearComoJSON();
+    String ruta1 = "config/"+p_usuario.toUpperCase()+"/config.json";
+    String ruta2 = "config/"+p_usuario.toUpperCase()+"/configdata.json";
+    String ruta3 = "config/"+p_usuario.toUpperCase()+"/misdatos.json";
+    String ruta4 = "config/"+p_usuario.toUpperCase()+"/uidata.json";
+    // TODO: 20-04-2024 - Rehacer 'datosFormateados', enviar la config a formatearse como JSON, o incluir una std_config 
+    // TODO: 23-04-2024 - Rehacer el método toString() para adaptarlo a la salida en JSON
+    String datos1 = p_config.toString();
+    String datos2 = p_config.configData.toString();
+    String datos3 = p_config.misDatos.toString();
+    String datos4 = p_config.uiData.toString();
 
-    if (Fichero.guardarJSON(datosFormateados, rutaYnombre)){
-        JOptionPane.showMessageDialog(null,"El nuevo año se ha establecido en  " + Config.getConfig(p_usuario).año.año()+" - Trimestre: " + Config.getConfig(p_usuario).año.trimestre());
+    if (Fichero.guardarJSON(datos1, ruta1)&&Fichero.guardarJSON(datos2, ruta2)&&Fichero.guardarJSON(datos3, ruta3)&&Fichero.guardarJSON(datos4, ruta4)){
+        JOptionPane.showMessageDialog(null,"El nuevo año se ha establecido en  " + Config.getConfig(p_usuario).configData.año().año()+" - Trimestre: " + Config.getConfig(p_usuario).configData.año().trimestre());
         return true;
       }
     else return false;
@@ -307,4 +358,16 @@ public class Config {
       return false;
   }
 //#endregion
+@Override//#region CONSTRUCTOR_NC_DE_CONFIG
+  public String toString(){
+    String respuesta;
+
+    String rutaCFGDT = "config/"+this.usuario.toUpperCase()+"/configdata.json";
+    String rutaMSDTS = "config/"+this.usuario.toUpperCase()+"/misdatos.json";
+    String rutaUIDT = "config/"+this.usuario.toUpperCase()+"/uidata.json";
+
+    respuesta = "{"+"\n\t\"usuario\" : \""+Config.configActual.usuario+"\",\n\t\"configdata\" : \""+rutaCFGDT+"\",\n\t\"misdatos\" : \""+rutaMSDTS+"\",\n\t\"uidata\" : \""+rutaUIDT+"\"\n}";
+    // TODO: 23-04-2024 - Completar String 'respuesta' en toString
+    return respuesta;
+  }
 }
