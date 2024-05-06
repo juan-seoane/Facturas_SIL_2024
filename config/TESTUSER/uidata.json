@@ -1,0 +1,4 @@
+{
+	"nombreColsFCT": [	"ID","#","fecha","numFactura","NIF","R.S.","base","tipo","IVA","SubTotal","base N.I.","t ret","Retenc","Total","Concepto"	],
+	"anchoColsFCT": [	 60, 20, 0, 0, 100, 180, 0, 40, 0, 0, 0, 40, 0, 0, 0	]
+}

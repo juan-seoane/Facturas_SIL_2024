@@ -1,19 +1,53 @@
 package tests;
 
-import static org.junit.Assert.assertNotEquals;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import modelo.base.Config;
-import modelo.base.Credenciales;
-import modelo.base.Fichero;
+import modelo.base.*;
+import modelo.records.*;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 public class ConfigTest {
+
+	@Test
+	void borrarSubdirs(){
+		File dir1 = new File("./config/TESTUSER");
+		File dir2 = new File("./datos/TESTUSER");
+
+		recursiveDelete(dir1);
+		recursiveDelete(dir2);
+
+		assertTrue(!dir1.exists());
+		assertTrue(!dir2.exists());
+	}
+
+	static void recursiveDelete(File targetDirectory) {
+		
+		File[] data = targetDirectory.listFiles();
+	
+		for (File file : data) {
+		  if (file.isDirectory())
+			recursiveDelete(file);
+	
+		  else
+			file.delete();
+		}
+	
+		targetDirectory.delete();
+	  }
 
 	@Test
 	void leerCredencialesOK(){
@@ -28,14 +62,14 @@ public class ConfigTest {
         Type type = new TypeToken<Credenciales>() {}.getType();
         Credenciales credenciales = gson.fromJson(ficheroResp, type);
 		
-        //int i=0;
-        //for (Contrasena contrasena : credenciales.creds) {
-		//	System.out.println("Contra num "+i);
-        //    System.out.println("Usuario: " + contrasena.usuario);
-        //    System.out.println("Contraseña: " + contrasena.contra);
-		//	System.out.println("-----------------------------");
-		//	i++;
-        //}
+        int i=0;
+        for (Contrasena contrasena : credenciales.creds) {
+			System.out.println("Contra num "+i);
+            System.out.println("Usuario: " + contrasena.usuario);
+            System.out.println("Contraseña: " + contrasena.contra);
+			System.out.println("-----------------------------");
+			i++;
+        }
     // TODO: 11-04-2024 - Revisar esto: Si es Arraylist.class o Contrasena.class
 	// TODO: 21-04-2024 - Parece que hay un problema al leer las credenciales... El fichero lo lee bien, pero el Objeto 'Credenciales' lo coge mal...
     
@@ -43,38 +77,121 @@ public class ConfigTest {
 		assertNotEquals(credenciales.creds.get(0).usuario, credenciales.creds.get(1).usuario);
   
 	}
+	@Test
+	void RutasConfigJsonExiste(){
+
+		String ruta="config/TESTUSER/rutasconfig.json";
+		File fichero = new File(ruta);
+
+		assertTrue(fichero.exists());
+	}
 
 	@Test
-	void ConfigToStringOK(){
+	void leerConfigDataJson(){
+
+		String ruta="./config/TESTUSER/configdata.json";
+
+		ConfigData cfgdataObj = (ConfigData)(Fichero.leerJSONrecord(ruta, "configdata"));
+	
+		assertEquals("TESTuSER", cfgdataObj.user());
+	}
+
+	@Test
+	void leerRutasConfigJson(){
+
+		RutasConfig rutas = (RutasConfig)(Fichero.leerJSONrecord("config/TESTUSER/rutasconfig.json", "rutasconfig"));
+
+		assertEquals("config/TESTUSER/misdatos.json", rutas.rutamisdatos());
+	}
+
+	@Test
+	void leerUIDataJson(){
+
+		UIData uidata = (UIData)(Fichero.leerJSONrecord("config/TESTUSER/uidata.json", "uidata"));
+
+		assertEquals( 15, uidata.nombreColsFCT().length);
+	}
+
+	@Test
+	void leerMisDatosJson(){
+
+		MisDatos misdatos = (MisDatos)(Fichero.leerJSONrecord("config/TESTUSER/misdatos.json", "misdatos"));
+
+		assertEquals( "TESTuSER", misdatos.user());
+	}
+
+	@Test
+	void CreaConfigOK() throws NullPointerException, IOException{
+		Config configPrueba = Config.getConfig("TESTuSER");
+		assertNotNull(configPrueba);
+	}
+
+	@Test
+	void ConfigToStringOK() throws NullPointerException, IOException{
 		while(Config.getConfig("TESTuSER")==null){
 			System.out.print("");
 		}
 		Config cfgPrueba = Config.getConfig("TESTuSER");
-		System.out.println(cfgPrueba.toString());
+		System.out.println(Config.getConfigActual().toString());
 		assertEquals("TESTuSER", cfgPrueba.usuario);
 
 	}
 
 	@Test
-	void ConfigFilesOK(){
-		while(Config.getConfig("TESTuSER")==null){
-			System.out.print("");
-		}
+	void ConfigFilesOK() throws NullPointerException, IOException{
+	// TODO: 28-04-2024 - El problema es pasar a 'final String' un dato que viene del JSON en forma de 'String' (sin 'final')
 		Config cfgPrueba = Config.getConfig("TESTuSER");
 
-		String cfgjson = cfgPrueba.toString();
+		String cfgjson = cfgPrueba.rutasconfig.toJSON();
 		System.out.println(cfgjson);
 
 		String cfgdtjson = cfgPrueba.configData.toJSON();
 		System.out.println(cfgdtjson);
 
-		String msdtsjson = cfgPrueba.misDatos.toJSON();
+		String msdtsjson = cfgPrueba.getMisDatos().toJSON();
 		System.out.println(msdtsjson);
 
 		String uidtjson = cfgPrueba.uiData.toJSON();
 		System.out.println(uidtjson);
 
 		assertEquals("TESTuSER", cfgPrueba.usuario);
+		
+		String rutacfg1 = "config/"+cfgPrueba.usuario.toUpperCase()+"/rutasconfig.json";
+		File fcfg1 = new File(rutacfg1);
+		assertTrue(fcfg1.exists());
+
+		String rutacfg2 = "config/"+cfgPrueba.usuario.toUpperCase()+"/configdata.json";
+		File fcfg2 = new File(rutacfg2);
+		assertTrue(fcfg2.exists());
+
+		String rutacfg3 = "config/"+cfgPrueba.usuario.toUpperCase()+"/misdatos.json";
+		File fcfg3 = new File(rutacfg3);
+		assertTrue(fcfg3.exists());
+
+		String rutacfg4 = "config/"+cfgPrueba.usuario.toUpperCase()+"/uidata.json";
+		File fcfg4 = new File(rutacfg4);
+		assertTrue(fcfg4.exists());
+// TODO: 02-05-2024 - Hay que guardar las credenciales y los ficheros de trsbajo
 	}
 // TODO: 24-04-2024 - crear método toJSON() en cada record anterior, para luego grabar los ficheros
+@Test
+void WorkingFilesOK() throws NullPointerException, IOException{
+
+	while(Config.getConfig("TESTuSER")==null){
+		System.out.print("");
+	}
+	Config cfgPrueba = Config.getConfig("TESTuSER");
+
+	File f1 = new File(cfgPrueba.configData.rutas().FCT());
+	System.out.println("[ConfigTest] Chequeando el archivo "+ f1.getPath());
+	assertTrue(f1.exists());
+
+	File f2 = new File(cfgPrueba.configData.rutas().RS());
+	System.out.println("[ConfigTest] Chequeando el archivo "+ f2.getPath());
+	assertTrue(f2.exists());
+
+	File f3 = new File(cfgPrueba.configData.rutas().CJA());
+	System.out.println("[ConfigTest] Chequeando el archivo "+ f3.getPath());
+	assertTrue(f3.exists());
+	}
 }

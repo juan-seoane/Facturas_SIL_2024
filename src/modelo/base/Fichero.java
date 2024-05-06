@@ -6,6 +6,21 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import modelo.records.Año;
+import modelo.records.ConfigData;
+import modelo.records.MisDatos;
+import modelo.records.NIF;
+import modelo.records.RutasConfig;
+import modelo.records.RutasTrabajo;
+import modelo.records.UIData;
+
 import static java.nio.file.StandardCopyOption.*;
 
 /*
@@ -40,20 +55,20 @@ public class Fichero<T> {
             try {
                 // A partir del objeto File creamos el fichero físicamente
                 if (fichero.createNewFile()) {
-//                    //System.out.println("El fichero " + rutaArchivo + " se ha creado correctamente");
+                    System.out.println("El fichero " + rutaArchivo + " se ha creado correctamente");
                 } else {
-//                    //System.out.println("No ha podido ser creado el fichero");
+                    System.out.println("No ha podido ser creado el fichero");
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
         } else {
-//            //System.out.println("El fichero " + this.rutaArchivo + " ya estaba creado");
+            System.out.println("El fichero " + this.rutaArchivo + " ya estaba creado");
         }
     }
 
     public ArrayList<T> leer() {
-//        //System.out.println("LEYENDO FICHERO "+this.rutaArchivo);
+        System.out.println("LEYENDO FICHERO "+this.rutaArchivo);
 
         ArrayList<T> entradas = new ArrayList<T>();
         T entrada = null;
@@ -249,37 +264,309 @@ public class Fichero<T> {
             return false;
     }
 //#endregion
-//#region LEER_JSON()
-    public static String leerJSON(String ruta){
-    
-        String fichero = "";
- 
-        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                fichero += linea;
-            }
-        
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        return fichero;
-    }
-//#endregion
 //#region GUARDAR_JSON()
-    public static boolean guardarJSON(String datosFormateados, String rutaYnombre){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(rutaYnombre))) {
-            bw.write(datosFormateados);
-            System.out.println("Fichero creado");
+    public static synchronized boolean guardarJSON(String datosFormateados, String rutaYnombre){
+              
+        try{
+            FileWriter f = new FileWriter(rutaYnombre);
+            BufferedWriter output = new BufferedWriter(f);
+            output.write(datosFormateados);
+            //System.out.println("[Fichero.java]Fichero "+ rutaYnombre + " creado");
+            output.close();
+            System.out.println("[Fichero.java] Creado el fichero "+ rutaYnombre);
             return true;
         } catch (IOException ex) {
+            System.out.println("[Fichero.java] Error guardando el fichero " + rutaYnombre);
             ex.printStackTrace();
             return false;
-        }
-        
+        }        
     }
 //#endregion
+//#region CREAR_CARPETA()
+    public static synchronized boolean crearCarpeta(String ruta, String nombre) {
+        File carpeta = new File(ruta, nombre);
+        //La carpeta NO existe -> intenta crearla
+        if ( ! carpeta.exists( )) {
+
+            try {
+                carpeta.mkdir();
+                return true;
+
+            } catch (Exception ex) { 
+                System.out.println("[Fichero.java] Error creando la carpeta." +ruta + nombre);
+                System.err.println( ex.toString( ));
+                return false;
+            }
+
+        //La carpeta YA existe
+        } else {
+            System.out.println("[Fichero.java] La carpeta " + ruta + nombre + " ya existe.");
+            return false; 
+        }
+    }
+
+    public static synchronized boolean crearCarpeta(String rutaYnombre) {
+        File carpeta = new File(rutaYnombre);
+        //La carpeta NO existe -> intenta crearla
+        if ( ! carpeta.exists( )) {
+
+            try {
+                carpeta.mkdir();
+                return true;
+
+            } catch (Exception e) { 
+                System.out.println("[Fichero.java] Error creando la carpeta " + rutaYnombre);
+                System.err.println( e.toString( ));
+                return false;
+            }
+
+        //La carpeta YA existe
+        } else {
+            System.out.println("[Fichero.java] La carpeta " + rutaYnombre + " ya existe.");
+            return false; 
+        }
+    }
+//#endregion
+//#region CREAR_FICHERO()
+    public static synchronized boolean crearFichero(String ruta, String nombre) {
+        File archivo = new File(ruta, nombre);
+        //El archivo NO existe -> intenta crearlo
+        if ( ! archivo.exists( )) {
+
+            try {
+                archivo.createNewFile();
+                return true;
+
+            } catch( Exception e ) {
+                System.out.println("[Fichero.java] Error creando el archivo " + ruta + nombre);
+                System.err.println( e.toString( ));
+                return false;
+            }
+
+        } else {
+            System.out.println("[Fichero.java] El archivo " + ruta + nombre + " ya existe.");
+            return false;
+        }
+    }
+    public static synchronized boolean crearFichero(String rutaYnombre) {
+        File archivo = new File(rutaYnombre);
+        //El archivo NO existe -> intenta crearlo
+        if ( ! archivo.exists( )) {
+
+            try {
+                archivo.createNewFile();
+                System.out.println("[Fichero.java] Creado el archivo "  +  rutaYnombre);
+                return true;
+
+            } catch( Exception e ) {
+                System.out.println("[Fichero.java] Error creando el archivo "  +  rutaYnombre);
+                System.err.println( e.toString( ));
+                return false;
+            }
+
+        } else {
+            System.out.println("El archivo " + rutaYnombre + " ya existe.");
+            return false;
+        }
+    }
+//#endregion
+//#region LEER_JSON()
+public static synchronized String leerJSON(String rutaYnombre){
+    
+    String fichero = "";
+    try {
+        FileReader f = new FileReader(rutaYnombre);
+        BufferedReader input = new BufferedReader(f);
+        String linea;
+        while ((linea = input.readLine()) != null) {
+            fichero += linea;
+        }
+        input.close();
+        //System.out.println("[Fichero.java] Leído el fichero JSON "+ rutaYnombre);
+    } catch (IOException ex) {
+        System.out.println(ex.getMessage());
+        System.out.println("[Fichero.java] Error leyendo el fichero JSON "+ rutaYnombre);
+    }
+    return fichero;
+}
+//#endregion
+//#region LEER_JSON_REC
+    public static Object leerJSONrecord(String ruta, String tipo) {
+
+        String json = Fichero.leerJSON(ruta);
+	    //System.out.println("[ConfigTest>leerJSONrecord()] Fichero JSON " + ruta + " (tipo " + tipo.toUpperCase() + "record) leído:\n"+json);
+
+		JsonElement jsonEl = new Gson().fromJson(json, JsonElement.class);
+		JsonObject jsonObj = jsonEl.getAsJsonObject();
+
+        Object objResp= null;
+//#endregion
+//#region RUTASCONFIG
+        if (tipo.equals("rutasconfig")){
+            String user = (jsonObj.get("user")).toString();
+            user = user.substring(1, user.length()-1);
+            String ruta1 = (jsonObj.get("rutaconfigdata")).toString();
+            ruta1 = ruta1.substring(1, ruta1.length()-1);
+            String ruta2 = (jsonObj.get("rutamisdatos")).toString();
+            ruta2 = ruta2.substring(1, ruta2.length()-1);
+            String ruta3 = (jsonObj.get("rutauidata")).toString();
+            ruta3 = ruta3.substring(1, ruta3.length()-1);
+
+            objResp= new RutasConfig(user, ruta1, ruta2, ruta3);
+        }
+//#endregion
+//#region CONFIGDATA
+        if (tipo.equals("configdata")){
+            
+            String dt1 = jsonObj.get("user").toString();
+            dt1 = dt1.substring(1, dt1.length()-1);
+            //System.out.println("\ncampo 'user' :\n" + dt1);
+
+            String dt2 = jsonObj.get("año").toString();
+            //System.out.println("\ncampo 'año' :\n" + dt2);
+            JsonElement jsonEl2 = new Gson().fromJson(dt2, JsonElement.class);
+		    JsonObject jsonObj2 = jsonEl2.getAsJsonObject();
+            String c_año_año = jsonObj2.get("año").toString();
+            int c_a = Integer.parseInt(c_año_año);
+            String c_año_trim = jsonObj2.get("trimestre").toString();
+            int c_t = Integer.parseInt(c_año_trim);
+
+            Año c_año = new Año(c_a, c_t);
+
+            String dt3 = jsonObj.get("rutas").toString();
+            //System.out.println("\ncampo 'rutas' :\n" + dt3);
+            JsonElement jsonEl3 = new Gson().fromJson(dt3, JsonElement.class);
+            JsonObject jsonObj3 = jsonEl3.getAsJsonObject();
+            String fct = jsonObj3.get("FCT").toString();
+            fct = fct.substring(1,fct.length()-1);
+            String rs = jsonObj3.get("RS").toString();
+            rs = rs.substring(1,rs.length()-1);
+            String cja = jsonObj3.get("CJA").toString();
+            cja = cja.substring(1,cja.length()-1);
+
+            RutasTrabajo r_trab = new RutasTrabajo(fct, rs, cja);
+
+            String dt4 = jsonObj.get("tiposIVA").toString();
+            //System.out.println("\ncampo 'tiposIVA' :\n" + dt4);
+            dt4 = dt4.substring(1, dt4.length()-1);
+            String[] c_tIVA_str = dt4.split(",");
+            ArrayList<Integer> c_tIVA = new ArrayList<Integer>();
+            for (int i=0; i<c_tIVA_str.length; i++){
+                    c_tIVA.add(Integer.parseInt(c_tIVA_str[i]));
+            }
+
+            String dt5 = jsonObj.get("origenesCaja").toString();
+            dt5 = dt5.substring(1, dt5.length()-1);
+            //System.out.println("\ncampo 'origenesCaja' sin filtrar (sólo recortado al ppio y al final) :\n" + dt5);
+        
+            String[] c_orCaja_prev = dt5.split(",");
+            //System.out.println("\ncampos de 'origenesCaja' separados :\n");
+            //for (String str : c_orCaja_prev){
+            //    System.out.print(" - "+str);
+            //}
+
+            var c_orCaja = new ArrayList<String>();
+            for (int i=0; i<c_orCaja_prev.length; i++){
+                c_orCaja.add(c_orCaja_prev[i].substring(1,c_orCaja_prev[i].length()-1));
+            }
+            //System.out.println("\ncampo 'origenesCaja' final :\n" + c_orCaja);
+
+            objResp = new ConfigData(dt1, c_año, r_trab, c_tIVA, c_orCaja);
+        }
+//#endregion
+//#region MISDATOS
+        if (tipo.equals("misdatos")){
+            String dt1 = jsonObj.get("user").toString();
+            dt1 = dt1.substring(1, dt1.length()-1);
+            //System.out.println("\ncampo 'user' :\n" + dt1);  
+
+            String dt2_prev = jsonObj.get("nif").toString();
+            //System.out.println("\ncampo 'nif' :\n" + dt2_prev);
+            JsonElement jsonEl2 = new Gson().fromJson(dt2_prev, JsonElement.class);
+		    JsonObject jsonObj2 = jsonEl2.getAsJsonObject();
+            //System.out.println("\n[Fichero>leerJsONrecord] campo numero nif deserializado : " + jsonObj2.get("numero").toString());
+            Integer c_n_nif = Integer.parseInt(jsonObj2.get("numero").toString());
+            String c_l_nif = jsonObj2.get("letra").toString().substring(1,2);
+            String c_b_nif = jsonObj2.get("isCIF").toString();
+            Boolean c_iscif = false;
+            if (c_b_nif.equals("true"))
+                c_iscif = true;
+            NIF c_nif = new NIF(c_n_nif, c_l_nif, c_iscif);
+            //System.out.println("\ncampo 'nif' convertido :\n" + c_nif.toString());
+// TODO: 05-05-2024 - Completar esto... Falta convertir el objeto 'nif' en un objeto 'NIF'
+
+            String dt3 = jsonObj.get("nombreEmpresa").toString();
+            dt3 = dt3.substring(1, dt3.length()-1);
+            //System.out.println("\ncampo 'nombreEmpresa' :\n" + dt3);  
+
+            String dt4 = jsonObj.get("nombre").toString();
+            dt4 = dt4.substring(1, dt4.length()-1);
+            //System.out.println("\ncampo 'nombre' :\n" + dt4);
+
+            String dt5 = jsonObj.get("apellidos").toString();
+            dt5 = dt5.substring(1, dt5.length()-1);
+            //System.out.println("\ncampo 'apellidos' :\n" + dt5);
+
+            String dt6 = jsonObj.get("razon").toString();
+            dt6 = dt6.substring(1, dt6.length()-1);
+            //System.out.println("\ncampo 'razon' :\n" + dt6);
+
+            String dt7 = jsonObj.get("direccion").toString();
+            dt7 = dt7.substring(1, dt7.length()-1);
+            //System.out.println("\ncampo 'direccion' :\n" + dt7);
+
+            String dt8 = jsonObj.get("CP").toString();
+            dt8 = dt8.substring(1, dt8.length()-1);
+            //System.out.println("\ncampo 'CP' :\n" + dt8);
+
+            String dt9 = jsonObj.get("poblacion").toString();
+            dt9 = dt9.substring(1, dt9.length()-1);
+            //System.out.println("\ncampo 'poblacion' :\n" + dt9);
+
+            String dt10 = jsonObj.get("telefono").toString();
+            dt10 = dt10.substring(1, dt10.length()-1);
+            //System.out.println("\ncampo 'telefono' :\n" + dt10);
+
+           objResp = new MisDatos(dt1, c_nif,dt3,dt4,dt5,dt6,dt7,dt8,dt9,dt10);
+
+        }
+//#endregion
+//#region UIDATA
+        if (tipo.equals("uidata")){
+            String dt1 = jsonObj.get("nombreColsFCT").toString();
+            //System.out.println("\ncampo 'nombreColsFCT' :\n" + dt1);
+            dt1 = dt1.substring(1, dt1.length()-1);
+            int i = 0;
+            String[] dt1Array = dt1.split(",");
+            for (String str : dt1Array){
+                str = str.substring(1, str.length()-1);
+                //System.out.println(" - posición " + i + " = " + str);
+                i++;
+            }
+
+            String dt2 = (jsonObj.get("anchoColsFCT")).toString();
+            //System.out.println("\ncampo 'anchoColsFCT' :\n" + dt2);
+            dt2 = dt2.substring(1, dt2.length()-1);
+
+            String[] dt2ArrayStr = dt2.split(",");
+            var dt2Array = new Integer[dt2.length()]; 
+            i = 0;
+            for (String str : dt2ArrayStr){
+                if (!(str.equals(""))&&!(str==null)){
+                    //System.out.println(" - posición " + i + " = " + str);
+                    try{
+                        dt2Array[i]= Integer.parseInt(dt2ArrayStr[i]);
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        System.out.println( "[Fichero.java] Error deserializando el fichero " + ruta);
+                    }
+                }
+                i++;
+            }
+
+            objResp= new UIData(dt1Array,dt2Array); 
+        }
+//#endregion
+    return objResp;
+    }
 }

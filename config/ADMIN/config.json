@@ -1,6 +1,0 @@
-{
-	"usuario" : "admin",
-	"misdatos" : "./config/ADMIN/misdatos.json",
-	"uidata" : ":/config/ADMIN/uidata.json",
-	"configdata" : "./config/ADMIN/configdata.json"
-}			
