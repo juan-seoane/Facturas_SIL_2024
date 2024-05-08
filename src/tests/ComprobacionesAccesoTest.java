@@ -10,7 +10,6 @@ import java.io.File;
 
 import modelo.base.Config;
 
-import modelo.fx.ComprobacionesAcceso;
 
 public class ComprobacionesAccesoTest {
 
@@ -26,7 +25,7 @@ public class ComprobacionesAccesoTest {
 	}
 
 	@Test
-	void ConfigIsNotNull(){
+	void CredsNotNull(){
 
 		//ComprobacionesAcceso test_check = new ComprobacionesAcceso();
 		rutaCreds = "./config/creds.json";

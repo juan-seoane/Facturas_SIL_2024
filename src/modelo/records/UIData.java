@@ -1,6 +1,29 @@
 package modelo.records;
 
-public record UIData(String[] nombreColsFCT, Integer[] anchoColsFCT) {
+public class UIData {
+    private String[] nombreColsFCT;
+    private Integer[] anchoColsFCT;
+
+    public UIData(String[] nombreColsFCT, Integer[] anchoColsFCT) {
+        this.nombreColsFCT = nombreColsFCT;
+        this.anchoColsFCT = anchoColsFCT;
+    }
+
+    public String[] getNombreColsFCT() {
+        return nombreColsFCT;
+    }
+
+    public void setNombreColsFCT(String[] nombreColsFCT) {
+        this.nombreColsFCT = nombreColsFCT;
+    }
+
+    public Integer[] getAnchoColsFCT() {
+        return anchoColsFCT;
+    }
+
+    public void setAnchoColsFCT(Integer[] anchoColsFCT) {
+        this.anchoColsFCT = anchoColsFCT;
+    }
 
 	public String toJSON() {
 		
@@ -31,5 +54,4 @@ public record UIData(String[] nombreColsFCT, Integer[] anchoColsFCT) {
 		String cadenaResp = "{\n\t\"nombreColsFCT\": " + nombreColsFCTformat + ",\n\t\"anchoColsFCT\": " + anchoColsFCTformat + "\n}";
 		return cadenaResp;
 	}
-
 }

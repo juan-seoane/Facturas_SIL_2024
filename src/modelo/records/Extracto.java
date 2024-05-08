@@ -1,42 +1,62 @@
 package modelo.records;
 
-import modelo.records.TipoIVA;
+public class Extracto implements Comparable<Extracto> {
+    private double base;
+    private TipoIVA tipoiva;
+    private double iva;
+    private double total;
 
-public record Extracto(double base, TipoIVA tipoiva, double iva, double total) implements Comparable<Extracto>{
-//TODO: 10-04-2024 - Comprobar lo del los demás constructores en los Java records
-	
-	public Extracto(double base, int tipoiva, double total){
-	 
-		this(base,new TipoIVA(tipoiva, null), base+base*tipoiva/100, total);	 
-	} 
+    public Extracto(double base, TipoIVA tipoiva, double iva, double total) {
+        this.base = base;
+        this.tipoiva = tipoiva;
+        this.iva = iva;
+        this.total = total;
+    }
 
-	public Extracto(){
-		
-		this(0.0,new TipoIVA(0, null), 0.0,0.0);
+    public double getBase() {
+        return base;
+    }
 
-	}
-	
-	public Extracto(double base, int tipoiva){
-	
-		this(base,new TipoIVA(tipoiva, null), base*tipoiva/100, Totales.calcularTotales(base, tipoiva));
+    public void setBase(double base) {
+        this.base = base;
+    }
 
-	}
-	
-	public Extracto(int tipoiva, double total){
-		//TODO: 10-04-2024 - Comprobar las expresiones de abajo
-		this((100 * total) / (100 + tipoiva), new TipoIVA(tipoiva, null), (((100 * total) / (100 + tipoiva))* tipoiva / 100), total);
-	
-	}
+    public TipoIVA getTipoIVA() {
+        return tipoiva;
+    }
 
+    public void setTipoIVA(TipoIVA tipoiva) {
+        this.tipoiva = tipoiva;
+    }
+
+    public double getIVA() {
+        return iva;
+    }
+
+    public void setIVA(double iva) {
+        this.iva = iva;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+// TODO: 07-05-2024 - Revisar la forma de comparar extractos
+    @Override
 	public int compareTo(Extracto b){
 		
 		if (b == null)
 			return 1;
-		else if (this.total < b.total())
+		else if (this.total < b.getTotal())
 			return -1;
-		else if (this.total == b.total())
+		else if (this.total == b.getTotal())
 			return 0;
 		else return 1;
 	
 	}
 }
+
+

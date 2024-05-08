@@ -1,7 +1,9 @@
 package modelo.records;
 
-public record TipoGasto(String tipo, String descripcion){
-	
+public class TipoGasto {
+  private String tipo;
+  private String descripcion;
+
   public TipoGasto(String tipo, String descripcion){
     if (tipo!=null){
       this.tipo = tipo.toUpperCase();
@@ -15,8 +17,24 @@ public record TipoGasto(String tipo, String descripcion){
     }
   }
 
+  public String getTipo() {
+      return tipo;
+  }
+
+  public void setTipo(String tipo) {
+      this.tipo = tipo;
+  }
+
+  public String getDescripcion() {
+      return descripcion;
+  }
+
+  public void setDescripcion(String descripcion) {
+      this.descripcion = descripcion;
+  }
+
   public boolean equals(Object b){
 
-	  return (this.tipo().equals(((TipoGasto)b).tipo()));
+	  return (this.getTipo().equals(((TipoGasto)b).getTipo()));
   }
 }

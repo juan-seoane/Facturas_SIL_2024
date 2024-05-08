@@ -1,17 +1,43 @@
 package modelo.records;
 
-public record NIF(int numero, String letra, boolean isCIF) implements Comparable<NIF>{
+public class NIF implements Comparable<NIF> {
+  private int numero;
+  private String letra;
+  private boolean isCIF;
 
-  public NIF(int numero, String letra, boolean isCIF){
-  
-    this.numero = numero;
-    this.letra = letra.toUpperCase();
-    this.isCIF = isCIF;
+  public NIF(int numero, String letra, boolean isCIF) {
+      this.numero = numero;
+      this.letra = letra;
+      this.isCIF = isCIF;
   }
 
+  public int getNumero() {
+      return numero;
+  }
+
+  public void setNumero(int numero) {
+      this.numero = numero;
+  }
+
+  public String getLetra() {
+      return letra;
+  }
+
+  public void setLetra(String letra) {
+      this.letra = letra.toUpperCase();
+  }
+
+  public boolean isCIF() {
+      return isCIF;
+  }
+
+  public void setCIF(boolean isCIF) {
+      this.isCIF = isCIF;
+  }
+  
   public String dameLetraNIF() {
 
-    switch(this.numero()%23) {
+    switch(this.getNumero()%23) {
       case 0: return "T";
       case 1: return "R";
       case 2: return "W";
@@ -41,7 +67,7 @@ public record NIF(int numero, String letra, boolean isCIF) implements Comparable
 
   public boolean comprobarNIF() {
       if (!this.isCIF()){
-        if (dameLetraNIF().equals(this.letra())){
+        if (dameLetraNIF().equals(this.getLetra())){
           System.out.println("OK, la letra se corresponde con el número");
           return true;
         }else {
@@ -54,24 +80,27 @@ public record NIF(int numero, String letra, boolean isCIF) implements Comparable
       }
   }
 
+
+  @Override
   public int compareTo(NIF b){
-      if (this == b){
-          return 0;
-      }
-      else if (this.letra().compareTo((b).letra()) == -1){
-          return -1;
-      }
-      else if (this.letra().compareTo((b).letra()) == 1){
-          return 1;
-      }
-      else if (this.numero() < (b).numero()){
-          return -1;
-      }
-      else if (this.numero() > (b).numero()){
-          return 1;
-      }
-      else return 0;    
+    if (this == b){
+        return 0;
+    }
+    else if (this.getLetra().compareTo((b).getLetra()) == -1){
+        return -1;
+    }
+    else if (this.getLetra().compareTo((b).getLetra()) == 1){
+        return 1;
+    }
+    else if (this.getNumero() < (b).getNumero()){
+        return -1;
+    }
+    else if (this.getNumero() > (b).getNumero()){
+        return 1;
+    }
+    else return 0;    
   }
+
   @Override
   public String toString(){
     if (this.isCIF){

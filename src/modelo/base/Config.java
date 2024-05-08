@@ -10,6 +10,8 @@ import com.google.gson.JsonObject;
 
 import modelo.records.Año;
 import modelo.records.ConfigData;
+import modelo.records.Contrasena;
+import modelo.records.Credenciales;
 import modelo.records.MisDatos;
 import modelo.records.NIF;
 import modelo.records.RutasConfig;
@@ -46,7 +48,8 @@ public class Config {
     String rutaCFG = "config/"+user.toUpperCase()+"/rutasconfig.json";
     File rutascfg = new File(rutaCFG);
     if (rutascfg.exists()){
-      this.rutasconfig = (RutasConfig)(Fichero.leerJSONrecord(rutaCFG, "rutasconfig")); 
+      String rutasCFG = Fichero.leerJSON(rutaCFG); 
+      this.rutasconfig = new Gson().fromJson(rutasCFG, RutasConfig.class);
       if (this.rutasconfig==null){
         System.out.println("No existen Rutas para la Config del usuario " + user);
         this.rutasconfig = getRutasConfigStd(user);
@@ -89,10 +92,10 @@ public class Config {
     System.out.println("...Vamos a supervisar y/o crear los archivos de trabajo del usuario " + user + ":\n");
     String rutaDirTrab = "./datos/" + user.toUpperCase() ;
     Fichero.crearCarpeta(rutaDirTrab); //ya comp`rueba si existe o no...
-    String trab1 = "/FCT" + this.configData.año().año()+this.configData.año().trimestre() + ".fct";
+    String trab1 = "/FCT" + this.configData.getAño().getAño()+this.configData.getAño().getTrimestre() + ".fct";
     // TODO: 06-05-2024 - Decidir si el archivo RS.rs se actualiza cada año
     String trab2 = "/RS"+ /*this.configData.año().año() +*/ ".rs";
-    String trab3 = "/CJA"+ this.configData.año().año()+this.configData.año().trimestre() + ".cja";
+    String trab3 = "/CJA"+ this.configData.getAño().getAño()+this.configData.getAño().getTrimestre() + ".cja";
     Fichero.crearFichero(rutaDirTrab, trab1);
     Fichero.crearFichero(rutaDirTrab, trab2);
     Fichero.crearFichero(rutaDirTrab, trab3);
@@ -181,25 +184,28 @@ public class Config {
   }
 
   public synchronized UIData getUiData() {
-
-    UIData resp = (UIData)(Fichero.leerJSONrecord(this.rutasconfig.rutauidata(), "uidata"));
+    String ruta = this.rutasconfig.getRutaUIData();
+    String datos = Fichero.leerJSON(ruta);
+    UIData resp = new Gson().fromJson(datos, UIData.class);
     System.out.println("[Config.java] Asignando UIData del consiguiente archivo:\n" + resp.toJSON() + "\n");
     
     return resp;
     }
   
   public synchronized MisDatos getMisDatos() {
-    
-    MisDatos resp = (MisDatos)(Fichero.leerJSONrecord(this.rutasconfig.rutamisdatos(),"misdatos"));
+    String ruta = this.rutasconfig.getRutaMisDatos();
+    String datos = Fichero.leerJSON(ruta);
+    MisDatos resp = new Gson().fromJson(datos, MisDatos.class);
     System.out.println("[Config.java] Asignando MisDatos del consiguiente archivo:\n" + resp.toJSON() + "\n");
     
     return resp;
   }
 
   public synchronized ConfigData getConfigData() {
-
-    ConfigData resp = (ConfigData)(Fichero.leerJSONrecord(this.rutasconfig.rutaconfigdata(), "configdata"));
-    System.out.print("\n[Config.java>getConfigData()] : Datos leídos en " + this.rutasconfig.rutaconfigdata() + " :\n" + resp.toJSON());
+    String ruta = this.rutasconfig.getRutaConfigData();
+    String datos = Fichero.leerJSON(ruta);
+    ConfigData resp = new Gson().fromJson(datos, ConfigData.class);
+    System.out.print("\n[Config.java>getConfigData()] : Datos leídos en " + this.rutasconfig.getRutaConfigData() + " :\n" + resp.toJSON());
 
     return resp;
   }
@@ -216,20 +222,20 @@ public String getUsuario(){
 
   public String getRutaRS(){
 
-    String rs = getConfigData().rutas().RS();
+    String rs = getConfigData().getRutas().getRS();
     System.out.println("Asignando Ruta RS desde la config");
     return rs;
   }
 
   public String getRutaFCT(){
 
-    String fct = getConfigData().rutas().FCT();
+    String fct = getConfigData().getRutas().getFCT();
     System.out.println("Asignando Ruta FCT desde la config");
     return fct;
   }
   
   public String getRutaCJA(){
-    String cja = getConfigData().rutas().CJA();
+    String cja = getConfigData().getRutas().getCJA();
     System.out.println("Asignando Ruta CJA desde la config");
     return cja;
   }

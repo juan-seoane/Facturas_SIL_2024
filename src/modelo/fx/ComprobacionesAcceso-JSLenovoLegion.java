@@ -1,8 +1,8 @@
 package modelo.fx;
 
 import modelo.base.Config;
-import modelo.base.Contrasena;
 import modelo.base.Fichero;
+import modelo.records.Contrasena;
 import controladores.fxcontrollers.Acceso;
 
 import java.awt.HeadlessException;

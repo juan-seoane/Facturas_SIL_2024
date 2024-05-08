@@ -17,6 +17,7 @@ import modelo.base.Fichero;
 import modelo.filtros.FiltroConceptoCaja;
 import modelo.filtros.FiltroDebeHaberCaja;
 import modelo.filtros.FiltroFechaCaja;
+import modelo.records.EntradaCaja;
 import modelo.records.Fecha;
 
 /**
@@ -25,8 +26,8 @@ import modelo.records.Fecha;
  */
 public class ModeloCaja {
     private static ModeloCaja instancia = null;
-    List<Caja> caja;
-    static Fichero<Caja> ficheroCJA;
+    List<EntradaCaja> caja;
+    static Fichero<EntradaCaja> ficheroCJA;
     Vector<Vector> vectorcaja;
 //    Stack<Factura> pilafacturasant = new Stack<Factura>();
 //    Stack<Factura> pilafacturassig = new Stack<Factura>();
@@ -36,8 +37,9 @@ public class ModeloCaja {
     public boolean filtros  = false;
     
     private ModeloCaja(){
-        caja = leerCaja();
-        this.numeroEntradas = caja.size();
+// TODO: 06-05-2024 - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
+//        caja = leerCaja();
+        numeroEntradas = caja.size();
         vectorcaja = generarVectorCaja();
         vectorcolumnas = getColumnas();
         ultimaID = caja.size();
@@ -50,33 +52,37 @@ public class ModeloCaja {
             instancia = new ModeloCaja();
         return instancia;
     }
-    public Caja getCaja(int index){
-        Caja c = leerCaja().get(index);
-        return c;
-    }
+// TODO: 06-05-2024 - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
+// TODO: 06-05-2024 - En la clase 'Caja' había setters que no pueden estar en un Java record (inmutable por definición)
+
+//    public EntradaCaja getCaja(int index){
+//        EntradaCaja c = leerCaja().get(index);
+//        return c;
+//    }
     
     public boolean autosave(String ruta){
-        Fichero<Caja> auto = new Fichero<Caja>(ruta);
-        if (auto.escribir((ArrayList<Caja>)caja))
+        Fichero<EntradaCaja> auto = new Fichero<EntradaCaja>(ruta);
+        if (auto.escribir((ArrayList<EntradaCaja>)caja))
             return true;
         else return false;   
     }
     
-    public boolean guardarListaCajas(ArrayList<Caja> lista){
+    public boolean guardarListaCajas(ArrayList<EntradaCaja> lista){
         if (ficheroCJA.escribir(lista))
             return true;
         else return false;
     }
     
-    public boolean guardarCaja(Caja c){
+    public boolean guardarCaja(EntradaCaja c){
         caja.add(c);
         Collections.sort(caja);
         int cuenta = 0;
-        for (Caja cj : caja){
+        for (EntradaCaja cj : caja){
             cuenta++;
-            cj.setID(cuenta);
+//            cj.setID(cuenta);
         }
-        if (guardarListaCajas((ArrayList<Caja>)caja))
+// TODO: 06-05-2024 - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
+        if (guardarListaCajas((ArrayList<EntradaCaja>)caja))
             return true;
         else return false;
     }
@@ -86,48 +92,49 @@ public class ModeloCaja {
     public boolean filtrosActivados(){
         return this.filtros;
     }
-    public boolean editarCaja(Caja c1,Caja c2, int index){
+    public boolean editarCaja(EntradaCaja c1,EntradaCaja c2, int index){
         caja.remove(c1);
         caja.add(index,c2);
         Collections.sort(caja);
         int cuenta = 0;
-        for (Caja cj : caja){
+        for (EntradaCaja cj : caja){
             cuenta++;
-            cj.setID(cuenta);
+// TODO: 06-05-2024 - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
+//            cj.setID(cuenta);
         }
-        if (guardarListaCajas((ArrayList<Caja>)caja))
+        if (guardarListaCajas((ArrayList<EntradaCaja>)caja))
             return true;
         else return false;
     }
-    public boolean borrarEntrada(Caja c){
+    public boolean borrarEntrada(EntradaCaja c){
         caja.remove(c);
         Collections.sort(caja);
         int cuenta = 0;
-        for (Caja cj : caja){
+        for (EntradaCaja cj : caja){
             cuenta++;
-            cj.setID(cuenta);
+//            cj.setID(cuenta);
         }
-        if (guardarListaCajas((ArrayList<Caja>)caja))
+        if (guardarListaCajas((ArrayList<EntradaCaja>)caja))
             return true;
         else return false;
     }
     public Vector<Vector> generarVectorCaja(){
-        List<Caja> cajafiltrada = leerCaja();
+        List<EntradaCaja> cajafiltrada = leerCaja();
         Vector<Vector> vectorcaja = new Vector<Vector>();
         if (cajafiltrada.size()>0){
-            for (Caja c : cajafiltrada){
+            for (EntradaCaja c : cajafiltrada){
                 Vector temp = new Vector();
-                temp.add(c.getID()+"");
-                temp.add(c.getFecha().format);
-                if (!c.isHaber()){
-                    temp.add(c.getCaja()+"");
+                temp.add(c.ID());
+                temp.add(c.fecha().toString());
+                if (!c.haber()){
+                    temp.add(c.caja());
                     temp.add(" - ");
                 }
-                else if (c.isHaber()){
+                else if (c.haber()){
                     temp.add(" - ");
-                    temp.add(c.getCaja()+"");
+                    temp.add(c.caja());
                 } 
-                temp.add(c.getOrigen());
+                temp.add(c.origen());
                 
                 vectorcaja.add(temp);
             }
@@ -139,12 +146,14 @@ public class ModeloCaja {
             temp.add(" - ");
             temp.add(" - ");
             temp.add(" - ");
-            
+         
+          
             vectorcaja.add(temp);
         }
             
-        return vectorcaja;
+    return vectorcaja;
     }
+
     public Vector getColumnas(){
         Vector columnas = new Vector();
         columnas.add("ID");
@@ -155,11 +164,11 @@ public class ModeloCaja {
         
         return columnas;
     }
-    public List<Caja> filtrar (List<Caja> lista){       
+    public List<EntradaCaja> filtrar (List<EntradaCaja> lista){       
         if (this.filtrosActivados()){
-        List<Caja> lista1 = new ArrayList<Caja>();
-        List<Caja> lista2 = new ArrayList<Caja>();
-        List<Caja> lista3 = new ArrayList<Caja>();
+        List<EntradaCaja> lista1 = new ArrayList<EntradaCaja>();
+        List<EntradaCaja> lista2 = new ArrayList<EntradaCaja>();
+        List<EntradaCaja> lista3 = new ArrayList<EntradaCaja>();
         
         VentanaFiltrosCaja v = VentanaFiltrosCaja.getVentana();
         if (v.getChbxFecha().isSelected()){
@@ -182,15 +191,15 @@ public class ModeloCaja {
         }
         else return lista;
     }
-    public List<Caja> leerCaja(){
-        ficheroCJA = new Fichero<Caja>(Config.getConfig().getRutaCJA().toString());
+    public List<EntradaCaja> leerCaja(){
+        ficheroCJA = new Fichero<EntradaCaja>(Config.getConfigActual().getRutaCJA().toString());
         caja = ficheroCJA.leer();
         this.numeroEntradas = caja.size();
         Collections.sort(caja);
         int i = 0;
-        for (Caja c : caja){
+        for (EntradaCaja c : caja){
            i++;
-           c.setID(i);
+//           c.setID(i);
         }
         return filtrar(caja);
     }   

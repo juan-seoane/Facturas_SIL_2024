@@ -12,8 +12,6 @@ import modelo.base.*;
 import modelo.records.*;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
@@ -49,6 +47,12 @@ public class ConfigTest {
 		targetDirectory.delete();
 	  }
 
+	@Test
+	void CreaConfigOK() throws NullPointerException, IOException{
+		Config configPrueba = Config.getConfig("TESTuSER");
+		assertNotNull(configPrueba);
+	}
+  
 	@Test
 	void leerCredencialesOK(){
 
@@ -88,42 +92,44 @@ public class ConfigTest {
 
 	@Test
 	void leerConfigDataJson(){
-
 		String ruta="./config/TESTUSER/configdata.json";
-
-		ConfigData cfgdataObj = (ConfigData)(Fichero.leerJSONrecord(ruta, "configdata"));
-	
-		assertEquals("TESTuSER", cfgdataObj.user());
+		String datos = Fichero.leerJSON(ruta);
+		Gson gson = new Gson();
+		ConfigData configData = gson.fromJson(datos, ConfigData.class);
+		assertEquals("TESTuSER", configData.getUser());
 	}
+
 
 	@Test
 	void leerRutasConfigJson(){
 
-		RutasConfig rutas = (RutasConfig)(Fichero.leerJSONrecord("config/TESTUSER/rutasconfig.json", "rutasconfig"));
-
-		assertEquals("config/TESTUSER/misdatos.json", rutas.rutamisdatos());
+		String ruta = "config/TESTUSER/rutasconfig.json";
+		String datos = Fichero.leerJSON(ruta);
+		Gson gson = new Gson();
+		RutasConfig rutas = gson.fromJson(datos, RutasConfig.class);
+		
+		assertEquals("config/TESTUSER/misdatos.json", rutas.getRutaMisDatos());
 	}
 
 	@Test
 	void leerUIDataJson(){
 
-		UIData uidata = (UIData)(Fichero.leerJSONrecord("config/TESTUSER/uidata.json", "uidata"));
+		String ruta = "config/TESTUSER/uidata.json";
+		String datos = Fichero.leerJSON(ruta);
+		Gson gson = new Gson();
+		UIData uidata = gson.fromJson(datos, UIData.class);
 
-		assertEquals( 15, uidata.nombreColsFCT().length);
+		assertEquals( 15, uidata.getNombreColsFCT().length);
 	}
 
 	@Test
 	void leerMisDatosJson(){
 
-		MisDatos misdatos = (MisDatos)(Fichero.leerJSONrecord("config/TESTUSER/misdatos.json", "misdatos"));
-
-		assertEquals( "TESTuSER", misdatos.user());
-	}
-
-	@Test
-	void CreaConfigOK() throws NullPointerException, IOException{
-		Config configPrueba = Config.getConfig("TESTuSER");
-		assertNotNull(configPrueba);
+		String ruta = "config/TESTUSER/misdatos.json";
+		String datos = Fichero.leerJSON(ruta);
+		Gson gson = new Gson();
+		MisDatos misdatos = gson.fromJson(datos, MisDatos.class);
+		assertEquals( "TESTuSER", misdatos.getUser());
 	}
 
 	@Test
@@ -182,15 +188,15 @@ void WorkingFilesOK() throws NullPointerException, IOException{
 	}
 	Config cfgPrueba = Config.getConfig("TESTuSER");
 
-	File f1 = new File(cfgPrueba.configData.rutas().FCT());
+	File f1 = new File(cfgPrueba.configData.getRutas().getFCT());
 	System.out.println("[ConfigTest] Chequeando el archivo "+ f1.getPath());
 	assertTrue(f1.exists());
 
-	File f2 = new File(cfgPrueba.configData.rutas().RS());
+	File f2 = new File(cfgPrueba.configData.getRutas().getRS());
 	System.out.println("[ConfigTest] Chequeando el archivo "+ f2.getPath());
 	assertTrue(f2.exists());
 
-	File f3 = new File(cfgPrueba.configData.rutas().CJA());
+	File f3 = new File(cfgPrueba.configData.getRutas().getCJA());
 	System.out.println("[ConfigTest] Chequeando el archivo "+ f3.getPath());
 	assertTrue(f3.exists());
 	}

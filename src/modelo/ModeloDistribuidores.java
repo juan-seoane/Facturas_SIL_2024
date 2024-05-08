@@ -14,6 +14,7 @@ import modelo.records.Factura;
 import modelo.records.NIF;
 import modelo.records.Nota;
 import modelo.records.RazonSocial;
+import modelo.records.TipoIVA;
 import modelo.records.Totales;
 import ui.*;
 import ui.formularios.FormularioFact;
@@ -38,7 +39,7 @@ public class ModeloDistribuidores {
     public static int numeroDistribuidores =  0;
     
      private ModeloDistribuidores(){
-        ficheroRS = new Fichero<RazonSocial>(Config.getConfig().getRutaRS());
+        ficheroRS = new Fichero<RazonSocial>(Config.getConfigActual().getRutaRS());
         listaDistribuidores = cargarDistribuidores();
         numeroDistribuidores = listaDistribuidores.size();
 	vectorRS = generarVectorRS();
@@ -89,7 +90,8 @@ public class ModeloDistribuidores {
         listaDistribuidores = ficheroRS.leer();
         
         for (RazonSocial rs : listaDistribuidores){
-            rs.setTotales(actualizarTotales(rs, ModeloFacturas.facturas));
+// TODO : 06-05-2024 - Cambiar algoritmo por otro sin setter
+//             rs.setTotales(actualizarTotales(rs, ModeloFacturas.facturas));
         }
             //JOptionPane.showMessageDialog(null,"ACTUALIZANDO LA BASE DE DATOS DE DISTRIBUIDORES");
         if (listaDistribuidores.size() == 0 ){
@@ -116,7 +118,8 @@ public class ModeloDistribuidores {
         int i = 0;
         for (RazonSocial rs : lista){
             i++;
-            rs.setID(i);
+// TODO : 06-05-2024 - Cambiar algoritmo por otro sin setter
+//            rs.setID(i);
             ultimaID = i;
         }
         //APLICAMOS LOS FILTROS
@@ -151,16 +154,16 @@ public class ModeloDistribuidores {
         {
             i++;
             Vector fila = new Vector();
-            fila.add(rs.getID());
-            fila.add(rs.getNIF().toString());
-            fila.add(rs.getNombre());
-            fila.add(rs.getRazon());
-            fila.add(rs.getDireccion());
-            fila.add(rs.getCP());
-            fila.add(rs.getPoblacion());
-            fila.add(rs.getTelefono());
-            fila.add(rs.getTotales().getTotal());
-            fila.add(rs.getCategoria());
+            fila.add(rs.ID());
+            fila.add(rs.nif().toString());
+            fila.add(rs.nombre());
+            fila.add(rs.razon());
+            fila.add(rs.direccion());
+            fila.add(rs.CP());
+            fila.add(rs.poblacion());
+            fila.add(rs.telefono());
+            fila.add(rs.totales().total());
+            fila.add(rs.categoria());
             datamodel.add(fila);
         }
         return datamodel;
@@ -184,7 +187,8 @@ public class ModeloDistribuidores {
     public boolean insertarDistribuidor(RazonSocial rs) {
 //        //System.out.println("Indice en Modelo : " + index);
         ultimaID++;
-        rs.setID(ultimaID);
+// TODO : 06-05-2024 - Cambiar procedimiento con setter por otro
+//        rs.setID(ultimaID);
         listaDistribuidores.add(rs);
         Collections.sort(listaDistribuidores);
         if (insertarDistribuidores(listaDistribuidores)){
@@ -231,10 +235,11 @@ public class ModeloDistribuidores {
         
         for (RazonSocial rs : this.getListaDistribuidores())
         {
-            if (nuevoNIF.toString().equals(rs.getNIF().toString()))
+// TODO : 06-05-2024 - Revisar el método toString() del record NIF
+            if (nuevoNIF.toString().equals(rs.nif().toString()))
             {
                 JOptionPane.showMessageDialog(null,"La Razon Social ya existe!");
-                FormularioFact.getFormulario().setNombreRS(rs.getRazon());
+                FormularioFact.getFormulario().setNombreRS(rs.razon());
 
                 return true;
             }
@@ -263,9 +268,10 @@ public class ModeloDistribuidores {
     }
     
     public boolean insertarDesdeFactura(NIF nuevoNIF,String razon){
-        RazonSocial nuevoDistribuidor = new RazonSocial(this.getListaDistribuidores().size()+1,nuevoNIF,razon, new Nota());
+        RazonSocial nuevoDistribuidor = new RazonSocial(this.getListaDistribuidores().size()+1,nuevoNIF,razon, new Nota(0, "-"));
         String nombreEmpresa = JOptionPane.showInputDialog(null, "Introduzca el nombre de la empresa :");
-        nuevoDistribuidor.setNombre(nombreEmpresa.toUpperCase().trim());
+// TODO: 06-05-2024 - Cambiar estos procedimientos a base de setters
+//        nuevoDistribuidor.setNombre(nombreEmpresa.toUpperCase().trim());
             this.insertarDistribuidor(nuevoDistribuidor);
             JOptionPane.showMessageDialog(null,"La Razon Social ha sido registrada!");
             FormularioFact.getFormulario().resetRS();
@@ -281,17 +287,17 @@ public class ModeloDistribuidores {
             System.out.print("");
         }
         if (tablaemergente.seleccionado()){
-            FormularioFact.getFormulario().setNombreRS(tablaemergente.razonseleccionada.getRazon());
-            FormularioFact.getFormulario().setNumNIFRS(tablaemergente.razonseleccionada.getNIF().getNumero()+"");
-            if (tablaemergente.razonseleccionada.getNIF().isCIF()){
-                FormularioFact.getFormulario().setLetraCIFRS(tablaemergente.razonseleccionada.getNIF().getLetra()+"");
+            FormularioFact.getFormulario().setNombreRS(tablaemergente.razonseleccionada.razon());
+            FormularioFact.getFormulario().setNumNIFRS(tablaemergente.razonseleccionada.nif().numero()+"");
+            if (tablaemergente.razonseleccionada.nif().isCIF()){
+                FormularioFact.getFormulario().setLetraCIFRS(tablaemergente.razonseleccionada.nif().letra()+"");
                 FormularioFact.getFormulario().setLetraNIFRS("");
             }
             else{
-                 FormularioFact.getFormulario().setLetraNIFRS(tablaemergente.razonseleccionada.getNIF().getLetra()+"");
+                 FormularioFact.getFormulario().setLetraNIFRS(tablaemergente.razonseleccionada.nif().letra()+"");
                  FormularioFact.getFormulario().setLetraCIFRS("");
             }
-            FormularioFact.getFormulario().setCategoria(tablaemergente.razonseleccionada.getCategoria());
+            FormularioFact.getFormulario().setCategoria(tablaemergente.razonseleccionada.categoria());
         }
         FormularioFact.getFormulario().resetRS();
         tablaemergente.dispose();
@@ -313,18 +319,18 @@ public class ModeloDistribuidores {
 
         for (Factura f : listafacturas)
         {
-            if (rs.equals(f.getDistribuidor())){
-                base += f.getTotales().getBase();
-                iva += f.getTotales().getIVA();
-                subtotal += f.getTotales().getSubtotal(); 
-                baseni += f.getTotales().getBaseNI();
-                retenciones += f.getTotales().getRetenciones();
-                total += f.getTotales().getTotal();
+            if (rs.equals(f.RS().nombre())){
+                base += f.totales().base();
+                iva += f.totales().iva();
+                subtotal += f.totales().subtotal(); 
+                baseni += f.totales().baseNI();
+                retenciones += f.totales().retenciones();
+                total += f.totales().total();
             }
         }
         /** TODO : ARRREGLAR VARIOSIVAS , TIPOIVA, Y RET */
         /** TODO : HAY QUE ASOCIAR LOS TIPOS DE IVA HABITUALES DEL DISTRIBUIDOR CON LA RS Y EL FORMULARIO DE FACTURAS */
-        Totales totales = new Totales(base, true, 0 , iva, subtotal, baseni, 0 , retenciones, total);
+        Totales totales = new Totales(base, true, new TipoIVA(0,"V") , iva, subtotal, baseni, 0 , retenciones, total);
         return totales;
     }
 }

@@ -36,7 +36,7 @@ public class ModeloFacturas {
     public static int numeroFacturas = 0;
 
     private ModeloFacturas() {
-        ficheroFacturas = new Fichero<Factura>(Config.getConfig().getRutaFCT().toString());
+        ficheroFacturas = new Fichero<Factura>(Config.getConfigActual().getRutaFCT().toString());
         facturas = ficheroFacturas.leer();
         this.numeroFacturas = facturas.size();
         this.ultimaID = facturas.size();
@@ -83,7 +83,7 @@ public class ModeloFacturas {
         List<Factura> listafact = leerFacturas();
         for (Factura fact : listafact )
             if (f.equals(fact)){
-                index = fact.getID()-1;
+                index = fact.ID()-1;
                 return index;
             }
         return 0;
@@ -97,7 +97,7 @@ public class ModeloFacturas {
     }
     
     public List<Factura> leerFacturas() {
-        ficheroFacturas = new Fichero<Factura>(Config.getConfig().getRutaFCT().toString());
+        ficheroFacturas = new Fichero<Factura>(Config.getConfigActual().getRutaFCT().toString());
         facturas = ficheroFacturas.leer();
         this.numeroFacturas = facturas.size();
         this.ultimaID = facturas.size();
@@ -120,7 +120,8 @@ public class ModeloFacturas {
         int i = 0;
         for (Factura f : lista){
             i++;
-            f.setID(i);
+// TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+//            f.setID(i);
             ultimaID = i;
         }
         
@@ -128,7 +129,7 @@ public class ModeloFacturas {
         if (TablaFacturas.filtrosActivos()){
             if (ControladorFacturas.filtros.getChbFiltroFecha().isSelected())
             {
-            String año = Config.getConfig().año().año()+"";
+            String año = Config.getConfigActual().configData.año().año()+"";
             FiltroFecha filtro1 = new FiltroFecha(ControladorFacturas.filtros.getFechaInicio(),ControladorFacturas.filtros.getFechaFinal());
             lista2 = filtro1.filtrar(lista);
             }
@@ -156,17 +157,18 @@ public class ModeloFacturas {
             Collections.sort(facturas);
         }
         //JOptionPane.showMessageDialog(null, "Espere unos segundos mientras se ordena la lista!");
-        for (int i = 0; i < numeroFacturas; i++) {
-            facturas.get(i).setID(i + 1);
-        }
+// TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+//        for (int i = 0; i < numeroFacturas; i++) {
+//            facturas.get(i).setID(i + 1);
+//        }
         PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
         return (ficheroFacturas.escribir(facturas));
     }
 
     public boolean anexarFactura(modelo.records.Factura factura) throws NumberFormatException, IOException {
-
-        factura.setID(this.ultimaID++);
-        this.numeroFacturas++;
+// TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+//        factura.setID(this.ultimaID++);
+        numeroFacturas++;
         PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
         return (ficheroFacturas.anexar(factura));
     } 
@@ -189,8 +191,9 @@ public class ModeloFacturas {
         
         if (res == JOptionPane.YES_OPTION){
             for (Factura f : facturas){
-                if (f.getDistribuidor().equals(antrs)){
-                    f.setDistribuidor(nuevars);
+                if (f.RS().equals(antrs)){
+// TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+//                    f.RS(nuevars);
                 }
             }
             JOptionPane.showMessageDialog(null,"Se han actualizado las facturas");
@@ -266,7 +269,7 @@ public class ModeloFacturas {
     }
     
     public RazonSocial completarRS(RazonSocial razon){
-       Fichero<RazonSocial> ficheroRS = new Fichero<RazonSocial>(Config.getConfig().getRutaRS());
+       Fichero<RazonSocial> ficheroRS = new Fichero<RazonSocial>(Config.getConfigActual().getRutaRS());
        ArrayList<RazonSocial> distribuidores = ficheroRS.leer();
        for (RazonSocial rs : distribuidores)
            if (rs.equals(razon))
@@ -289,8 +292,8 @@ public class ModeloFacturas {
 
     public static Vector<String> getColumnas() {
         Vector<String> columnas = new Vector<String>();
-        for (int i = 1; i <= Config.getConfig().nombresColumnas().length; i++) {
-            columnas.add(Config.getConfig().nombresColumnas()[i]);
+        for (int i = 1; i <= Config.getConfigActual().uiData.nombreColsFCT().length; i++) {
+            columnas.add(Config.getConfigActual().uiData.nombreColsFCT()[i]);
         }
 
         return columnas;

@@ -5,6 +5,7 @@ import modelo.base.Config;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import javax.swing.*;
@@ -50,7 +51,7 @@ private static boolean filtrosActivos = false;
 
 private Image icon;
 		
-public TablaFacturas(Vector<Vector> facturas, Vector columnas){
+public TablaFacturas(Vector<Vector> facturas, Vector columnas) throws NullPointerException, IOException{
 	super("Listado de Facturas");
 	this.setExtendedState(Frame.MAXIMIZED_BOTH);
 	this.setLayout(new BorderLayout());
@@ -231,7 +232,7 @@ public void actualizar(){
         cambiado = true;
 }
 
-public boolean actualizarModelo(Vector facturas, int sel){
+public boolean actualizarModelo(Vector facturas, int sel) throws NullPointerException, IOException{
         
 	DefaultTableModel modelo = new DefaultTableModel(facturas,ModeloFacturas.getColumnas());
         
@@ -240,11 +241,11 @@ public boolean actualizarModelo(Vector facturas, int sel){
         
         for (int i = 1; i<=Config.getConfig(Controlador.usuario).getNombresColumnasStandard().length;i++)
         {
-            TableColumn columna = tablafacturas.getColumn(Config.getNombresColumnasStandard()[i]);
-            if (Config.getAnchoColumnasStandard()[i]!=0)
+            TableColumn columna = tablafacturas.getColumn(Config.getConfigActual().getNombresColumnasStandard()[i]);
+            if (Config.getConfigActual().getAnchoColumnasStandard()[i]!=0)
             {
-                columna.setMaxWidth((int)Config.getAnchoColumnasStandard()[i]);
-                columna.setMinWidth((int)Config.getAnchoColumnasStandard()[i]);
+                columna.setMaxWidth((int)Config.getConfigActual().getAnchoColumnasStandard()[i]);
+                columna.setMinWidth((int)Config.getConfigActual().getAnchoColumnasStandard()[i]);
             }
         }
         ListSelectionModel selectionModel = tablafacturas.getSelectionModel();

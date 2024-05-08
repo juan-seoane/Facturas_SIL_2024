@@ -226,7 +226,7 @@ public class Acceso extends Application implements Initializable{
         Acceso.ventanaAcceso.show();
    
     }
-//#region ARRANCAR_PC
+//#region RUN_CTLLR
     private void arrancarControlador() throws IOException{
         
         Controlador ctrThread =new Controlador();
@@ -236,7 +236,7 @@ public class Acceso extends Application implements Initializable{
         cargarPanelControl();
     }
 //#endregion
-//#region CARGAR_PC
+//#region LOAD_C/P
     private boolean cargarPanelControl(){
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../ui/fxviews/PanelControl.fxml"));

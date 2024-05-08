@@ -60,7 +60,7 @@ public class PanelControl implements Initializable{
     public PanelControl() throws IOException {
         this.usuarioActual = Controlador.usuario;
         PanelControl.modo = Controlador.NAV;
-        this.configActual = Config.getConfig(usuarioActual).configActual;
+        this.configActual = Config.getConfigActual();
 
   }
 //#region INITIALIZE
@@ -71,10 +71,10 @@ public class PanelControl implements Initializable{
         // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
         // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
         // TODO: 12-04-2024 - Lo dejo aquí (19:13H)
-        setAño((Integer)Config.getConfig(usuarioActual).año.año());
-        setTrimestre(Config.getConfig(usuarioActual).año.trimestre());
+        setAño((Integer)Config.getConfigActual().configData.año().año());
+        setTrimestre(Config.getConfigActual().configData.año().trimestre());
         setNumfacturas(ModeloFacturas.getNumeroFacturas());
-        setUsuario(Config.getConfig(usuarioActual).getUsuario().toLowerCase());
+        setUsuario(Config.getConfigActual().usuario.toLowerCase());
     }
 //#endregion
     public void setAño(int i) throws NumberFormatException{

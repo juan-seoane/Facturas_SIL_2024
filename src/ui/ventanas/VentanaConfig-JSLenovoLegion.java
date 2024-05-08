@@ -6,10 +6,10 @@ package ui.ventanas;
 
 import modelo.*;
 import modelo.base.Config;
-import modelo.base.Contrasena;
 import modelo.base.Fichero;
 import modelo.base.FundirArchivos;
 import modelo.records.Año;
+import modelo.records.Contrasena;
 import modelo.records.NIF;
 import modelo.records.TipoGasto;
 import modelo.records.TipoIVA;
