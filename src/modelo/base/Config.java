@@ -35,7 +35,7 @@ public class Config {
 //#endregion
 
 //#region CONSTRUCTOR_NC_DE_CONFIG
-  private Config(String user) throws NullPointerException, IOException{
+  public Config(String user) throws NullPointerException, IOException{
     
     this.usuario = user;
     String dirCFGpers = "config/"+user.toUpperCase();

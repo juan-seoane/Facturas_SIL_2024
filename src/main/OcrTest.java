@@ -1,3 +1,4 @@
+package main;
 import ocr.OcrApp;
 /*
  * Se trata de una prueba en la que se extrae solamente el total de la factura en .png

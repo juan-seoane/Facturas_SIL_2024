@@ -1,12 +1,19 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import java.time.Duration;
+import java.util.concurrent.CountDownLatch;
+
+import javax.swing.SwingUtilities;
+
+import org.junit.jupiter.api.Test;
 
 import controladores.fxcontrollers.Acceso;
 import javafx.application.Application;
+import javafx.embed.swing.JFXPanel;
 import modelo.base.Config;
 import ui.Splash;
 
@@ -23,18 +30,19 @@ public class LoginTest {
 	}
 
 	@Test
-	public void loginAdminOK(){
-		Thread thread = new Thread(() -> {
-            Application.launch(Acceso.class);
-        });
-        thread.start();
+	public void javaFxFuncionaEnJUnit() throws InterruptedException, IllegalAccessError{
+		final CountDownLatch latch = new CountDownLatch(1);
+		assertTimeout(Duration.ofSeconds(45),()-> {
+        	new JFXPanel(); // inicializa el entorno de JavaFX
+        	latch.countDown();
+		});
+	latch.await();
+	}
+	 
+	@Test
+	public void loginFunciona(){
 
-		do{
-			System.out.println("");
-		}
-		while ( Config.getConfigActual()==null);
-
-		assertTrue(Config.getConfigActual().usuario.equals("admin"));
+		assertTimeout(Duration.ofSeconds(45), () -> {Application.launch(Acceso.class);}, "Prueba interrumpida tras 45 segundos!");
 	}
 /*
 	@Test

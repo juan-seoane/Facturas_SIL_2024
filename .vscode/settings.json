@@ -6,17 +6,23 @@
     "java.project.referencedLibraries": [
         "lib\\**\\*.jar",
         "lib\\javafx-sdk-21.0.2\\lib\\**\\*.jar",
+        "lib\\javafx-sdk-21.0.2\\lib\\*.jar",
         "lib\\JUnit5\\*.jar",
-        "D:\\Program Files\\JavaJDK\\JUnit5\\junit-platform-console-standalone-1.10.0.jar"
+        "lib\\JUnit5\\junit-platform-console-standalone-1.10.0.jar"
     ],
-    "javafx.libPath": "D:\\Program Files\\JavaJDK\\javafx-sdk-21\\javafx-sdk-21.0.2\\lib",
+    "javafx.libPath": "lib\\javafx-sdk-21.0.2\\lib",
     "java.dependency.showMembers": true,
     "java.project.explorer.showNonJavaResources": true,
     "java.debug.settings.onBuildFailureProceed": true,
     "java.test.config": {
         "name": "JUnit5TestConfig",
-        "vmArgs": [ "-Xmx512M" ],
-        "env": {"key": "value"}
+        "vmArgs": ["-Dprism.order = sw","-Xmx2G", "-ea"],
     },
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable"
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable",
+    "debug.javascript.breakOnConditionalError": true,
+    "java.debug.settings.vmArgs": "-Dprism.order = sw -Xmx2G",
+    "java.debug.settings.showStaticVariables": true,
+    "java.debug.settings.showLogicalStructure": false,
+    "extensions.closeExtensionDetailsOnViewChange": true,
+    "java.jdt.ls.java.home": "D:\\Program Files\\JavaJDK\\bellsoft-jdk21.0.3+10-win-x64-full\\jdk-21.0.3-full"
 }
