@@ -144,7 +144,7 @@ public class Acceso extends Application implements Initializable{
         
         Acceso.ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
             public void handle(KeyEvent ke){
-                //System.out.println("Key Pressed: " + ke.getCode());
+                System.out.println("Key Pressed: " + ke.getCode());
                 try {
                     pulsartecla();
                 } catch (Exception e) {
@@ -162,7 +162,7 @@ public class Acceso extends Application implements Initializable{
         //TODO: No sé cómo hacer para poner el foco al arrancar en ese campo de texto... la siguiente línea no funciona
         //txtUsuario.requestFocus();
         canvasAcceso = this.txtArea;
-        //System.out.println("[Acceso - initialize()] canvasAcceso activado: " + (canvasAcceso!=null) );
+        System.out.println("[Acceso - initialize()] canvasAcceso activado: " + (canvasAcceso!=null) );
     }    
 
     public static String getUsuario() {
