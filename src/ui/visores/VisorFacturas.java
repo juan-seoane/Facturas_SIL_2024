@@ -150,15 +150,15 @@ public class VisorFacturas extends JFrame{
 		panelDatosFactura.setBorder(new TitledBorder("Datos Factura"));
 		panelDatosFactura.setLayout(new FlowLayout());
 		
-		lblFecha = new Label(f.fecha().format());
+		lblFecha = new Label(f.getFecha().toString());
 		panelDatosFactura.add(new Label("Fecha"));
 		panelDatosFactura.add(lblFecha);
 
-		lblNumeroFactura = new Label(f.numeroFactura());
+		lblNumeroFactura = new Label(f.getNumeroFactura());
 		panelDatosFactura.add(new Label("Num Factura"));
 		panelDatosFactura.add(lblNumeroFactura);
 		
-		lblTipoGasto = new Label(f.categoria().tipo());
+		lblTipoGasto = new Label(f.getCategoria().getTipo());
 		panelDatosFactura.add(lblTipoGasto);
 		panelDatosFactura.setComponentPopupMenu(popup);
 		
@@ -175,7 +175,7 @@ public class VisorFacturas extends JFrame{
 		panelDatosRS.setLayout(new BorderLayout());
 		panelDatosRS.setBorder(new TitledBorder("Razon Social"));
 		
-		lblRS = new Label(f.RS().nombre());
+		lblRS = new Label(f.getRS().getNombre());
 		panelDatosRS.add(lblRS,BorderLayout.CENTER);
 		panelDatosRS.setComponentPopupMenu(popup);
 		
@@ -238,14 +238,14 @@ public class VisorFacturas extends JFrame{
 		
 		Vector temp = new Vector();
 		
-		temp.add(f.totales().base());
-		temp.add(f.totales().tipoIVA().format());
-		temp.add(f.totales().iva());
-		temp.add(f.totales().subtotal());	
-		temp.add(f.totales().baseNI());
-		temp.add(f.totales().ret());
-		temp.add(f.totales().retenciones());
-		temp.add(f.totales().total());
+		temp.add(f.getTotales().getBase());
+		temp.add(f.getTotales().getTipoIVA().getFormat());
+		temp.add(f.getTotales().getIVA());
+		temp.add(f.getTotales().getSubtotal());	
+		temp.add(f.getTotales().getBaseNI());
+		temp.add(f.getTotales().getRet());
+		temp.add(f.getTotales().getRetenciones());
+		temp.add(f.getTotales().getTotal());
 		
 		totales.add(temp);
 		
@@ -324,12 +324,12 @@ public class VisorFacturas extends JFrame{
         
         public void reemplazarDatos(int in, Factura fc){
             index = in;
-            this.setTitle("Factura numero "+fc.ID());
-            lblFecha.setText(fc.fecha().format());
+            this.setTitle("Factura numero "+fc.getID());
+            lblFecha.setText(fc.getFecha().toString());
             
-            lblNumeroFactura.setText(fc.numeroFactura());
-            lblTipoGasto.setText(fc.categoria().tipo());
-            lblRS.setText(fc.RS().nombre());
+            lblNumeroFactura.setText(fc.getNumeroFactura());
+            lblTipoGasto.setText(fc.getCategoria().getTipo());
+            lblRS.setText(fc.getRS().getNombre());
             
             extractos.clear();
 /*            
@@ -349,14 +349,14 @@ public class VisorFacturas extends JFrame{
             totales = new Vector<Vector >(); 
             Vector temp = new Vector();
 
-            temp.add(fc.totales().base());
-            temp.add(fc.totales().tipoIVA().format());
-            temp.add(fc.totales().iva());
-            temp.add(fc.totales().subtotal());	
-            temp.add(fc.totales().baseNI());
-            temp.add(fc.totales().ret());
-            temp.add(fc.totales().retenciones());
-            temp.add(fc.totales().total());
+            temp.add(fc.getTotales().getBase());
+            temp.add(fc.getTotales().getTipoIVA().getFormat());
+            temp.add(fc.getTotales().getIVA());
+            temp.add(fc.getTotales().getSubtotal());	
+            temp.add(fc.getTotales().getBaseNI());
+            temp.add(fc.getTotales().getRet());
+            temp.add(fc.getTotales().getRetenciones());
+            temp.add(fc.getTotales().getTotal());
 
             totales.add(temp);
 
@@ -372,7 +372,7 @@ public class VisorFacturas extends JFrame{
 
             tabla2.setModel(new DefaultTableModel(totales,columnas2));
             
-            txtNota.setText(fc.nota().texto());
+            txtNota.setText(fc.getNota().getTexto());
             
             repaint();
         }

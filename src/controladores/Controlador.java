@@ -292,7 +292,7 @@ public class Controlador extends Thread {
     }
     
     private boolean copiaseguridad(boolean[] opciones) throws NullPointerException, IOException{
-        FicheroAutomatico auto = new FicheroAutomatico(opciones, Config.getConfig(Controlador.usuario).getUsuario(),Config.getConfig(Controlador.usuario).configData.año().año(),Config.getConfig(Controlador.usuario).configData.año().trimestre());
+        FicheroAutomatico auto = new FicheroAutomatico(opciones, Config.getConfig(Controlador.usuario).getUsuario(),Config.getConfig(Controlador.usuario).configData.getAño().getAño(),Config.getConfig(Controlador.usuario).configData.getAño().getTrimestre());
         String [] rutas = auto.getRutas();
         System.out.println(rutas[0]);
         System.out.println(rutas[1]);

@@ -71,8 +71,8 @@ public class PanelControl implements Initializable{
         // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
         // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
         // TODO: 12-04-2024 - Lo dejo aquí (19:13H)
-        setAño((Integer)Config.getConfigActual().configData.año().año());
-        setTrimestre(Config.getConfigActual().configData.año().trimestre());
+        setAño((Integer)Config.getConfigActual().configData.getAño().getAño());
+        setTrimestre(Config.getConfigActual().configData.getAño().getTrimestre());
         setNumfacturas(ModeloFacturas.getNumeroFacturas());
         setUsuario(Config.getConfigActual().usuario.toLowerCase());
     }

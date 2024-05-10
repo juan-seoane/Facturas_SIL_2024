@@ -1,12 +1,12 @@
 
 import java.io.IOException;
 import javax.swing.UIManager;
-import javafx.application.Application;
 import com.jtattoo.plaf.graphite.GraphiteLookAndFeel;
 
 import ui.Splash;
 import controladores.Controlador;
 import controladores.fxcontrollers.Acceso;
+import javafx.application.Application;
 
 public class Main {
     
