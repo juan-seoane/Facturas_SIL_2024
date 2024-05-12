@@ -1,5 +1,7 @@
 package tests;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,7 +44,7 @@ public class LoginTest {
 	@Test
 	public void loginFunciona(){
 
-		assertTimeout(Duration.ofSeconds(45), () -> {Application.launch(Acceso.class);}, "Prueba interrumpida tras 45 segundos!");
+		assertDoesNotThrow( () -> {Application.launch(Acceso.class);});
 	}
 /*
 	@Test

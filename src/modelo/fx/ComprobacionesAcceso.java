@@ -8,6 +8,8 @@ import controladores.fxcontrollers.Acceso;
 import java.awt.HeadlessException;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class ComprobacionesAcceso {
@@ -46,7 +48,9 @@ public class ComprobacionesAcceso {
 			return false;
 		}else{
 			// Si no existe el fichero, preguntar si quiere crear un Nuevo Usuario
-			int resp = JOptionPane.showConfirmDialog(null, "El usuario no existe. ¿Quiere crear un Nuevo Usuario??", "ATENCIÓN!", JOptionPane.YES_NO_OPTION);
+			JFrame jf = new JFrame();
+			jf.setAlwaysOnTop(true);
+			int resp = JOptionPane.showConfirmDialog(jf, "El usuario no existe. ¿Quiere crear un Nuevo Usuario??", "ATENCIÓN!", JOptionPane.YES_NO_OPTION);
 			if (resp == JOptionPane.YES_OPTION) {
 				Config.getConfig(user);
 				crearNuevoUsuario(user);

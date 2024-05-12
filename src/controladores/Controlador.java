@@ -27,7 +27,7 @@ public class Controlador extends Thread {
 //    private static ControladorDistribuidores cd;
 //    private static ControladorCaja ccj;
     public static PanelControl pc;
-    private static VisorNotas notas;
+//    private static VisorNotas notas;
     public static int seccion = FACT;
 
     public static String usuario;
@@ -39,8 +39,10 @@ public class Controlador extends Thread {
         System.out.println("El usuario es "+ Controlador.usuario);
         if(Config.getConfig(Controlador.usuario)!=null){
             System.out.println("Procediendo a arrancar el Controlador de Facturas del Usuario "+ Controlador.usuario);
+            System.out.println("[Controlador.java>constructor] Aquí se cargarían los otros controladores");
+            quit();
+/*         
             arrancarCfct();
- /*           
             cd = ControladorDistribuidores.getControlador();
             cd.start();
             ccj.start();
@@ -51,7 +53,7 @@ public class Controlador extends Thread {
         }
 
 	}
-
+/*
     private ControladorFacturas arrancarCfct() {
         
         Controlador.cfct = new ControladorFacturas();
@@ -60,7 +62,7 @@ public class Controlador extends Thread {
 
         return Controlador.cfct;
     }
-    /*
+    
     public ControladorFicheros getControladorFicheros(){
 	
 		return Controlador.cfch;
@@ -79,7 +81,9 @@ public class Controlador extends Thread {
     public static void reset() throws IOException{
             
         if(Config.getConfig(Controlador.usuario)!=null){
-            cfct = ControladorFacturas.getControlador();
+            System.out.println("[Controlador.java>reset()] Aquí se cargarían de nuevo los controladores");
+            quit();
+//            cfct = ControladorFacturas.getControlador();
 //            cd = ControladorDistribuidores.getControlador();
 //            ccj = ControladorCaja.getControlador();
             pc = PanelControl.getPanelControl();
@@ -272,7 +276,7 @@ public class Controlador extends Thread {
             
         }
     }
-        
+    /*    
     private void autosave() throws NullPointerException, IOException{
         
         boolean[] opciones =  new boolean[3];
@@ -308,7 +312,7 @@ public class Controlador extends Thread {
         JOptionPane.showMessageDialog(null, "Los ficheros automáticos han sido guardados en: \n"+rutas[0]+"\n"+rutas[1]+"\n"+rutas[2]);
         return true;
     }
-
+*/
     public static void quit(){
         System.exit(0);
     }

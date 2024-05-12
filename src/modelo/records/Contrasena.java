@@ -48,6 +48,10 @@ public class Contrasena{
     this.usuario = user;
   }
 
+  public String getUsuario(){
+    return this.usuario;
+  }
+
   public void setContrasena(String contr){
     /*
     try {
@@ -57,6 +61,10 @@ public class Contrasena{
     }
     */
     this.contra = contr;
+  }
+
+  public String getContrasena(){
+    return this.contra;
   }
 /*
   public String encriptar(String contras) throws NoSuchAlgorithmException{

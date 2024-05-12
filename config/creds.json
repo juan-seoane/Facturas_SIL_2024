@@ -1,6 +1,5 @@
 {
-  "creds": [
-	{"usuario": "admin","contra": "admin"},
-	{"usuario": "juan","contra": "1042"}
-  ]
+ "creds": [
+	{"usuario":"admin","contra":"admin"}
+	]
 }

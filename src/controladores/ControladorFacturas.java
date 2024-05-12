@@ -41,6 +41,7 @@ public class ControladorFacturas extends Thread {
     public static VentanaFiltros filtros;
 
     ControladorFacturas() {
+/*        
         m = ModeloFacturas.getModelo();
         tabla = new TablaFacturas(m.generarVectorFacturas(), m.getColumnas());
         actualizarTabla(0);
@@ -52,6 +53,7 @@ public class ControladorFacturas extends Thread {
         this.form = FormularioFact.getFormulario();
         this.filtros = VentanaFiltros.getVentana();
         visible(true);
+*/        
     }
 //TODO : Cambiar la GUI Tabla de Facturas a JavaFX y la clase Factura a Record
     public static ControladorFacturas getControlador() {

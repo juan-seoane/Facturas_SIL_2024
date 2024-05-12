@@ -403,7 +403,13 @@ public String getUsuario(){
     else
       return false;
   }
+  
+  public static void guardarCredenciales(Credenciales n_creds) {
+    String ruta = "./config/creds.json";
+    Fichero.guardarJSON(n_creds.toString(), ruta);
+  }
 //#endregion
+
 
 
 }

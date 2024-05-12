@@ -17,13 +17,33 @@ import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class ConfigTest {
 
 	@Test
-	void borrarSubdirs(){
-		File dir1 = new File("./config/TESTUSER");
-		File dir2 = new File("./datos/TESTUSER");
+	void borrarDatosUsuario(){
+		String user="juans";
+
+		Credenciales cred_prev = Config.leerCredenciales("./config/creds.json");
+		var listaCredsNueva = new ArrayList<Contrasena>();
+		for (Contrasena c : cred_prev.getlistacreds()){
+			if (!c.getUsuario() .equals(user))
+				listaCredsNueva.add(c); 
+		}
+
+		var n_creds = new Credenciales();
+		n_creds.setListaCredenciales(listaCredsNueva);
+
+		Config.guardarCredenciales(n_creds);
+
+		borrarSubdirs(user);
+
+	}
+
+	void borrarSubdirs(String user){
+		File dir1 = new File("./config/"+user.toUpperCase());
+		File dir2 = new File("./datos/"+user.toUpperCase());
 
 		recursiveDelete(dir1);
 		recursiveDelete(dir2);

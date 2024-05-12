@@ -40,6 +40,10 @@ public class Credenciales{
 				
 		}
 		
-		return ("{\n creds: [\n" + listaContr+"	]\n}");
+		return ("{\n \"creds\": [\n" + listaContr+"	]\n}");
+	}
+
+	public void setListaCredenciales(ArrayList<Contrasena> listaCreds) {
+		this.creds = listaCreds;
 	}
 }
