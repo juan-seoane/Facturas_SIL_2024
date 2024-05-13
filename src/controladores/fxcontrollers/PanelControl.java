@@ -60,7 +60,7 @@ public class PanelControl implements Initializable{
     public PanelControl() throws IOException {
         this.usuarioActual = Controlador.usuario;
         PanelControl.modo = Controlador.NAV;
-        this.configActual = Config.getConfigActual();
+        this.configActual = Config.getConfig(this.usuarioActual);
 
   }
 //#region INITIALIZE
@@ -71,10 +71,10 @@ public class PanelControl implements Initializable{
         // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
         // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
         // TODO: 12-04-2024 - Lo dejo aquí (19:13H)
-        setAño((Integer)Config.getConfigActual().configData.getAño().getAño());
-        setTrimestre(Config.getConfigActual().configData.getAño().getTrimestre());
+        setAño((Integer)this.configActual.configData.getAño().getAño());
+        setTrimestre(this.configActual.configData.getAño().getTrimestre());
         setNumfacturas(ModeloFacturas.getNumeroFacturas());
-        setUsuario(Config.getConfigActual().usuario.toLowerCase());
+        setUsuario(this.configActual.usuario.toLowerCase());
     }
 //#endregion
     public void setAño(int i) throws NumberFormatException{
@@ -95,27 +95,27 @@ public class PanelControl implements Initializable{
     }
     @FXML    
     private void btnCFGpulsado(Event evt) {
-        System.out.println("Boton CFG pulsado!");
+        System.out.println(" [PanelControl.java] Boton CFG pulsado!");
         botonactivo = 4;
         botonpulsado = true;
     }
     @FXML
     private void btnNTSpulsado(Event evt) {
-        System.out.println("Boton NTS pulsado!");
+        System.out.println(" [PanelControl.java] Boton NTS pulsado!");
         botonactivo = 3;
         botonpulsado = true;
 
     }
     @FXML
     private void btnRSpulsado(Event evt) {
-        System.out.println("Boton DIST pulsado!");        
+        System.out.println(" [PanelControl.java] Boton DIST pulsado!");        
         botonactivo = 2;
         botonpulsado = true;
 
     }
     @FXML
     private void btnFCTpulsado(Event evt) {
-        System.out.println("Boton FCT pulsado!");
+        System.out.println(" [PanelControl.java] Boton FCT pulsado!");
         botonactivo = 1;
         botonpulsado = true;
     }
@@ -126,7 +126,7 @@ public class PanelControl implements Initializable{
 */
     @FXML
     private void btnCJApulsado(Event evt) {
-        System.out.println("Boton CJA pulsado!");
+        System.out.println(" [PanelControl.java] Boton CJA pulsado!");
         botonactivo = 5;
         botonpulsado = true;
     }
@@ -138,7 +138,7 @@ public class PanelControl implements Initializable{
     }
     @FXML
     private void btnAutosavePressed(Event evt) {
-        System.out.println("Boton AutoSave pulsado!");
+        System.out.println(" [PanelControl.java] Boton AutoSave pulsado!");
         btnAutosavepulsado(evt);
         ((Button)evt.getSource()).setStyle("-fx-background-color: yellow; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3");
 
@@ -151,17 +151,17 @@ public class PanelControl implements Initializable{
     }  
     @FXML
     private void toggleModopulsado(Event evt) {
-        System.out.println("Boton MODO pulsado!");
+        System.out.println(" [PanelControl.java] Boton MODO pulsado!");
         if (((ToggleButton)(evt.getSource())).isSelected()){
             toggleModo.setText("MODO INGR");
             toggleModo.setStyle("-fx-background-color: yellow; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3");
-            System.out.println("modo: INGR");
+            System.out.println( " [PanelControl.java] modo: INGR");
             modo = Controlador.INGR;
         }
         else if (!((ToggleButton)(evt.getSource())).isSelected()){
             toggleModo.setText("MODO NAV");
             toggleModo.setStyle("-fx-background-color: transparent; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3"); 
-            System.out.println("modo: NAV");
+            System.out.println(" [PanelControl.java] modo: NAV");
             modo = Controlador.NAV;
         }       
         botonactivo = 7;

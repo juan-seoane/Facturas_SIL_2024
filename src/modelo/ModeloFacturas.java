@@ -35,17 +35,17 @@ public class ModeloFacturas {
     static int ultimaID;
     public static int numeroFacturas = 0;
 
-    private ModeloFacturas() {
-        ficheroFacturas = new Fichero<Factura>(Config.getConfigActual().getRutaFCT().toString());
+    private ModeloFacturas() throws NullPointerException, IOException {
+        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.usuario).getRutaFCT().toString());
         facturas = ficheroFacturas.leer();
-        this.numeroFacturas = facturas.size();
-        this.ultimaID = facturas.size();
+        numeroFacturas = facturas.size();
+        ultimaID = facturas.size();
         vectorfacturas = generarVectorFacturas();
         
-//        //System.out.println("Tamano del array de facturas: " + facturas.size());
+//        //System.out.println(" [ModeloFacturas] Tamano del array de facturas: " + facturas.size());
     }
     
-    public static ModeloFacturas getModelo(){
+    public static ModeloFacturas getModelo() throws NullPointerException, IOException{
         
         if (instancia == null)
             instancia = new ModeloFacturas();
@@ -53,14 +53,14 @@ public class ModeloFacturas {
     }
     
     public int getUltimaID() {
-        return this.ultimaID;
+        return ultimaID;
     }
 
     public static int getNumeroFacturas() {
         return numeroFacturas;
     }
 
-    public Factura getFactura(int index) {
+    public Factura getFactura(int index) throws NullPointerException, IOException {
         List<Factura> listafacturas = leerFacturas();
         if (listafacturas.size() > 0) {
             return listafacturas.get(index);
@@ -77,32 +77,34 @@ public class ModeloFacturas {
         return pilafacturassig;
     }
     
-    public int getIndexOfFactura(Factura f){
+    public int getIndexOfFactura(Factura f) throws NullPointerException, IOException{
         int index;
         
         List<Factura> listafact = leerFacturas();
         for (Factura fact : listafact )
             if (f.equals(fact)){
-                index = fact.ID()-1;
+                index = fact.getID()-1;
                 return index;
             }
         return 0;
     }
-    
+/*    
     public boolean autosave(String ruta){
         Fichero<Factura> auto = new Fichero<Factura>(ruta);
         if (auto.escribir((ArrayList<Factura>)facturas))
             return true;
         else return false;
     }
-    
-    public List<Factura> leerFacturas() {
-        ficheroFacturas = new Fichero<Factura>(Config.getConfigActual().getRutaFCT().toString());
+*/    
+//#region leerFacturas()    
+    public List<Factura> leerFacturas() throws NullPointerException, IOException {
+        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.usuario).getRutaFCT().toString());
         facturas = ficheroFacturas.leer();
-        this.numeroFacturas = facturas.size();
-        this.ultimaID = facturas.size();
+        numeroFacturas = facturas.size();
+        ultimaID = facturas.size();
         return filtrar(facturas);
     }
+//#endregion    
     public List<Factura> filtrar(List<Factura> lista) {
         
         for (int i = 0; i < lista.size(); i++){
@@ -121,10 +123,10 @@ public class ModeloFacturas {
         for (Factura f : lista){
             i++;
 // TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
-//            f.setID(i);
+            f.setID(i);
             ultimaID = i;
         }
-        
+/*
         List<Factura> lista2, lista3, lista4;
         if (TablaFacturas.filtrosActivos()){
             if (ControladorFacturas.filtros.getChbFiltroFecha().isSelected())
@@ -147,9 +149,10 @@ public class ModeloFacturas {
             }
             else lista4 = lista3;
 
-            /** TODO : ACORDARSE DE ACTUALIZAR LOS TOTALES DESPUES DE FILTRAR! */
+// TODO : ACORDARSE DE ACTUALIZAR LOS TOTALES DESPUES DE FILTRAR! 
             return lista4;
         }
+*/
         return lista;
     }
     public boolean insertarFacturas(ArrayList<Factura> facturas) throws NumberFormatException, IOException {
@@ -174,7 +177,7 @@ public class ModeloFacturas {
     } 
 
     public boolean editarFactura(ArrayList<Factura> listafacturas, Factura factura, int index) throws NumberFormatException, IOException {
-//        //System.out.println("Indice en Modelo : " + index);
+//        //System.out.println(" [ModeloFacturas] Indice en Modelo : " + index);
 
         listafacturas.set(index, factura);
         Collections.sort(listafacturas);
@@ -191,7 +194,7 @@ public class ModeloFacturas {
         
         if (res == JOptionPane.YES_OPTION){
             for (Factura f : facturas){
-                if (f.RS().equals(antrs)){
+                if (f.getRS().equals(antrs)){
 // TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
 //                    f.RS(nuevars);
                 }
@@ -204,7 +207,7 @@ public class ModeloFacturas {
     
     public boolean borrarFactura(Factura factura, int index) throws NumberFormatException, IOException {
         pilafacturasant.push(factura);
-//        //System.out.println("Indice en Modelo : " + index);
+//        //System.out.println(" [ModeloFacturas] Indice en Modelo : " + index);
         int res = JOptionPane.showConfirmDialog(null,
                 "Desea realmente borrar la factura?", "Advertencia!", JOptionPane.YES_NO_OPTION);
 
@@ -278,8 +281,8 @@ public class ModeloFacturas {
        return razon;
     }
 */  
-    public Vector<Factura> generarVectorFacturas() {
-        vectorfacturas = new Vector<Factura>();
+    public static Vector<Factura> generarVectorFacturas() {
+        var vectorfacturas = new Vector<Factura>();
         if (facturas.size() > 0) {
             for (Factura f : facturas) {
                 vectorfacturas.add(f);
@@ -290,10 +293,10 @@ public class ModeloFacturas {
         return vectorfacturas;
     }
 
-    public static Vector<String> getColumnas() {
+    public static Vector<String> getColumnas() throws NullPointerException, IOException {
         Vector<String> columnas = new Vector<String>();
-        for (int i = 1; i <= Config.getConfigActual().uiData.nombreColsFCT().length; i++) {
-            columnas.add(Config.getConfigActual().uiData.nombreColsFCT()[i]);
+        for (int i = 0; i < Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT().length; i++) {
+            columnas.add(Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT()[i]);
         }
 
         return columnas;

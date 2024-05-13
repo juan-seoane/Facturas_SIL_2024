@@ -21,7 +21,7 @@ public class Main {
             GraphiteLookAndFeel graphite = new GraphiteLookAndFeel();
             UIManager.setLookAndFeel(graphite);
         }catch(Exception e){
-            //System.out.println("Error "+e);
+            //System.out.println(" [Main] Error "+e);
         }
         
         Splash window = new Splash();

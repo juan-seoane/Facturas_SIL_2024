@@ -26,6 +26,7 @@ public class ComprobacionesAcceso {
 		String rutaDirPers = "./config/"+user.toUpperCase();
 		String rutasCFG = "./config/"+user.toUpperCase()+"/"+"rutasconfig.json";
 
+		Acceso.imprimir(Acceso.getCanvas(), "\nDatos introducidos : " + user + " - " + pass );
 		if ( Fichero.dirExists(rutaDirPers) && Fichero.fileExists(rutasCFG) ){
 			// TODO: Si existe el Subdirectorio y el archivo config, lo lee.. (Cambiar por chequear las credenciales del archivo config base)
 			//TODO: Otra vez tuve que hacer público el constructor de la clase Config...por lo que...¿Singleton...?
@@ -33,19 +34,13 @@ public class ComprobacionesAcceso {
 			for (Contrasena contr : Config.leerCredenciales(rutaCreds).creds){
 				//TODO: Revisar el modo de comprobación de credenciales    
 					System.out.println("[ComprobacionesAcceso.java>comprobarCredenciales()]\nDatos introducidos : usuario: "+ user + "  - pass: "+ pass + " > Datos obtenidos de Config: " + contr.usuario +" - " + contr.contra);
-
-					Acceso.imprimir(Acceso.getCanvas(), "\nDatos introducidos : " + user + " - " + pass );
 					if (user.toUpperCase().equals(contr.usuario.toUpperCase())){
 						ComprobacionesAcceso.userOK = true;
 						if(pass.toUpperCase().equals(contr.contra.toUpperCase())){
-							ComprobacionesAcceso.passOK = true;
-							return true;
-						}
-						return false;
+							ComprobacionesAcceso.passOK = true;		
+					}					
 				}
-				return false;	
 			}
-			return false;
 		}else{
 			// Si no existe el fichero, preguntar si quiere crear un Nuevo Usuario
 			JFrame jf = new JFrame();
@@ -59,10 +54,13 @@ public class ComprobacionesAcceso {
 				// TODO 09-04-2024: Incluir las nuevas credenciales en el archivo config.json base
 				return true; // Le damos acceso (ya están creados usuario y contrasena)
 			} else {
-				System.out.println("No existe el Usuario...");
-				return false;
+				System.out.println("[ComprobacionesAcceso.java] No existe el Usuario...");
+
 			}
 		}
+		if(userOK && passOK)
+			return true;
+		else return false;
 	}
 //#endregion
 //#region CREAR_NUEVO_USUARIO()

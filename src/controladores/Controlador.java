@@ -39,10 +39,11 @@ public class Controlador extends Thread {
         System.out.println("El usuario es "+ Controlador.usuario);
         if(Config.getConfig(Controlador.usuario)!=null){
             System.out.println("Procediendo a arrancar el Controlador de Facturas del Usuario "+ Controlador.usuario);
-            System.out.println("[Controlador.java>constructor] Aquí se cargarían los otros controladores");
-            quit();
-/*         
-            arrancarCfct();
+            System.out.println("[Controlador.java>constructor] Aquí se cargarían los otros controladores");        
+// TODO : 13-05-2024 - Lo dejo aquí, hay que seguir desde aquí abajo... 
+// TODO : 13-05-2024 -Falta rediseñar el PnlCtl y la tabla de Facturas
+//            arrancarCfct();
+/*            
             cd = ControladorDistribuidores.getControlador();
             cd.start();
             ccj.start();
@@ -53,15 +54,17 @@ public class Controlador extends Thread {
         }
 
 	}
-/*
-    private ControladorFacturas arrancarCfct() {
+//#region arrancarCFCT
+    private synchronized ControladorFacturas arrancarCfct() {
         
-        Controlador.cfct = new ControladorFacturas();
+        Controlador.cfct = ControladorFacturas.getControlador();
         Controlador.cfct.setName("Contr_FCT");
         Controlador.cfct.start();
 
         return Controlador.cfct;
     }
+//#endregion
+/*
     
     public ControladorFicheros getControladorFicheros(){
 	

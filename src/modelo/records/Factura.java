@@ -3,7 +3,8 @@ package modelo.records;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class Factura implements Comparable<Factura> {
+@SuppressWarnings("rawtypes")
+public class Factura extends Vector implements Comparable<Factura> {
     private Integer ID;
     private String numeroFactura;
     private Fecha fecha;
@@ -26,7 +27,11 @@ public class Factura implements Comparable<Factura> {
         this.nota = nota;
     }
 
-    public Integer getID() {
+    public Factura() {
+		this(0,"000000-OOO",new Fecha(17,03,2024),new RazonSocial(), new TipoGasto("tipoGasto_generico","descripción"),false,new ArrayList<Extracto>(),new Totales(),new Nota(0,"Nota_generica"));
+	}
+
+	public Integer getID() {
         return ID;
     }
 
@@ -102,13 +107,14 @@ public class Factura implements Comparable<Factura> {
     public int compareTo(Factura b){
       return (this.fecha.compareTo(b.getFecha()));
    }
-   
+//#region TOVECTOR()   
    public static Vector<Factura> toVector(Factura f){
      Vector<Factura> vector = new Vector<Factura>();
      vector.add(f);
  
-     System.out.println("transformando a Vector: "+vector.toString());
+     System.out.println(" [Factura.java] transformando Factura a Vector: "+vector.toString());
      return vector;
    }
+//#endregion   
 }
 

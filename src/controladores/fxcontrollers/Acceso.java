@@ -57,9 +57,9 @@ public class Acceso extends Application implements Initializable{
         String pass = passF.getText();
        // Acceso.imprimir(txtArea, "[Acceso.java>probar()]Datos introducidos : "+ userF.getText()+ " - "+passF.getText());
 
-        //System.out.println("[Acceso.java>probar()]Contenido del Área de Texto: "+ this.txtArea.getText());
+        //System.out.println("[Acceso.java>probar()] Contenido del Área de Texto: "+ this.txtArea.getText());
         //Acceso.imprimir(this.txtArea, "texto introducido : "+ userF.getText() + " - " +passF.getText()+" - intentos: "+ intentos);
-        //System.out.println("texto introducido : "+ userF.getText() + " - " +passF.getText());
+        //System.out.println("[Acceso.java>probar()] texto introducido : "+ userF.getText() + " - " +passF.getText());
 //TODO: OJO! Usuario siempre se contrasta en mayúsculas (aunque esté escrito en minúsculas)
         ComprobacionesAcceso check = new ComprobacionesAcceso();
         credsOK = check.comprobarCredenciales(user, pass);
@@ -144,12 +144,14 @@ public class Acceso extends Application implements Initializable{
         
         Acceso.ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
             public void handle(KeyEvent ke){
-                System.out.println("Key Pressed: " + ke.getCode());
+                System.out.println("[Acceso.java>cambiarEscena()]Key Pressed: " + ke.getCode());
                 try {
                     pulsartecla();
-                } catch (Exception e) {
-                    System.out.println("[Acceso.java>cambiarEscena] Excepción manejando el KeyEvent");
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
+
                 ke.consume(); // <-- stops passing the event to next node
             }  
          });
@@ -174,7 +176,7 @@ public class Acceso extends Application implements Initializable{
         return Acceso.canvasAcceso;
     }
 
-    private void pulsartecla() throws Exception{
+    private void pulsartecla() throws IOException {
 
         iniciarPrograma();
         
@@ -183,9 +185,14 @@ public class Acceso extends Application implements Initializable{
         }
     }
 
-    private void iniciarPrograma() throws IOException {
+    private void iniciarPrograma(){
 
-        arrancarControlador();
+        try {
+            arrancarControlador();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         Acceso.ventanaAcceso.close();
 //        Platform.exit();
     }
@@ -228,7 +235,7 @@ public class Acceso extends Application implements Initializable{
     }
 //#region RUN_CTLLR
     private void arrancarControlador() throws IOException{
-        
+ // TODO: 13-05-2024 : Aquí arroja una 'IOException' que afecta al hilo general del programa... Habría que ver cómo evitar que se propague a las llamadas anteriores...       
         Controlador ctrThread =new Controlador();
         ctrThread.setName("Controlador_Ppal");
         ctrThread.start();

@@ -23,7 +23,7 @@ public class ConfigTest {
 
 	@Test
 	void borrarDatosUsuario(){
-		String user="juans";
+		String user="admin";
 
 		Credenciales cred_prev = Config.leerCredenciales("./config/creds.json");
 		var listaCredsNueva = new ArrayList<Contrasena>();
