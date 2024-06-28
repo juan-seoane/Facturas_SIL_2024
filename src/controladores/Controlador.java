@@ -6,6 +6,10 @@ import ui.ventanas.VentanaAutosave;
 import ui.visores.VisorNotas;
 import controladores.fxcontrollers.Acceso;
 import controladores.fxcontrollers.PanelControl;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import javax.swing.JOptionPane;
@@ -22,7 +26,8 @@ public class Controlador extends Thread {
     public static final int CONFIG = 5;
         
 //	  private static ControladorFicheros cfch;
-    private static ControladorFacturas cfct;
+    public static ControladorFacturas cfct;
+    public static Controlador instancia;
    
 //    private static ControladorDistribuidores cd;
 //    private static ControladorCaja ccj;
@@ -32,68 +37,79 @@ public class Controlador extends Thread {
 
     public static String usuario;
 
-// TODO: 09/04/24 - Reorganizar los hilos que genera (ControladorFCT, ControladorDIST, etc...)
-// TODO: 09/04/24 - Consultar cómo se puede hacer Singleton	
-    public Controlador() throws IOException{
-        Controlador.usuario = Acceso.getUsuario();
-        System.out.println("El usuario es "+ Controlador.usuario);
-        if(Config.getConfig(Controlador.usuario)!=null){
-            System.out.println("Procediendo a arrancar el Controlador de Facturas del Usuario "+ Controlador.usuario);
-            System.out.println("[Controlador.java>constructor] Aquí se cargarían los otros controladores");        
-// TODO : 13-05-2024 - Lo dejo aquí, hay que seguir desde aquí abajo... 
+// TODO: 04/06/24 - Comprobar los hilos que se generan (ControladorFCT, ControladorDIST, etc...)... Parece que sólo funciona el P/C
+// TODO: 04/06/24 - Hacer Singleton
+
+    private Controlador() throws IOException{
+
+        Controlador.usuario = Config.getCongig().getUsuario();
+        System.out.println("[Controlador.java>constructor] El usuario es "+ Config.getCongig().getUsuario());        
+
 // TODO : 13-05-2024 -Falta rediseñar el PnlCtl y la tabla de Facturas
-//            arrancarCfct();
+   
+        cfct = ControladorFacturas.getControlador();
+        cfct.setName("Ctrl_FCT"); 
+        cfct.start();
+//TODO : 21-06-2024 - Estas asignaciones me hacen falta
 /*            
-            cd = ControladorDistribuidores.getControlador();
-            cd.start();
-            ccj.start();
-            
-            //TODO: 06/04/2024 Tuve que cambiar el controlador de la clase PanelControl a public       
-            pc.setVisible(true);
+        pc = PanelControl.getPanelControl();
+                 
+        cd = ControladorDistribuidores.getControlador();
+        cd.start();
+        ccj.start();
+        
+        //TODO: 06/04/2024 Tuve que cambiar el controlador de la clase PanelControl a public       
+        pc.setVisible(true);
 */
-        }
 
 	}
-//#region arrancarCFCT
-    private synchronized ControladorFacturas arrancarCfct() {
-        
-        Controlador.cfct = ControladorFacturas.getControlador();
-        Controlador.cfct.setName("Contr_FCT");
-        Controlador.cfct.start();
-
-        return Controlador.cfct;
-    }
-//#endregion
+	public static synchronized Controlador getControlador(){
+        if (instancia==null){
+            try {
+                instancia = new Controlador();
+            } catch (IOException e) {
+                System.out.println("[Controlador.java>getControlador()] Excepcion generando la instancia del Controlador Principal");
+                System.exit(0);
+//                e.printStackTrace();
+            }
+        }
+		return instancia;
+	}
 /*
     
     public ControladorFicheros getControladorFicheros(){
 	
 		return Controlador.cfch;
 	}
+*/	
+//#region GET_CFCT()
+	public static synchronized ControladorFacturas getControladorFacturas(){
 	
-	public ControladorFacturas getControladorFacturas(){
-	
-		return Controlador.cfct;
+		return cfct;
 	}
-        
+//#endregion
+/*       
     public ControladorCaja getControladorCaja(){
 	
 		return Controlador.ccj;
 	}
-*/        
+*/
+//#region RESET()       
     public static void reset() throws IOException{
-            
+        System.out.println("[Controlador.java>reset()] El programa se cerrará!");
+        quit(); 
+/*          
         if(Config.getConfig(Controlador.usuario)!=null){
-            System.out.println("[Controlador.java>reset()] Aquí se cargarían de nuevo los controladores");
-            quit();
-//            cfct = ControladorFacturas.getControlador();
-//            cd = ControladorDistribuidores.getControlador();
-//            ccj = ControladorCaja.getControlador();
+
+            cfct = ControladorFacturas.getControlador();
+            cd = ControladorDistribuidores.getControlador();
+            ccj = ControladorCaja.getControlador();
             pc = PanelControl.getPanelControl();
-//            pc.setVisible(true);
             
         }
+*/
     }
+//#endregion
 /*        
     public static void verNotas(){
         seccion = NOTAS;
@@ -197,86 +213,104 @@ public class Controlador extends Thread {
         ccj.verCaja(index); 
     }
 */
+//#region RUN_SWITCH
     @Override
-    public void run() {
-        
+    public void run() { 
+
         while(true){
-            try {
-                if (!PanelControl.getPanelControl().botonpulsado()){
-                    System.out.print("");
-                }
-                else if (PanelControl.getPanelControl().botonpulsado()){
-                    switch (PanelControl.getPanelControl().seleccion()){
-                        case 1 :
-                            seccion = FACT;
-//                        cfct.visible(true);
-//                        ControladorDistribuidores.setEstado(0);
-//                        cd.visible(false);
-//                        ccj.visible(false);
-                            PanelControl.reset();
-                            break;
-                        case 2 :
-                            seccion = DIST;
-//                        cfct.visible(false);
-//                        ControladorDistribuidores.setEstado(1);
-//                        cd.visible(true);
-//                        ccj.visible(false);
-                            PanelControl.reset();
-                            break;
-                        case 3 :
-                            seccion = NOTAS;
-//                        cfct.visible(false);
-//                        ControladorDistribuidores.setEstado(0);
-//                        cd.visible(false);
-//                        ccj.visible(false);
-//                        verNotas();                            
-                            PanelControl.reset();
-                            break;
-                        case 4 :
-                            seccion = CONFIG;
-//                        cfct.visible(false);
-//                        ControladorDistribuidores.setEstado(0);
-//                        cd.visible(false);
-//                        ccj.visible(false);
-//                        VentanaConfig vc = new VentanaConfig();
-//                        vc.setVisible(true);
-                            PanelControl.reset();
-                            break;
-                        case 5:
-                            seccion = CAJA;
-//                        ccj.visible(true);
-//                        cfct.visible(false);
-//                        ControladorDistribuidores.setEstado(0);
-//                        cd.visible(false);                           
-                            PanelControl.reset();
-                            break;
-                        case 6:  
-//                            autosave();
-                            PanelControl.reset();
-                            break;
-                        case 7:
-                            if (PanelControl.getModo() == NAV){
-                                if (seccion == FACT){
-//                                cfct.visible(true);
-                                }
+
+            if (PanelControl.getPanelControl().botonpulsado()){
+                switch (PanelControl.getPanelControl().seleccion()){
+                    case 1 :
+// TODO : 27-05-2024 - Aquí hay que activar la Tabla/Visor (dependiendo del modo INGR/NAV) de Facturas
+                        seccion = FACT;
+                        if (PanelControl.getModo() == NAV){
+                            //Visor y Tabla FCT visibles
+                            //Arrancar ctrFCT
+                        }
+                        else if (PanelControl.getModo() == INGR){
+                            //pc.cargarTablaFacturas();
+                            //this.cfct = ControladorFacturas.getControlador();
+                        }
+                        //Las demás ventanas se cierran
+
+    //                        cfct.visible(true);
+    //                        ControladorDistribuidores.setEstado(0);
+    //                        cd.visible(false);
+    //                        ccj.visible(false);
+
+                        //El P/C se vuelve a abrir, reseteado
+                        PanelControl.reset();
+                        break;
+                    case 2 :
+                        seccion = DIST;
+    //                        cfct.visible(false);
+    //                        ControladorDistribuidores.setEstado(1);
+    //                        cd.visible(true);
+    //                        ccj.visible(false);
+                        PanelControl.reset();
+                        break;
+                    case 3 :
+                        seccion = NOTAS;
+    //                        cfct.visible(false);
+    //                        ControladorDistribuidores.setEstado(0);
+    //                        cd.visible(false);
+    //                        ccj.visible(false);
+    //                        verNotas();                            
+                        PanelControl.reset();
+                        break;
+                    case 4 :
+                        seccion = CONFIG;
+    //                        cfct.visible(false);
+    //                        ControladorDistribuidores.setEstado(0);
+    //                        cd.visible(false);
+    //                        ccj.visible(false);
+    //                        VentanaConfig vc = new VentanaConfig();
+    //                        vc.setVisible(true);
+                        PanelControl.reset();
+                        break;
+                    case 5:
+                        seccion = CAJA;
+    //                        ccj.visible(true);
+    //                        cfct.visible(false);
+    //                        ControladorDistribuidores.setEstado(0);
+    //                        cd.visible(false);                           
+                        PanelControl.reset();
+                        break;
+                    case 6:  
+    //                            autosave();
+                        PanelControl.reset();
+                        break;
+                    case 7:
+                        if (PanelControl.getModo() == NAV){
+                            if (seccion == FACT){
+    //                                cfct.visible(true);
                             }
-                            else {
-                                if (seccion == FACT){
-//                                cfct.visible(true);
-                                }
+                        }
+                        else {
+                            if (seccion == FACT){
+    //                                cfct.visible(true);
                             }
-                            PanelControl.reset();
-                            break;
-                        default:
-                            PanelControl.reset();
-                            break;       
-                    }
+                        }
+                        PanelControl.reset();
+                        break;
+                    case 11:
+                        System.out.println("[Controlador.java>run()] btn FCT desactivado!");
+                        PanelControl.reset();
+                        break;
+                    default:
+                        PanelControl.reset();
+                        break;       
                 }
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
-            
+//#region LATENCIA<400ms
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.exit(0);
+            }
+//#endregion
         }
     }
     /*    
@@ -316,6 +350,7 @@ public class Controlador extends Thread {
         return true;
     }
 */
+    
     public static void quit(){
         System.exit(0);
     }

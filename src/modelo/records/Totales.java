@@ -6,7 +6,7 @@ package modelo.records;
 public class Totales {
   private double base;
   private boolean variosIVAs;
-  private TipoIVA tipoIVA;
+  private int tipoIVA;
   private double iva;
   private double subtotal;
   private double baseNI;
@@ -15,10 +15,10 @@ public class Totales {
   private double total;
 
   public Totales(){
-    this(0.0, false, new TipoIVA(0, null), 0.0, 0.0, 0.0, 0, 0.0, 0.0);
+    this(0.0, false,0, 0.0, 0.0, 0.0, 0, 0.0, 0.0);
   }
 
-  public Totales(double base, boolean variosIVAs, TipoIVA tipoIVA, double iva, double subtotal, double baseNI, int ret, double retenciones, double total) {
+  public Totales(double base, boolean variosIVAs, int tipoIVA, double iva, double subtotal, double baseNI, int ret, double retenciones, double total) {
       this.base = base;
       this.variosIVAs = variosIVAs;
       this.tipoIVA = tipoIVA;
@@ -46,11 +46,11 @@ public class Totales {
       this.variosIVAs = variosIVAs;
   }
 
-  public TipoIVA getTipoIVA() {
+  public int getTipoIVA() {
       return tipoIVA;
   }
 
-  public void setTipoIVA(TipoIVA tipoIVA) {
+  public void setTipoIVA(int tipoIVA) {
       this.tipoIVA = tipoIVA;
   }
 
@@ -108,6 +108,6 @@ public class Totales {
   }
 
   public static boolean comprobarTotales(Totales tot) {
-	  return ((tot.getBase() + tot.getIVA() - tot.getRetenciones() == tot.getTotal()) && (tot.getBase() * tot.getTipoIVA().getValor() /100 == tot.getIVA()) && (tot.getBase()*tot.getRet()/100 == tot.getRetenciones()));
+	  return ((tot.getBase() + tot.getIVA() - tot.getRetenciones() == tot.getTotal()) && (tot.getBase() * tot.getTipoIVA()/100 == tot.getIVA()) && (tot.getBase()*tot.getRet()/100 == tot.getRetenciones()));
   }
 }

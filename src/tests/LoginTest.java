@@ -20,6 +20,7 @@ import modelo.base.Config;
 import ui.Splash;
 
 public class LoginTest {
+
 	@Test
 	public void splashOK(){
 
@@ -46,7 +47,8 @@ public class LoginTest {
 
 		assertDoesNotThrow( () -> {Application.launch(Acceso.class);});
 	}
-/*
+
+	/*
 	@Test
 	void loginDesconocidoCreaCredsOK(){
 		assertTrue(/* Credenciales usuario nuevo creadas );
@@ -62,4 +64,5 @@ public class LoginTest {
 		assertNotNull(/* Panel de Control Obj );
 	}
 */
+
 }

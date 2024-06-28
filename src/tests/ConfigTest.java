@@ -20,15 +20,17 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class ConfigTest {
+	//Declara el usuario del que testear los datos
+	String user="admin";
 
 	@Test
 	void borrarDatosUsuario(){
-		String user="admin";
 
 		Credenciales cred_prev = Config.leerCredenciales("./config/creds.json");
 		var listaCredsNueva = new ArrayList<Contrasena>();
+		//Generar nuevo archivo de credenciales sin el usuario declarado
 		for (Contrasena c : cred_prev.getlistacreds()){
-			if (!c.getUsuario() .equals(user))
+			if (!c.getUsuario().equals(user))
 				listaCredsNueva.add(c); 
 		}
 
@@ -36,14 +38,14 @@ public class ConfigTest {
 		n_creds.setListaCredenciales(listaCredsNueva);
 
 		Config.guardarCredenciales(n_creds);
-
+		//Borrar subdirectorios de Config y Trabajo
 		borrarSubdirs(user);
 
 	}
 
-	void borrarSubdirs(String user){
-		File dir1 = new File("./config/"+user.toUpperCase());
-		File dir2 = new File("./datos/"+user.toUpperCase());
+	void borrarSubdirs(String usuario){
+		File dir1 = new File("./config/"+usuario.toUpperCase());
+		File dir2 = new File("./datos/"+usuario.toUpperCase());
 
 		recursiveDelete(dir1);
 		recursiveDelete(dir2);
@@ -66,13 +68,13 @@ public class ConfigTest {
 	
 		targetDirectory.delete();
 	  }
-
+	
 	@Test
 	void CreaConfigOK() throws NullPointerException, IOException{
-		Config configPrueba = Config.getConfig("TESTuSER");
+		Config configPrueba = Config.getConfig(user);
 		assertNotNull(configPrueba);
 	}
-  
+
 	@Test
 	void leerCredencialesOK(){
 
@@ -101,10 +103,11 @@ public class ConfigTest {
 		assertNotEquals(credenciales.creds.get(0).usuario, credenciales.creds.get(1).usuario);
   
 	}
+
 	@Test
 	void RutasConfigJsonExiste(){
 
-		String ruta="config/TESTUSER/rutasconfig.json";
+		String ruta="config/" + user.toUpperCase() + "/rutasconfig.json";
 		File fichero = new File(ruta);
 
 		assertTrue(fichero.exists());
@@ -112,29 +115,28 @@ public class ConfigTest {
 
 	@Test
 	void leerConfigDataJson(){
-		String ruta="./config/TESTUSER/configdata.json";
+		String ruta="./config/" + user.toUpperCase() + "/configdata.json";
 		String datos = Fichero.leerJSON(ruta);
 		Gson gson = new Gson();
 		ConfigData configData = gson.fromJson(datos, ConfigData.class);
-		assertEquals("TESTuSER", configData.getUser());
+		assertEquals( user, configData.getUser());
 	}
-
 
 	@Test
 	void leerRutasConfigJson(){
 
-		String ruta = "config/TESTUSER/rutasconfig.json";
+		String ruta = "config/" + user.toUpperCase() + "/rutasconfig.json";
 		String datos = Fichero.leerJSON(ruta);
 		Gson gson = new Gson();
 		RutasConfig rutas = gson.fromJson(datos, RutasConfig.class);
 		
-		assertEquals("config/TESTUSER/misdatos.json", rutas.getRutaMisDatos());
+		assertEquals( user, rutas.getRutaMisDatos());
 	}
 
 	@Test
 	void leerUIDataJson(){
 
-		String ruta = "config/TESTUSER/uidata.json";
+		String ruta = "config/" + user.toUpperCase() + "/uidata.json";
 		String datos = Fichero.leerJSON(ruta);
 		Gson gson = new Gson();
 		UIData uidata = gson.fromJson(datos, UIData.class);
@@ -145,28 +147,28 @@ public class ConfigTest {
 	@Test
 	void leerMisDatosJson(){
 
-		String ruta = "config/TESTUSER/misdatos.json";
+		String ruta = "config/" + user.toUpperCase() + "/misdatos.json";
 		String datos = Fichero.leerJSON(ruta);
 		Gson gson = new Gson();
 		MisDatos misdatos = gson.fromJson(datos, MisDatos.class);
-		assertEquals( "TESTuSER", misdatos.getUser());
+		assertEquals( user , misdatos.getUser());
 	}
 
 	@Test
 	void ConfigToStringOK() throws NullPointerException, IOException{
-		while(Config.getConfig("TESTuSER")==null){
+		while(Config.getConfig(user)==null){
 			System.out.print("");
 		}
-		Config cfgPrueba = Config.getConfig("TESTuSER");
-		System.out.println(Config.getConfigActual().toString());
-		assertEquals("TESTuSER", cfgPrueba.usuario);
+		Config cfgPrueba = Config.getConfig(user);
+		System.out.println(cfgPrueba.toString());
+		assertEquals( user, cfgPrueba.usuario);
 
 	}
 
 	@Test
 	void ConfigFilesOK() throws NullPointerException, IOException{
 	// TODO: 28-04-2024 - El problema es pasar a 'final String' un dato que viene del JSON en forma de 'String' (sin 'final')
-		Config cfgPrueba = Config.getConfig("TESTuSER");
+		Config cfgPrueba = Config.getConfig(user);
 
 		String cfgjson = cfgPrueba.rutasconfig.toJSON();
 		System.out.println(cfgjson);
@@ -180,7 +182,7 @@ public class ConfigTest {
 		String uidtjson = cfgPrueba.uiData.toJSON();
 		System.out.println(uidtjson);
 
-		assertEquals("TESTuSER", cfgPrueba.usuario);
+		assertEquals(user, cfgPrueba.usuario);
 		
 		String rutacfg1 = "config/"+cfgPrueba.usuario.toUpperCase()+"/rutasconfig.json";
 		File fcfg1 = new File(rutacfg1);
@@ -200,13 +202,13 @@ public class ConfigTest {
 // TODO: 02-05-2024 - Hay que guardar las credenciales y los ficheros de trsbajo
 	}
 // TODO: 24-04-2024 - crear método toJSON() en cada record anterior, para luego grabar los ficheros
-@Test
-void WorkingFilesOK() throws NullPointerException, IOException{
+	@Test
+	void WorkingFilesOK() throws NullPointerException, IOException{
 
-	while(Config.getConfig("TESTuSER")==null){
+	while(Config.getConfig(user)==null){
 		System.out.print("");
 	}
-	Config cfgPrueba = Config.getConfig("TESTuSER");
+	Config cfgPrueba = Config.getConfig(user);
 
 	File f1 = new File(cfgPrueba.configData.getRutas().getFCT());
 	System.out.println("[ConfigTest] Chequeando el archivo "+ f1.getPath());
@@ -220,4 +222,5 @@ void WorkingFilesOK() throws NullPointerException, IOException{
 	System.out.println("[ConfigTest] Chequeando el archivo "+ f3.getPath());
 	assertTrue(f3.exists());
 	}
+
 }

@@ -2,11 +2,11 @@ package modelo.records;
 
 public class Extracto implements Comparable<Extracto> {
     private double base;
-    private TipoIVA tipoiva;
+    private int tipoiva;
     private double iva;
     private double total;
 
-    public Extracto(double base, TipoIVA tipoiva, double iva, double total) {
+    public Extracto(double base, int tipoiva, double iva, double total) {
         this.base = base;
         this.tipoiva = tipoiva;
         this.iva = iva;
@@ -21,11 +21,11 @@ public class Extracto implements Comparable<Extracto> {
         this.base = base;
     }
 
-    public TipoIVA getTipoIVA() {
+    public int getTipoIVA() {
         return tipoiva;
     }
 
-    public void setTipoIVA(TipoIVA tipoiva) {
+    public void setTipoIVA(int tipoiva) {
         this.tipoiva = tipoiva;
     }
 
@@ -57,6 +57,7 @@ public class Extracto implements Comparable<Extracto> {
 		else return 1;
 	
 	}
+
 }
 
 

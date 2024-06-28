@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import controladores.fxcontrollers.Acceso;
 import modelo.records.Año;
 import modelo.records.ConfigData;
 import modelo.records.Contrasena;
@@ -18,11 +19,11 @@ import modelo.records.RutasConfig;
 import modelo.records.RutasTrabajo;
 import modelo.records.UIData;
 
-// TODO: 19-04-2024 - Crear un Java Record 'CONFIG_DATA'
-// TODO: 22-04-2024 - configdata.json y misdatos.json deberían contener un JsonArray de sus respectivos objetos
-public class Config {
+  // TODO: 22-04-2024 - configdata.json y misdatos.json deberían contener un JsonArray de sus respectivos objetos
 
-  //#region CAMPOS DE LA CLASE  
+  public class Config {
+
+//#region CAMPOS DE LA CLASE  
 // TODO: Para que los cargue desde el JSON, estos valores deberían ser Strings, y con getters recoger los datos correspondientes
   public String usuario;
   public ConfigData configData;
@@ -35,32 +36,37 @@ public class Config {
 //#endregion
 
 //#region CONSTRUCTOR_NC_DE_CONFIG
-  private Config(String user) throws NullPointerException, IOException{
+  private Config(String user) {
     
     this.usuario = user;
     String dirCFGpers = "./config/"+user.toUpperCase();
-// Carpeta de Config personal
-    if (!Fichero.dirExists(dirCFGpers)){
-      Fichero.crearCarpeta(dirCFGpers);
-      System.out.println("[Config.java] No existe carpeta personal para la Config del usuario " + user + "...Ha sido creada!");
+  // Carpeta de Config personal
+    try {
+      if (!Fichero.dirExists(dirCFGpers)){
+        Fichero.crearCarpeta(dirCFGpers);
+        System.out.println("[Config>Config(user)] No existe carpeta personal para la Config del usuario " + user + "...Ha sido creada!");
+      }
+    } catch (NullPointerException | IOException e) {
+      System.out.println("[Config>Config(user)] Excepcion Comprobando el directorio de la config");
+      e.printStackTrace();
     }
-// Archivo 'rutasconfig.json'    
+  // Archivo 'rutasconfig.json'    
     String rutaCFG = "./config/"+user.toUpperCase()+"/rutasconfig.json";
     File rutascfg = new File(rutaCFG);
     if (rutascfg.exists()){
       String rutasCFG = Fichero.leerJSON(rutaCFG); 
       this.rutasconfig = new Gson().fromJson(rutasCFG, RutasConfig.class);
       if (this.rutasconfig==null){
-        System.out.println(" [Config.java] No existen Rutas para la Config del usuario " + user);
+        System.out.println("[Config>Config(user)] No existen Rutas para la Config del usuario " + user);
         this.rutasconfig = getRutasConfigStd(user);
         Fichero.guardarJSON(this.rutasconfig.toJSON(), rutaCFG);
       }
     }else{
-      System.out.println("[Config.java>Constructor] El fichero rutasconfig.json del usuario " + user +" no existe!!!\nSe creará una configuración estándar");
+      System.out.println("[Config>Config(user)] El fichero rutasconfig.json del usuario " + user +" no existe!!!\nSe creará una configuración estándar");
       this.rutasconfig = getRutasConfigStd(user);
       Fichero.guardarJSON(this.rutasconfig.toJSON(), rutaCFG);
     }
-// Archivo 'configdata.json' 
+  // Archivo 'configdata.json' 
       String rutaconfigdata = "./config/" + user.toUpperCase() + "/configdata.json";
       File f_configdata = new File(rutaconfigdata);
       if (!(f_configdata.exists())||(f_configdata==null)){
@@ -68,61 +74,68 @@ public class Config {
         Fichero.guardarJSON(this.configData.toJSON(), rutaconfigdata);
       }else
         this.configData = getConfigData();
-// Archivo 'misdatos.json' 
-//TODO: ¿Porqué tienen que estar los datos fiscales del usuario todo el tiempo en memoria? No se cargan hasta que son necesarios...
+  // Archivo 'misdatos.json' 
+  //TODO: ¿Porqué tienen que estar los datos fiscales del usuario todo el tiempo en memoria? No deberían cargarse hasta que sean necesarios...
     String rutamisdatos = "./config/" + user.toUpperCase() + "/misdatos.json";
     File f_misdatos = new File(rutamisdatos);
     if (!(f_misdatos.exists())||(f_misdatos==null)){       
       this.misDatos = getMisDatosStd();
-        Fichero.guardarJSON(this.misDatos.toJSON(), rutamisdatos);
+      Fichero.guardarJSON(this.misDatos.toJSON(), rutamisdatos);
     } else
       this.misDatos = getMisDatos();
-// Archivo 'uidata.json' 
+  // Archivo 'uidata.json' 
     String rutauidata = "./config/" + user.toUpperCase() + "/uidata.json";
     File f_uidata = new File(rutauidata);
     if (!(f_uidata.exists())||(f_uidata==null)){       
       this.uiData = getUiDataStd();
-        Fichero.guardarJSON(this.uiData.toJSON(), rutauidata);
+      Fichero.guardarJSON(this.uiData.toJSON(), rutauidata);
     } else{   
       this.uiData = getUiData();
     }
-// Asignamos la configActual, borrando el objeto 'MisDatos' 
   
-// Archivos de trabajo
-    System.out.println(" [Config.java] ...Vamos a supervisar y/o crear los archivos de trabajo del usuario " + user + ":\n");
+  // Archivos de trabajo
+    System.out.println("[Config>Config(user)] ...Vamos a supervisar y/o crear los archivos de trabajo del usuario " + user );
     String rutaDirTrab = "./datos/" + user.toUpperCase() ;
-    Fichero.crearCarpeta(rutaDirTrab); //ya comp`rueba si existe o no...
-    String trab1 = "/FCT" + this.configData.getAño().getAño()+this.configData.getAño().getTrimestre() + ".fct";
-    // TODO: 06-05-2024 - Decidir si el archivo RS.rs se actualiza cada año
-    String trab2 = "/RS"+ /*this.configData.año().año() +*/ ".rs";
-    String trab3 = "/CJA"+ this.configData.getAño().getAño()+this.configData.getAño().getTrimestre() + ".cja";
-    Fichero.crearFichero(rutaDirTrab, trab1);
-    Fichero.crearFichero(rutaDirTrab, trab2);
-    Fichero.crearFichero(rutaDirTrab, trab3);
-
-// TODO: 06-05-2024 : Hay que hacer un método para borrar MisDatos (no tiene sentido que se guarden todo el tiempo en memoria)  
-    Config.configActual = this;
-  
-    System.out.println("[Config.java>Constructor] Creada la Configuracion del Usuario " + user );
-    }
-    // TODO: 23-04-2024 - Aquí está la nueva configuración, ya creada... Luego habría que grabarla en los ficheros config.json, configdata.json, misdatos.json, uidata.json
-  //#endregion
-
-//#region GET_CONFIG(user)
-// TODO: 11-04-2024 - Parece que, ahora mismo, no tiene sentido llamar a un constructor sin definir el usuario...
-// TODO: 11-04-2024 - Pensar cómo meter usuario
-// TODO: 18-04-2024 - Hacer un Diagrama de Flujo de todo el proceso de Config, para ajustar
-// TODO: 02-05-2024 - Estoy probando con 'synchronized' intentando que no use la config mientras se genera...
-  public static Config getConfig(String user) throws NullPointerException, IOException {
-    if(Config.configActual==null || !Config.configActual.getUsuario().equals(user))
-      new Config(user);
+    Fichero.crearCarpeta(rutaDirTrab); //ya comprueba si existe o no...
+    String trab1 = "/FCT" + this.configData.getAño().getAño() + this.configData.getAño().getTrimestre() + ".csv";
+    String trab2 = "/RS"  + this.configData.getAño().getAño()                                           + ".csv";
+    String trab3 = "/CJA" + this.configData.getAño().getAño() + this.configData.getAño().getTrimestre() + ".csv";
+    Fichero.crearFichero(rutaDirTrab, trab1); //ya comprueba si existe o no...
+    Fichero.crearFichero(rutaDirTrab, trab2); //ya comprueba si existe o no...
+    Fichero.crearFichero(rutaDirTrab, trab3); //ya comprueba si existe o no...
+  // TODO: 14-06-2024 : Cambiar la extension de los archivos de trabajo a .csv
+  // TODO: 06-05-2024 : Hay que hacer un método para borrar MisDatos (no tiene sentido que se guarden todo el tiempo en memoria)  
     
-    return Config.configActual;
+  //Se borra el objeto 'MisDatos' 
+    this.misDatos = null;
+  
+    System.out.println("[Config>Config(user)] Creada la Configuracion del Usuario " + user );
+    }
+//#endregion
+
+//#region GET_CONFIG
+  // TODO: 11-04-2024 - Parece que, ahora mismo, no tiene sentido llamar a un constructor sin definir el usuario...
+  // TODO: 11-04-2024 - Pensar cómo meter usuario
+  // TODO: 18-04-2024 - Hacer un Diagrama de Flujo de todo el proceso de Config, para ajustar
+  // TODO: 02-05-2024 - Estoy probando con 'synchronized' intentando que no use la config mientras se genera...
+  public static Config getConfig(String user) throws NullPointerException, IOException {
+    if(Config.configActual==null || !Config.configActual.getUsuario().equals(Acceso.usuario))
+      configActual = new Config(Acceso.usuario);
+    
+    return  configActual;
   }
+
+  public static Config getCongig() {
+  //TODO: 15-06-2024 - Hacer un método para que te pregunte qué usuario quieres inicializar...
+    if (Config.configActual==null){
+      Config.configActual = new Config("admin");
+    }
+    return Config.configActual;
+  }  
 //#endregion
 
 //#region NUEVOS GETTERS
-  private RutasConfig getRutasConfigStd(String user) {
+  private synchronized RutasConfig getRutasConfigStd(String user) {
     String ruta2 = "./config/"+user.toUpperCase()+"/configdata.json";
     String ruta3 = "./config/"+user.toUpperCase()+"/misdatos.json";
     String ruta4 = "./config/"+user.toUpperCase()+"/uidata.json";
@@ -139,20 +152,20 @@ public class Config {
     origenesPrueba.add("caja");
     origenesPrueba.add("otros");  
 // TODO: 28-04-2024 - Falta asignar rutas estándar para esta config (usuario ya definido)
-    var rutas = new RutasTrabajo("./config/"+this.usuario.toUpperCase()+"/FCT20242.fct", "./config/"+this.usuario.toUpperCase()+"/RS.rs", "/config/"+this.usuario.toUpperCase()+"/CJA20242.cja");
+    var rutas = new RutasTrabajo("./datos/"+this.usuario.toUpperCase()+"/FCT20242.csv", "./datos/"+this.usuario.toUpperCase()+"/RS2024.csv", "./datos/"+this.usuario.toUpperCase()+"/CJA20242.csv");
 
 
     Año año = new Año(2024, 2);
 
     ConfigData cfDataPrueba = new ConfigData("TESTuSER", año, rutas, tiposIVAprueba, origenesPrueba);
-    System.out.println("[Config.java] Asignando ConfigData Estándar");
+//    System.out.println("[Config.java] Asignando ConfigData Estándar");
     return cfDataPrueba;
   }
 
   public synchronized MisDatos getMisDatosStd() {
 
-    MisDatos msDtsPrueba = new MisDatos("TESTuSER", new NIF( 12345678, "X", false),"nombreEmpresaPrueba");
-    System.out.println(" [Config.java] Asignando MisDatos Estándar");
+    MisDatos msDtsPrueba = new MisDatos("admin", new NIF( 12345678, "X", false),"nombreEmpresaPrueba");
+//    System.out.println(" [Config.java] Asignando MisDatos Estándar");
     return msDtsPrueba;  
   }
 
@@ -162,21 +175,21 @@ public class Config {
     var anchosColprueba = getAnchoColumnasStandard();
       
     UIData uiDataPrueba = new UIData(nombresColprueba,anchosColprueba);
-    System.out.println(" [Config.java] Asignando UIData Estándar");
+//    System.out.println(" [Config.java] Asignando UIData Estándar");
     return uiDataPrueba;
     }
 
   public synchronized String[] getNombresColumnasStandard(){
 
-    String[] nCols={"ID","#","fecha","numFactura","NIF","R.S.","base","tipo","IVA","SubTotal","base N.I.","t ret","Retenc","Total","Concepto"};	
-    System.out.println(" [Config.java] Asignando Nombres de Columna Estándar");
+    String[] nCols={"ID","#Fact","fecha","#RS","NifRS","RS","concepto","esDev","#extr","base","varIVA","tipoIVA","IVA","SubTotal","base N.I.","t ret","Retenc","Total","#Nota","Nota"};	
+//    System.out.println(" [Config.java] Asignando Nombres de Columna Estándar");
     return nCols;
   }
 
   public synchronized Integer[] getAnchoColumnasStandard(){
 
-    Integer[] aCols={60,10,20,10,70,50,85,30,50,10,30,50,40,10,30,50,30};
-    System.out.println(" [Config.java] Asignando Anchos de Columna Estándar");
+    Integer[] aCols={10,50,40,10,50,70,50,10,10,80,10,20,50,70,60,10,30,80,10,60};
+//    System.out.println(" [Config.java] Asignando Anchos de Columna Estándar");
     return aCols; 
   }
 
@@ -184,7 +197,7 @@ public class Config {
     String ruta = this.rutasconfig.getRutaUIData();
     String datos = Fichero.leerJSON(ruta);
     UIData resp = new Gson().fromJson(datos, UIData.class);
-    System.out.println("[Config.java] Asignando UIData del consiguiente archivo:\n" + resp.toJSON() + "\n");
+//    System.out.println("[Config.java] Asignando UIData del consiguiente archivo\n");
     
     return resp;
     }
@@ -193,7 +206,7 @@ public class Config {
     String ruta = this.rutasconfig.getRutaMisDatos();
     String datos = Fichero.leerJSON(ruta);
     MisDatos resp = new Gson().fromJson(datos, MisDatos.class);
-    System.out.println("[Config.java] Asignando MisDatos del consiguiente archivo:\n" + resp.toJSON() + "\n");
+//    System.out.println("[Config.java] Asignando MisDatos del consiguiente archivo:\n");
     
     return resp;
   }
@@ -202,7 +215,7 @@ public class Config {
     String ruta = this.rutasconfig.getRutaConfigData();
     String datos = Fichero.leerJSON(ruta);
     ConfigData resp = new Gson().fromJson(datos, ConfigData.class);
-    System.out.print("\n[Config.java>getConfigData()] : Datos leídos en " + this.rutasconfig.getRutaConfigData() + " :\n" + resp.toJSON());
+//    System.out.print("[Config.java>getConfigData()] : Datos leídos en " + this.rutasconfig.getRutaConfigData());
 
     return resp;
   }
@@ -218,35 +231,32 @@ public String getUsuario(){
   public String getRutaRS(){
 
     String rs = getConfigData().getRutas().getRS();
-    System.out.println(" [Config.java] Asignando Ruta RS desde la config");
+//    System.out.println(" [Config.java] Asignando Ruta RS desde la config");
     return rs;
   }
 
   public String getRutaFCT(){
 
     String fct = getConfigData().getRutas().getFCT();
-    System.out.println(" [Config.java] Asignando Ruta FCT desde la config");
+//    System.out.println(" [Config.java] Asignando Ruta FCT desde la config");
     return fct;
   }
   
   public String getRutaCJA(){
     String cja = getConfigData().getRutas().getCJA();
-    System.out.println(" [Config.java] Asignando Ruta CJA desde la config");
+//    System.out.println(" [Config.java] Asignando Ruta CJA desde la config");
     return cja;
   }
 //#endregion
 
-// TODO: 10-04-2024 - Ver cómo buscar la lista de contrasenas de un usuario...  
-// TODO: sustituir la lista siguiente por una lectura del archivo config.cfg 
-// TODO: 19-04-2024 - Sopesar si debería generar un archivo 'std_config.json' con la configuración inicial (la de admin:admin)
-// TODO: 20-04-2024 - Cambiar el nombre del archivo base 'config.json' a 'creds.json' y los datos de 'misdatos.json' para 'ADMIN'
-// TODO: 20-04-2024 - Falta crear misdatos.json (se puede crear un archivo tipo) 
-// TODO: 19-04-2024 - Completar RecConfig  
+  // TODO: 10-04-2024 - Ver cómo buscar la lista de contrasenas de un usuario...  
+
+  // TODO: 19-04-2024 - Sopesar si debería generar un archivo 'std_config.json' con la configuración inicial (la de admin:admin)
+  // TODO: 19-04-2024 - RecConfig cuándo se llama?  
 
 //#region REC_CONFIG()
-
-// TODO: 23-04-2024 - Aquí debería guardar los 4 archivos JSON: config, configdata, misdatos, uidata...
-// TODO : 02-05-2024 - También probando con 'synchronized', para esperar a que acabe antes de proseguir...  
+  // TODO: 23-04-2024 - Aquí debería guardar los 4 archivos JSON: config, configdata, misdatos, uidata...
+  // TODO : 02-05-2024 - También probando con 'synchronized', para que no accedan a este método 2 hilos simultáneamente...  
   
   public static synchronized boolean recConfig(String p_usuario,Config p_config) throws NullPointerException, IOException{
     // Crea las carpetas personales (si no existen)
@@ -259,13 +269,13 @@ public String getUsuario(){
 // TODO: 20-04-2024 - Rehacer 'datosFormateados', enviar la config a formatearse como JSON, o incluir una std_config 
 // TODO: 23-04-2024 - Rehacer el método toString() para adaptarlo a la salida en JSON
     String datos1 = p_config.rutasconfig.toJSON();
-    System.out.println("[Config.java]->\n" + datos1);
+//    System.out.println("[Config.java]->\n" + datos1);
     String datos2 = p_config.getConfigData().toJSON();
-    System.out.println("[Config.java]->\n" + datos2);
+//    System.out.println("[Config.java]->\n" + datos2);
     String datos3 = p_config.getMisDatos().toJSON();
-    System.out.println("[Config.java]->\n" + datos3);
+//    System.out.println("[Config.java]->\n" + datos3);
     String datos4 = p_config.getUiData().toJSON();
-    System.out.println("[Config.java]->\n" + datos4);
+//    System.out.println("[Config.java]->\n" + datos4);
     
     // Crea los ficheros de Configuracion (también si no existen)
     if (!Fichero.fileExists(ruta1)){
@@ -281,22 +291,22 @@ public String getUsuario(){
       Fichero.guardarJSON(datos4, ruta4);
     }
     
-    /*
-    System.out.println(" [Config.java] El nuevo año se ha establecido en  " + p_config.getConfigData().año().año()+" - Trimestre: " + p_config.getConfigData().año().trimestre());
+    System.out.println(" [Config.java>recConfig] El nuevo año se ha establecido en  " + p_config.getConfigData().getAño().getAño()+" - Trimestre: " + p_config.getConfigData().getAño().getTrimestre());
     
     String dirTrab = "./datos/"+p_usuario.toUpperCase();
-    String fiTrab1 = p_config.getConfigData().rutas().FCT();
-    String fiTrab2 = p_config.getConfigData().rutas().RS();
-    String fiTrab3 = p_config.getConfigData().rutas().CJA();
-    */
+    String fiTrab1 = p_config.getConfigData().getRutas().getFCT();
+    String fiTrab2 = p_config.getConfigData().getRutas().getRS();
+    String fiTrab3 = p_config.getConfigData().getRutas().getCJA();
+    
     // TODO: 02-05-2024 - Por ahora ocultamos la creación de los archivos de trabajo...
-    /*
+    
     if(Fichero.crearCarpeta(dirTrab)&&Fichero.crearFichero(fiTrab1)&&Fichero.crearFichero(fiTrab2)&&Fichero.crearFichero(fiTrab3)){
-      System.out.println(" [Config.java] Archivos de trabajo personales en orden para usuario "+p_usuario);
-    */  
+      System.out.println(" [Config.java>recConfig] Archivos de trabajo personales en orden para usuario "+p_usuario);
+    } 
     return true;
   }
 //#endregion
+
 //#region CREAR_DIRPERS()
   private static synchronized boolean crearCarpetasPersonales(String p_usuario) throws NullPointerException, IOException {
     
@@ -308,11 +318,10 @@ public String getUsuario(){
     File dircfg  = new File(rutadircfg);
     File dirtrab = new File(rutadirtrab);
     if (dircfg.exists()&&Fichero.dirExists(rutadircfg)){
-      System.out.println(" [Config.java] El subdirectorio de configurtación personal del usuario "+p_usuario+" ya existe!");
+      System.out.println(" [Config.java] El subdirectorio de configuracion personal del usuario "+p_usuario+" ya existe!");
       rutaConfigOK = true;
     }else{
-      String rutacfg = "./config/";
-      if(Fichero.crearCarpeta(rutacfg, p_usuario.toUpperCase()))
+      if(Fichero.crearCarpeta(rutadircfg))
         rutaConfigOK = true;
       else rutaConfigOK = false;
     }
@@ -320,8 +329,7 @@ public String getUsuario(){
         System.out.println(" [Config.java] El subdirectorio de trabajo personal del usuario "+p_usuario+" ya existe!");
         rutaTrabOK = true;
       }else{
-        String rutatrab = "./datos/";
-        if(Fichero.crearCarpeta(rutatrab, p_usuario.toUpperCase()))
+        if(Fichero.crearCarpeta(rutadirtrab))
           rutaTrabOK = true;
         else rutaTrabOK = false;
       } 
@@ -331,6 +339,7 @@ public String getUsuario(){
 
   }
 //#endregion
+
 //#region LEER_CFG_JSON()
   public static synchronized RutasConfig leerRutasCFGjson(String ruta){
 // TODO: 11-04-2024 - Crear métodos estáticos para guardar/leer las credenciales en el archivo base config.json
@@ -343,7 +352,7 @@ public String getUsuario(){
 //TODO: 04-05-2024 - Parece que el problema está aquí, cuando intenta leer el archivo 'rutasconfig.json'
  
       String json = Fichero.leerJSON(ruta);
-      System.out.println("[Config.java>leerRutasConfigJson()] Fichero JSON leído:\n"+json);
+      System.out.println("[Config>leerRutasConfigJson] Fichero JSON leído");
 
       JsonElement rutasEl = new Gson().fromJson(json, JsonElement.class);
       JsonObject rutasObj = rutasEl.getAsJsonObject();
@@ -369,13 +378,13 @@ public String getUsuario(){
 //#region LEER_CREDS()
   public static synchronized Credenciales leerCredenciales(String ruta){
     String ficheroResp = Fichero.leerJSON(ruta);
-    System.out.println(" [Config.java] : \n" + ficheroResp);
+//    System.out.println(" [Config.java] Crenciales leídas: \n" + ficheroResp);
     
     Gson gson = new Gson();
     // TODO: 11-04-2024 - Revisar esto: Si es Arraylist.class o Contrasena.class
   
     Credenciales credenciales = gson.fromJson(ficheroResp, Credenciales.class);
-    System.out.println(" [Config.java] : \n" + credenciales.toString());
+    System.out.println("[Config>leerCredenciales] Credenciales leidas!"/* + credenciales.toString()*/);
     return credenciales;
   }
 //#endregion
@@ -399,12 +408,9 @@ public String getUsuario(){
       return false;
   }
   
-  public static void guardarCredenciales(Credenciales n_creds) {
+  public static void guardarCredenciales(Credenciales nuevas_creds) {
     String ruta = "./config/creds.json";
-    Fichero.guardarJSON(n_creds.toString(), ruta);
+    Fichero.guardarJSON(nuevas_creds.toString(), ruta);
   }
 //#endregion
-
-
-
 }

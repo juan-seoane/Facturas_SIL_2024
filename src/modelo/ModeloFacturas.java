@@ -2,6 +2,8 @@ package modelo;
 
 import controladores.*;
 import controladores.fxcontrollers.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import modelo.base.Config;
 import modelo.base.Fichero;
 import modelo.filtros.FiltroCategoria;
@@ -15,8 +17,6 @@ import modelo.records.Nota;
 import modelo.records.RazonSocial;
 import modelo.records.TipoGasto;
 import modelo.records.Totales;
-import ui.*;
-import ui.tablas.TablaFacturas;
 
 import java.io.IOException;
 import java.util.*;
@@ -24,44 +24,65 @@ import javax.swing.*;
 
 public class ModeloFacturas {
 
-    private static ModeloFacturas instancia = null;
-    public static List<Factura> facturas;
+//#region CAMPOS_D_CLASE
+    public static ModeloFacturas instancia;
+    public static ArrayList<Factura> facturas;
+    public static ArrayList<Factura> facturas_prev;
+    public ArrayList<String[]> arrayFacturas;
     static Fichero<Factura> ficheroFacturas;
     //TODO : 11-04-2024 - Repasar los vectores de Facturas y demás...
-    Vector<Factura> vectorfacturas;
     Stack<Factura> pilafacturasant = new Stack<Factura>();
     Stack<Factura> pilafacturassig = new Stack<Factura>();
+    static Vector<Factura> vectorfacturas;
     static Vector vectorcolumnas;
-    static int ultimaID;
+    public static int ultimaID;
     public static int numeroFacturas = 0;
+//#endregion
 
+//#region constructor
     private ModeloFacturas() throws NullPointerException, IOException {
-        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.usuario).getRutaFCT().toString());
-        facturas = ficheroFacturas.leer();
-        numeroFacturas = facturas.size();
-        ultimaID = facturas.size();
+        System.out.println("[ModeloFacturas>Constructor] Creando nuevo ModeloFacturas");
+        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.usuario).getRutaFCT());
+        System.out.println("[ModeloFacturas>Constructor] Leyendo fichero FCT -> " + Config.getConfig(Controlador.usuario).getRutaFCT() + " de Facturas del usuario "+ Controlador.usuario);
+        this.arrayFacturas = ficheroFacturas.leerCSV(Config.getConfig(Controlador.usuario).getRutaFCT());
+        ModeloFacturas.facturas = ConvertirArrayCSVenListaFCT(this.arrayFacturas);
+        numeroFacturas = ModeloFacturas.facturas.size();
+        System.out.println("[ModeloFacturas>Constructor] Fichero FCT de Facturas leido. Numero de Facturas = "+ numeroFacturas);
+        ultimaID = ModeloFacturas.facturas.size();
+//        System.out.println("[ModeloFacturas.java>Constructor] Última ID : " + ultimaID);
         vectorfacturas = generarVectorFacturas();
         
-//        //System.out.println(" [ModeloFacturas] Tamano del array de facturas: " + facturas.size());
+//        System.out.println("[ModeloFacturas.java>Constructor] Vector de Facturas generado!\n********************");
+        
+        System.out.println(" [ModeloFacturas>Constructor] Tamano del array de facturas: " + facturas.size());
     }
-    
-    public static ModeloFacturas getModelo() throws NullPointerException, IOException{
+//#endregion
+
+//#region getModelo    
+    public static synchronized ModeloFacturas getModelo(){
         
         if (instancia == null)
-            instancia = new ModeloFacturas();
+            try {
+                instancia = new ModeloFacturas();
+            } catch (NullPointerException | IOException e) {
+                System.out.println("[ModeloFacturas>getModelo] Excepc creando el modelo");
+                e.printStackTrace();
+            }
         return instancia;
     }
-    
-    public int getUltimaID() {
+//#endregion
+
+//#region fct_getters
+    public static synchronized int getUltimaID() {
         return ultimaID;
     }
 
-    public static int getNumeroFacturas() {
+    public static synchronized int getNumeroFacturas() {
         return numeroFacturas;
     }
 
     public Factura getFactura(int index) throws NullPointerException, IOException {
-        List<Factura> listafacturas = leerFacturas();
+        List<Factura> listafacturas = leerFacturasSinFiltrar();
         if (listafacturas.size() > 0) {
             return listafacturas.get(index);
         } else {
@@ -80,7 +101,7 @@ public class ModeloFacturas {
     public int getIndexOfFactura(Factura f) throws NullPointerException, IOException{
         int index;
         
-        List<Factura> listafact = leerFacturas();
+        List<Factura> listafact = leerFacturasSinFiltrar();
         for (Factura fact : listafact )
             if (f.equals(fact)){
                 index = fact.getID()-1;
@@ -88,25 +109,101 @@ public class ModeloFacturas {
             }
         return 0;
     }
-/*    
+//#endregion
+
+//#region AUTOSAVE
     public boolean autosave(String ruta){
-        Fichero<Factura> auto = new Fichero<Factura>(ruta);
+/*         Fichero<Factura> auto = new Fichero<Factura>(ruta);
         if (auto.escribir((ArrayList<Factura>)facturas))
             return true;
-        else return false;
+        else */ return false;
     }
-*/    
-//#region leerFacturas()    
+//#endregion
+    
+//#region leerFacturas_etc  
+    public ObservableList<Factura> getListaFXFacturas(){
+        List<Factura> fact_prev = null;
+//TODO: 16-06-2024 - Habrá que filtrar la lista de facturas después
+        try {
+            fact_prev = leerFacturasSinFiltrar();
+        } catch (NullPointerException | IOException e) {
+            System.out.println("[ModeloFacturas>getListaFXFacturas] Error al recoger la lista observable (para JFX) de facturas");
+            e.printStackTrace();
+        }
+        var facturasFX = FXCollections.observableList(fact_prev);
+        return facturasFX;
+    }
+    
     public List<Factura> leerFacturas() throws NullPointerException, IOException {
         ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.usuario).getRutaFCT().toString());
-        facturas = ficheroFacturas.leer();
-        numeroFacturas = facturas.size();
-        ultimaID = facturas.size();
-        return filtrar(facturas);
-    }
-//#endregion    
-    public List<Factura> filtrar(List<Factura> lista) {
+        this.arrayFacturas = ficheroFacturas.leerCSV(ficheroFacturas.rutaArchivo);
+        ModeloFacturas.facturas = ConvertirArrayCSVenListaFCT(this.arrayFacturas);
+        numeroFacturas = ModeloFacturas.facturas.size();
+        if (numeroFacturas == 0){
+            ModeloFacturas.facturas.add(new Factura());
+        }
         
+        ultimaID = ModeloFacturas.facturas.size();
+
+        return filtrar(ModeloFacturas.facturas);
+    }
+
+    public List<Factura> leerFacturasSinFiltrar() throws NullPointerException, IOException{
+        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.usuario).getRutaFCT().toString());
+        ArrayList<String[]> arrayFct = ficheroFacturas.leerCSV(ficheroFacturas.rutaArchivo);
+        var listaFct = ConvertirArrayCSVenListaFCT(arrayFct);
+       
+        numeroFacturas = listaFct.size();
+        if (numeroFacturas == 0){
+            listaFct.add(new Factura());
+        }
+
+        return listaFct;
+    }
+//#endregion
+
+//#region listaFCTaCSVar
+    public synchronized ArrayList<String[]> ConvertirListaFCTaCSV(ArrayList<Factura> lista){
+        var arrayCSV = new ArrayList<String[]>();
+        try {
+            arrayCSV.add(getColumnas());
+        } catch (NullPointerException | IOException e) {
+            System.out.println("Error al trasvasar los nombres de columnas al CSV");
+            e.printStackTrace();
+        }
+        int i=0;
+        for (Factura f : lista){
+            arrayCSV.addAll(Factura.convertirFCTaCSV(f));
+            i++;    
+        }
+        return arrayCSV;
+    }
+//#endregion
+
+//#region ArrayCSVaFCT
+    private synchronized ArrayList<Factura> ConvertirArrayCSVenListaFCT(ArrayList<String[]> arrayFacturas) {
+        facturas_prev = new ArrayList<Factura>(); 
+        if (arrayFacturas.size()>0){
+            for (String[] linea : arrayFacturas)
+            {
+                var resp = Factura.convertirCSVaFCT(linea);
+                if (resp!=null){
+                    facturas_prev.add(resp);
+                }
+            }
+        }else{
+            facturas_prev.add(new Factura());
+        }
+        System.out.println("\n[ModeloFacturas>ConvertirArrayCSVenListaFCT] Numero de facturas convertidas desde el CSV: " + facturas_prev.size() + "\n");
+        return facturas_prev;
+    }
+    //#endregion 
+
+//#region filtrar   
+    public List<Factura> filtrar(List<Factura> lista) {
+    
+    //TODO: 14-06-2024 - Habría que convertir este ArrayList<String[]> a un ArrayList<Factura>...
+
         for (int i = 0; i < lista.size(); i++){
             Factura f1 = lista.get(i);
             for (int j = 0; j < lista.size(); j++){
@@ -119,13 +216,18 @@ public class ModeloFacturas {
             }
         }
         
+        int ultID = 0;
         int i = 0;
         for (Factura f : lista){
             i++;
 // TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
             f.setID(i);
-            ultimaID = i;
+            ultID = i;
         }
+        if (ultID!=0){
+            ultimaID = ultID;
+        }
+        
 /*
         List<Factura> lista2, lista3, lista4;
         if (TablaFacturas.filtrosActivos()){
@@ -155,6 +257,9 @@ public class ModeloFacturas {
 */
         return lista;
     }
+//#endregion
+
+//#region fct_ops 
     public boolean insertarFacturas(ArrayList<Factura> facturas) throws NumberFormatException, IOException {
         if ((numeroFacturas = facturas.size()) > 0) {
             Collections.sort(facturas);
@@ -182,7 +287,7 @@ public class ModeloFacturas {
         listafacturas.set(index, factura);
         Collections.sort(listafacturas);
         if (ficheroFacturas.escribir(listafacturas)) {
-            leerFacturas();
+            leerFacturasSinFiltrar();
             PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
             return true;
         }
@@ -194,9 +299,8 @@ public class ModeloFacturas {
         
         if (res == JOptionPane.YES_OPTION){
             for (Factura f : facturas){
-                if (f.getRS().equals(antrs)){
-// TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
-//                    f.RS(nuevars);
+                if ((f.getRS().equals(antrs))){
+                    f.setRS(nuevars);
                 }
             }
             JOptionPane.showMessageDialog(null,"Se han actualizado las facturas");
@@ -221,6 +325,9 @@ public class ModeloFacturas {
             return false;
         }
     }
+//#endregion
+
+//#region RecogerFORM
 /*
     public Factura recogerFormulario(FormularioFact form) {
         boolean isCIF;
@@ -280,25 +387,69 @@ public class ModeloFacturas {
        JOptionPane.showMessageDialog(null,"El distribuidor no concuerda con ninguno de los registrados!");
        return razon;
     }
-*/  
-    public static Vector<Factura> generarVectorFacturas() {
-        var vectorfacturas = new Vector<Factura>();
-        if (facturas.size() > 0) {
-            for (Factura f : facturas) {
-                vectorfacturas.add(f);
-            }
-        } else {
-            vectorfacturas.add(new Factura());
-        }
-        return vectorfacturas;
-    }
+*/
+//#endregion
 
-    public static Vector<String> getColumnas() throws NullPointerException, IOException {
-        Vector<String> columnas = new Vector<String>();
+//#region calcTOTs
+    public String[] calcularTotales() {
+
+        List<Factura> facturas = getListaFXFacturas();
+        System.out.println("[ModeloFacturas>calcularTotales] Calculando resumen de datos ");
+        
+        int cuenta = 0;
+        double base = 0;
+        double iva = 0;
+        double subtotal = 0;
+        double baseNI = 0;
+        double retenc = 0;
+        double total = 0;
+
+        for (Factura f : facturas)  {
+
+            cuenta++;
+            base += f.getTotales().getBase();
+            iva += f.getTotales().getIVA();
+            subtotal += f.getTotales().getSubtotal();
+            baseNI += f.getTotales().getBaseNI();
+            retenc += f.getTotales().getRetenciones();
+            total += f.getTotales().getTotal();
+        }
+        String[] datos = { ""+base, ""+iva, ""+subtotal, ""+baseNI, ""+retenc, ""+total, ""+cuenta};
+         return datos;
+    }
+//#endregion
+
+//#region genVectorFact 
+ //TODO: 14-06-2024 - repasar esta función, puede que no funcione...
+    public Vector<Factura> generarVectorFacturas() {
+        var vectorfacturas = new Vector<Factura>();
+        
+        if (facturas.size() == 0) {
+            vectorfacturas.add(new Factura());
+        }else{
+            for (Factura f : ModeloFacturas.facturas) {
+                    vectorfacturas.add(f);
+
+                }    
+            }
+            return vectorfacturas;
+        }
+//#endregion
+
+//#region getColumnas
+    public static String[] getColumnas() throws NullPointerException, IOException {
+        String[] columnas = new String[Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT().length];
         for (int i = 0; i < Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT().length; i++) {
-            columnas.add(Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT()[i]);
+            if (i==0){
+                columnas[i] = "#";
+                columnas[i]+= Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT()[i];
+            }else{
+                columnas[i] = Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT()[i];
+            }
         }
 
         return columnas;
     }
+//#endregion
+
 }

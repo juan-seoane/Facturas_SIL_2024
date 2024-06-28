@@ -14,7 +14,7 @@ import modelo.base.Config;
 import modelo.records.Concepto;
 import modelo.records.Fecha;
 import modelo.records.Nota;
-import ui.fxviews.Calculadora;
+import ui.helpers.Calculadora;
 
 /**
  *

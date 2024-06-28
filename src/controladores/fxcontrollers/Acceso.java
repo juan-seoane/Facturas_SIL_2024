@@ -1,12 +1,20 @@
 package controladores.fxcontrollers;
 
-import modelo.fx.ComprobacionesAcceso;
+import modelo.base.Config;
+import modelo.helpers.ComprobacionesAcceso;
 import controladores.Controlador;
+import controladores.ControladorFacturas;
+import controladores.helpers.FxmlHelper;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.HeadlessException;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import org.junit.Test;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,6 +30,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Acceso extends Application implements Initializable{
@@ -84,6 +93,12 @@ public class Acceso extends Application implements Initializable{
     private void acierto() {
         Acceso.usuario=txtUsuario.getText();
         Acceso.aceptado = true;
+        try {
+            Config.getConfig(Acceso.usuario);
+        } catch (NullPointerException | IOException e) {
+            System.exit(0);
+            e.printStackTrace();
+        }
         cambiarEscena(Acceso.scene2);
         Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 2024!\nPulse una tecla para continuar...");
         //System.out.println("[Acceso.java: intentos<5 y cred OK]...OK, entrando...");
@@ -108,7 +123,7 @@ public class Acceso extends Application implements Initializable{
 
     private Scene crearScene1 () throws IOException{
         FXMLLoader loader1 = new FXMLLoader();
-        loader1.setLocation(getClass().getResource("../../ui/fxviews/Acceso.fxml"));
+        loader1.setLocation(getClass().getResource("../../resources/Acceso.fxml"));
         
        
         Parent root1 = loader1.load();
@@ -121,7 +136,7 @@ public class Acceso extends Application implements Initializable{
 
     private Scene crearScene2() throws IOException{
         FXMLLoader loader2 = new FXMLLoader();
-        loader2.setLocation(getClass().getResource("../../ui/fxviews/Acceso2.fxml"));
+        loader2.setLocation(getClass().getResource("../../resources/Acceso2.fxml"));
                
         Parent root2 = loader2.load();
         Scene escena2 = new Scene(root2);
@@ -144,7 +159,7 @@ public class Acceso extends Application implements Initializable{
         
         Acceso.ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
             public void handle(KeyEvent ke){
-                System.out.println("[Acceso.java>cambiarEscena()]Key Pressed: " + ke.getCode());
+//                System.out.println("[Acceso.java>cambiarEscena()]Key Pressed: " + ke.getCode());
                 try {
                     pulsartecla();
                 } catch (IOException e) {
@@ -236,43 +251,76 @@ public class Acceso extends Application implements Initializable{
 //#region RUN_CTLLR
     private void arrancarControlador() throws IOException{
  // TODO: 13-05-2024 : Aquí arroja una 'IOException' que afecta al hilo general del programa... Habría que ver cómo evitar que se propague a las llamadas anteriores...       
-        Controlador ctrThread =new Controlador();
-        ctrThread.setName("Controlador_Ppal");
+        Controlador ctrThread = Controlador.getControlador();
+        ctrThread.setName("Ctrl_Ppal");
         ctrThread.start();
-        
-        cargarPanelControl();
+
+        if (!cargarPanelControl())
+            System.exit(0);
     }
 //#endregion
 //#region LOAD_C/P
-    private boolean cargarPanelControl(){
+    private synchronized boolean cargarPanelControl(){
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../../ui/fxviews/PanelControl.fxml"));
-
-        Parent root;
-        
+        File miDir = new File (".");
+        String path = "";
         try {
-
-            root = loader.load();
-//            PanelControl pc = loader.getController();
-
-            Scene escena = new Scene(root);
-            Stage  ventanaPCntrl = new Stage();
-    
-            ventanaPCntrl.setScene(escena);
-            ventanaPCntrl.setResizable(false);
-            ventanaPCntrl.show();
-    
-            ventanaPCntrl.setAlwaysOnTop(true);
-            ventanaPCntrl.setOnCloseRequest(e -> System.exit(0));
-            
-            return true;
-
+            path = miDir.getCanonicalPath();
+            System.out.println("[Acceso>cargarPanelControl] path: " + path);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            System.out.println("[Acceso>cargarPanelControl] Error al obtener la ruta de los controladores");
             e.printStackTrace();
         }
+        path = path.replace('\\','/');
 
-        return false;
+        String ruta  = "../../resources/PanelControl.fxml";
+        System.out.println("[Acceso>cargarPanelControl] ruta  : " + ruta);
+        String ruta2 = "/resources/fxmltablaFCT.fxml";
+        System.out.println("[Acceso>cargarPanelControl] ruta2 : " + ruta2);
+
+        FxmlHelper FXMLpc = new FxmlHelper(ruta);
+        FxmlHelper FXMLcfct = new FxmlHelper(ruta2);
+
+        Parent root;
+
+        root = FXMLpc.cargarFXML();
+
+        Scene escena = new Scene(root);
+        Stage  ventanaPCntrl = new Stage();
+
+        ventanaPCntrl.setScene(escena);
+        ventanaPCntrl.setResizable(false);
+        // TODO : 30-05-2024 - Aquí se ajusta el modo de la ventana de P/C
+        ventanaPCntrl.initModality(Modality.NONE);
+        ventanaPCntrl.show();
+        //Asignar el actual P/C a las clases necesarias
+        PanelControl.fxFCTcontr = (FxControladorFacturas)(FXMLcfct.getFXcontr());
+        Controlador.pc = (PanelControl)(FXMLpc.getFXcontr());
+
+        ventanaPCntrl.setAlwaysOnTop(true);
+        ventanaPCntrl.setOnCloseRequest(e -> System.exit(0));
+        
+        return true;        
+    }
+
+    public void rutaExiste(String ruta){
+
+        boolean rutaExiste = (new File(ruta)).exists();
+        if (rutaExiste){
+            System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " existe.");
+        }
+        else{
+            File miDir = new File (".");
+            try {
+                System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " no existe.");
+                System.out.println ("[Acceso>rutaExiste] Directorio actual: " + miDir.getCanonicalPath());
+            }
+            catch(Exception e) {
+                System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " no existe.");
+                System.out.println("[Acceso>rutaExiste] Excepcion " + e + " durante el proceso.");  
+                e.printStackTrace();
+            }
+        }
     }
 //#endregion
 }

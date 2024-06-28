@@ -7,7 +7,7 @@ package ui.ventanas;
 import modelo.*;
 import modelo.base.Config;
 import modelo.records.TipoGasto;
-import ui.tablas.TablaFacturas;
+import ui.tablas.TablaFacturas_prev;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -168,8 +168,8 @@ public class VentanaFiltros extends javax.swing.JFrame {
 
     private void btnOKFiltrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKFiltrosActionPerformed
         this.setVisible(false);
-        TablaFacturas.chkfiltros.setState(true);
-        TablaFacturas.setPulsado(5);
+        TablaFacturas_prev.chkfiltros.setState(true);
+        TablaFacturas_prev.setPulsado(5);
     }//GEN-LAST:event_btnOKFiltrosActionPerformed
 
     /**

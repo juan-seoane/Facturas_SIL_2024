@@ -8,7 +8,7 @@ import modelo.records.NIF;
 import modelo.records.TipoGasto;
 import modelo.records.TipoIVA;
 import modelo.records.Totales;
-import ui.fxviews.Calculadora;
+import ui.helpers.Calculadora;
 
 import java.awt.*;
 import java.awt.event.*;
