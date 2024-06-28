@@ -409,25 +409,22 @@ public class ControladorFacturas extends Thread {
         String ruta="/resources/fxmltablaFCT.fxml";
         FxmlHelper FCTFXHelper = new FxmlHelper(ruta);
 
-        System.out.println("*****[PanelControl>mostrarTablaFacturas]*****");
-        do{
+        System.out.println("*****[ControladorFacturas>mostrarTablaFacturas]*****");
+/*        do{
             System.out.print("[ControladorFacturas>mostrarTablaFacturas] cargando las Facturas en la TablaFCT\r");
             this.modeloTablaFCT = tablaFCT.getTableView();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                System.out.println("[ControladorFacturas>mostrarTablaFacturas] Excepcion al cargar la tabla de Facturas en la GUI TablaFCT");
-                e.printStackTrace();
-            }
         }while(this.modeloTablaFCT==null);
+*/
         //TODO: 22-06-2024 : Se ejecuta en cuanto se pueda en la aplicación JFX
         Platform.runLater(new Runnable(){
             @Override
             public void run(){
+/*
                 do{
                     System.out.print("[ControladorFacturas>] Inicializando GUI tablaFCT\r");
                 
                 }while(tablaFCT.lblBase!=null);
+*/
                 String[] datosResumen = m.calcularTotales();
                 tablaFCT.actualizarTotales(datosResumen);
                 ObservableList<Factura> listaFxFct = ControladorFacturas.m.getListaFXFacturas();

@@ -259,7 +259,7 @@ public class PanelControl implements Initializable{
 //#region LOAD_FCT/T
     public boolean cargarTablaFacturas() {
         if(this.tablaFCT == null){
-            FxmlHelper loader = new FxmlHelper("/resources/fxmltablaFCT.fxml");
+            FxmlHelper loader = new FxmlHelper("../../resources/fxmltablaFCT.fxml");
 
             Parent root;
 
