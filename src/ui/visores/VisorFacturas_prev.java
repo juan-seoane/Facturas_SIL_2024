@@ -11,9 +11,9 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 import java.util.*;
 
-public class VisorFacturas extends JFrame{
+public class VisorFacturas_prev extends JFrame{
 	
-        public static VisorFacturas instancia = null;
+        public static VisorFacturas_prev instancia = null;
 	public static Factura f;
 	public static int index;
 
@@ -92,7 +92,7 @@ public class VisorFacturas extends JFrame{
 	@param factura la factura que se visualiza desde el visor.
 	@see ControladorFacturas()
 */
-	private VisorFacturas(String titulo, int x, int y, int index, Factura f){
+	private VisorFacturas_prev(String titulo, int x, int y, int index, Factura f){
 		
 		super(titulo);		
 		this.titulo = titulo;
@@ -113,10 +113,10 @@ public class VisorFacturas extends JFrame{
 
 	}
         
-        public static VisorFacturas getVisor(int ind,Factura fact){
+        public static VisorFacturas_prev getVisor(int ind,Factura fact){
             
             if (instancia == null)
-                instancia = new VisorFacturas("Visor de Facturas",200,200,0,fact);
+                instancia = new VisorFacturas_prev("Visor de Facturas",200,200,0,fact);
             
             instancia.reemplazarDatos(ind, fact);
             return instancia;

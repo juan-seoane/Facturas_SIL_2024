@@ -70,7 +70,7 @@ public class Fichero<T> {
                 ioe.printStackTrace();
             }
         } else {
-            System.out.println("[Fichero>constructor] El fichero " + rutaArchivo + " ya estaba creado");
+            //System.out.println("[Fichero>constructor] El fichero " + rutaArchivo + " ya estaba creado");
         }
     }
 //#region LEER

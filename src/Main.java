@@ -31,7 +31,7 @@ public class Main {
         window.setVisible(false);
    //TODO: Organizar el arranque de las GUI's... A lo mejor puedo invocar el GUI de Acceso con runLater y dejar el Application.launch()para el controlador...
         Application.launch(Acceso.class);
-    //TODO: Desde aquí no debería funcionar hasta que se acable la aplicación JavaFX
+    //TODO: Desde aquí no debería funcionar hasta que se acabe la aplicación JavaFX
         System.out.println("[Main.java] Aplicación finalizada");
         System.exit(0);
                

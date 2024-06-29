@@ -428,8 +428,12 @@ public class ControladorFacturas extends Thread {
                 String[] datosResumen = m.calcularTotales();
                 tablaFCT.actualizarTotales(datosResumen);
                 ObservableList<Factura> listaFxFct = ControladorFacturas.m.getListaFXFacturas();
-                modeloTablaFCT.setItems(listaFxFct);
-                modeloTablaFCT.refresh();
+                //TODO : 29-06-24 - Me parece que este condicional de aquí abajo, sobra...
+                if (modeloTablaFCT!=null){
+                    modeloTablaFCT.setItems(listaFxFct);
+                    modeloTablaFCT.refresh();
+                    System.out.println("[ControladorFacturas>mostrarTablaFacturas] Regenerando el modeloTablaFCT ");
+                }
                
             }
         });

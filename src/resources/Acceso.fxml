@@ -31,7 +31,7 @@
                                  <children>
                                     <ImageView fx:id="imgvAcceso" fitHeight="151.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../../imagenes/cafeSIL.png" />
+                                          <Image url="@../../imagenes/cafeSIL.png" />
                                        </image>
                                     </ImageView>
                                  </children>

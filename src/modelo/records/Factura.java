@@ -234,14 +234,14 @@ public class Factura extends Vector implements Comparable<Factura> {
 	public static synchronized Factura convertirCSVaFCT(String[] linea) {
         Factura f = null;
         var extractos = new ArrayList<Extracto>();
-        System.out.println("[Factura>convertirCSVaFCT] Primer campo en linea a leer: " + linea[0]);
+        //System.out.println("[Factura>convertirCSVaFCT] Primer campo en linea a leer: " + linea[0]);
         if(linea[0].contains("#")){
             //Se salta el comentario
-            System.out.println("[Factura>ConvertirCSVaFCT] --- comentario detectado ---");
+            //System.out.println("[Factura>ConvertirCSVaFCT] --- comentario detectado ---");
             return null;
         }else if (!(linea[0].equals(""))){
                 //Se lee la factura
-                System.out.println("[Factura>ConvertirCSVaFCT] --- leyendo factura num " + Integer.parseInt(linea[0]) + " ---");
+                //System.out.println("[Factura>ConvertirCSVaFCT] --- leyendo factura num " + Integer.parseInt(linea[0]) + " ---");
                 String[] fecha = linea[2].split("/");
                 int dia = Integer.parseInt(fecha[0]);
                 int mes = Integer.parseInt(fecha[1]);
@@ -264,7 +264,7 @@ public class Factura extends Vector implements Comparable<Factura> {
                 f = new Factura(Integer.parseInt(linea[0]),linea[1],new Fecha(dia, mes, año),new RazonSocial(rsid,nifRS,rsnombre,rsnombre, null),new TipoGasto(linea[6],linea[6]),(linea[7].equals("S"))?true:false,extractos, new Totales(Double.parseDouble(linea[9]),(linea[10].equals("S"))?true:false,Integer.parseInt(linea[11]),Double.parseDouble(linea[12]),Double.parseDouble(linea[13]),Double.parseDouble(linea[14]),Integer.parseInt(linea[15]),Double.parseDouble(linea[16]),Double.parseDouble(linea[17])),(nota==null)?null:nota);            
         }else{
             //se lee el extracto
-            System.out.println("[Factura>ConvertirCSVaFCT] --- leyendo extracto num " + linea[1] + "---");
+            //System.out.println("[Factura>ConvertirCSVaFCT] --- leyendo extracto num " + linea[1] + "---");
             f = ModeloFacturas.facturas_prev.getLast();
             extractos = f.getExtractos();
             extractos.add(new Extracto(Double.parseDouble(linea[9]),Integer.parseInt(linea[11]),Double.parseDouble(linea[12]),Double.parseDouble(linea[13])));

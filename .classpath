@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="UML"/>
+	<classpathentry kind="src" path="imagenes"/>
+	<classpathentry kind="src" path="escaneos"/>
+	<classpathentry kind="src" path="datos"/>
+	<classpathentry kind="src" path="datos/ADMIN"/>
+	<classpathentry kind="src" path="config"/>
+	<classpathentry kind="src" path="config/ADMIN"/>
+    <classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src/controladores"/>
+	<classpathentry kind="src" path="src/controladores/fxcontrollers"/>
+	<classpathentry kind="src" path="src/controladores/helpers"/>
+	<classpathentry kind="src" path="src/ui"/>
+	<classpathentry kind="src" path="src/ui/forms_prev"/>
+	<classpathentry kind="src" path="src/ui/formularios"/>
+	<classpathentry kind="src" path="src/ui/tablas"/>
+	<classpathentry kind="src" path="src/ui/ventanas"/>
+	<classpathentry kind="src" path="src/ui/visores"/>
+	<classpathentry kind="src" path="src/ui/helpers"/>
+	<classpathentry kind="src" path="src/modelo"/>
+	<classpathentry kind="src" path="src/modelo/base"/>
+	<classpathentry kind="src" path="src/modelo/datasources"/>
+	<classpathentry kind="src" path="src/modelo/filtros"/>
+	<classpathentry kind="src" path="src/modelo/helpers"/>
+	<classpathentry kind="src" path="src/modelo/records"/>
+	<classpathentry kind="src" path="src/ocr"/>
+	<classpathentry kind="src" path="src/main"/>
+	<classpathentry kind="src" path="src/tests"/>
+    <classpathentry kind="src" path="src/resources"/>
+</classpath>
