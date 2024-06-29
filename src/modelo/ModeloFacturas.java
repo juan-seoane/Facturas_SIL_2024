@@ -65,7 +65,7 @@ public class ModeloFacturas {
             try {
                 instancia = new ModeloFacturas();
             } catch (NullPointerException | IOException e) {
-                System.out.println("[ModeloFacturas>getModelo] Excepc creando el modelo");
+                System.out.println("[ModeloFacturas>getModelo] Excepc creando el modeloFCT");
                 e.printStackTrace();
             }
         return instancia;

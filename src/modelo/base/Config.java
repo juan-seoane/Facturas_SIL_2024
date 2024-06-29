@@ -35,6 +35,7 @@ import modelo.records.UIData;
   public static Config configActual = null;
 //#endregion
 
+  // TODO : 29-06-2024 - Repasar el constructor y los getConfig... parece que el usuario tiene que designarse en otro lado...
 //#region CONSTRUCTOR_NC_DE_CONFIG
   private Config(String user) {
     
@@ -119,8 +120,8 @@ import modelo.records.UIData;
   // TODO: 18-04-2024 - Hacer un Diagrama de Flujo de todo el proceso de Config, para ajustar
   // TODO: 02-05-2024 - Estoy probando con 'synchronized' intentando que no use la config mientras se genera...
   public static Config getConfig(String user) throws NullPointerException, IOException {
-    if(Config.configActual==null || !Config.configActual.getUsuario().equals(Acceso.usuario))
-      configActual = new Config(Acceso.usuario);
+    if(Config.configActual==null || !Config.configActual.getUsuario().equals(user))
+      configActual = new Config(user);
     
     return  configActual;
   }
@@ -255,7 +256,7 @@ public String getUsuario(){
   // TODO: 19-04-2024 - RecConfig cuándo se llama?  
 
 //#region REC_CONFIG()
-  // TODO: 23-04-2024 - Aquí debería guardar los 4 archivos JSON: config, configdata, misdatos, uidata...
+  // TODO: 23-04-2024 - Aquí debería guardar los 4 archivos JSON: rutasconfig, configdata, misdatos, uidata...
   // TODO : 02-05-2024 - También probando con 'synchronized', para que no accedan a este método 2 hilos simultáneamente...  
   
   public static synchronized boolean recConfig(String p_usuario,Config p_config) throws NullPointerException, IOException{
@@ -412,5 +413,14 @@ public String getUsuario(){
     String ruta = "./config/creds.json";
     Fichero.guardarJSON(nuevas_creds.toString(), ruta);
   }
+//#endregion
+
+//#region TOSTR()
+@Override
+public String toString(){
+  // TODO : 29-06-2024 - Hay que hacer los toString de uidata, configdata, rutasCongig
+  String resp = "Config del usuario " + this.usuario +" :\n ConfigData :\n" + this.configData.toString() + "\nmisDatos:\n" + ((this.misDatos!=null)?this.misDatos.toString():" - NULL -") + "\nuiData:\n" + this.uiData.toString() + "\nrutasConfig:\n" + this.rutasconfig.toString() + "\nElementos en Lista static de configuraciones: " + ((Config.configuraciones!=null)?Config.configuraciones.size():" - NULL -") + "\nstatic configActual not NULL: " + ((Config.configActual!=null)?"S":"N");
+  return resp;
+}
 //#endregion
 }

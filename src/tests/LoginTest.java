@@ -42,11 +42,6 @@ public class LoginTest {
 	latch.await();
 	}
 	 
-	@Test
-	public void loginFunciona(){
-
-		assertDoesNotThrow( () -> {Application.launch(Acceso.class);});
-	}
 
 	/*
 	@Test

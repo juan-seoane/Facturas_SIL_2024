@@ -31,6 +31,7 @@ public class ControladorFacturas extends Thread {
     static VentanaFiltros filtros;
     static FxControladorFacturas tablaFCT;
     TableView<Factura> modeloTablaFCT = null;
+    static boolean GUIon = false;
 
     private ControladorFacturas() {
         System.out.println("[ControladorFacturas>Constructor] Creando el ControladorFacturas...");
@@ -42,11 +43,16 @@ public class ControladorFacturas extends Thread {
             e.printStackTrace();
         }
         //TODO : 21-06-2024 - Estas asignaciones me hacen falta
-        tablaFCT = FxControladorFacturas.getFxController();
+        if(GUIon){
+            tablaFCT = FxControladorFacturas.getFxController();
+            System.out.println("[ControladorFacturas>constructor] La tablaFCT fue asignada correctamente");
+        }else{
+            System.out.println("[ControladorFacturas>constructor] La tablaFCT sigue siendo NULL");
+        }
         /*
         this.pc = PanelControl.getPanelControl();
-        this.ctrlPpal = Controlador.getControlador();
         this.modeloTabla = tablaFCT.getTableView();
+        this.ctrlPpal = Controlador.getControlador();
         */
     }
 
@@ -67,6 +73,7 @@ public class ControladorFacturas extends Thread {
             System.out.println("[ControladorFacturas>getControlador(fxcontr)] Instancia vacia, creando una nueva instancia generica con GUI asociada!");
             instancia = new ControladorFacturas();
         }
+        GUIon = true;
         setTablaFCT(fxcntrfct);
         return instancia;
     }
@@ -415,7 +422,9 @@ public class ControladorFacturas extends Thread {
             this.modeloTablaFCT = tablaFCT.getTableView();
         }while(this.modeloTablaFCT==null);
 */
-        //TODO: 22-06-2024 : Se ejecuta en cuanto se pueda en la aplicación JFX
+        //TODO : 29-06-2024 - Hay que cargar el modeloFCT para que no sea NULL eventualmente (en los test)
+        m = ModeloFacturas.getModelo();
+        //TODO : 22-06-2024 : Se ejecuta en cuanto se pueda en la aplicación JFX
         Platform.runLater(new Runnable(){
             @Override
             public void run(){

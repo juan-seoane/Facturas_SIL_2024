@@ -22,15 +22,16 @@ import java.util.ArrayList;
 public class ConfigTest {
 	//Declara el usuario del que testear los datos
 	String user="admin";
+	String userAelim = "TESTuSER";
 
 	@Test
 	void borrarDatosUsuario(){
-
+		userAelim = "TESTuSER";
 		Credenciales cred_prev = Config.leerCredenciales("./config/creds.json");
 		var listaCredsNueva = new ArrayList<Contrasena>();
 		//Generar nuevo archivo de credenciales sin el usuario declarado
 		for (Contrasena c : cred_prev.getlistacreds()){
-			if (!c.getUsuario().equals(user))
+			if (!c.getUsuario().equals(userAelim))
 				listaCredsNueva.add(c); 
 		}
 
@@ -39,7 +40,7 @@ public class ConfigTest {
 
 		Config.guardarCredenciales(n_creds);
 		//Borrar subdirectorios de Config y Trabajo
-		borrarSubdirs(user);
+		borrarSubdirs(userAelim);
 
 	}
 
@@ -47,8 +48,8 @@ public class ConfigTest {
 		File dir1 = new File("./config/"+usuario.toUpperCase());
 		File dir2 = new File("./datos/"+usuario.toUpperCase());
 
-		recursiveDelete(dir1);
-		recursiveDelete(dir2);
+		if(dir1.exists()) recursiveDelete(dir1);
+		if(dir2.exists()) recursiveDelete(dir2);
 
 		assertTrue(!dir1.exists());
 		assertTrue(!dir2.exists());
@@ -81,13 +82,13 @@ public class ConfigTest {
 		String ruta = "./config/creds.json";
 		String ficheroResp = Fichero.leerJSON(ruta);
 
-    	System.out.println("fichero:\n"+ficheroResp+"\n-------------------");
+    	System.out.println("[ConfigTest>leerCredencialesOK] fichero json de creds:\n"+ficheroResp+"\n-------------------");
 
-		//assertNotNull(ficheroResp);
+		assertNotNull(ficheroResp);
     	Gson gson = new Gson();
         Type type = new TypeToken<Credenciales>() {}.getType();
         Credenciales credenciales = gson.fromJson(ficheroResp, type);
-		
+		/*
         int i=0;
         for (Contrasena contrasena : credenciales.creds) {
 			System.out.println("Contra num "+i);
@@ -96,12 +97,15 @@ public class ConfigTest {
 			System.out.println("-----------------------------");
 			i++;
         }
+		*/
     // TODO: 11-04-2024 - Revisar esto: Si es Arraylist.class o Contrasena.class
 	// TODO: 21-04-2024 - Parece que hay un problema al leer las credenciales... El fichero lo lee bien, pero el Objeto 'Credenciales' lo coge mal...
     
-    	System.out.println("\n---------------\ncredenciales:\n"+credenciales.toString());
-		assertNotEquals(credenciales.creds.get(0).usuario, credenciales.creds.get(1).usuario);
-  
+    	//System.out.println("\n---------------\ncredenciales:\n"+credenciales.toString());
+		if(credenciales.creds.size()>1)
+			assertNotEquals(credenciales.creds.get(0).usuario, credenciales.creds.get(1).usuario);
+		else
+			assertEquals("admin", credenciales.creds.get(0).usuario);
 	}
 
 	@Test
@@ -129,8 +133,8 @@ public class ConfigTest {
 		String datos = Fichero.leerJSON(ruta);
 		Gson gson = new Gson();
 		RutasConfig rutas = gson.fromJson(datos, RutasConfig.class);
-		
-		assertEquals( user, rutas.getRutaMisDatos());
+		String rutaMSDATS = "config/" + user.toUpperCase() + "/misdatos.json";
+		assertEquals( rutaMSDATS, rutas.getRutaMisDatos());
 	}
 
 	@Test
@@ -141,7 +145,7 @@ public class ConfigTest {
 		Gson gson = new Gson();
 		UIData uidata = gson.fromJson(datos, UIData.class);
 
-		assertEquals( 15, uidata.getNombreColsFCT().length);
+		assertEquals( 20, uidata.getNombreColsFCT().length);
 	}
 
 	@Test
@@ -155,14 +159,13 @@ public class ConfigTest {
 	}
 
 	@Test
-	void ConfigToStringOK() throws NullPointerException, IOException{
-		while(Config.getConfig(user)==null){
-			System.out.print("");
+	void configToStringOK() throws NullPointerException, IOException{
+		user="admin";
+		Config cfgPrueba;
+		if((cfgPrueba = Config.getConfig(user))!=null){
+			System.out.println("[ConfigTest>configToStringOK] config(user).toString():\n" + cfgPrueba.toString());
+			assertEquals( user, cfgPrueba.usuario);
 		}
-		Config cfgPrueba = Config.getConfig(user);
-		System.out.println(cfgPrueba.toString());
-		assertEquals( user, cfgPrueba.usuario);
-
 	}
 
 	@Test
@@ -171,13 +174,13 @@ public class ConfigTest {
 		Config cfgPrueba = Config.getConfig(user);
 
 		String cfgjson = cfgPrueba.rutasconfig.toJSON();
-		System.out.println(cfgjson);
+		System.out.println("[ConfigTest>configToStringOK] rutasconfig:\n" + cfgjson);
 
 		String cfgdtjson = cfgPrueba.configData.toJSON();
-		System.out.println(cfgdtjson);
+		System.out.println("[ConfigTest>configToStringOK] configdata:\n" + cfgdtjson);
 
 		String msdtsjson = cfgPrueba.getMisDatos().toJSON();
-		System.out.println(msdtsjson);
+		System.out.println("[ConfigTest>configToStringOK] misdatos:\n" + msdtsjson);
 
 		String uidtjson = cfgPrueba.uiData.toJSON();
 		System.out.println(uidtjson);

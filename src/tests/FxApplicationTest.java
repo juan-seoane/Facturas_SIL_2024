@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -111,7 +112,7 @@ public class FxApplicationTest extends ApplicationTest{
 		System.out.println("[FxApplicationTest>PCcargaOK] Esperando a cargar el Panel de Control\r");
 
 		do{
-			System.out.print("[FxApplicationTest] Esperando a cargar el Panel Control\r");
+			System.out.print("[FxApplicationTest>PCcargaOK] Esperando a cargar el Panel Control\r");
 		}while((ctrlFct=ControladorFacturas.getControlador())==null);
 		ctrlPpal = Controlador.getControlador();
 		config = Config.getConfig(usuario);
@@ -120,20 +121,56 @@ public class FxApplicationTest extends ApplicationTest{
 			public void run(){
 				var arrayFxml = cargarFXML("../../resources/PanelControl.fxml");
 				Scene escenaPC = setEscena((Parent)arrayFxml[0]);
-				showStage(escenaPC);
+				Stage stage =new Stage();
+				stage.setScene(escenaPC);
+				stage.setAlwaysOnTop(true);
+				stage.show();
 			}
 		});
-
 		assertNotNull(ctrlPpal);
 		assertNotNull(config);
-		//assertNotNull(this.PCgui);
 		System.out.println("[FxApplicationTest>PCcargaOK]******FINAL*****");
+	}
+	@Test
+	@Order(3)
+	public void pcFunciona() throws InterruptedException, NullPointerException, IOException{
+		System.out.println("[FxApplicationTest>pcFunciona]******INICIO*****");
+		do{
+			System.out.print("[FxApplicationTest>pcFunciona] Esperando a cargar el Panel Control\r");
+		}while((ctrlFct=ControladorFacturas.getControlador())==null);
+		ctrlPpal = Controlador.getControlador();
+		config = Config.getConfig(usuario);
+		Platform.runLater(new Runnable(){
+			@Override
+			public void run(){
+				var arrayFxml = cargarFXML("../../resources/PanelControl.fxml");
+				Scene escenaPC = setEscena((Parent)arrayFxml[0]);
+				Stage stage =new Stage();
+				stage.setScene(escenaPC);
+				stage.setAlwaysOnTop(true);
+				stage.show();
+			}
+		});
+		try {
+			Thread.sleep(1000);
+			clickOn("#btnFCT");
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			//e.printStackTrace();
+		}
+		verifyThat("#btnFCT", (ToggleButton tbtn) -> {
+			boolean act = tbtn.isSelected();
+			return act;
+		});
+
+		//assertNotNull(this.PCgui);
+		System.out.println("[FxApplicationTest>pcFunciona]******FINAL*****");
 		Thread.sleep(2000);
 
 	}
 
 	@Test
-	@Order(3)
+	@Order(4)
 	public void tablaFCTcargaOK() throws InterruptedException, NullPointerException, IOException {
 
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******INICIO*****");
@@ -168,15 +205,17 @@ public class FxApplicationTest extends ApplicationTest{
 		assertTrue(listaFXFCT.get(0) instanceof Factura);
 		this.ctrlFxFct.tblvwFct.setItems(listaFXFCT);
 		this.ctrlFxFct.tblvwFct.refresh();
+
+
 		
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******FINAL*****");
-		Thread.sleep(4000);
+		Thread.sleep(2000);
 	}
 //Lo ejecuta despues de todo el conjunto de Tests
 	@AfterAll
 	public static void afterTests() throws TimeoutException, InterruptedException {
 
-		Thread.sleep(4000);
+		Thread.sleep(2000);
 
 		System.out.println("[FxApplicationTest>afterTests]******INICIO*****");
 
