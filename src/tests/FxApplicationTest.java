@@ -31,7 +31,7 @@ import static org.testfx.api.FxAssert.verifyThat;
 import controladores.Controlador;
 import controladores.ControladorFacturas;
 import controladores.fxcontrollers.Acceso;
-import controladores.fxcontrollers.FxControladorFacturas;
+import controladores.fxcontrollers.FxCntrlTablaFCT;
 import controladores.fxcontrollers.PanelControl;
 import controladores.helpers.FxmlHelper;
 import modelo.ModeloFacturas;
@@ -50,7 +50,7 @@ public class FxApplicationTest extends ApplicationTest{
 	public Stage login;
 	public Stage tablaFCT;
 	public Stage PCgui;
-	public FxControladorFacturas ctrlFxFct;
+	public FxCntrlTablaFCT ctrlFxFct;
 	public TableView<Factura> modTablaFCT; 
 //Lo ejecuta antes de todo el conjunto de Tests
 	@BeforeAll
@@ -179,7 +179,7 @@ public class FxApplicationTest extends ApplicationTest{
 		Platform.runLater(new Runnable(){
 			@Override
 			public void run(){
-				var arrayFxml = cargarFXML("/resources/fxmltablaFCT.fxml");
+				var arrayFxml = cargarFXML("../../resources/fxmltablaFCT.fxml");
 				Scene escenaTFCT = setEscena((Parent)arrayFxml[0]);
 				showStage(escenaTFCT);
 			}
@@ -198,8 +198,9 @@ public class FxApplicationTest extends ApplicationTest{
 		//assertNotNull(pc);
 		assertNotNull(modeloFCT);
 		
-		var listaFXFCT = ControladorFacturas.m.getListaFXFacturas();
-		this.ctrlFxFct = ctrlFct.getTablaFCT();
+		var modeloFCT = ModeloFacturas.getModelo();
+		var listaFXFCT = modeloFCT.getListaFXFacturas();
+		this.ctrlFxFct = ctrlFct.getFXcontrlFCT();
 		assertNotNull(listaFXFCT);
 		assertNotNull(this.ctrlFxFct);
 		assertTrue(listaFXFCT.get(0) instanceof Factura);
