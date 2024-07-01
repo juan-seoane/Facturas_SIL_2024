@@ -2,12 +2,6 @@ package controladores.fxcontrollers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import modelo.ModeloFacturas;
-import modelo.records.Factura;
-import modelo.records.Fecha;
-import modelo.records.RazonSocial;
-import controladores.ControladorFacturas;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -20,34 +14,29 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-<<<<<<< HEAD
 import javafx.scene.control.TextField;
-=======
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
 import javafx.stage.Stage;
 
-
-
+import modelo.ModeloFacturas;
+import modelo.records.Factura;
+import modelo.records.Fecha;
+import modelo.records.RazonSocial;
+import controladores.ControladorFacturas;
 
 public class FxCntrlVisorFCT implements Initializable{
 
 // TODO : Falta cambiar los Label por TextField
 	@FXML Label lblVID;
-<<<<<<< HEAD
+
 	@FXML TextField tfNumFactura;
 	@FXML TextField tfFecha;
+
 	@FXML Label lblVIDRS;
+
 	@FXML TextField tfNombreEmpresa;
 	@FXML TextField tfNIF;
 	@FXML TextField tfRS;
-=======
-	@FXML Label lblVNumFactura;
-	@FXML Label lblVFecha;
-	@FXML Label lblVIDRS;
-	@FXML Label lblVNombreEmpresa;
-	@FXML Label lblVNIF;
-	@FXML Label lblVRS;
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
+
 	@FXML Label lblVBase1;
 	@FXML Label lblVTipoIVA1;
 	@FXML Label lblVIVA1;
@@ -64,6 +53,7 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML Label lblVTipoIVA4;
 	@FXML Label lblVIVA4;
 	@FXML Label lblVST4;
+
 	@FXML Label lblVTotalesBase;
 	@FXML Label lblVTotalesIVA;
 	@FXML Label lblVTotalesST;
@@ -71,16 +61,15 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML Label lblVTotalesTipoRet;
 	@FXML Label lblVTotalesRetenciones;
 	@FXML Label lblVTotal;
+
 	@FXML TextArea txtAreaVNota;
+
 	@FXML Button btnVizda;
-<<<<<<< HEAD
 	@FXML Button btnVNueva;
 	@FXML Button btnVEditar;
 	@FXML Button btnVBorrar;
 	@FXML Label lblVTitulo;
 	@FXML Button btnVCerrar;
-=======
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
 	@FXML Button btnVdcha;
 
 	ControladorFacturas cfct;
@@ -99,62 +88,38 @@ public class FxCntrlVisorFCT implements Initializable{
 
 	}
 
-
+//#region INI FCT/V
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-//#region INI FCT/V
-<<<<<<< HEAD
+
 	// TODO : 30-06-2024 - Hay que designar la factura de la fila seleccionada en la tabla, en vez del primer elemento (0) de la Lista de Facturas
 		actualizarDatosFacturaVisor(listaFxFacturas.get(0));
 		actualizarDatosEmpresaVisor(listaFxFacturas.get(0));
 		actualizarExtractosVisor(listaFxFacturas.get(0));
 		actualizarTotalesVisor(listaFxFacturas.get(0));
 		actualizarNotaVisor(listaFxFacturas.get(0));
-=======
-	// TODO : 30-06-2024 - Hay que designar una fila seleccionada en la tabla, en vez del primer elemento (0) de la Lista de Facturas
-		this.lblVID.setText(listaFxFacturas.get(0).getID()+"");
-		this.lblVNumFactura.setText(listaFxFacturas.get(0).getNumeroFactura());
-		this.lblVFecha.setText(listaFxFacturas.get(0).getFecha().toString());
-	// TODO : 30-06-2024 - Falta insertar en el VisorFCT los datos de la empresa y los extractos
-		this.lblVTotalesBase.setText(listaFxFacturas.get(0).getTotales().getBase()+"");
-		this.lblVTotalesIVA.setText(listaFxFacturas.get(0).getTotales().getIVA()+"");
-		this.lblVTotalesST.setText(listaFxFacturas.get(0).getTotales().getSubtotal()+"");
-		this.lblVTotalesBaseNI.setText(listaFxFacturas.get(0).getTotales().getBaseNI()+"");
-		this.lblVTotalesTipoRet.setText(listaFxFacturas.get(0).getTotales().getRet()+"");
-		this.lblVTotalesRetenciones.setText(listaFxFacturas.get(0).getTotales().getRetenciones()+"");
-		this.lblVTotal.setText(listaFxFacturas.get(0).getTotales().getTotal()+"");
-		if (listaFxFacturas.get(0).getNota()!=null)
-			this.txtAreaVNota.setText(listaFxFacturas.get(0).getNota().getTexto());
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
-//#endregion
 	}
+//#endregion
 
+//#region EventosBTN
 	@FXML
-<<<<<<< HEAD
 	public void btnCerraVPulsado(Event ev){
-=======
-	public void btnVisorFctPulsado(Event ev){
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
+
 		this.haCambiado = true;
 		this.pulsado = 1;
 	}
 
 	@FXML
-<<<<<<< HEAD
 	public void btnNuevaFctVPulsado(Event ev){
-=======
-	public void btnNuevaFctPulsado(Event ev){
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
+
 		this.haCambiado = true;
 		this.pulsado = 2;
 	}	
 
 	@FXML
-<<<<<<< HEAD
 	public void btnEditarFctVPulsado(Event ev){
-=======
-	public void btnEditarFctPulsado(Event ev){
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
+
+
 		this.haCambiado = true;
 		this.pulsado = 3;
 	}
@@ -166,25 +131,19 @@ public class FxCntrlVisorFCT implements Initializable{
 	}
 
 	@FXML
-<<<<<<< HEAD
+
 	public void btnIzdaVPulsado(Event ev){
-=======
-	public void btnFiltrosFctPulsado(Event ev){
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
+
 		this.haCambiado = true;
 		this.pulsado = 5;
 	}
 
-<<<<<<< HEAD
 	@FXML
 	public void btnDchaVPulsado(Event ev){
 		this.haCambiado = true;
 		this.pulsado = 6;
 	}
 
-
-=======
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
 	public boolean HaCambiado(){
 		return this.haCambiado;
 	}
@@ -193,6 +152,8 @@ public class FxCntrlVisorFCT implements Initializable{
 		this.haCambiado = false;
 		return this.pulsado;
 	}
+//#endregion
+
 	public synchronized TextArea getAreaNota(){
 		return this.txtAreaVNota;
 	}
@@ -207,7 +168,7 @@ public class FxCntrlVisorFCT implements Initializable{
 		}
 		return instancia;
 	}
-<<<<<<< HEAD
+
 //#region Act_VISOR
 	private void actualizarDatosFacturaVisor(Factura f) {
 		this.lblVID.setText(f.getID()+"");
@@ -269,7 +230,6 @@ public class FxCntrlVisorFCT implements Initializable{
 		else this.txtAreaVNota.setText("--SIN NOTA--");	
 	}
 //#endregion 
-=======
 
 	public void actualizarTotalesVisor(String[] datos) throws NullPointerException{
 		lblVTotalesBase.setText(datos[0]);
@@ -279,6 +239,4 @@ public class FxCntrlVisorFCT implements Initializable{
 		lblVTotalesRetenciones.setText(datos[4]);
 
 	}
- 
->>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
 }
