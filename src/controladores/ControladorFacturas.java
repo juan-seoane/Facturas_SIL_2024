@@ -290,6 +290,7 @@ public class ControladorFacturas extends Thread {
         System.out.println("[ControladorFacturas] Se muestra el VisorFCT\n******************");
     }
 
+<<<<<<< HEAD
     public synchronized void ocultarVisorFCT(){
         Platform.runLater(new Runnable(){
 
@@ -302,6 +303,8 @@ public class ControladorFacturas extends Thread {
         
         System.out.println("[ControladorFacturas] Se muestra el VisorFCT\n******************");
     }
+=======
+>>>>>>> 7aabd4bfd1b2e5a3d5f057ddd30a0d4a19a6c547
     public boolean anteriorFacturaVisor() throws NullPointerException, IOException {
 		JOptionPane.showMessageDialog(null,"[ControladorFacturas] Ha pulsado el boton atras. ");
 /*        int i = tabla.getIndice();
