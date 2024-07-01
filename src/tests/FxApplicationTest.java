@@ -171,7 +171,7 @@ public class FxApplicationTest extends ApplicationTest{
 
 	@Test
 	@Order(4)
-	public void tablaFCTcargaOK() throws InterruptedException, NullPointerException, IOException {
+	public void tablaYvisorFCTcarganOK() throws InterruptedException, NullPointerException, IOException {
 
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******INICIO*****");
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK] Esperando a cargar la TablaFCT\r");
@@ -206,7 +206,9 @@ public class FxApplicationTest extends ApplicationTest{
 		assertTrue(listaFXFCT.get(0) instanceof Factura);
 		this.ctrlFxFct.tblvwFct.setItems(listaFXFCT);
 		this.ctrlFxFct.tblvwFct.refresh();
-
+		clickOn("#btnVisorFct");
+		Thread.sleep(2000);
+		clickOn("#btnVisorFct");
 
 		
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******FINAL*****");
