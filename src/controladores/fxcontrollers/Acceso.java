@@ -56,6 +56,9 @@ public class Acceso extends Application implements Initializable{
     public static int intentos = 1;
 
     private boolean credsOK;
+
+    private FxmlHelper FXMLvisorfct;
+    private FxmlHelper FXMLtablafct;
     
     @FXML 
     public void probar() throws InterruptedException, HeadlessException, NullPointerException, IOException{
@@ -293,8 +296,10 @@ public class Acceso extends Application implements Initializable{
         // TODO : 30-05-2024 - Aquí se ajusta el modo de la ventana de P/C
         ventanaPCntrl.initModality(Modality.NONE);
         ventanaPCntrl.show();
+        // TODO : 30-06-2024 - Revisar esto de abajo
         //Asignar el actual P/C a las clases necesarias
-        PanelControl.fxFCTcontr = (FxControladorFacturas)(FXMLcfct.getFXcontr());
+        //ControladorFacturas.FXcontrlTablaFCT = (FxCntrlTablaFCT)(FXMLtablafct.getFXcontr());
+        //ControladorFacturas.FXcontrlVisorFCT = (FxCntrlVisorFCT)(FXMLvisorfct.getFXcontr());
         Controlador.pc = (PanelControl)(FXMLpc.getFXcontr());
 
         ventanaPCntrl.setAlwaysOnTop(true);

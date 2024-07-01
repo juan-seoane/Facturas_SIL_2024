@@ -14,6 +14,7 @@ import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.concurrent.Tim
 
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,8 +39,10 @@ public class PanelControl implements Initializable{
     public static Stage ventanaPCtl;
 
     public static Scene escena1;
+// TODO: 30-06-2024 - Los controladoresFx de FCT deberían estar en el ControladorFacturas, no aquí...
+    public static FxCntrlTablaFCT fxTablaFCTcontr;
 
-    public static FxControladorFacturas fxFCTcontr;
+    public static FxCntrlVisorFCT fxVisorFCTcontr;
 
     static Image icon;
 //    static TrayIcon trayIcon;
@@ -59,15 +62,16 @@ public class PanelControl implements Initializable{
     @FXML private Label lblAnho;
     @FXML private Label lblUsuario;
 
+    public static PanelControl instancia_pc = null;
+    public static int modo;
     private static boolean botonpulsado = false;
     private static int botonactivo = 1;
-    public static PanelControl instancia_pc;
-    public static int modo;
+
     public Config configActual;
     public Controlador ctrlPpal;
     public ControladorFacturas ctrlFct;
     public String usuarioActual;
-    public Stage tablaFCT;
+
     //TODO: 12-04-2024 - ¿Porqué no puede seguir siendo un Singleton?
     //TODO: 12-04-2024 - Hay que definir un usuariActual, y una configActual
     public PanelControl() {
@@ -81,12 +85,13 @@ public class PanelControl implements Initializable{
             e.printStackTrace();
         }
 //TODO : 21-06-2024 - Estas asignaciones me hacen falta
-/*
+
         this.ctrlPpal = Controlador.getControlador();
         this.ctrlFct = ControladorFacturas.getControlador();
 
-*/
-        instancia_pc = this;
+
+// TODO : Repasar esto, para que no sea ciclico
+//        instancia_pc = this;
 
   }
 //#region INITIALIZE
@@ -102,11 +107,12 @@ public class PanelControl implements Initializable{
         setNumfacturas(ModeloFacturas.getNumeroFacturas());
         setUsuario(this.configActual.usuario.toLowerCase());
         //sólo cargar tablas, no mostrarlas...
-        boolean ok = cargarTablaFacturas();
+        boolean ok1 = this.ctrlFct.cargarTablaFacturas();
+        boolean ok2 = this.ctrlFct.cargarVisorFacturas();
         //Esto sería mostrarla
-        //ctrlFct.mostrarTablaFacturas();
-        if (ok){
-            System.out.println("[PanelControl>Constructor] Tabla Facturas cargada!!");
+        //this.ctrlFct.mostrarTablaFacturas();
+        if (ok1 && ok2){
+            System.out.println("[PanelControl>Constructor] Tabla y Visor Facturas cargados!!");
         }
     }
 //#endregion
@@ -158,7 +164,7 @@ public class PanelControl implements Initializable{
             System.out.println( " [PanelControl] FCT desactivado!");
             botonactivo = 11;
             botonpulsado = true;
-            ctrlFct.ocultarTablaFacturas();
+            
         }
         else if (((ToggleButton)(evt.getSource())).isSelected()){
             btnFCT.setStyle("-fx-background-color: yellow; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3");
@@ -166,7 +172,7 @@ public class PanelControl implements Initializable{
 
             botonactivo = 1;
             botonpulsado = true;
-            ctrlFct.mostrarTablaFacturas(); //Está fuera de sitio, debería estar en el hilo del Controlador, pero parece que funciona...
+            //this.ctrlFct.mostrarTablaFacturas(); //Está fuera de sitio, debería estar en el hilo del Controlador, pero parece que funciona...
         } 
 
  // TODO : 29-05-2024 - Hay que desactivar el botón mientras está en uso, y colorearlo de amarillo (quizás pueda ser un ToggleButton)...       
@@ -255,28 +261,5 @@ public class PanelControl implements Initializable{
         return Controlador.cfct;
     }
 */
-//#endregion
-//#region LOAD_FCT/T
-    public boolean cargarTablaFacturas() {
-        if(this.tablaFCT == null){
-            FxmlHelper loader = new FxmlHelper("../../resources/fxmltablaFCT.fxml");
-
-            Parent root;
-
-            root = loader.cargarFXML();
-            fxFCTcontr = (FxControladorFacturas)loader.getFXcontr();
-
-            Scene escena = new Scene(root);
-            this.tablaFCT = new Stage();
-
-            this.tablaFCT.setScene(escena);
-            this.tablaFCT.setResizable(true);
-            // TODO : 30-05-2024 - Aquí se ajusta el modo de la ventana de la TablaFCT
-            //this.tablaFCT.initModality(Modality.NONE);        
-            
-            return true;
-        }
-        return false;
-    }
 //#endregion
 }

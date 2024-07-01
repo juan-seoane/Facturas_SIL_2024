@@ -19,12 +19,13 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 
 
 
 
-public class FxControladorFacturas implements Initializable{
-
+public class FxCntrlTablaFCT implements Initializable{
+//FXML tabla
 	@FXML public TableView<Factura> tblvwFct;
 	@FXML private TableColumn<Factura, Integer> colID;
 	@FXML private TableColumn<Factura, String> colNumFact;
@@ -62,9 +63,9 @@ public class FxControladorFacturas implements Initializable{
 	boolean haCambiado = false;
 	int pulsado = 0;
 	private ObservableList<Factura> listaFxFacturas;
-	public static FxControladorFacturas instancia;
+	public static FxCntrlTablaFCT instancia;
 //TODO: 22-06-2024 - En el constructor inicializamos los campos que necesitamos listos antes de nada...
-	public FxControladorFacturas(){
+	public FxCntrlTablaFCT(){
 
 		this.tblvwFct = new TableView<Factura>();
 		this.listaFxFacturas = ModeloFacturas.getModelo().getListaFXFacturas();
@@ -75,7 +76,7 @@ public class FxControladorFacturas implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+//#region INI_FCT/T		
 		//Adjudicar valores para las Columnas de la Tabla de Facturas
 //		System.out.println("[FxControladorFacturas.java>initialize()] Adjudicando valores para las columnas de la Tabla de Facturas");
 		colID.setCellValueFactory(cellData -> cellData.getValue().getFxID());
@@ -94,7 +95,7 @@ public class FxControladorFacturas implements Initializable{
 		colTotal.setCellValueFactory(cellData -> cellData.getValue().getFxTotal());
 		colNota.setCellValueFactory(cellData -> cellData.getValue().getFxNota());
 
-//#region addColums2table
+//addColums2table
 /*
 		tblvwFct.getColumns().add(colID);
 		tblvwFct.getColumns().add(colNumFact);
@@ -112,7 +113,6 @@ public class FxControladorFacturas implements Initializable{
 		tblvwFct.getColumns().add(colTotal);
 		tblvwFct.getColumns().add(colNota);
 */
-//#endregion
 
 		//this.tblvwFct.itemsProperty().bind(this.FxFacturaListProperty); // The Binding
 		this.tblvwFct.setItems(listaFxFacturas);
@@ -122,7 +122,8 @@ public class FxControladorFacturas implements Initializable{
 		//Arrancar el hilo del ControladorFacturas (aún no funciona)
 		System.out.println("[FxControladorFacturas.java>initialize()] Arrancando el Hilo del Controlador de Facturas");
 		cfct = ControladorFacturas.getControlador(this);
-	
+//#endregion
+
 	}
 
 	@FXML
@@ -171,9 +172,9 @@ public class FxControladorFacturas implements Initializable{
 		this.pulsado = 0;
 	}
 
-	public static FxControladorFacturas getFxController() {
+	public static FxCntrlTablaFCT getFxController() {
 		if (instancia==null){
-			instancia = new FxControladorFacturas();
+			instancia = new FxCntrlTablaFCT();
 		}
 		return instancia;
 	}

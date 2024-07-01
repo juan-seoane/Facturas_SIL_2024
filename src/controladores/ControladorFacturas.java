@@ -4,7 +4,8 @@ import modelo.*;
 import modelo.base.Fichero;
 import modelo.records.Factura;
 import ui.ventanas.VentanaFiltros;
-import controladores.fxcontrollers.FxControladorFacturas;
+import controladores.fxcontrollers.FxCntrlTablaFCT;
+import controladores.fxcontrollers.FxCntrlVisorFCT;
 import controladores.fxcontrollers.PanelControl;
 import controladores.helpers.FxmlHelper;
 
@@ -13,7 +14,11 @@ import javax.swing.JOptionPane;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
+
 import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -29,7 +34,10 @@ public class ControladorFacturas extends Thread {
     public static ModeloFacturas m;
     public PanelControl pc;
     static VentanaFiltros filtros;
-    static FxControladorFacturas tablaFCT;
+    public static FxCntrlTablaFCT FXcontrlTablaFCT;
+    public static FxCntrlVisorFCT FXcontrlVisorFCT;
+    Stage tablaFCT;
+    Stage visorFCT;
     TableView<Factura> modeloTablaFCT = null;
     static boolean GUIon = false;
 
@@ -42,18 +50,20 @@ public class ControladorFacturas extends Thread {
             System.out.println("[ControladorFacturas>Constructor] Excepcion " + e +" al cargar el ModeloFacturas...");
             e.printStackTrace();
         }
-        //TODO : 21-06-2024 - Estas asignaciones me hacen falta
+
         if(GUIon){
-            tablaFCT = FxControladorFacturas.getFxController();
-            System.out.println("[ControladorFacturas>constructor] La tablaFCT fue asignada correctamente");
+            FXcontrlTablaFCT = FxCntrlTablaFCT.getFxController();
+            FXcontrlVisorFCT = FxCntrlVisorFCT.getFxController();
+            System.out.println("[ControladorFacturas>constructor] Los ControladoresFX de la tablaFCT y del visorFCT fueron asignados correctamente");
         }else{
-            System.out.println("[ControladorFacturas>constructor] La tablaFCT sigue siendo NULL");
+            System.out.println("[ControladorFacturas>constructor] Los ControladoresFX de la tablaFCT y del visorFCT siguen siendo NULL");
         }
-        /*
+    //TODO : 21-06-2024 - Estas asignaciones me hacen falta
+    /*
         this.pc = PanelControl.getPanelControl();
         this.modeloTabla = tablaFCT.getTableView();
         this.ctrlPpal = Controlador.getControlador();
-        */
+    */
     }
 
     public static synchronized ControladorFacturas getControlador() {
@@ -66,24 +76,23 @@ public class ControladorFacturas extends Thread {
         return instancia;
     }
 
-//TODO : Cambiar la GUI Tabla de Facturas a JavaFX y la clase Factura a Record
-    public static synchronized ControladorFacturas getControlador(FxControladorFacturas fxcntrfct) {
+    public static synchronized ControladorFacturas getControlador(FxCntrlTablaFCT fxcntrfct) {
 
         if (instancia == null) {
             System.out.println("[ControladorFacturas>getControlador(fxcontr)] Instancia vacia, creando una nueva instancia generica con GUI asociada!");
             instancia = new ControladorFacturas();
         }
         GUIon = true;
-        setTablaFCT(fxcntrfct);
+        setFXcontrlFCT(fxcntrfct);
         return instancia;
     }
 //#region get/setTablaFCT
-    public FxControladorFacturas getTablaFCT(){
-        return tablaFCT;
+    public FxCntrlTablaFCT getFXcontrlFCT(){
+        return FXcontrlTablaFCT;
     }
 
-    public static void setTablaFCT(FxControladorFacturas contr){
-        tablaFCT = contr;
+    public static void setFXcontrlFCT(FxCntrlTablaFCT contr){
+        FXcontrlTablaFCT = contr;
     }
 //#endregion    
 //#region RUN_CFCT()
@@ -94,7 +103,42 @@ public class ControladorFacturas extends Thread {
 //            while (/*!visor.haCambiado() & !form.seHaEnviado() & !form.pasoatras() & !form.pasoadelante() & */!tabla.haCambiado()) {
 //                System.out.print("");
 //            }
-/*            if (visor.haCambiado()) {
+/* FORM_SWITCH        
+            if (form.seHaEnviado()) {
+                try {
+                    if (form.getEstado().equals("editando")) {
+                        recogerFormyEditar(m.leerFacturas().get(tabla.getIndice()));
+                    } else {
+                        recogerFormyAnexar();
+                    }
+
+                    form.reset();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "[ControladorFacturas] Se ha producido un error en la carga del formulario!");
+                    form.enCasodeError(false);
+                }
+                visible(true);
+            }
+            if (form.pasoatras()){
+                try{
+                rellenarFormyActualizar(ModeloFacturas.getModelo().getPilaFacturasSig().push(ModeloFacturas.getModelo().getPilaFacturasAnt().pop()));
+                form.borrarDatosNumericos();
+               }catch(Exception ex){
+                   JOptionPane.showMessageDialog(null,"[ControladorFacturas] No es posible dar más pasos atrás!");
+               }
+                form.getFormulario().setPasoAtras(false);
+            }
+            if (form.pasoadelante()){
+                 try{
+                rellenarFormyActualizar(ModeloFacturas.getModelo().getPilaFacturasAnt().push(ModeloFacturas.getModelo().getPilaFacturasSig().pop()));
+                form.borrarDatosNumericos();
+               }catch(Exception ex){
+                   JOptionPane.showMessageDialog(null,"[ControladorFacturas] No es posible dar más pasos adelante!");
+               }
+            }
+*/
+/* VISOR_SWITCH
+            if (visor.haCambiado()) {
                 //JOptionPane.showMessageDialog(null, "[ControladorFacturas] Ha pulsado un boton en el visor!");
                 switch (visor.getPulsado()) {
                     case 1:	//anterior
@@ -134,77 +178,42 @@ public class ControladorFacturas extends Thread {
                         //System.out.println(" [ControladorFacturas] Ninguna opcion seleccionada!");
                 }
             }
-            if (form.seHaEnviado()) {
-                try {
-                    if (form.getEstado().equals("editando")) {
-                        recogerFormyEditar(m.leerFacturas().get(tabla.getIndice()));
-                    } else {
-                        recogerFormyAnexar();
-                    }
-
-                    form.reset();
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "[ControladorFacturas] Se ha producido un error en la carga del formulario!");
-                    form.enCasodeError(false);
-                }
-                visible(true);
-            }
-            if (form.pasoatras()){
-                try{
-                rellenarFormyActualizar(ModeloFacturas.getModelo().getPilaFacturasSig().push(ModeloFacturas.getModelo().getPilaFacturasAnt().pop()));
-                form.borrarDatosNumericos();
-               }catch(Exception ex){
-                   JOptionPane.showMessageDialog(null,"[ControladorFacturas] No es posible dar más pasos atrás!");
-               }
-                form.getFormulario().setPasoAtras(false);
-            }
-            if (form.pasoadelante()){
-                 try{
-                rellenarFormyActualizar(ModeloFacturas.getModelo().getPilaFacturasAnt().push(ModeloFacturas.getModelo().getPilaFacturasSig().pop()));
-                form.borrarDatosNumericos();
-               }catch(Exception ex){
-                   JOptionPane.showMessageDialog(null,"[ControladorFacturas] No es posible dar más pasos adelante!");
-               }
-                 form.getForm{
-            if (ulario().setPasoAdelante(false);
-            }
 */ 
-//#region SWITCH Tabla 
-            if(tablaFCT!=null && tablaFCT.HaCambiado()) {
-				System.out.println("[ControladorFacturas>run] recogiendo evento del Controlador de Facturas - pulsado caso " + tablaFCT.getPulsado());
-                // TODO : HAY QUE PONER UN CASO CERO DONDE RECOJA EL INDICE DE LA FACTURA ACTUAL
+//#region nuevo_SWITCH  
+            if(FXcontrlTablaFCT!=null && FXcontrlTablaFCT.HaCambiado()) {
+				System.out.println("[ControladorFacturas>run] recogiendo evento del Controlador de Facturas - pulsado caso " + FXcontrlTablaFCT.getPulsado());
+                // TODO : 30-06-2024 - HAY QUE PONER UN CASO CERO DONDE RECOJA EL INDICE DE LA FACTURA ACTUAL
                 
-                if (tablaFCT.getPulsado() == 1) {
+                if (FXcontrlTablaFCT.getPulsado() == 1) {
                     
-                    System.out.println("[ControladorFacturas>run] Se mostrará el Visor de Facturas");
-//                    actualizarVisor(tabla.getIndice());
-//                    visor.setVisible(true);
-//                    tabla.reset();
+                    //System.out.println("[ControladorFacturas>run] Se mostrará el Visor de Facturas");
+                    mostrarVisorFCT();
+                    //actualizarVisor(tabla.getIndice());
+
                     
                 }
-                if (tablaFCT.getPulsado() == 2) {
+                if (FXcontrlTablaFCT.getPulsado() == 2) {
                     System.out.println("[ControladorFacturas>run] Se mostrará el Formulario de Nueva Facturas");
 //                    actualizarFormulario();
 
 //                    tabla.reset();
                 }
-                if (tablaFCT.getPulsado() == 3) {
+                if (FXcontrlTablaFCT.getPulsado() == 3) {
 //                    imprimirTabla();
 //                    tabla.reset();
 //                    visible(true);
                 }
-                if (tablaFCT.getPulsado() == 4) {
+                if (FXcontrlTablaFCT.getPulsado() == 4) {
 //                    verFiltros();
 //                    tabla.reset();
 
                 }
-                if (tablaFCT.getPulsado() == 5) {
+                if (FXcontrlTablaFCT.getPulsado() == 5) {
                     System.out.println("[ControladorFacturas>run] Se mostrará la Ventana de Filtros");
 /*
                     try {
                         actualizarTabla(0);
                     } catch (NullPointerException | IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     actualizarVisor(0);
@@ -214,7 +223,7 @@ public class ControladorFacturas extends Thread {
 */                    
                 }
 
-                if (tablaFCT.getPulsado() == 6) {
+                if (FXcontrlTablaFCT.getPulsado() == 6) {
 //                    actualizarVisor(tabla.getIndice());
 //                    tabla.reset();
 //                    visible(true);
@@ -233,12 +242,25 @@ public class ControladorFacturas extends Thread {
     }
 
 //#region VisorOps
+    public synchronized void mostrarVisorFCT(){
+        Platform.runLater(new Runnable(){
+
+            @Override
+            public void run() {
+                visorFCT.show();
+            }
+
+        });
+        
+        System.out.println("[ControladorFacturas] Se muestra el VisorFCT\n******************");
+    }
+
     public boolean anteriorFacturaVisor() throws NullPointerException, IOException {
 		JOptionPane.showMessageDialog(null,"[ControladorFacturas] Ha pulsado el boton atras. ");
 /*        int i = tabla.getIndice();
         List<Factura> lista = m.leerFacturas();
         if (i > 0) {
-            // TODO : HAY QUE AJUSTAR EL VISOR PARA QUE SELECCIONE LA FACTURA ADECUADA DESDPUES DE ACTIVAR EL FILTRO 
+            // TODO : 30-06-2024 - HAY QUE AJUSTAR EL VISOR PARA QUE SELECCIONE LA FACTURA ADECUADA DESDPUES DE ACTIVAR EL FILTRO 
             int nuevoindice = i-1;
 //            //System.out.println(" [ControladorFacturas] Actualizando Visor!");
             actualizarVisor(nuevoindice);
@@ -406,52 +428,40 @@ public class ControladorFacturas extends Thread {
 //#endregion 
 //#region TablaOps
     public synchronized void mostrarTablaFacturas() {
-        PanelControl.getPanelControl().tablaFCT.show();
-        System.out.println("[PanelControl] Se muestra la tabla FCT\n******************");
-        	//Mostrar los datos en la tabla
         
-		//System.out.println("[PanelControl>mostrarTablaFacturas()] Mostrando valores en la Tabla de Facturas");
-		//Obtener la tabla del Stage que la contiene
-        
-        String ruta="/resources/fxmltablaFCT.fxml";
-        FxmlHelper FCTFXHelper = new FxmlHelper(ruta);
-
-        System.out.println("*****[ControladorFacturas>mostrarTablaFacturas]*****");
-/*        do{
-            System.out.print("[ControladorFacturas>mostrarTablaFacturas] cargando las Facturas en la TablaFCT\r");
-            this.modeloTablaFCT = tablaFCT.getTableView();
-        }while(this.modeloTablaFCT==null);
-*/
-        //TODO : 29-06-2024 - Hay que cargar el modeloFCT para que no sea NULL eventualmente (en los test)
-        m = ModeloFacturas.getModelo();
-        //TODO : 22-06-2024 : Se ejecuta en cuanto se pueda en la aplicación JFX
         Platform.runLater(new Runnable(){
             @Override
             public void run(){
-/*
-                do{
-                    System.out.print("[ControladorFacturas>] Inicializando GUI tablaFCT\r");
-                
-                }while(tablaFCT.lblBase!=null);
-*/
-                String[] datosResumen = m.calcularTotales();
-                tablaFCT.actualizarTotales(datosResumen);
-                ObservableList<Factura> listaFxFct = ControladorFacturas.m.getListaFXFacturas();
-                //TODO : 29-06-24 - Me parece que este condicional de aquí abajo, sobra...
-                if (modeloTablaFCT!=null){
-                    modeloTablaFCT.setItems(listaFxFct);
-                    modeloTablaFCT.refresh();
-                    System.out.println("[ControladorFacturas>mostrarTablaFacturas] Regenerando el modeloTablaFCT ");
-                }
                
+                    //Mostrar los datos en la tabla
+                
+                //System.out.println("[PanelControl>mostrarTablaFacturas()] Mostrando valores en la Tabla de Facturas");
+                //Obtener la tabla del Stage que la contiene
+                
+/*                 String ruta="../../resources/fxmltablaFCT.fxml";
+                FxmlHelper tablaFXHelper = new FxmlHelper(ruta);
+                FXcontrlTablaFCT = (FxCntrlTablaFCT) tablaFXHelper.getFXcontr(); 
+*/
+
+                tablaFCT.show();
+                System.out.println("[ControladorFacturas>mostrarTablaFacturas] Se muestra la tabla FCT\n******************");
+
             }
         });
-
-    }
+        //TODO : 29-06-2024 - Hay que cargar el modeloFCT para que no sea NULL eventualmente (en los test)
+        //m = ModeloFacturas.getModelo();
+        }
 
     public synchronized void ocultarTablaFacturas() {
-        System.out.println("[ControladorFacturas>ocultarTablaFacturas] Se oculta  la tabla FCT\n******************");
-        PanelControl.getPanelControl().tablaFCT.hide();
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run(){
+                System.out.println("[ControladorFacturas>ocultarTablaFacturas] Se oculta  la tabla FCT\n******************");
+                tablaFCT.hide();
+            }
+        }
+        );
+        
         this.modeloTablaFCT = null;
        
     }
@@ -552,6 +562,71 @@ public class ControladorFacturas extends Thread {
         return true;
 
     }
+*/
+//#region LOAD_FCT/T
+    public synchronized boolean cargarTablaFacturas() {
+        if(FXcontrlTablaFCT == null){
+            Platform.runLater(new Runnable(){
+
+                Stage tabla;
+
+                @Override
+                public void run() {
+                    FxmlHelper loader = new FxmlHelper("../../resources/fxmltablaFCT.fxml");
+
+                    Parent root;
+
+                    root = loader.cargarFXML();
+                    FXcontrlTablaFCT = (FxCntrlTablaFCT)loader.getFXcontr();
+
+                    Scene escena = new Scene(root);
+                    tabla = new Stage();
+
+                    tabla.setScene(escena);
+                    tabla.setResizable(true);
+                    // TODO : 30-05-2024 - Aquí se ajusta el modo de la ventana de la TablaFCT
+                    //this.tablaFCT.initModality(Modality.NONE);       
+                    tablaFCT = tabla;
+                }
+                    
+            });
+            return true;
+        }
+        return false;
+    }
+//#endregion
+//#region LOAD_FCT/V
+public synchronized boolean cargarVisorFacturas() {
+    if(FXcontrlVisorFCT == null){
+        Platform.runLater(new Runnable(){
+
+            private Stage visor;
+
+            @Override
+            public void run() {
+                FxmlHelper loader = new FxmlHelper("../../resources/visorFormFCT.fxml");
+
+                Parent root;
+        
+                root = loader.cargarFXML();
+                FXcontrlVisorFCT = (FxCntrlVisorFCT)loader.getFXcontr();
+        
+                Scene escena = new Scene(root);
+                visor = new Stage();
+        
+                visor.setScene(escena);
+                visor.setResizable(true);
+
+                visorFCT = visor;
+            }
+            
+        });
+        return true;
+    }
+    return false;
+}
+//#endregion
+/*
 //#region VISIBILIDAD
     public void visible(boolean bool) {
         System.out.println("[ControladorFacturas> visible("+bool+")]");
@@ -632,7 +707,7 @@ public class ControladorFacturas extends Thread {
            }
            else lista4 = lista3;
 
-//TODO : ACORDARSE DE ACTUALIZAR LOS TOTALES DESPUES DE FILTRAR!
+//TODO : 22-06-2024 - ACORDARSE DE ACTUALIZAR LOS TOTALES DESPUES DE FILTRAR!
            return lista4;
        }
        return lista;

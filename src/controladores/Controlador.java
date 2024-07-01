@@ -232,14 +232,9 @@ public class Controlador extends Thread {
                             //pc.cargarTablaFacturas();
                             //this.cfct = ControladorFacturas.getControlador();
                         }
+                        cfct.mostrarTablaFacturas();
                         //Las demás ventanas se cierran
-
-    //                        cfct.visible(true);
-    //                        ControladorDistribuidores.setEstado(0);
-    //                        cd.visible(false);
-    //                        ccj.visible(false);
-
-                        //El P/C se vuelve a abrir, reseteado
+                        //El P/C se resetea ->pulsado = false
                         PanelControl.reset();
                         break;
                     case 2 :
@@ -296,7 +291,9 @@ public class Controlador extends Thread {
                         break;
                     case 11:
                         System.out.println("[Controlador.java>run()] btn FCT desactivado!");
+                        cfct.ocultarTablaFacturas();
                         PanelControl.reset();
+
                         break;
                     default:
                         PanelControl.reset();
