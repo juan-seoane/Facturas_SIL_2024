@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 
@@ -29,12 +30,12 @@ public class FxCntrlVisorFCT implements Initializable{
 
 // TODO : Falta cambiar los Label por TextField
 	@FXML Label lblVID;
-	@FXML Label lblVNumFactura;
-	@FXML Label lblVFecha;
+	@FXML TextField tfNumFactura;
+	@FXML TextField tfFecha;
 	@FXML Label lblVIDRS;
-	@FXML Label lblVNombreEmpresa;
-	@FXML Label lblVNIF;
-	@FXML Label lblVRS;
+	@FXML TextField tfNombreEmpresa;
+	@FXML TextField tfNIF;
+	@FXML TextField tfRS;
 	@FXML Label lblVBase1;
 	@FXML Label lblVTipoIVA1;
 	@FXML Label lblVIVA1;
@@ -60,6 +61,11 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML Label lblVTotal;
 	@FXML TextArea txtAreaVNota;
 	@FXML Button btnVizda;
+	@FXML Button btnVNueva;
+	@FXML Button btnVEditar;
+	@FXML Button btnVBorrar;
+	@FXML Label lblVTitulo;
+	@FXML Button btnVCerrar;
 	@FXML Button btnVdcha;
 
 	ControladorFacturas cfct;
@@ -82,37 +88,29 @@ public class FxCntrlVisorFCT implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 //#region INI FCT/V
-	// TODO : 30-06-2024 - Hay que designar una fila seleccionada en la tabla, en vez del primer elemento (0) de la Lista de Facturas
-		this.lblVID.setText(listaFxFacturas.get(0).getID()+"");
-		this.lblVNumFactura.setText(listaFxFacturas.get(0).getNumeroFactura());
-		this.lblVFecha.setText(listaFxFacturas.get(0).getFecha().toString());
-	// TODO : 30-06-2024 - Falta insertar en el VisorFCT los datos de la empresa y los extractos
-		this.lblVTotalesBase.setText(listaFxFacturas.get(0).getTotales().getBase()+"");
-		this.lblVTotalesIVA.setText(listaFxFacturas.get(0).getTotales().getIVA()+"");
-		this.lblVTotalesST.setText(listaFxFacturas.get(0).getTotales().getSubtotal()+"");
-		this.lblVTotalesBaseNI.setText(listaFxFacturas.get(0).getTotales().getBaseNI()+"");
-		this.lblVTotalesTipoRet.setText(listaFxFacturas.get(0).getTotales().getRet()+"");
-		this.lblVTotalesRetenciones.setText(listaFxFacturas.get(0).getTotales().getRetenciones()+"");
-		this.lblVTotal.setText(listaFxFacturas.get(0).getTotales().getTotal()+"");
-		if (listaFxFacturas.get(0).getNota()!=null)
-			this.txtAreaVNota.setText(listaFxFacturas.get(0).getNota().getTexto());
+	// TODO : 30-06-2024 - Hay que designar la factura de la fila seleccionada en la tabla, en vez del primer elemento (0) de la Lista de Facturas
+		actualizarDatosFacturaVisor(listaFxFacturas.get(0));
+		actualizarDatosEmpresaVisor(listaFxFacturas.get(0));
+		actualizarExtractosVisor(listaFxFacturas.get(0));
+		actualizarTotalesVisor(listaFxFacturas.get(0));
+		actualizarNotaVisor(listaFxFacturas.get(0));
 //#endregion
 	}
 
 	@FXML
-	public void btnVisorFctPulsado(Event ev){
+	public void btnCerraVPulsado(Event ev){
 		this.haCambiado = true;
 		this.pulsado = 1;
 	}
 
 	@FXML
-	public void btnNuevaFctPulsado(Event ev){
+	public void btnNuevaFctVPulsado(Event ev){
 		this.haCambiado = true;
 		this.pulsado = 2;
 	}	
 
 	@FXML
-	public void btnEditarFctPulsado(Event ev){
+	public void btnEditarFctVPulsado(Event ev){
 		this.haCambiado = true;
 		this.pulsado = 3;
 	}
@@ -124,10 +122,17 @@ public class FxCntrlVisorFCT implements Initializable{
 	}
 
 	@FXML
-	public void btnFiltrosFctPulsado(Event ev){
+	public void btnIzdaVPulsado(Event ev){
 		this.haCambiado = true;
 		this.pulsado = 5;
 	}
+
+	@FXML
+	public void btnDchaVPulsado(Event ev){
+		this.haCambiado = true;
+		this.pulsado = 6;
+	}
+
 
 	public boolean HaCambiado(){
 		return this.haCambiado;
@@ -151,14 +156,65 @@ public class FxCntrlVisorFCT implements Initializable{
 		}
 		return instancia;
 	}
+//#region Act_VISOR
+	private void actualizarDatosFacturaVisor(Factura f) {
+		this.lblVID.setText(f.getID()+"");
+		this.tfNumFactura.setText(f.getNumeroFactura()+"");
+		this.tfFecha.setText(f.getFecha().toString());
+	}
 
-	public void actualizarTotalesVisor(String[] datos) throws NullPointerException{
-		lblVTotalesBase.setText(datos[0]);
-		lblVTotalesIVA.setText(datos[1]);
-		lblVTotalesST.setText(datos[2]);
-		lblVTotalesBaseNI.setText(datos[3]);
-		lblVTotalesRetenciones.setText(datos[4]);
+	private void actualizarDatosEmpresaVisor(Factura f){
+		this.lblVIDRS.setText(f.getRS().getID()+"");
+		this.tfNIF.setText(f.getRS().getNif().toString());
+		this.tfNombreEmpresa.setText(f.getRS().getNombre());
+		this.tfRS.setText(f.getRS().getRazon());
+	}
+
+	private void actualizarExtractosVisor(Factura f){
+		switch(f.getExtractos().size()){
+			case 4:
+				this.lblVBase4.setText(f.getExtractos().get(3).getBase()+"");
+				this.lblVTipoIVA4.setText(f.getExtractos().get(3).getTipoIVA()+"");
+				this.lblVIVA4.setText(f.getExtractos().get(3).getIVA()+"");
+				this.lblVST4.setText(f.getExtractos().get(3).getTotal()+"");
+			case 3: 
+				this.lblVBase3.setText(f.getExtractos().get(2).getBase()+"");
+				this.lblVTipoIVA3.setText(f.getExtractos().get(2).getTipoIVA()+"");
+				this.lblVIVA3.setText(f.getExtractos().get(2).getIVA()+"");
+				this.lblVST3.setText(f.getExtractos().get(2).getTotal()+"");			
+			case 2:
+				this.lblVBase2.setText(f.getExtractos().get(1).getBase()+"");
+				this.lblVTipoIVA2.setText(f.getExtractos().get(1).getTipoIVA()+"");
+				this.lblVIVA2.setText(f.getExtractos().get(1).getIVA()+"");
+				this.lblVST2.setText(f.getExtractos().get(1).getTotal()+"");			
+			case 1:
+				this.lblVBase1.setText(f.getExtractos().get(0).getBase()+"");
+				this.lblVTipoIVA1.setText(f.getExtractos().get(0).getTipoIVA()+"");
+				this.lblVIVA1.setText(f.getExtractos().get(0).getIVA()+"");
+				this.lblVST1.setText(f.getExtractos().get(0).getTotal()+"");			
+				break;
+			default:
+				System.out.println("[FxCntrlVisorFCT>actualizarExtractosVisor] Error en el num de extractos de la factura seleccionada");
+				break;
+		}
+	}
+
+	private void actualizarTotalesVisor(Factura f) throws NullPointerException{
+		this.lblVTotalesBase.setText(f.getTotales().getBase()+"");
+		this.lblVTotalesIVA.setText(f.getTotales().getIVA()+"");
+		this.lblVTotalesST.setText(f.getTotales().getSubtotal()+"");
+		this.lblVTotalesBaseNI.setText(f.getTotales().getBaseNI()+"");
+		this.lblVTotalesTipoRet.setText(f.getTotales().getRet()+"");
+		this.lblVTotalesRetenciones.setText(f.getTotales().getRetenciones()+"");
+		this.lblVTotal.setText(f.getTotales().getTotal()+"");
+		//lblVTitulo.setText("num de fact: " + datos[6]);
 
 	}
- 
+
+	private void actualizarNotaVisor(Factura f){
+		if (f.getNota()!=null)
+			this.txtAreaVNota.setText(f.getNota().getTexto());
+		else this.txtAreaVNota.setText("--SIN NOTA--");	
+	}
+//#endregion 
 }

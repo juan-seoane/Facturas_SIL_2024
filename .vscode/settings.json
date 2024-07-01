@@ -64,5 +64,8 @@
     "java.debug.settings.showStaticVariables": true,
     "java.debug.settings.showLogicalStructure": false,
     "extensions.closeExtensionDetailsOnViewChange": true,
-    "java.jdt.ls.java.home": "D:\\Program Files\\JavaJDK\\bellsoft-jdk21.0.3+10-win-x64-full\\jdk-21.0.3-full"
+    "java.jdt.ls.java.home": "D:\\Program Files\\JavaJDK\\bellsoft-jdk21.0.3+10-win-x64-full\\jdk-21.0.3-full",
+    "[java]": {
+        "editor.defaultFormatter": "mwpb.java-prettier-formatter"
+    }
 }

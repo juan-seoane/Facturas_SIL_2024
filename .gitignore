@@ -1,6 +1,7 @@
 #VSCode
 .vscode/*
-
+.pretierrc
 #Netbeans
-
 nbproject/*
+#otros
+node_modules/

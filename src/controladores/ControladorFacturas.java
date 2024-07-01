@@ -227,9 +227,44 @@ public class ControladorFacturas extends Thread {
 //                    actualizarVisor(tabla.getIndice());
 //                    tabla.reset();
 //                    visible(true);
-                }   
+                }
+                FXcontrlTablaFCT.reset();  
+            }
+            if(FXcontrlVisorFCT!=null && FXcontrlVisorFCT.HaCambiado()) {
+				System.out.println("[ControladorFacturas>run] recogiendo evento del visorFCT en el Controlador de Facturas - pulsado caso " + FXcontrlVisorFCT.getPulsado());
+                // TODO : 30-06-2024 - HAY QUE PONER UN CASO CERO DONDE RECOJA EL INDICE DE LA FACTURA ACTUAL
+                
+                if (FXcontrlVisorFCT.getPulsado() == 1) {
+                    ocultarVisorFCT();
+                    System.out.println("[ControladorFacturas>run] Se cerrará el Visor de Facturas");
+
+                }
+                if (FXcontrlVisorFCT.getPulsado() == 2) {
+                    System.out.println("[ControladorFacturas>run] Se activará el Formulario de Nueva Factura");
+
+                }
+                if (FXcontrlVisorFCT.getPulsado() == 3) {
+                    System.out.println("[ControladorFacturas>run] Se activará la Ediion del VisorFCT para la Factura actual");
+
+                }
+                if (FXcontrlVisorFCT.getPulsado() == 4) {
+                    System.out.println("[ControladorFacturas>run] Se borrará la Factura actual");
+
+
+                }
+                if (FXcontrlVisorFCT.getPulsado() == 5) {
+                    System.out.println("[ControladorFacturas>run] La seleccion de la tablaFCT se movera hacia arriba");
+               
+                }
+
+                if (FXcontrlVisorFCT.getPulsado() == 6) {
+                    System.out.println("[ControladorFacturas>run] La seleccion de la tablaFCT se movera hacia abajo");
+
+                }
+                FXcontrlVisorFCT.reset();
             }
 //#endregion
+
 //#region LATENCIA<400ms
             try {
                 Thread.sleep(300);
@@ -255,6 +290,18 @@ public class ControladorFacturas extends Thread {
         System.out.println("[ControladorFacturas] Se muestra el VisorFCT\n******************");
     }
 
+    public synchronized void ocultarVisorFCT(){
+        Platform.runLater(new Runnable(){
+
+            @Override
+            public void run() {
+                visorFCT.hide();
+            }
+
+        });
+        
+        System.out.println("[ControladorFacturas] Se muestra el VisorFCT\n******************");
+    }
     public boolean anteriorFacturaVisor() throws NullPointerException, IOException {
 		JOptionPane.showMessageDialog(null,"[ControladorFacturas] Ha pulsado el boton atras. ");
 /*        int i = tabla.getIndice();
