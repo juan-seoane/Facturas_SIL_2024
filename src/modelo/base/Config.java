@@ -58,7 +58,7 @@ import modelo.records.UIData;
       String rutasCFG = Fichero.leerJSON(rutaCFG); 
       this.rutasconfig = new Gson().fromJson(rutasCFG, RutasConfig.class);
       if (this.rutasconfig==null){
-        System.out.println("[Config>Config(user)] No existen Rutas para la Config del usuario " + user);
+        //System.out.println("[Config>Config(user)] No existen Rutas para la Config del usuario " + user);
         this.rutasconfig = getRutasConfigStd(user);
         Fichero.guardarJSON(this.rutasconfig.toJSON(), rutaCFG);
       }
@@ -95,7 +95,7 @@ import modelo.records.UIData;
     }
   
   // Archivos de trabajo
-    System.out.println("[Config>Config(user)] ...Vamos a supervisar y/o crear los archivos de trabajo del usuario " + user );
+    //System.out.println("[Config>Config(user)] ...Vamos a supervisar y/o crear los archivos de trabajo del usuario " + user );
     String rutaDirTrab = "./datos/" + user.toUpperCase() ;
     Fichero.crearCarpeta(rutaDirTrab); //ya comprueba si existe o no...
     String trab1 = "/FCT" + this.configData.getAño().getAño() + this.configData.getAño().getTrimestre() + ".csv";
@@ -110,7 +110,7 @@ import modelo.records.UIData;
   //Se borra el objeto 'MisDatos' 
     this.misDatos = null;
   
-    System.out.println("[Config>Config(user)] Creada la Configuracion del Usuario " + user );
+    //System.out.println("[Config>Config(user)] Creada la Configuracion del Usuario " + user );
     }
 //#endregion
 
@@ -292,7 +292,7 @@ public String getUsuario(){
       Fichero.guardarJSON(datos4, ruta4);
     }
     
-    System.out.println(" [Config.java>recConfig] El nuevo año se ha establecido en  " + p_config.getConfigData().getAño().getAño()+" - Trimestre: " + p_config.getConfigData().getAño().getTrimestre());
+   //System.out.println(" [Config.java>recConfig] El nuevo año se ha establecido en  " + p_config.getConfigData().getAño().getAño()+" - Trimestre: " + p_config.getConfigData().getAño().getTrimestre());
     
     String dirTrab = "./datos/"+p_usuario.toUpperCase();
     String fiTrab1 = p_config.getConfigData().getRutas().getFCT();
@@ -302,7 +302,7 @@ public String getUsuario(){
     // TODO: 02-05-2024 - Por ahora ocultamos la creación de los archivos de trabajo...
     
     if(Fichero.crearCarpeta(dirTrab)&&Fichero.crearFichero(fiTrab1)&&Fichero.crearFichero(fiTrab2)&&Fichero.crearFichero(fiTrab3)){
-      System.out.println(" [Config.java>recConfig] Archivos de trabajo personales en orden para usuario "+p_usuario);
+      //System.out.println(" [Config.java>recConfig] Archivos de trabajo personales en orden para usuario "+p_usuario);
     } 
     return true;
   }
@@ -319,7 +319,7 @@ public String getUsuario(){
     File dircfg  = new File(rutadircfg);
     File dirtrab = new File(rutadirtrab);
     if (dircfg.exists()&&Fichero.dirExists(rutadircfg)){
-      System.out.println(" [Config.java] El subdirectorio de configuracion personal del usuario "+p_usuario+" ya existe!");
+      //System.out.println(" [Config.java] El subdirectorio de configuracion personal del usuario "+p_usuario+" ya existe!");
       rutaConfigOK = true;
     }else{
       if(Fichero.crearCarpeta(rutadircfg))
@@ -327,7 +327,7 @@ public String getUsuario(){
       else rutaConfigOK = false;
     }
       if (dirtrab.exists()&&Fichero.dirExists(rutadirtrab)){
-        System.out.println(" [Config.java] El subdirectorio de trabajo personal del usuario "+p_usuario+" ya existe!");
+        //System.out.println(" [Config.java] El subdirectorio de trabajo personal del usuario "+p_usuario+" ya existe!");
         rutaTrabOK = true;
       }else{
         if(Fichero.crearCarpeta(rutadirtrab))
@@ -353,7 +353,7 @@ public String getUsuario(){
 //TODO: 04-05-2024 - Parece que el problema está aquí, cuando intenta leer el archivo 'rutasconfig.json'
  
       String json = Fichero.leerJSON(ruta);
-      System.out.println("[Config>leerRutasConfigJson] Fichero JSON leído");
+      //System.out.println("[Config>leerRutasConfigJson] Fichero JSON leído");
 
       JsonElement rutasEl = new Gson().fromJson(json, JsonElement.class);
       JsonObject rutasObj = rutasEl.getAsJsonObject();
@@ -385,7 +385,7 @@ public String getUsuario(){
     // TODO: 11-04-2024 - Revisar esto: Si es Arraylist.class o Contrasena.class
   
     Credenciales credenciales = gson.fromJson(ficheroResp, Credenciales.class);
-    System.out.println("[Config>leerCredenciales] Credenciales leidas!"/* + credenciales.toString()*/);
+    //System.out.println("[Config>leerCredenciales] Credenciales leidas!"/* + credenciales.toString()*/);
     return credenciales;
   }
 //#endregion

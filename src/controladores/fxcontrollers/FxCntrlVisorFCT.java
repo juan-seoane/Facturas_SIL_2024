@@ -1,31 +1,26 @@
 package controladores.fxcontrollers;
 
+import modelo.records.Factura;
+import controladores.Controlador;
+import controladores.ControladorFacturas;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
+import java.util.concurrent.BrokenBarrierException;
+
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import modelo.ModeloFacturas;
-import modelo.records.Factura;
-import modelo.records.Fecha;
-import modelo.records.RazonSocial;
-import controladores.ControladorFacturas;
-
 public class FxCntrlVisorFCT implements Initializable{
 
-// TODO : Falta cambiar los Label por TextField
+//#region CAMPOS FXML
+// FIXME : 02-07-24 - Falta cambiar algunas Label por TextField
 	@FXML Label lblVID;
 
 	@FXML TextField tfNumFactura;
@@ -71,33 +66,103 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML Label lblVTitulo;
 	@FXML Button btnVCerrar;
 	@FXML Button btnVdcha;
+//#endregion
 
+//#region CAMPOS_CLASE
 	ControladorFacturas cfct;
 	boolean haCambiado = false;
 	int pulsado = 0;
-	private ObservableList<Factura> listaFxFacturas;
-	private Stage visorFct;
-	public static FxCntrlVisorFCT instancia;
 
+	static Stage visorFct;
+	static FxCntrlVisorFCT instancia;
+	static int indexActual = 0;
+//#endregion	
+
+//#region CONSTR
 //TODO: 22-06-2024 - En el constructor inicializamos los campos que necesitamos listos antes de nada...
-	public FxCntrlVisorFCT(){
+	public FxCntrlVisorFCT() throws InterruptedException, BrokenBarrierException{
+		
+		System.out.println("[FxCntrlVisorFCT>constructor] Arrancando el constructor del controlador FX del visorFCT");
+		
+		cfct = Controlador.getControladorFacturas();
 
-		this.visorFct = new Stage();
-		this.listaFxFacturas = ModeloFacturas.getModelo().getListaFXFacturas();
-
+		if (visorFct==null){
+			ControladorFacturas.visorFCT = new Stage();
+			visorFct = ControladorFacturas.visorFCT;
+			if (visorFct!=null)
+				System.out.println("[FxCntrlVisorFCT>constructor] Asignado el VisorFCT con hashCode: "+ visorFct.hashCode());
+			else System.out.println("[FxCntrlVisorFCT>constructor] El VisorFCT sigue siendo NULL");
+		}
+		
 
 	}
+//#endregion	
+
+//#region GETTERS/SETTERS
+	public static FxCntrlVisorFCT getFxController() {
+		if (instancia==null){
+			try {
+				instancia = new FxCntrlVisorFCT();
+			} catch (InterruptedException | BrokenBarrierException e) {
+				e.printStackTrace();
+			}
+		}
+		return instancia;
+	}
+
+	public synchronized Stage getVisorFCT() throws InterruptedException, BrokenBarrierException{
+		if (ControladorFacturas.visorFCT==null){
+			boolean ok = cfct.cargarVisorFacturas();
+				if(ok){
+					visorFct = ControladorFacturas.visorFCT;
+					return visorFct;
+				}
+		}else{
+			System.out.println("[FxCntrlVisorFCT>getVisorFCT] El valor del visor era NULL y no fue asignado");
+			if (visorFct!=null)
+				return visorFct;
+		}
+		return null;
+	}
+	
+	public synchronized TextArea getAreaNota(){
+		return this.txtAreaVNota;
+	}
+	public void reset(){
+		this.haCambiado = false;
+		this.pulsado = 0;
+	}
+//#endregion
 
 //#region INI FCT/V
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-	// TODO : 30-06-2024 - Hay que designar la factura de la fila seleccionada en la tabla, en vez del primer elemento (0) de la Lista de Facturas
-		actualizarDatosFacturaVisor(listaFxFacturas.get(0));
-		actualizarDatosEmpresaVisor(listaFxFacturas.get(0));
-		actualizarExtractosVisor(listaFxFacturas.get(0));
-		actualizarTotalesVisor(listaFxFacturas.get(0));
-		actualizarNotaVisor(listaFxFacturas.get(0));
+		try {
+			System.out.println("[FxCntrlVisorFCT>Initialize] Empezando la inicializacion del controlador FX del visorFCT");
+			//ANCHOR - tableView
+			if (cfct.getFXcontrlTablaFCT().getTableView()!=null){
+				indexActual = cfct.getFXcontrlTablaFCT().getIndiceSeleccionadoTabla();
+				System.out.println("[FxCntrlVisorFCT>initialize] Index actual en tabla " + cfct.getFXcontrlTablaFCT().getTableView().hashCode() + " : " + indexActual);
+				if (FxCntrlVisorFCT.getFxController()!=null){
+					FxCntrlVisorFCT.visorFct = cfct.getFXcontrlVisorFCT().getVisorFCT();
+					System.out.println("[FxCntrlVisorFCT>initialize] Llamando a actualizarDatosVisor - visor con hashCode: " + FxCntrlVisorFCT.visorFct.hashCode());
+					actualizarDatosVisor(indexActual, ControladorFacturas.facturaActual);
+				}
+			}else{
+				System.out.println("[FxCntrlVisorFCT>initialize] tabla de valor NULL. El programa se cerrará");
+				System.exit(0);
+			}
+			System.out.println("[FxCntrlVisorFCT>Initialize] Acabando la inicializacion del controlador FX del visorFCT ");
+		} catch (InterruptedException | BrokenBarrierException e) {
+			e.printStackTrace();
+		}
+		
+/* 		try {
+			System.out.println("[FxCntrlVisorFCT>initialize>runLater] Entrando en la barreraVisor el hilo " + Thread.currentThread().getName());
+			ControladorFacturas.barreraVisor.await();
+		} catch (InterruptedException | BrokenBarrierException e) {
+			System.exit(0);
+		} */
 	}
 //#endregion
 
@@ -154,22 +219,36 @@ public class FxCntrlVisorFCT implements Initializable{
 	}
 //#endregion
 
-	public synchronized TextArea getAreaNota(){
-		return this.txtAreaVNota;
-	}
-	public void reset(){
-		this.haCambiado = false;
-		this.pulsado = 0;
-	}
-
-	public static FxCntrlVisorFCT getFxController() {
-		if (instancia==null){
-			instancia = new FxCntrlVisorFCT();
-		}
-		return instancia;
-	}
-
 //#region Act_VISOR
+	public synchronized void actualizarDatosVisor(int index, Factura f) throws InterruptedException, BrokenBarrierException{
+		try{
+				Stage prueba = getVisorFCT();
+				if (prueba!=null) 
+					visorFct = prueba;
+				if(visorFct!=null){
+					System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] visorFct de hashCode: " + visorFct.hashCode());
+				}
+				Thread.sleep(500);
+				
+//TODO - 12-07-24 : Aquí lo dejo, parece que el visor no está inicializado, o lblVID es siempre null por otro motivo...
+/* 			if(!ControladorFacturas.visorFCT.isShowing())
+				ControladorFacturas.visorFCT.show(); */
+			if(f!=null){
+			//ANCHOR - tableView
+				actualizarDatosFacturaVisor(f);
+				actualizarDatosEmpresaVisor(f);
+				actualizarExtractosVisor(f);
+				actualizarTotalesVisor(f);
+				actualizarNotaVisor(f);
+				System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] Se muestra la Factura num " + index + " :\n" + f.toString());
+			}else{
+				System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] No se muestra ninguna factura");
+			}
+		} catch ( NullPointerException | InterruptedException | BrokenBarrierException  e) {
+			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] Excepc " + e + " en la carga de la Factura en el VisorFCT.");
+		}
+	}
+
 	private void actualizarDatosFacturaVisor(Factura f) {
 		this.lblVID.setText(f.getID()+"");
 		this.tfNumFactura.setText(f.getNumeroFactura()+"");
@@ -206,8 +285,15 @@ public class FxCntrlVisorFCT implements Initializable{
 				this.lblVIVA1.setText(f.getExtractos().get(0).getIVA()+"");
 				this.lblVST1.setText(f.getExtractos().get(0).getTotal()+"");			
 				break;
+			case 0: 
+				this.lblVBase1.setText(f.getTotales().getBase()+"");
+				// FIXME - 03-07-24 : Si el array de Extractos es 0...¿dónde se guarda el tipoIVA?
+				//this.lblVTipoIVA1.setText(f.getExtractos().get(0).getTipoIVA()+"");
+				this.lblVIVA1.setText(f.getTotales().getIVA()+"");
+				this.lblVST1.setText(f.getTotales().getTotal()+"");
+				break;
 			default:
-				System.out.println("[FxCntrlVisorFCT>actualizarExtractosVisor] Error en el num de extractos de la factura seleccionada");
+				//System.out.println("[FxCntrlVisorFCT>actualizarExtractosVisor] Error en el num de extractos de la factura seleccionada");
 				break;
 		}
 	}
@@ -224,13 +310,6 @@ public class FxCntrlVisorFCT implements Initializable{
 
 	}
 
-	private void actualizarNotaVisor(Factura f){
-		if (f.getNota()!=null)
-			this.txtAreaVNota.setText(f.getNota().getTexto());
-		else this.txtAreaVNota.setText("--SIN NOTA--");	
-	}
-//#endregion 
-
 	public void actualizarTotalesVisor(String[] datos) throws NullPointerException{
 		lblVTotalesBase.setText(datos[0]);
 		lblVTotalesIVA.setText(datos[1]);
@@ -239,4 +318,12 @@ public class FxCntrlVisorFCT implements Initializable{
 		lblVTotalesRetenciones.setText(datos[4]);
 
 	}
+
+	private void actualizarNotaVisor(Factura f){
+		if (f.getNota()!=null)
+			this.txtAreaVNota.setText(f.getNota().getTexto());
+		else this.txtAreaVNota.setText("--SIN NOTA--");	
+	}
+//#endregion 
+
 }

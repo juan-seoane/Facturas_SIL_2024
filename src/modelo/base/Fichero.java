@@ -46,7 +46,7 @@ public class Fichero<T> {
     ObjectOutputStream aos;
 
     public Fichero(String rutaArchivo) {
-//        //System.out.println("[Fichero] Creando nuevo fichero".toUpperCase());
+        ////System.out.println("[Fichero] Creando nuevo fichero".toUpperCase());
         this.rutaArchivo = rutaArchivo;
         
         this.directorio = new File(rutaArchivo.substring(0,rutaArchivo.lastIndexOf("/")));
@@ -62,21 +62,21 @@ public class Fichero<T> {
             try {
                 // A partir del objeto File creamos el fichero físicamente
                 if (this.fichero.createNewFile()) {
-                    System.out.println("[Fichero>constructor] El fichero " + rutaArchivo + " se ha creado correctamente");
+                    ////System.out.println("[Fichero>constructor] El fichero " + rutaArchivo + " se ha creado correctamente");
                 } else {
-                    System.out.println("[Fichero>constructor] No ha podido ser creado el fichero " + rutaArchivo);
+                    //System.out.println("[Fichero>constructor] No ha podido ser creado el fichero " + rutaArchivo);
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
         } else {
-            //System.out.println("[Fichero>constructor] El fichero " + rutaArchivo + " ya estaba creado");
+            ////System.out.println("[Fichero>constructor] El fichero " + rutaArchivo + " ya estaba creado");
         }
     }
 //#region LEER
     @SuppressWarnings("unchecked")
     public ArrayList<T> leer() {
-        System.out.println("[Fichero] LEYENDO FICHERO "+this.rutaArchivo);
+        ////System.out.println("[Fichero] LEYENDO FICHERO "+this.rutaArchivo);
 
         ArrayList<T> entradas = new ArrayList<T>();
         T entrada = null;
@@ -84,16 +84,16 @@ public class Fichero<T> {
         abrirInputStream();
             try {
                 while ((entrada = (T) ois.readObject()) != null) {
-                    //System.out.println("objeto leido: " + entrada.toString());
+                    ////System.out.println("objeto leido: " + entrada.toString());
                     entradas.add(entrada);
                 }
-                System.out.println("[Fichero>leer] tamaño del vector de lectura: " + entradas.size());
-//                //System.out.println("tipo de archivo : " + entradas.getClass().getName());
+                ////System.out.println("[Fichero>leer] tamaño del vector de lectura: " + entradas.size());
+//                ////System.out.println("tipo de archivo : " + entradas.getClass().getName());
             } catch (NullPointerException | IOException | ClassNotFoundException e) {
-                System.out.println("[Fichero.java>leer()] Error en la lectura del tipo " + e + " al leer el fichero "+ this.rutaArchivo);
+                ////System.out.println("[Fichero.java>leer()] Error en la lectura del tipo " + e + " al leer el fichero "+ this.rutaArchivo);
             }
         } else { 
-            System.out.println("[Fichero.java>leer()] El fichero "+ this.rutaArchivo + " está vacío...");
+            ////System.out.println("[Fichero.java>leer()] El fichero "+ this.rutaArchivo + " está vacío...");
         }
         cerrarInputStream();
         return entradas;
@@ -101,16 +101,16 @@ public class Fichero<T> {
 //#endregion
 //#region ESCRIBIR
     public synchronized boolean escribir(ArrayList<T> entradas) {
-//        //System.out.println("Escribiendo fichero".toUpperCase()+" "+ this.rutaArchivo);
+        ////System.out.println("Escribiendo fichero".toUpperCase()+" "+ this.rutaArchivo);
         abrirOutputStream();
         try {
-//            //System.out.println("tamaño del vector de escritura: " + entradas.size());
+            ////System.out.println("tamaño del vector de escritura: " + entradas.size());
             for (int i = 0; i < entradas.size(); i++) {
                 oos.writeObject((T)(entradas.get(i)));
-//                //System.out.println("escribiendo objeto numero " + i + " del tipo " + entradas.get(i).getClass().getName());
+                ////System.out.println("escribiendo objeto numero " + i + " del tipo " + entradas.get(i).getClass().getName());
                 oos.flush();
             }
-//            JOptionPane.showMessageDialog(null,"Escribiendo en el fichero "+this.rutaArchivo+" !");
+            //JOptionPane.showMessageDialog(null,"Escribiendo en el fichero "+this.rutaArchivo+" !");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,24 +122,24 @@ public class Fichero<T> {
 //#endregion
 //#region ANEXAR
     public boolean anexar(T entrada) {
-//        //System.out.println(">>>>>>Añadiendo a fichero".toUpperCase());
+        ////System.out.println(">>>>>>Añadiendo a fichero".toUpperCase());
         ArrayList<T> entradas = this.leer();
         
         entradas.add(entrada);
         
         this.escribir(entradas);
-//        //System.out.println("Entrada guardada!");
+        ////System.out.println("Entrada guardada!");
         return true;
         
     }
 //#endregion  
 //#region EDITAR 
     public boolean editar(T entrada, int index){
-//	//System.out.println(">>>>>>Editando entrada en fichero con indice "+index);
+	////System.out.println(">>>>>>Editando entrada en fichero con indice "+index);
 	ArrayList<T> entradas = this.leer();
 	   if((entradas.set(index,entrada))!=null){
 		this.escribir(entradas);
-//		//System.out.println("Entrada editada!");
+		////System.out.println("Entrada editada!");
 		return true;
 	}
 	return false;
@@ -147,12 +147,12 @@ public class Fichero<T> {
 //#endregion
 //#region BORRAR  
     public boolean borrar(T entrada, int index){
-//	//System.out.println(">>>>>>Borrando entrada en fichero con indice "+index);
+	////System.out.println(">>>>>>Borrando entrada en fichero con indice "+index);
 
 	ArrayList<T> entradas = this.leer();
 	   if((entradas.remove(entrada))){
 		this.escribir(entradas);
-//		//System.out.println("Entrada borrada!");
+		////System.out.println("Entrada borrada!");
 		return true;
 	}
 	return false;
@@ -172,7 +172,7 @@ public class Fichero<T> {
             //System.out.println("Error de tipo IOEx " + ex + " al leer el fichero "+ this.rutaArchivo);
             return false;
         }
-//        //System.out.println("Flujos de entrada cargados al leer el fichero "+ this.rutaArchivo);
+        ////System.out.println("Flujos de entrada cargados al leer el fichero "+ this.rutaArchivo);
         return true;
     }
 //#endregion
@@ -180,7 +180,7 @@ public class Fichero<T> {
     public boolean abrirOutputStream() {
         try {
             fos = new FileOutputStream(this.fichero, false);
-//            //System.out.println("Flujo de salida abierto!");
+            ////System.out.println("Flujo de salida abierto!");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
             
@@ -188,7 +188,7 @@ public class Fichero<T> {
         }
         try {
             oos = new ObjectOutputStream(fos);
-//            //System.out.println("Flujo de objetos abierto!");
+            ////System.out.println("Flujo de objetos abierto!");
         } catch (IOException ex) {
             Logger.getLogger(Fichero.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -203,7 +203,7 @@ public class Fichero<T> {
             if (fichero != null) {
                 ois.close();
                 fis.close();
-//                //System.out.println("Flujo de entrada cerrado!");
+                ////System.out.println("Flujo de entrada cerrado!");
                 return true;
             }
         } catch (Exception e2) {
@@ -219,7 +219,7 @@ public class Fichero<T> {
                 aos.close();
                 oos.close();
                 fos.close();
-//                //System.out.println("Flujo de objetos cerrado!");
+                ////System.out.println("Flujo de objetos cerrado!");
                 return true;
             }
         } catch (Exception e2) {
@@ -234,7 +234,7 @@ public class Fichero<T> {
         try {
                 Files.copy(new File(rutaOrigen).toPath(), new File(rutaDestino).toPath(), REPLACE_EXISTING);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null,"No se ha podido copiar el archivo "+rutaOrigen);
+                //System.out.println("No se ha podido copiar el archivo "+rutaOrigen);
                 return false;
             }
         return true;
@@ -285,14 +285,14 @@ public class Fichero<T> {
                 return true;
 
             } catch (Exception ex) { 
-                System.out.println("[Fichero.java] Error creando la carpeta." +ruta + nombre);
+                //System.out.println("[Fichero.java] Error creando la carpeta." +ruta + nombre);
                 System.err.println( ex.toString( ));
                 return false;
             }
 
         //La carpeta YA existe
         } else {
-            System.out.println("[Fichero.java] La carpeta " + ruta + nombre + " ya existe.");
+            ////System.out.println("[Fichero.java] La carpeta " + ruta + nombre + " ya existe.");
             return false; 
         }
     }
@@ -307,14 +307,14 @@ public class Fichero<T> {
                 return true;
 
             } catch (Exception e) { 
-                System.out.println("[Fichero.java] Error creando la carpeta " + rutaYnombre);
+                //System.out.println("[Fichero.java] Error creando la carpeta " + rutaYnombre);
                 System.err.println( e.toString( ));
                 return false;
             }
 
         //La carpeta YA existe
         } else {
-            System.out.println("[Fichero.java] La carpeta " + rutaYnombre + " ya existe.");
+            ////System.out.println("[Fichero.java] La carpeta " + rutaYnombre + " ya existe.");
             return false; 
         }
     }
@@ -330,13 +330,13 @@ public class Fichero<T> {
                 return true;
 
             } catch( Exception e ) {
-                System.out.println("[Fichero.java] Error creando el archivo " + ruta + nombre);
+                //System.out.println("[Fichero.java] Error creando el archivo " + ruta + nombre);
                 System.err.println( e.toString( ));
                 return false;
             }
 
         } else {
-            System.out.println("[Fichero.java] El archivo " + ruta + nombre + " ya existe.");
+            ////System.out.println("[Fichero.java] El archivo " + ruta + nombre + " ya existe.");
             return false;
         }
     }
@@ -347,17 +347,17 @@ public class Fichero<T> {
 
             try {
                 archivo.createNewFile();
-                System.out.println("[Fichero.java] Creado el archivo "  +  rutaYnombre);
+                ////System.out.println("[Fichero.java] Creado el archivo "  +  rutaYnombre);
                 return true;
 
             } catch( Exception e ) {
-                System.out.println("[Fichero.java] Error creando el archivo "  +  rutaYnombre);
+                //System.out.println("[Fichero.java] Error creando el archivo "  +  rutaYnombre);
                 System.err.println( e.toString( ));
                 return false;
             }
 
         } else {
-            System.out.println("[Fichero] El archivo " + rutaYnombre + " ya existe.");
+            ////System.out.println("[Fichero] El archivo " + rutaYnombre + " ya existe.");
             return false;
         }
     }
@@ -374,10 +374,10 @@ public static synchronized String leerJSON(String rutaYnombre){
             fichero += linea;
         }
         input.close();
-        //System.out.println("[Fichero.java] Leído el fichero JSON "+ rutaYnombre);
+        ////System.out.println("[Fichero.java] Leído el fichero JSON "+ rutaYnombre);
     } catch (IOException ex) {
-        System.out.println(ex.getMessage());
-        System.out.println("[Fichero.java] Error leyendo el fichero JSON "+ rutaYnombre);
+        //System.out.println(ex.getMessage());
+        //System.out.println("[Fichero.java] Error leyendo el fichero JSON "+ rutaYnombre);
     }
     return fichero;
 }
@@ -389,12 +389,12 @@ public static synchronized boolean guardarJSON(String datosFormateados, String r
         FileWriter f = new FileWriter(rutaYnombre);
         BufferedWriter output = new BufferedWriter(f);
         output.write(datosFormateados);
-        //System.out.println("[Fichero.java]Fichero "+ rutaYnombre + " creado");
+        ////System.out.println("[Fichero.java]Fichero "+ rutaYnombre + " creado");
         output.close();
-        System.out.println("[Fichero.java] Creado el fichero "+ rutaYnombre);
+        ////System.out.println("[Fichero.java] Creado el fichero "+ rutaYnombre);
         return true;
     } catch (IOException ex) {
-        System.out.println("[Fichero.java] Error guardando el fichero " + rutaYnombre);
+        //System.out.println("[Fichero.java] Error guardando el fichero " + rutaYnombre);
         ex.printStackTrace();
         return false;
     }        
@@ -413,13 +413,13 @@ public synchronized ArrayList<String[]> leerCSV(String rutaYnombre){
 
         while((fila = csvReader.readNext()) != null) {
             /*
-            System.out.println("\n[Fichero.java>leerCSV] fila CSV: ");
+            //System.out.println("\n[Fichero.java>leerCSV] fila CSV: ");
             if (fila[0].contains("#")){
                 //System.out.println(" --- comentario ---");
             }else{
-               System.out.println("\r\n");
+                //System.out.println("\r\n");
                 for (String campo : fila){
-                    System.out.print(campo.strip() + " - ");
+                    //System.out.print(campo.strip() + " - ");
                 }
             */
                 resp.add(fila);
@@ -429,7 +429,7 @@ public synchronized ArrayList<String[]> leerCSV(String rutaYnombre){
         csvReader.close();
 
     } catch (CsvValidationException | IOException e) {
-        System.out.println("[Fichero.java>leerCSV()] Excepcion " + e + " leyendo el archivo " + rutaYnombre);
+        //System.out.println("[Fichero.java>leerCSV()] Excepcion " + e + " leyendo el archivo " + rutaYnombre);
     }
     cerrarInputStream();
     //TODO: 14-06-2024 - (Hay que devolver ya una lista de facturas) En fichero.leerCSV se devuelve un ArrayList<String[]> genérico, luego cada Modelo lo pasa a su ArrayList<T> parametrizado a la clase que convenga, Factura, RS, EntradaCaja...
@@ -439,10 +439,10 @@ public synchronized ArrayList<String[]> leerCSV(String rutaYnombre){
 //#region guardarCSV
     public synchronized boolean guardarCSV(ArrayList<String[]> datos){
 
-        //System.out.println("[Fichero>guardarCSV] Datos a guardar: " + datos);
+        ////System.out.println("[Fichero>guardarCSV] Datos a guardar: " + datos);
         
         String archCSV = this.rutaArchivo;
-        System.out.println("[Fichero>guardarCSV] Archivo CSV a guardar en ruta "+ archCSV +" de " + datos.size() + " lineas");
+        ////System.out.println("[Fichero>guardarCSV] Archivo CSV a guardar en ruta "+ archCSV +" de " + datos.size() + " lineas");
         
         CSVWriter writer;
         try {
@@ -457,7 +457,7 @@ public synchronized ArrayList<String[]> leerCSV(String rutaYnombre){
             return true;
         } catch (IOException e) {
         
-            System.out.println("[Fichero.java>guardarCSV] Excepcion " + e + " guardando el archivo CSV " + archCSV);
+            //System.out.println("[Fichero.java>guardarCSV] Excepcion " + e + " guardando el archivo CSV " + archCSV);
             return false;
         }
     }

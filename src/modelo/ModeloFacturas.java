@@ -24,37 +24,38 @@ import javax.swing.*;
 
 public class ModeloFacturas {
 
-//#region CAMPOS_D_CLASE
-    public static ModeloFacturas instancia;
-    public static ArrayList<Factura> facturas;
+//#region CAMPOS
+    static ModeloFacturas instancia;
+    static ArrayList<Factura> facturas;
+    //FIXME - 14-07-24 : En algún momento tendré que arreglar esto... facturas_prev puede no hacer falta...
     public static ArrayList<Factura> facturas_prev;
-    public ArrayList<String[]> arrayFacturas;
+    private ArrayList<String[]> arrayFacturas;
     static Fichero<Factura> ficheroFacturas;
     //TODO : 11-04-2024 - Repasar los vectores de Facturas y demás...
-    Stack<Factura> pilafacturasant = new Stack<Factura>();
-    Stack<Factura> pilafacturassig = new Stack<Factura>();
+    static Stack<Factura> pilafacturasant = new Stack<Factura>();
+    static Stack<Factura> pilafacturassig = new Stack<Factura>();
     static Vector<Factura> vectorfacturas;
     static Vector vectorcolumnas;
-    public static int ultimaID;
-    public static int numeroFacturas = 0;
+    static int ultimaID;
+    static int numeroFacturas = 0;
 //#endregion
 
 //#region constructor
     private ModeloFacturas() throws NullPointerException, IOException {
-        System.out.println("[ModeloFacturas>Constructor] Creando nuevo ModeloFacturas");
-        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.usuario).getRutaFCT());
-        System.out.println("[ModeloFacturas>Constructor] Leyendo fichero FCT -> " + Config.getConfig(Controlador.usuario).getRutaFCT() + " de Facturas del usuario "+ Controlador.usuario);
-        this.arrayFacturas = ficheroFacturas.leerCSV(Config.getConfig(Controlador.usuario).getRutaFCT());
+        //System.out.println("[ModeloFacturas>Constructor] Creando nuevo ModeloFacturas");
+        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.getUsuario()).getRutaFCT());
+        //System.out.println("[ModeloFacturas>Constructor] Leyendo fichero FCT -> " + Config.getConfig(Controlador.usuario).getRutaFCT() + " de Facturas del usuario "+ Controlador.usuario);
+        this.arrayFacturas = ficheroFacturas.leerCSV(Config.getConfig(Controlador.getUsuario()).getRutaFCT());
         ModeloFacturas.facturas = ConvertirArrayCSVenListaFCT(this.arrayFacturas);
         numeroFacturas = ModeloFacturas.facturas.size();
-        System.out.println("[ModeloFacturas>Constructor] Fichero FCT de Facturas leido. Numero de Facturas = "+ numeroFacturas);
+        //System.out.println("[ModeloFacturas>Constructor] Fichero FCT de Facturas leido. Numero de Facturas = "+ numeroFacturas);
         ultimaID = ModeloFacturas.facturas.size();
-//        System.out.println("[ModeloFacturas.java>Constructor] Última ID : " + ultimaID);
+        //System.out.println("[ModeloFacturas.java>Constructor] Última ID : " + ultimaID);
         vectorfacturas = generarVectorFacturas();
         
-//        System.out.println("[ModeloFacturas.java>Constructor] Vector de Facturas generado!\n********************");
+        //System.out.println("[ModeloFacturas.java>Constructor] Vector de Facturas generado!\n********************");
         
-        System.out.println(" [ModeloFacturas>Constructor] Tamano del array de facturas: " + facturas.size());
+        //System.out.println(" [ModeloFacturas>Constructor] Tamano del array de facturas: " + facturas.size());
     }
 //#endregion
 
@@ -65,7 +66,7 @@ public class ModeloFacturas {
             try {
                 instancia = new ModeloFacturas();
             } catch (NullPointerException | IOException e) {
-                System.out.println("[ModeloFacturas>getModelo] Excepc creando el modeloFCT");
+                //System.out.println("[ModeloFacturas>getModelo] Excepc creando el modeloFCT");
                 e.printStackTrace();
             }
         return instancia;
@@ -111,7 +112,7 @@ public class ModeloFacturas {
     }
 //#endregion
 
-//#region AUTOSAVE
+//#region (AUTOSAVE)
     public boolean autosave(String ruta){
 /*         Fichero<Factura> auto = new Fichero<Factura>(ruta);
         if (auto.escribir((ArrayList<Factura>)facturas))
@@ -120,14 +121,14 @@ public class ModeloFacturas {
     }
 //#endregion
     
-//#region leerFacturas_etc  
+//#region leerFacturas
     public ObservableList<Factura> getListaFXFacturas(){
         List<Factura> fact_prev = null;
 //TODO: 16-06-2024 - Habrá que filtrar la lista de facturas después
         try {
             fact_prev = leerFacturasSinFiltrar();
         } catch (NullPointerException | IOException e) {
-            System.out.println("[ModeloFacturas>getListaFXFacturas] Error al recoger la lista observable (para JFX) de facturas");
+            //System.out.println("[ModeloFacturas>getListaFXFacturas] Error al recoger la lista observable (para JFX) de facturas");
             e.printStackTrace();
         }
         var facturasFX = FXCollections.observableList(fact_prev);
@@ -135,7 +136,7 @@ public class ModeloFacturas {
     }
     
     public List<Factura> leerFacturas() throws NullPointerException, IOException {
-        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.usuario).getRutaFCT().toString());
+        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.getUsuario()).getRutaFCT().toString());
         this.arrayFacturas = ficheroFacturas.leerCSV(ficheroFacturas.rutaArchivo);
         ModeloFacturas.facturas = ConvertirArrayCSVenListaFCT(this.arrayFacturas);
         numeroFacturas = ModeloFacturas.facturas.size();
@@ -149,7 +150,7 @@ public class ModeloFacturas {
     }
 
     public List<Factura> leerFacturasSinFiltrar() throws NullPointerException, IOException{
-        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.usuario).getRutaFCT().toString());
+        ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.getUsuario()).getRutaFCT().toString());
         ArrayList<String[]> arrayFct = ficheroFacturas.leerCSV(ficheroFacturas.rutaArchivo);
         var listaFct = ConvertirArrayCSVenListaFCT(arrayFct);
        
@@ -160,6 +161,14 @@ public class ModeloFacturas {
 
         return listaFct;
     }
+    
+    public static List<Factura> getFacturas_prev() {
+        return facturas_prev;
+    }
+    public static void setFacturas_prev(ArrayList<Factura> f_p){
+        facturas_prev = f_p;
+    }
+
 //#endregion
 
 //#region listaFCTaCSVar
@@ -168,10 +177,10 @@ public class ModeloFacturas {
         try {
             arrayCSV.add(getColumnas());
         } catch (NullPointerException | IOException e) {
-            System.out.println("Error al trasvasar los nombres de columnas al CSV");
+            //System.out.println("Error al trasvasar los nombres de columnas al CSV");
             e.printStackTrace();
         }
-        int i=0;
+        int i= 0;
         for (Factura f : lista){
             arrayCSV.addAll(Factura.convertirFCTaCSV(f));
             i++;    
@@ -181,8 +190,8 @@ public class ModeloFacturas {
 //#endregion
 
 //#region ArrayCSVaFCT
-    private synchronized ArrayList<Factura> ConvertirArrayCSVenListaFCT(ArrayList<String[]> arrayFacturas) {
-        facturas_prev = new ArrayList<Factura>(); 
+    private synchronized ArrayList<Factura> ConvertirArrayCSVenListaFCT(ArrayList<String[]> arrayFacturas) throws NullPointerException, IOException {
+        facturas_prev = new ArrayList<Factura>();
         if (arrayFacturas.size()>0){
             for (String[] linea : arrayFacturas)
             {
@@ -194,7 +203,7 @@ public class ModeloFacturas {
         }else{
             facturas_prev.add(new Factura());
         }
-        System.out.println("\n[ModeloFacturas>ConvertirArrayCSVenListaFCT] Numero de facturas convertidas desde el CSV: " + facturas_prev.size() + "\n");
+        //System.out.println("\n[ModeloFacturas>ConvertirArrayCSVenListaFCT] Numero de facturas convertidas desde el CSV: " + facturas_prev.size() + "\n");
         return facturas_prev;
     }
     //#endregion 
@@ -282,7 +291,7 @@ public class ModeloFacturas {
     } 
 
     public boolean editarFactura(ArrayList<Factura> listafacturas, Factura factura, int index) throws NumberFormatException, IOException {
-//        //System.out.println(" [ModeloFacturas] Indice en Modelo : " + index);
+        //System.out.println(" [ModeloFacturas] Indice en Modelo : " + index);
 
         listafacturas.set(index, factura);
         Collections.sort(listafacturas);
@@ -311,7 +320,7 @@ public class ModeloFacturas {
     
     public boolean borrarFactura(Factura factura, int index) throws NumberFormatException, IOException {
         pilafacturasant.push(factura);
-//        //System.out.println(" [ModeloFacturas] Indice en Modelo : " + index);
+        //System.out.println(" [ModeloFacturas] Indice en Modelo : " + index);
         int res = JOptionPane.showConfirmDialog(null,
                 "Desea realmente borrar la factura?", "Advertencia!", JOptionPane.YES_NO_OPTION);
 
@@ -394,7 +403,7 @@ public class ModeloFacturas {
     public String[] calcularTotales() {
 
         List<Factura> facturas = getListaFXFacturas();
-        System.out.println("[ModeloFacturas>calcularTotales] Calculando resumen de datos ");
+        //System.out.println("[ModeloFacturas>calcularTotales] Calculando resumen de datos ");
         
         int cuenta = 0;
         double base = 0;
@@ -438,18 +447,19 @@ public class ModeloFacturas {
 
 //#region getColumnas
     public static String[] getColumnas() throws NullPointerException, IOException {
-        String[] columnas = new String[Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT().length];
-        for (int i = 0; i < Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT().length; i++) {
+        String[] columnas = new String[Config.getConfig(Controlador.getUsuario()).uiData.getNombreColsFCT().length];
+        for (int i = 0; i < Config.getConfig(Controlador.getUsuario()).uiData.getNombreColsFCT().length; i++) {
             if (i==0){
                 columnas[i] = "#";
-                columnas[i]+= Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT()[i];
+                columnas[i]+= Config.getConfig(Controlador.getUsuario()).uiData.getNombreColsFCT()[i];
             }else{
-                columnas[i] = Config.getConfig(Controlador.usuario).uiData.getNombreColsFCT()[i];
+                columnas[i] = Config.getConfig(Controlador.getUsuario()).uiData.getNombreColsFCT()[i];
             }
         }
 
         return columnas;
     }
 //#endregion
+
 
 }

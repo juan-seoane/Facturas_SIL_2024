@@ -33,7 +33,7 @@ public class ComprobacionesAcceso {
 			//TODO : 11-04-2024 - Escribir un método estático para leer las credenciales del archivo config base
 			for (Contrasena contr : Config.leerCredenciales(rutaCreds).creds){
 				//TODO: Revisar el modo de comprobación de credenciales    
-					System.out.println("[ComprobacionesAcceso.java>comprobarCredenciales()] Datos obtenidos de Config: " + contr.usuario +" - " + contr.contra);
+					//System.out.println("[ComprobacionesAcceso.java>comprobarCredenciales()] Datos obtenidos de Config: " + contr.usuario +" - " + contr.contra);
 					if (user.toUpperCase().equals(contr.usuario.toUpperCase())){
 						ComprobacionesAcceso.userOK = true;
 						if(pass.toUpperCase().equals(contr.contra.toUpperCase())){
@@ -49,12 +49,12 @@ public class ComprobacionesAcceso {
 			if (resp == JOptionPane.YES_OPTION) {
 				Config.getConfig(user);
 				crearNuevoUsuario(user);
-				System.out.println("[ComprobacionesAcceso.java] No existen Usuario, Subdirectorio y archivo Config personal..Creándose...\nLa contrasena será su nombre de Usuario, hasta que la cambie...");
+				//System.out.println("[ComprobacionesAcceso.java] No existen Usuario, Subdirectorio y archivo Config personal..Creándose...\nLa contrasena será su nombre de Usuario, hasta que la cambie...");
 				JOptionPane.showMessageDialog(null,"La contrasena del nuevo usuario será su nombre de Usuario, hasta que la cambie...");
 				// TODO 09-04-2024: Incluir las nuevas credenciales en el archivo config.json base
 				return true; // Le damos acceso (ya están creados usuario y contrasena)
 			} else {
-				System.out.println("[ComprobacionesAcceso.java] No existe el Usuario...");
+				//System.out.println("[ComprobacionesAcceso.java] No existe el Usuario...");
 
 			}
 		}

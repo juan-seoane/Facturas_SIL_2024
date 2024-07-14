@@ -1,20 +1,22 @@
 package modelo.records;
 
+import modelo.ModeloFacturas;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
-import modelo.ModeloFacturas;
 
 @SuppressWarnings("rawtypes")
 public class Factura extends Vector implements Comparable<Factura> {
+
+//#region CAMPOS
     private Integer ID;
     private String numeroFactura;
     private Fecha fecha;
@@ -24,6 +26,9 @@ public class Factura extends Vector implements Comparable<Factura> {
     private ArrayList<Extracto> extractos;
     private Totales totales;
     private Nota nota;
+//#endregion
+
+//#region CAMPOS_FX
     private ObservableValue<Double> FxRetenciones;
     private ObservableValue<Integer> FxTipoRet;
     private ObservableValue<Double> FxTotal;
@@ -39,7 +44,9 @@ public class Factura extends Vector implements Comparable<Factura> {
     private SimpleStringProperty FxFecha;
     private SimpleStringProperty FxNumFact;
     private ObservableValue<Integer> FxID;
+//#endregion
 
+//#region CONSTR
     public Factura(Integer ID, String numeroFactura, Fecha fecha, RazonSocial RS, TipoGasto categoria, boolean esDevolucion, ArrayList<Extracto> extractos, Totales totales, Nota nota) {
         this.ID = ID;
         this.numeroFactura = numeroFactura;
@@ -55,7 +62,9 @@ public class Factura extends Vector implements Comparable<Factura> {
     public Factura() {
 		this(0,"000000-OOO",new Fecha(17,03,2024),new RazonSocial(), new TipoGasto("tipoGasto_generico","descripción"),false,new ArrayList<Extracto>(),new Totales(),null);
 	}
+//#endregion
 
+//#region GETTERS/SETTERS
 	public Integer getID() {
         return ID;
     }
@@ -127,7 +136,9 @@ public class Factura extends Vector implements Comparable<Factura> {
     public void setNota(Nota nota) {
         this.nota = nota;
     }
-//#region toString
+//#endregion
+
+//#region OVERRIDES
     @Override
     public String toString(){
         String cadenaResp = this.ID + "," + this.numeroFactura + "," +  this.fecha.toString() + "," + this.RS.getID() + "," + this.RS.getNif() + "," + this.RS.getNombre() + "," + this.categoria.getTipo() + "," + (this.esDevolucion?"S":"N") + "," + this.extractos.size() + ", TOTS-> " + this.totales.getBase() + "," + ((this.totales.isVariosIVAs())?"S":"N,"+this.totales.getTipoIVA()) + "," + this.totales.getIVA() + "," + this.totales.getRet() + "," + this.totales.getRetenciones() + "," + this.totales.getTotal() + "," + ((this.nota!=null)?this.nota.getTexto():"sinNOTA");
@@ -140,12 +151,14 @@ public class Factura extends Vector implements Comparable<Factura> {
 
         return cadenaResp;
     }
-//#endregion
+
 // TODO: 07-05-2024 - Revisar la forma de comparar facturas
     @Override
     public int compareTo(Factura b){
       return (this.fecha.compareTo(b.getFecha()));
    }
+//#endregion
+
 //#region TOVECTOR()   
    public static Vector<Factura> toVector(Factura f){
      Vector<Factura> vector = new Vector<Factura>();
@@ -155,6 +168,7 @@ public class Factura extends Vector implements Comparable<Factura> {
      return vector;
    }
 //#endregion   
+
 //#region FXgetters
     public ObservableValue<Integer> getFxID() {
         this.FxID = new SimpleIntegerProperty(this.ID).asObject();
@@ -230,8 +244,9 @@ public class Factura extends Vector implements Comparable<Factura> {
         return this.FxNota ;
 	}
 //#endregion
+
 //#region CSVaFCT
-	public static synchronized Factura convertirCSVaFCT(String[] linea) {
+	public static synchronized Factura convertirCSVaFCT(String[] linea) throws NullPointerException, IOException {
         Factura f = null;
         var extractos = new ArrayList<Extracto>();
         //System.out.println("[Factura>convertirCSVaFCT] Primer campo en linea a leer: " + linea[0]);
@@ -276,6 +291,7 @@ public class Factura extends Vector implements Comparable<Factura> {
         return f;
     }
 //#endregion  
+
 //#region FCTaCSV
     public static synchronized ArrayList<String[]> convertirFCTaCSV(Factura f){
         var lista = new ArrayList<String[]>();
@@ -327,7 +343,7 @@ public class Factura extends Vector implements Comparable<Factura> {
 
         return lista;
     }
-
+//#endregion
 
 }
 

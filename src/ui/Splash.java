@@ -23,7 +23,7 @@ public class Splash extends JWindow implements Runnable{
 
  
     public Splash() {
-         System.out.println("Entrando en el constructor del splash");
+         //System.out.println("Entrando en el constructor del splash");
          FileInputStream in = null;
          int i = (int)(Math.floor(Math.random()*5+1));
         try {
@@ -44,14 +44,14 @@ public class Splash extends JWindow implements Runnable{
     }
  
     public void paint(Graphics g) {
-////System.out.println("Entrando en el paint del splash");
+        //System.out.println("Entrando en el paint del splash");
         if (splash != null) {
             g.drawImage(splash, 0, 0, null);
         }
     }
     
     private void createShadowPicture(BufferedImage image) {
-////System.out.println("Creando Shadow Picture del splash");      
+        //System.out.println("Creando Shadow Picture del splash");      
         int width = image.getWidth();
         int height = image.getHeight();
       
