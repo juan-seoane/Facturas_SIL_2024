@@ -1,5 +1,5 @@
 package modelo.records;
-// TODO: 07-05-2024 - Hacer un método estático para chequear si los archivos de Configuracion de un Usuario determinado existen... public static archivosConfigExisten(String user)()
+// TODO - 2024-05-07 : - Hacer un método estático para chequear si los archivos de Configuracion de un Usuario determinado existen... public static archivosConfigExisten(String user)()
 public class RutasConfig {
     private String user;
     private String rutaconfigdata;

@@ -19,7 +19,7 @@ import modelo.records.RutasConfig;
 import modelo.records.RutasTrabajo;
 import modelo.records.UIData;
 
-  // TODO: 22-04-2024 - configdata.json y misdatos.json deberían contener un JsonArray de sus respectivos objetos
+  // TODO -24-04-22 : configdata.json y misdatos.json deberían contener un JsonArray de sus respectivos objetos
 
   public class Config {
 
@@ -35,7 +35,7 @@ import modelo.records.UIData;
   public static Config configActual = null;
 //#endregion
 
-  // TODO : 29-06-2024 - Repasar el constructor y los getConfig... parece que el usuario tiene que designarse en otro lado...
+  // TODO - 24-06-29 : Repasar el constructor y los getConfig... parece que el usuario tiene que designarse en otro lado...
 //#region CONSTRUCTOR_NC_DE_CONFIG
   private Config(String user) {
     
@@ -104,8 +104,8 @@ import modelo.records.UIData;
     Fichero.crearFichero(rutaDirTrab, trab1); //ya comprueba si existe o no...
     Fichero.crearFichero(rutaDirTrab, trab2); //ya comprueba si existe o no...
     Fichero.crearFichero(rutaDirTrab, trab3); //ya comprueba si existe o no...
-  // TODO: 14-06-2024 : Cambiar la extension de los archivos de trabajo a .csv
-  // TODO: 06-05-2024 : Hay que hacer un método para borrar MisDatos (no tiene sentido que se guarden todo el tiempo en memoria)  
+  // TODO - 24-06-16 : Cambiar la extension de los archivos de trabajo a .csv
+  // TODO - 24-05-06 : Hay que hacer un método para borrar MisDatos (no tiene sentido que se guarden todo el tiempo en memoria)  
     
   //Se borra el objeto 'MisDatos' 
     this.misDatos = null;
@@ -115,10 +115,10 @@ import modelo.records.UIData;
 //#endregion
 
 //#region GET_CONFIG
-  // TODO: 11-04-2024 - Parece que, ahora mismo, no tiene sentido llamar a un constructor sin definir el usuario...
-  // TODO: 11-04-2024 - Pensar cómo meter usuario
-  // TODO: 18-04-2024 - Hacer un Diagrama de Flujo de todo el proceso de Config, para ajustar
-  // TODO: 02-05-2024 - Estoy probando con 'synchronized' intentando que no use la config mientras se genera...
+  // TODO - 24-04-11 : Parece que, ahora mismo, no tiene sentido llamar a un constructor sin definir el usuario...
+  // TODO - 24-04-11 : Pensar cómo meter usuario
+  // TODO - 24-04-18 : Hacer un Diagrama de Flujo de todo el proceso de Config, para ajustar
+  // TODO - 24-05-02 : Estoy probando con 'synchronized' intentando que no use la config mientras se genera...
   public static Config getConfig(String user) throws NullPointerException, IOException {
     if(Config.configActual==null || !Config.configActual.getUsuario().equals(user))
       configActual = new Config(user);
@@ -127,7 +127,7 @@ import modelo.records.UIData;
   }
 
   public static Config getCongig() {
-  //TODO: 15-06-2024 - Hacer un método para que te pregunte qué usuario quieres inicializar...
+  //TODO- 24-06-15 : Hacer un método para que te pregunte qué usuario quieres inicializar...
     if (Config.configActual==null){
       Config.configActual = new Config("admin");
     }
@@ -152,11 +152,11 @@ import modelo.records.UIData;
     var origenesPrueba = new ArrayList<String>();
     origenesPrueba.add("caja");
     origenesPrueba.add("otros");  
-// TODO: 28-04-2024 - Falta asignar rutas estándar para esta config (usuario ya definido)
-    var rutas = new RutasTrabajo("./datos/"+this.usuario.toUpperCase()+"/FCT20242.csv", "./datos/"+this.usuario.toUpperCase()+"/RS2024.csv", "./datos/"+this.usuario.toUpperCase()+"/CJA20242.csv");
+// TODO- 24-04-28 : Falta asignar rutas estándar para esta config (usuario ya definido)
+    var rutas = new RutasTrabajo("./datos/"+this.usuario.toUpperCase()+"/FCT242.csv", "./datos/"+this.usuario.toUpperCase()+"/RS24.csv", "./datos/"+this.usuario.toUpperCase()+"/CJA242.csv");
 
 
-    Año año = new Año(2024, 2);
+    Año año = new Año(24, 2);
 
     ConfigData cfDataPrueba = new ConfigData("TESTuSER", año, rutas, tiposIVAprueba, origenesPrueba);
 //    System.out.println("[Config.java] Asignando ConfigData Estándar");
@@ -223,8 +223,8 @@ import modelo.records.UIData;
 //#endregion
 
 //#region OTROS GETTERS 
-// TODO : 13-05-2024 - Acabo de quitar getConfigActual()
-// TODO : 28-04-2024 - Controlar que esté todo bien después de quitar el static de algunos métodos get
+// TODO - 24-05-13 : Acabo de quitar getConfigActual()
+// TODO - 24-04-28 : Controlar que esté todo bien después de quitar el static de algunos métodos get
 public String getUsuario(){
     return this.usuario;
   }
@@ -250,14 +250,14 @@ public String getUsuario(){
   }
 //#endregion
 
-  // TODO: 10-04-2024 - Ver cómo buscar la lista de contrasenas de un usuario...  
+  // TODO- 24-04-10 : Ver cómo buscar la lista de contrasenas de un usuario...  
 
-  // TODO: 19-04-2024 - Sopesar si debería generar un archivo 'std_config.json' con la configuración inicial (la de admin:admin)
-  // TODO: 19-04-2024 - RecConfig cuándo se llama?  
+  // TODO- 24-04-19 : Sopesar si debería generar un archivo 'std_config.json' con la configuración inicial (la de admin:admin)
+  // TODO- 24-04-19 : RecConfig cuándo se llama?  
 
 //#region REC_CONFIG()
-  // TODO: 23-04-2024 - Aquí debería guardar los 4 archivos JSON: rutasconfig, configdata, misdatos, uidata...
-  // TODO : 02-05-2024 - También probando con 'synchronized', para que no accedan a este método 2 hilos simultáneamente...  
+  // TODO- 24-04-23 : Aquí debería guardar los 4 archivos JSON: rutasconfig, configdata, misdatos, uidata...
+  // TODO - 24-05-02 : También probando con 'synchronized', para que no accedan a este método 2 hilos simultáneamente...  
   
   public static synchronized boolean recConfig(String p_usuario,Config p_config) throws NullPointerException, IOException{
     // Crea las carpetas personales (si no existen)
@@ -267,8 +267,8 @@ public String getUsuario(){
     String ruta2 = "./config/"+p_usuario.toUpperCase()+"/configdata.json";
     String ruta3 = "./config/"+p_usuario.toUpperCase()+"/misdatos.json";
     String ruta4 = "./config/"+p_usuario.toUpperCase()+"/uidata.json";
-// TODO: 20-04-2024 - Rehacer 'datosFormateados', enviar la config a formatearse como JSON, o incluir una std_config 
-// TODO: 23-04-2024 - Rehacer el método toString() para adaptarlo a la salida en JSON
+// TODO- 24-04-20 : Rehacer 'datosFormateados', enviar la config a formatearse como JSON, o incluir una std_config 
+// TODO- 24-04-23 : Rehacer el método toString() para adaptarlo a la salida en JSON
     String datos1 = p_config.rutasconfig.toJSON();
 //    System.out.println("[Config.java]->\n" + datos1);
     String datos2 = p_config.getConfigData().toJSON();
@@ -299,7 +299,7 @@ public String getUsuario(){
     String fiTrab2 = p_config.getConfigData().getRutas().getRS();
     String fiTrab3 = p_config.getConfigData().getRutas().getCJA();
     
-    // TODO: 02-05-2024 - Por ahora ocultamos la creación de los archivos de trabajo...
+    // TODO- 24-05-02 : Por ahora ocultamos la creación de los archivos de trabajo...
     
     if(Fichero.crearCarpeta(dirTrab)&&Fichero.crearFichero(fiTrab1)&&Fichero.crearFichero(fiTrab2)&&Fichero.crearFichero(fiTrab3)){
       //System.out.println(" [Config.java>recConfig] Archivos de trabajo personales en orden para usuario "+p_usuario);
@@ -343,14 +343,14 @@ public String getUsuario(){
 
 //#region LEER_CFG_JSON()
   public static synchronized RutasConfig leerRutasCFGjson(String ruta){
-// TODO: 11-04-2024 - Crear métodos estáticos para guardar/leer las credenciales en el archivo base config.json
+// TODO- 24-04-11 : Crear métodos estáticos para guardar/leer las credenciales en el archivo base config.json
 // TODO : Si no existe el fichero, devolver 'false' y crearlo 
     RutasConfig resp;
     File fichCFG = new File(ruta);
     if (fichCFG.exists()){
       String fichero = Fichero.leerJSON(ruta);
       Gson gson = new Gson();
-//TODO: 04-05-2024 - Parece que el problema está aquí, cuando intenta leer el archivo 'rutasconfig.json'
+//TODO- 24-05-04 : Parece que el problema está aquí, cuando intenta leer el archivo 'rutasconfig.json'
  
       String json = Fichero.leerJSON(ruta);
       //System.out.println("[Config>leerRutasConfigJson] Fichero JSON leído");
@@ -382,7 +382,7 @@ public String getUsuario(){
 //    System.out.println(" [Config.java] Crenciales leídas: \n" + ficheroResp);
     
     Gson gson = new Gson();
-    // TODO: 11-04-2024 - Revisar esto: Si es Arraylist.class o Contrasena.class
+    // TODO- 24-04-11 : Revisar esto: Si es Arraylist.class o Contrasena.class
   
     Credenciales credenciales = gson.fromJson(ficheroResp, Credenciales.class);
     //System.out.println("[Config>leerCredenciales] Credenciales leidas!"/* + credenciales.toString()*/);
@@ -402,7 +402,7 @@ public String getUsuario(){
     }
     creds.creds.add(new Contrasena(user, user));
     
-    // TODO: 11-04-2024 - Falta guardar en formato JSON
+    // TODO- 24-04-11 : Falta guardar en formato JSON
     if(Fichero.guardarJSON(creds.toString(), ruta))
       return true;
     else
@@ -418,7 +418,7 @@ public String getUsuario(){
 //#region TOSTR()
 @Override
 public String toString(){
-  // TODO : 29-06-2024 - Hay que hacer los toString de uidata, configdata, rutasCongig
+  // TODO - 24-06-29 : Hay que hacer los toString de uidata, configdata, rutasCongig
   String resp = "Config del usuario " + this.usuario +" :\n ConfigData :\n" + this.configData.toString() + "\nmisDatos:\n" + ((this.misDatos!=null)?this.misDatos.toString():" - NULL -") + "\nuiData:\n" + this.uiData.toString() + "\nrutasConfig:\n" + this.rutasconfig.toString() + "\nElementos en Lista static de configuraciones: " + ((Config.configuraciones!=null)?Config.configuraciones.size():" - NULL -") + "\nstatic configActual not NULL: " + ((Config.configActual!=null)?"S":"N");
   return resp;
 }

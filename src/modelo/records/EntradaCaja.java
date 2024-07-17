@@ -89,7 +89,7 @@ public class EntradaCaja implements Comparable<EntradaCaja> {
     public void setNota(Nota nota) {
         this.nota = nota;
     }
-// TODO: 07-05-2024 - Revisar la forma de comparar entradas de caja
+// TODO - 2024-05-07 : - Revisar la forma de comparar entradas de caja
     @Override
     public int compareTo(EntradaCaja b) {
         return (this.getFecha().compareTo(b.getFecha()));

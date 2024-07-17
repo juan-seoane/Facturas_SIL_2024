@@ -40,8 +40,8 @@ public class Controlador extends Thread {
 //    public static CyclicBarrier barreraControladores;
 //endregion
 
-// TODO: 04/06/24 - Comprobar los hilos que se generan (ControladorFCT, ControladorDIST, etc...)... Parece que sólo funciona el P/C
-// TODO: 04/06/24 - Hacer Singleton
+// TODO - 24-06-04 : Comprobar los hilos que se generan (ControladorFCT, ControladorDIST, etc...)... Parece que sólo funciona el P/C
+// TODO - 24-06-04 : Hacer Singleton
 
 //#region CONTR
     private Controlador() throws IOException, InterruptedException, BrokenBarrierException{
@@ -53,7 +53,7 @@ public class Controlador extends Thread {
         /* barreraControladores = new CyclicBarrier(2,() -> {
             //System.out.println("[Controlador>barreraControladores] El hilo "+Thread.currentThread().getName() + " acaba de entrar en la barreraControladores");
         }); */
-// TODO : 13-05-2024 - Falta rediseñar el PnlCtl y la tabla de Facturas       
+// TODO - 24-05-13 : Falta rediseñar el PnlCtl y la tabla de Facturas       
         
         //System.out.println("[Controlador>constructor] Terminando el constructor del Controlador Principal");
 	}
@@ -262,8 +262,8 @@ public static void setUsuario(String user) {
 //#region RUN_SWITCH
     @Override
     public void run() {
-// REVIEW - 05-07-24 : Asignaciones al empezar a ejecutarse el hilo
-//TODO : 21-06-2024 - Estas asignaciones me hacen falta
+// REVIEW - 24-07-05 : Asignaciones al empezar a ejecutarse el hilo
+//TODO - 24-06-21 : Estas asignaciones me hacen falta
     try {
         cfct = getControladorFacturas();
     } catch (InterruptedException | BrokenBarrierException e) {
@@ -273,13 +273,13 @@ public static void setUsuario(String user) {
     }
     cfct.setName("Ctrl_FCT"); 
     cfct.start();
-    //REVIEW: 06/04/2024 Tuve que cambiar el controlador de la clase PanelControl a public            
+    //REVIEW - 24-06-04 : Tuve que cambiar el controlador de la clase PanelControl a public            
     pc = getPanelControl();
         while(true){
             if (getPanelControl().botonpulsado()){
                 switch (getPanelControl().seleccion()){
                     case 1 :
-// TODO : 27-05-2024 - Aquí hay que activar la Tabla/Visor (dependiendo del modo INGR/NAV) de Facturas
+// TODO - 24-06-27 : Aquí hay que activar la Tabla/Visor (dependiendo del modo INGR/NAV) de Facturas
                         seccion = FACT;
                         if (PanelControl.getModo() == NAV){
                             //Visor y Tabla FCT visibles

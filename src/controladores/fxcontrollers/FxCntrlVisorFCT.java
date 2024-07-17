@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 public class FxCntrlVisorFCT implements Initializable{
 
 //#region CAMPOS FXML
-// FIXME : 02-07-24 - Falta cambiar algunas Label por TextField
+// FIXME - 24-07-02 : Falta cambiar algunas Label por TextField
 	@FXML Label lblVID;
 
 	@FXML TextField tfNumFactura;
@@ -79,7 +79,7 @@ public class FxCntrlVisorFCT implements Initializable{
 //#endregion
 
 //#region CONSTR
-//TODO: 22-06-2024 - En el constructor inicializamos los campos que necesitamos listos antes de nada...
+//TODO - 24-06-22 : En el constructor inicializamos los campos que necesitamos listos antes de nada...
 	public FxCntrlVisorFCT() throws InterruptedException, BrokenBarrierException{
 		
 		System.out.println("[FxCntrlVisorFCT>constructor] Arrancando el constructor del controlador FX del visorFCT");
@@ -233,7 +233,7 @@ public class FxCntrlVisorFCT implements Initializable{
 				}
 				//Thread.sleep(500);
 				
-//TODO - 12-07-24 : Aquí lo dejo, parece que el visor no está inicializado, o lblVID es siempre null por otro motivo...
+//TODO - 24-07-12 : Aquí lo dejo, parece que el visor no está inicializado, o lblVID es siempre null por otro motivo...
 /* 			if(!ControladorFacturas.visorFCT.isShowing())
 				ControladorFacturas.visorFCT.show(); */
 			if(f!=null){
@@ -290,7 +290,7 @@ public class FxCntrlVisorFCT implements Initializable{
 				break;
 			case 0: 
 				this.lblVBase1.setText(f.getTotales().getBase()+"");
-				// FIXME - 03-07-24 : Si el array de Extractos es 0...¿dónde se guarda el tipoIVA?
+				// FIXME - 24-07-03 : Si el array de Extractos es 0...¿dónde se guarda el tipoIVA?
 				//this.lblVTipoIVA1.setText(f.getExtractos().get(0).getTipoIVA()+"");
 				this.lblVIVA1.setText(f.getTotales().getIVA()+"");
 				this.lblVST1.setText(f.getTotales().getTotal()+"");

@@ -284,14 +284,14 @@ public class ControladorDistribuidores extends Thread {
         }
         //JOptionPane.showMessageDialog(null,"facturas añadidas a la cola de impresion!");
         try {
-            //TODO: 26/03/24 - He probado a parametrizar de forma genérica el tipo Fichero -> Fichero<Object>
+            //TODO - 24-03-26 : He probado a parametrizar de forma genérica el tipo Fichero -> Fichero<Object>
 
             Fichero<Object> directoriopersonal = new Fichero("informes/"+Config.getConfig().getUsuario()+"/");
             
             JasperReport reporte = (JasperReport) JRLoader.loadObjectFromLocation("adjuntos/informe02.jasper");
 
             //mapa de parámetros para enviar al informe
-            //TODO: 26/03/24 - He probado a parametrizar de forma genérica el tipo HashMap -> HashMap<Object, Object>
+            //TODO - 24-03-26 : He probado a parametrizar de forma genérica el tipo HashMap -> HashMap<Object, Object>
                 HashMap hm = new HashMap<Object, Object>();
                 hm.put("titulo",titulo);
                 hm.put("anho", Config.getConfig().getAnho().getAnho()+" trimestre "+Config.getConfig().getAnho().getTrimestre());

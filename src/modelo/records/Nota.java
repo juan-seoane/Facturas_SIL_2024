@@ -30,7 +30,7 @@ public class Nota {
       this.texto = texto;
   }
 
-//TODO: 07-05-2024 - Revisar este método, a lo mejor la nota formateada no tiene que devolver un TextArea...  
+//TODO - 2024-05-07 : - Revisar este método, a lo mejor la nota formateada no tiene que devolver un TextArea...  
   public TextArea format(int r, int c){
 	
 	  return new TextArea(this.texto,r,c);

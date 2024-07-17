@@ -19,7 +19,7 @@ public class FacturaTest {
 	@Test
 	public void convertirCSVok() throws NullPointerException, IOException, InterruptedException, BrokenBarrierException{
 		String usuario = "admin";
-		String rutaYnombre = "./datos/" + usuario.toUpperCase() + "/FCT20242.csv";
+		String rutaYnombre = "./datos/" + usuario.toUpperCase() + "/FCT242.csv";
 		var config = Config.getConfig(usuario);
 		var contrlPpal = Controlador.getControlador();
 		Controlador.setUsuario("admin");

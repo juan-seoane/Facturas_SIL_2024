@@ -432,7 +432,7 @@ public synchronized ArrayList<String[]> leerCSV(String rutaYnombre){
         //System.out.println("[Fichero.java>leerCSV()] Excepcion " + e + " leyendo el archivo " + rutaYnombre);
     }
     cerrarInputStream();
-    //TODO: 14-06-2024 - (Hay que devolver ya una lista de facturas) En fichero.leerCSV se devuelve un ArrayList<String[]> genérico, luego cada Modelo lo pasa a su ArrayList<T> parametrizado a la clase que convenga, Factura, RS, EntradaCaja...
+    //TODO - 2024-06-14 : - (Hay que devolver ya una lista de facturas) En fichero.leerCSV se devuelve un ArrayList<String[]> genérico, luego cada Modelo lo pasa a su ArrayList<T> parametrizado a la clase que convenga, Factura, RS, EntradaCaja...
     return resp;
     }
 //#endregion 

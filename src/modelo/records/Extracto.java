@@ -44,7 +44,7 @@ public class Extracto implements Comparable<Extracto> {
     public void setTotal(double total) {
         this.total = total;
     }
-// TODO: 07-05-2024 - Revisar la forma de comparar extractos
+// TODO - 2024-05-07 : - Revisar la forma de comparar extractos
     @Override
 	public int compareTo(Extracto b){
 		

@@ -60,7 +60,7 @@ public class Factura extends Vector implements Comparable<Factura> {
     }
 
     public Factura() {
-		this(0,"000000-OOO",new Fecha(17,03,2024),new RazonSocial(), new TipoGasto("tipoGasto_generico","descripción"),false,new ArrayList<Extracto>(),new Totales(),null);
+		this(0,"000000-OOO",new Fecha(17,03,24),new RazonSocial(), new TipoGasto("tipoGasto_generico","descripción"),false,new ArrayList<Extracto>(),new Totales(),null);
 	}
 //#endregion
 
@@ -142,7 +142,7 @@ public class Factura extends Vector implements Comparable<Factura> {
     @Override
     public String toString(){
         String cadenaResp = this.ID + "," + this.numeroFactura + "," +  this.fecha.toString() + "," + this.RS.getID() + "," + this.RS.getNif() + "," + this.RS.getNombre() + "," + this.categoria.getTipo() + "," + (this.esDevolucion?"S":"N") + "," + this.extractos.size() + ", TOTS-> " + this.totales.getBase() + "," + ((this.totales.isVariosIVAs())?"S":"N,"+this.totales.getTipoIVA()) + "," + this.totales.getIVA() + "," + this.totales.getRet() + "," + this.totales.getRetenciones() + "," + this.totales.getTotal() + "," + ((this.nota!=null)?this.nota.getTexto():"sinNOTA");
-        //TODO: 15-06-2024 - ojo que sólo puede haber una Nota...
+        //TODO - 24-06-15 : - ojo que sólo puede haber una Nota...
         if (this.extractos.size()>0){
             for (int i=0; i<this.extractos.size(); i++){
                 cadenaResp += "\nEXTR->" + this.extractos.get(i).getBase() + "," + this.extractos.get(i).getTipoIVA() + "," + this.extractos.get(i).getIVA() + "," + this.extractos.get(i).getTotal()+ "#";
@@ -152,7 +152,7 @@ public class Factura extends Vector implements Comparable<Factura> {
         return cadenaResp;
     }
 
-// TODO: 07-05-2024 - Revisar la forma de comparar facturas
+// TODO - 24-05-07 : - Revisar la forma de comparar facturas
     @Override
     public int compareTo(Factura b){
       return (this.fecha.compareTo(b.getFecha()));
@@ -262,8 +262,8 @@ public class Factura extends Vector implements Comparable<Factura> {
                 int mes = Integer.parseInt(fecha[1]);
                 int año = Integer.parseInt(fecha[2]);
                 int rsid = Integer.parseInt(linea[3]);
-                //TODO: 14-06-2024 - revisar esto, sólo vale para NIF, no para CIF... Habrá que hacer un método nuevo que convierta un array de cadenas de texto en un objeto NIF
-                //TODO: 19-06-2024 - Además habría que ver si existe ya la RS (según el ID) 
+                //TODO - 24-06-14 : - revisar esto, sólo vale para NIF, no para CIF... Habrá que hacer un método nuevo que convierta un array de cadenas de texto en un objeto NIF
+                //TODO - 24-06-19 : - Además habría que ver si existe ya la RS (según el ID) 
                 String[] rsnif = linea[4].split("-");
                 int numnif = Integer.parseInt(rsnif[0]);
                 NIF nifRS = new NIF(numnif, rsnif[1],false);
@@ -274,8 +274,8 @@ public class Factura extends Vector implements Comparable<Factura> {
                 }else{
                     nota = new Nota(Integer.parseInt(linea[18]), linea[19]);
                 }
-                //TODO: 14-06-2024 - revisar esto, sólo vale para cuando hay notas... Hacer un método para leer la nota si existe, y si no, hacerla null
-                //TODO: 15-06-2024 - Se podría poner el TipoIVA como un Integer en vez de una clase TipoIVA...
+                //TODO - 24-06-14 : - revisar esto, sólo vale para cuando hay notas... Hacer un método para leer la nota si existe, y si no, hacerla null
+                //TODO - 24-06-15 : - Se podría poner el TipoIVA como un Integer en vez de una clase TipoIVA...
                 f = new Factura(Integer.parseInt(linea[0]),linea[1],new Fecha(dia, mes, año),new RazonSocial(rsid,nifRS,rsnombre,rsnombre, null),new TipoGasto(linea[6],linea[6]),(linea[7].equals("S"))?true:false,extractos, new Totales(Double.parseDouble(linea[9]),(linea[10].equals("S"))?true:false,Integer.parseInt(linea[11]),Double.parseDouble(linea[12]),Double.parseDouble(linea[13]),Double.parseDouble(linea[14]),Integer.parseInt(linea[15]),Double.parseDouble(linea[16]),Double.parseDouble(linea[17])),(nota==null)?null:nota);            
         }else{
             //se lee el extracto
@@ -284,7 +284,7 @@ public class Factura extends Vector implements Comparable<Factura> {
             extractos = f.getExtractos();
             extractos.add(new Extracto(Double.parseDouble(linea[9]),Integer.parseInt(linea[11]),Double.parseDouble(linea[12]),Double.parseDouble(linea[13])));
             f.setExtractos(extractos);
-        //TODO: 15-06-2024 - ojo con este paso: se quita la última entrada de la lista de facturas...
+        //TODO - 24-06-15 : - ojo con este paso: se quita la última entrada de la lista de facturas...
             ModeloFacturas.facturas_prev.removeLast();
             
         }

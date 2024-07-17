@@ -98,8 +98,8 @@ public class ConfigTest {
 			i++;
         }
 		*/
-    // TODO: 11-04-2024 - Revisar esto: Si es Arraylist.class o Contrasena.class
-	// TODO: 21-04-2024 - Parece que hay un problema al leer las credenciales... El fichero lo lee bien, pero el Objeto 'Credenciales' lo coge mal...
+    // TODO - 2024-04-11 : - Revisar esto: Si es Arraylist.class o Contrasena.class
+	// TODO - 2024-04-21 : - Parece que hay un problema al leer las credenciales... El fichero lo lee bien, pero el Objeto 'Credenciales' lo coge mal...
     
     	//System.out.println("\n---------------\ncredenciales:\n"+credenciales.toString());
 		if(credenciales.creds.size()>1)
@@ -170,7 +170,7 @@ public class ConfigTest {
 
 	@Test
 	void ConfigFilesOK() throws NullPointerException, IOException{
-	// TODO: 28-04-2024 - El problema es pasar a 'final String' un dato que viene del JSON en forma de 'String' (sin 'final')
+	// TODO - 2024-04-28 : - El problema es pasar a 'final String' un dato que viene del JSON en forma de 'String' (sin 'final')
 		Config cfgPrueba = Config.getConfig(user);
 
 		String cfgjson = cfgPrueba.rutasconfig.toJSON();
@@ -202,9 +202,9 @@ public class ConfigTest {
 		String rutacfg4 = "config/"+cfgPrueba.usuario.toUpperCase()+"/uidata.json";
 		File fcfg4 = new File(rutacfg4);
 		assertTrue(fcfg4.exists());
-// TODO: 02-05-2024 - Hay que guardar las credenciales y los ficheros de trsbajo
+// TODO - 2024-05-02 : - Hay que guardar las credenciales y los ficheros de trsbajo
 	}
-// TODO: 24-04-2024 - crear método toJSON() en cada record anterior, para luego grabar los ficheros
+// TODO - 2024-04-24 : - crear método toJSON() en cada record anterior, para luego grabar los ficheros
 	@Test
 	void WorkingFilesOK() throws NullPointerException, IOException{
 

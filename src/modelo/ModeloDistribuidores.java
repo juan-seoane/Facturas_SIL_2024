@@ -90,7 +90,7 @@ public class ModeloDistribuidores {
         listaDistribuidores = ficheroRS.leer();
         
         for (RazonSocial rs : listaDistribuidores){
-// TODO : 06-05-2024 - Cambiar algoritmo por otro sin setter
+// TODO  - 2024-05-06 : - Cambiar algoritmo por otro sin setter
 //             rs.setTotales(actualizarTotales(rs, ModeloFacturas.facturas));
         }
             //JOptionPane.showMessageDialog(null,"ACTUALIZANDO LA BASE DE DATOS DE DISTRIBUIDORES");
@@ -118,7 +118,7 @@ public class ModeloDistribuidores {
         int i = 0;
         for (RazonSocial rs : lista){
             i++;
-// TODO : 06-05-2024 - Cambiar algoritmo por otro sin setter
+// TODO  - 2024-05-06 : - Cambiar algoritmo por otro sin setter
 //            rs.setID(i);
             ultimaID = i;
         }
@@ -187,7 +187,7 @@ public class ModeloDistribuidores {
     public boolean insertarDistribuidor(RazonSocial rs) {
 //        //System.out.println("Indice en Modelo : " + index);
         ultimaID++;
-// TODO : 06-05-2024 - Cambiar procedimiento con setter por otro
+// TODO  - 2024-05-06 : - Cambiar procedimiento con setter por otro
 //        rs.setID(ultimaID);
         listaDistribuidores.add(rs);
         Collections.sort(listaDistribuidores);
@@ -235,7 +235,7 @@ public class ModeloDistribuidores {
         
         for (RazonSocial rs : this.getListaDistribuidores())
         {
-// TODO : 06-05-2024 - Revisar el método toString() del record NIF
+// TODO  - 2024-05-06 : - Revisar el método toString() del record NIF
             if (nuevoNIF.toString().equals(rs.nif().toString()))
             {
                 JOptionPane.showMessageDialog(null,"La Razon Social ya existe!");
@@ -270,7 +270,7 @@ public class ModeloDistribuidores {
     public boolean insertarDesdeFactura(NIF nuevoNIF,String razon){
         RazonSocial nuevoDistribuidor = new RazonSocial(this.getListaDistribuidores().size()+1,nuevoNIF,razon, new Nota(0, "-"));
         String nombreEmpresa = JOptionPane.showInputDialog(null, "Introduzca el nombre de la empresa :");
-// TODO: 06-05-2024 - Cambiar estos procedimientos a base de setters
+// TODO - 2024-05-06 : - Cambiar estos procedimientos a base de setters
 //        nuevoDistribuidor.setNombre(nombreEmpresa.toUpperCase().trim());
             this.insertarDistribuidor(nuevoDistribuidor);
             JOptionPane.showMessageDialog(null,"La Razon Social ha sido registrada!");

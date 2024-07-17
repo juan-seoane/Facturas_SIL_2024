@@ -1,6 +1,6 @@
 package modelo.records;
 
-//TODO: 07-05-2024 - La clase Totales...¿heredaba de la clase Extracto?
+//TODO - 2024-05-07 : - La clase Totales...¿heredaba de la clase Extracto?
 //import modelo.Extracto;
 
 public class Totales {
@@ -102,7 +102,7 @@ public class Totales {
       this.total = total;
   }
 
-  //TODO: 07-05-2024 - Puede que necesite calcular los totales pasando otros parámetros...
+  //TODO - 2024-05-07 : - Puede que necesite calcular los totales pasando otros parámetros...
   public static double calcularTotales(double base, int tipoIVA) {
 	  return (base + (base * tipoIVA)/100 );
   }

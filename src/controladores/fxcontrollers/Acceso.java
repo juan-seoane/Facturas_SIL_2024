@@ -64,7 +64,7 @@ public class Acceso extends Application implements Initializable{
 
 //#region RUN_CTLLR
 private void arrancarControlador() throws IOException, InterruptedException, BrokenBarrierException{
-    // TODO: 13-05-2024 : Aquí arroja una 'IOException' que afecta al hilo general del programa... Habría que ver cómo evitar que se propague a las llamadas anteriores...       
+    // TODO - 24-05-13 : Aquí arroja una 'IOException' que afecta al hilo general del programa... Habría que ver cómo evitar que se propague a las llamadas anteriores...       
            
            Controlador ctrThread = Controlador.getControlador();
    
@@ -179,7 +179,7 @@ public void start(Stage primaryStage) throws IOException {
             e.printStackTrace();
         }
         cambiarEscena(Acceso.scene2);
-        Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 2024!\nPulse una tecla para continuar...");
+        Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 24!\nPulse una tecla para continuar...");
         //System.out.println("[Acceso.java: intentos<5 y cred OK]...OK, entrando...");
         Acceso.ventanaAcceso.requestFocus();  
     }
@@ -294,7 +294,7 @@ public void start(Stage primaryStage) throws IOException {
         Scene escena = new Scene(root);
         Stage vPC = Controlador.setStage(escena, true);
         vPC.setResizable(false);
-        // TODO : 30-05-2024 - Aquí se ajusta el modo de la ventana de P/C
+        // TODO - 24-05-30 : Aquí se ajusta el modo de la ventana de P/C
 
         vPC.setOnCloseRequest(e -> System.exit(0));
         PanelControl.setGUI(vPC);

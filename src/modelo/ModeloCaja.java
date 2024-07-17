@@ -37,7 +37,7 @@ public class ModeloCaja {
     public boolean filtros  = false;
     
     private ModeloCaja(){
-// TODO: 06-05-2024 - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
+// TODO - 2024-05-06 : - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
 //        caja = leerCaja();
         numeroEntradas = caja.size();
         vectorcaja = generarVectorCaja();
@@ -52,8 +52,8 @@ public class ModeloCaja {
             instancia = new ModeloCaja();
         return instancia;
     }
-// TODO: 06-05-2024 - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
-// TODO: 06-05-2024 - En la clase 'Caja' había setters que no pueden estar en un Java record (inmutable por definición)
+// TODO - 2024-05-06 : - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
+// TODO - 2024-05-06 : - En la clase 'Caja' había setters que no pueden estar en un Java record (inmutable por definición)
 
 //    public EntradaCaja getCaja(int index){
 //        EntradaCaja c = leerCaja().get(index);
@@ -81,7 +81,7 @@ public class ModeloCaja {
             cuenta++;
 //            cj.setID(cuenta);
         }
-// TODO: 06-05-2024 - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
+// TODO - 2024-05-06 : - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
         if (guardarListaCajas((ArrayList<EntradaCaja>)caja))
             return true;
         else return false;
@@ -99,7 +99,7 @@ public class ModeloCaja {
         int cuenta = 0;
         for (EntradaCaja cj : caja){
             cuenta++;
-// TODO: 06-05-2024 - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
+// TODO - 2024-05-06 : - Estudiar el cambio en la clase 'Caja' que ha pasado a un Java record 'EntradaCaja'
 //            cj.setID(cuenta);
         }
         if (guardarListaCajas((ArrayList<EntradaCaja>)caja))

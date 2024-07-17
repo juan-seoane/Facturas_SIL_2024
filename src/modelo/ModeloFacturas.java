@@ -31,7 +31,7 @@ public class ModeloFacturas {
     public static ArrayList<Factura> facturas_prev;
     private ArrayList<String[]> arrayFacturas;
     static Fichero<Factura> ficheroFacturas;
-    //TODO : 11-04-2024 - Repasar los vectores de Facturas y demás...
+    //TODO  - 24-04-11 : - Repasar los vectores de Facturas y demás...
     static Stack<Factura> pilafacturasant = new Stack<Factura>();
     static Stack<Factura> pilafacturassig = new Stack<Factura>();
     static Vector<Factura> vectorfacturas;
@@ -124,7 +124,7 @@ public class ModeloFacturas {
 //#region leerFacturas
     public ObservableList<Factura> getListaFXFacturas(){
         List<Factura> fact_prev = null;
-//TODO: 16-06-2024 - Habrá que filtrar la lista de facturas después
+//TODO - 24-06-16 : - Habrá que filtrar la lista de facturas después
         try {
             fact_prev = leerFacturasSinFiltrar();
         } catch (NullPointerException | IOException e) {
@@ -211,7 +211,7 @@ public class ModeloFacturas {
 //#region filtrar   
     public List<Factura> filtrar(List<Factura> lista) {
     
-    //TODO: 14-06-2024 - Habría que convertir este ArrayList<String[]> a un ArrayList<Factura>...
+    //TODO - 24-06-14 : - Habría que convertir este ArrayList<String[]> a un ArrayList<Factura>...
 
         for (int i = 0; i < lista.size(); i++){
             Factura f1 = lista.get(i);
@@ -229,7 +229,7 @@ public class ModeloFacturas {
         int i = 0;
         for (Factura f : lista){
             i++;
-// TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+// TODO - 24-05-06 : - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
             f.setID(i);
             ultID = i;
         }
@@ -274,7 +274,7 @@ public class ModeloFacturas {
             Collections.sort(facturas);
         }
         //JOptionPane.showMessageDialog(null, "Espere unos segundos mientras se ordena la lista!");
-// TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+// TODO - 24-05-06 : - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
 //        for (int i = 0; i < numeroFacturas; i++) {
 //            facturas.get(i).setID(i + 1);
 //        }
@@ -283,7 +283,7 @@ public class ModeloFacturas {
     }
 
     public boolean anexarFactura(modelo.records.Factura factura) throws NumberFormatException, IOException {
-// TODO: 06-05-2024 - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+// TODO - 24-05-06 : - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
 //        factura.setID(this.ultimaID++);
         numeroFacturas++;
         PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
@@ -356,7 +356,7 @@ public class ModeloFacturas {
         if (form.esDevolucion()){
             textoNota = "Devolucion - "+textoNota;
         }
-        //TODO : 11-04-2024 - Cambiar los datos de los formularios por datos obtenidos de la GUI JFX
+        //TODO  - 24-04-11 : - Cambiar los datos de los formularios por datos obtenidos de la GUI JFX
         int dia = form.dia();
         int mes = form.mes();
         int año = form.año();
@@ -366,7 +366,7 @@ public class ModeloFacturas {
         form.limpiarFormulario();
 
         Fecha fecha = new Fecha(dia, mes, año);
-//TODO: 11-04-2024 - Necesito un método (estático, a poder ser) para generar automáticamente el ID de cada Nota
+//TODO - 24-04-11 : - Necesito un método (estático, a poder ser) para generar automáticamente el ID de cada Nota
         RazonSocial rs = completarRS(new RazonSocial(1, new NIF(numero, letra, isCIF), razon, new Nota(0,"")));
         // TODO : HAY QUE CONSEGUIR INTRODUCIR TODA LA RAZON SOCIAL COMO APARECE EN DISTRIBUIDORES 
         ArrayList<Extracto> subfacturas = form.getSubfacturas();
@@ -429,7 +429,7 @@ public class ModeloFacturas {
 //#endregion
 
 //#region genVectorFact 
- //TODO: 14-06-2024 - repasar esta función, puede que no funcione...
+ //TODO - 24-06-14 : - repasar esta función, puede que no funcione...
     public Vector<Factura> generarVectorFacturas() {
         var vectorfacturas = new Vector<Factura>();
         

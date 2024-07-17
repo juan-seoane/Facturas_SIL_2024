@@ -49,7 +49,7 @@ public class PanelControl implements Initializable{
     static Popup popMenu;
     public static Stage ventanaPCtl;
     public static Scene escena1;
-// TODO: 30-06-2024 - Los controladoresFx de FCT deberían estar en el ControladorFacturas, no aquí...
+// TODO - 24-06-30 : Los controladoresFx de FCT deberían estar en el ControladorFacturas, no aquí...
     static FxCntrlTablaFCT fxTablaFCTcontr;
 
     static FxCntrlVisorFCT fxVisorFCTcontr;
@@ -66,13 +66,13 @@ public class PanelControl implements Initializable{
     String usuarioActual;
 //#endregion
     
-//TODO: 12-04-2024 - ¿Porqué no puede seguir siendo un Singleton?
-//TODO: 12-04-2024 - Hay que definir un usuariActual, y una configActual
+//TODO - 24-04-12 : ¿Porqué no puede seguir siendo un Singleton?
+//TODO - 24-04-12 : Hay que definir un usuariActual, y una configActual
 
 //#region CONSTR
     public PanelControl() {
         this.usuarioActual = Controlador.getUsuario();
-// TODO : 29-05-2024 - Luego habrá que cambiar esto de abajo a modo NAV por defecto...
+// TODO - 24-05-29 : Luego habrá que cambiar esto de abajo a modo NAV por defecto...
         PanelControl.modo = Controlador.INGR;
         try {
             this.configActual = Config.getConfig(this.usuarioActual);
@@ -80,7 +80,7 @@ public class PanelControl implements Initializable{
             //System.out.println("[PanelControl>Constructor] Excepcion creando el P/C, imposible obtener la config actual");
             e.printStackTrace();
         }
-//TODO : 21-06-2024 - Estas asignaciones me hacen falta
+//TODO - 24-06-21 : Estas asignaciones me hacen falta
         try {
             this.ctrlPpal = Controlador.getControlador();
             this.ctrlFct = Controlador.getControladorFacturas();
@@ -93,11 +93,11 @@ public class PanelControl implements Initializable{
 //#region INITIALIZE
     @FXML
     public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO: 09/04/24 - Crear un Controlador general, y decidir cómo abrirá las tablas, etc...
-        // TODO: 09/04/24 - Crear un controladorFicheros en un nuevo hilo para que gestione el Guardado Automático
+        // TODO - 24-04-09 : Crear un Controlador general, y decidir cómo abrirá las tablas, etc...
+        // TODO - 24-04-09 : Crear un controladorFicheros en un nuevo hilo para que gestione el Guardado Automático
         // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
         // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
-        // TODO: 12-04-2024 - Lo dejo aquí (19:13H)
+        // TODO - 24-04-12 : Lo dejo aquí (19:13H)
         setAño((Integer)this.configActual.configData.getAño().getAño());
         setTrimestre(this.configActual.configData.getAño().getTrimestre());
 
@@ -111,7 +111,7 @@ public class PanelControl implements Initializable{
             if (ok1){
                 //System.out.println("[PanelControl>Constructor] Tabla Facturas cargada!!");
                 fxTablaFCTcontr = this.ctrlFct.getFXcontrlTablaFCT();
-                //TODO - 13-07-24 : Aquí el valor de la tableView de Fact y del visorFCT es null!!
+                //TODO - 24-07-13 : Aquí el valor de la tableView de Fact y del visorFCT es null!!
                 //System.out.println("[PanelControl>Constructor] Tabla Facturas asignada!!");
             }
         } catch (InterruptedException | BrokenBarrierException e) {
@@ -182,7 +182,7 @@ public class PanelControl implements Initializable{
             botonactivo = 1;
             botonpulsado = true;
         }
- // TODO : 29-05-2024 - Hay que desactivar el botón mientras está en uso, y colorearlo de amarillo (quizás pueda ser un ToggleButton)...       
+ // TODO - 24-05-29 : Hay que desactivar el botón mientras está en uso, y colorearlo de amarillo (quizás pueda ser un ToggleButton)...       
     }
 
     @FXML

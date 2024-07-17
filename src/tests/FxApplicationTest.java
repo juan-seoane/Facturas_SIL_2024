@@ -267,18 +267,18 @@ public class FxApplicationTest extends ApplicationTest{
 
 		var listaFXFCT = modeloFCT.getListaFXFacturas();
 
-		//NOTE - 13-07-24 : actualizamos el VisorFCT con la FacturaActual...
+		//NOTE - 24-07-13 : actualizamos el VisorFCT con la FacturaActual...
 		int iact = FxCntrlTablaFCT.getIndiceActual();
 		Factura fact = listaFXFCT.get(1);
-		//NOTE - 13-07-24 : facturaActual que tenemos que actualizar manualmente
+		//NOTE - 24-07-13 : facturaActual que tenemos que actualizar manualmente
 		ControladorFacturas.facturaActual = fact;
-		//NOTE - 13-07-24 : comprobamos que no sean 'null'
+		//NOTE - 24-07-13 : comprobamos que no sean 'null'
 		assertEquals(0,iact);
 		assertNotNull(fact);
 
 		ctrlFct.mostrarVisorFCT(iact, fact);
 		assertTrue(listaFXFCT.get(0) instanceof Factura);
-		//FIXME - 17-07-24 : No funciona esto, después de 'mostrarVisorFCT()'' debería poder asignarse un contrFXvisorFCT, no debería ser NULL 
+		//FIXME - 24-07-17 : No funciona esto, después de 'mostrarVisorFCT()'' debería poder asignarse un contrFXvisorFCT, no debería ser NULL 
 		//ctrlFxVisorFct = Controlador.getControladorFacturas().getFXcontrlVisorFCT();
 		//assertNotNull(ctrlFxVisorFct);
 		Thread.sleep(2000);

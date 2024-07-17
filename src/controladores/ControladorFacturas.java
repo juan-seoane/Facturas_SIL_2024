@@ -126,7 +126,7 @@ public class ControladorFacturas extends Thread {
     
     private void colocarListenerEnTablaFCT(TableView<Factura> tabla){
         setTableViewFCT(tabla);
-        //TODO -13-07-24 : Aquí la TableView 'tabla', al principio, es NULL, y el valor que se le va a asignar, también....
+        //TODO - 24-07-13 : Aquí la TableView 'tabla', al principio, es NULL, y el valor que se le va a asignar, también....
         tabla.getSelectionModel().selectedItemProperty().addListener(
             (obs, oldSelection, newSelection) -> {
 				if (newSelection != null) {
@@ -162,7 +162,7 @@ public class ControladorFacturas extends Thread {
 //#region RUN_CFCT_ppio
     @Override
     public void run() {
-//REVIEW - 05-07-24 : Asignaciones cuando empieza a ejecutarse el hilo
+//REVIEW - 24-07-05 : Asignaciones cuando empieza a ejecutarse el hilo
         try {
             this.pc = Controlador.getPanelControl();
             this.ctrlPpal = Controlador.getControlador();
@@ -250,7 +250,7 @@ public class ControladorFacturas extends Thread {
 */
 
 //#region TABLA_SWITCH
-//FIXME - 13-07-24 : OJO!!! El valor de FXcontrlTablaFCT no es el mismo que en cargarTablaFacturas()!!!!
+//FIXME - 24-07-03 : OJO!!! El valor de FXcontrlTablaFCT no es el mismo que en cargarTablaFacturas()!!!!
             if(FXcontrlTablaFCT!=null && FXcontrlTablaFCT.HaCambiado()) {
 				//System.out.println("[ControladorFacturas>run] recogiendo evento del Controlador de Facturas - pulsado caso " + FXcontrlTablaFCT.getPulsado());
                 //REVIEW:  HAY QUE PONER UN CASO CERO DONDE RECOJA EL INDICE DE LA FACTURA ACTUAL
@@ -265,7 +265,7 @@ public class ControladorFacturas extends Thread {
                     //System.out.println("[ControladorFacturas>run] Se muestra el Formulario de Nueva Facturas");
                     break;
                 case 3:
-    //FIXME -03-07-24 - Falta el botón de 'Imprimir Tabla' en la tablaFCT
+    //FIXME - 24-07-03 : Falta el botón de 'Imprimir Tabla' en la tablaFCT
                     break;
                 case 4:
 
@@ -282,7 +282,7 @@ public class ControladorFacturas extends Thread {
 //#endregion
 
 //#region VISOR_SWITCH
-            // FIXME - 03-07-24 : Hacer que el Visor funcione también como formulario (quizás haya que ponerle un botón enviar cuando Edites o Insertes una Factura)
+            // FIXME - 24-07-03 : Hacer que el Visor funcione también como formulario (quizás haya que ponerle un botón enviar cuando Edites o Insertes una Factura)
             if(FXcontrlVisorFCT!=null && FXcontrlVisorFCT.HaCambiado()) {
 				//System.out.println("[ControladorFacturas>run] recogiendo evento del visorFCT en el Controlador de Facturas - pulsado caso " + FXcontrlVisorFCT.getPulsado());
                 int elem = FXcontrlTablaFCT.getIndiceSeleccionadoTabla();
@@ -334,7 +334,7 @@ public class ControladorFacturas extends Thread {
         int i = FXcontrlTablaFCT.getIndiceSeleccionadoTabla();
         List<Factura> lista = m.leerFacturas();
         if (i > 0) {
-// TODO : 30-06-2024 - HAY QUE AJUSTAR EL VISOR PARA QUE SELECCIONE LA FACTURA ADECUADA DESDPUES DE ACTIVAR EL FILTRO 
+// TODO - 24-06-30 : HAY QUE AJUSTAR EL VISOR PARA QUE SELECCIONE LA FACTURA ADECUADA DESDPUES DE ACTIVAR EL FILTRO 
             int nuevoindice = i-1;
             //System.out.println(" [ControladorFacturas] Actualizando Visor!");
             actualizarVisor(nuevoindice);
@@ -618,7 +618,7 @@ public class ControladorFacturas extends Thread {
                     tabla = new Stage();
                     tabla.setScene(escena);
                     tabla.setResizable(true);
-                    // TODO : 30-05-2024 - Aquí se ajusta el modo de la ventana de la TablaFCT
+                    // TODO - 24-05-30 : Aquí se ajusta el modo de la ventana de la TablaFCT
                     //this.tablaFCT.initModality(Modality.NONE);
                     //ANCHOR - Asignar Stage T/FCT a CFCT
                     //System.out.println("[CFCT>cargarTablaFacturas] Stage de Tabla con hashcode :" + tabla.hashCode());
@@ -639,7 +639,7 @@ public class ControladorFacturas extends Thread {
                     }
     
                     //ANCHOR - tableView
-                    //TODO -13-07-24 : Aquí la TableView, al principio, es NULL, y el valor que se le va a asignar, también....
+                    //TODO - 24-07-13 : Aquí la TableView, al principio, es NULL, y el valor que se le va a asignar, también....
                     try {
                         colocarListenerEnTablaFCT(ControladorFacturas.getControlador().tableViewFCT);
                     } catch (InterruptedException | BrokenBarrierException e) {
@@ -651,7 +651,7 @@ public class ControladorFacturas extends Thread {
             return true;
         }
         else {
-            //FIXME - 14-07-24 : Falta algo aquí... arreglar - Falta comprobar si es el controladorFX correcto
+            //FIXME - 24-07-14 : Falta algo aquí... arreglar - Falta comprobar si es el controladorFX correcto
             return false;
         }
     }
@@ -663,7 +663,7 @@ public synchronized void mostrarTablaFacturas() {
     Platform.runLater(new Runnable(){
         @Override
         public void run(){
-            //FIXME -  02-07-24 : Tendré que SINCRONIZAR MEDIANTE BARRERAS, para controlar que los hilos esperen hasta que esté activo el modeloFCT, o los elementos de la GUI correspondiente
+            //FIXME -  24-07-02 : Tendré que SINCRONIZAR MEDIANTE BARRERAS, para controlar que los hilos esperen hasta que esté activo el modeloFCT, o los elementos de la GUI correspondiente
             //ANCHOR - Mostrar T/FCT
             //System.out.println("[controladorFacturas>mostrarTablaFacturas] tableView con hashCode " + tableViewFCT.hashCode());
             tablaFCT.show();
@@ -671,7 +671,7 @@ public synchronized void mostrarTablaFacturas() {
 
         }
     });
-    //REVIEW - 29-06-2024 - Hay que cargar el modeloFCT para que no sea NULL eventualmente (en los test)
+    //REVIEW - 24-06-09 : Hay que cargar el modeloFCT para que no sea NULL eventualmente (en los test)
     m = ModeloFacturas.getModelo();
     }
 

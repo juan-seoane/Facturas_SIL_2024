@@ -59,7 +59,7 @@ public class FicheroTest {
 	@Test
 	void OKleerCSV() throws InterruptedException, BrokenBarrierException, NullPointerException, IOException{
 		String usuario = "admin";
-		String rutaYnombre = "./datos/" + usuario.toUpperCase() + "/FCT20242.csv";
+		String rutaYnombre = "./datos/" + usuario.toUpperCase() + "/FCT242.csv";
 
 		var ctrlPpal = Controlador.getControlador();
 		Controlador.setUsuario(usuario);
@@ -77,11 +77,11 @@ public class FicheroTest {
 		}
 		
 	}
-//TODO: 14-06-2024 - repasar este test, y comprobar el proceso de creacion de nuevos archivos de config y de trabajo, parece que se crean ficheros que no deberían existir en el directorio raiz, en vez de en el de cada usuario...
+//TODO - 24-06-14 : - repasar este test, y comprobar el proceso de creacion de nuevos archivos de config y de trabajo, parece que se crean ficheros que no deberían existir en el directorio raiz, en vez de en el de cada usuario...
 	@Test
 	void OKguardarCSV() throws NullPointerException, IOException, InterruptedException, BrokenBarrierException{
 		OKleerCSV();
-		String rutaYnombre = "./datos/" + Controlador.getUsuario().toUpperCase()+"/FCT20242.csv";
+		String rutaYnombre = "./datos/" + Controlador.getUsuario().toUpperCase()+"/FCT242.csv";
 		Fichero<Factura> fichero = new Fichero<Factura>(rutaYnombre);
 		ModeloFacturas modeloFCT;
 

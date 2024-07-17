@@ -30,7 +30,7 @@ public class ComprobacionesAcceso {
 		if ( Fichero.dirExists(rutaDirPers) && Fichero.fileExists(rutasCFG) ){
 			// TODO: Si existe el Subdirectorio y el archivo config, lo lee.. (Cambiar por chequear las credenciales del archivo config base)
 			//TODO: Otra vez tuve que hacer público el constructor de la clase Config...por lo que...¿Singleton...?
-			//TODO : 11-04-2024 - Escribir un método estático para leer las credenciales del archivo config base
+			//TODO  - 2024-04-11 : - Escribir un método estático para leer las credenciales del archivo config base
 			for (Contrasena contr : Config.leerCredenciales(rutaCreds).creds){
 				//TODO: Revisar el modo de comprobación de credenciales    
 					//System.out.println("[ComprobacionesAcceso.java>comprobarCredenciales()] Datos obtenidos de Config: " + contr.usuario +" - " + contr.contra);

@@ -168,7 +168,7 @@ public class RazonSocial implements Comparable<RazonSocial> {
 
     }
     
-// TODO: 07-05-2024 - Revisar la forma de comparar RS
+// TODO - 2024-05-07 : - Revisar la forma de comparar RS
     @Override
     public int compareTo(RazonSocial b){
         if (this.equals(b)){

@@ -54,7 +54,7 @@ public static Checkbox chkfiltros;
 private Image icon;
 		
     public TablaFacturas_prev(@SuppressWarnings("rawtypes") Vector<? extends Vector> vector, Vector<String> columnas) throws NullPointerException, IOException{
-    // TODO : 13-05-2024 - Hay que conseguir que la tabla aparezca maximizada
+    // TODO  - 2024-05-13 : - Hay que conseguir que la tabla aparezca maximizada
         super("Listado de Facturas");
         this.setExtendedState(Frame.MAXIMIZED_VERT);
         this.setExtendedState(Frame.MAXIMIZED_HORIZ);
