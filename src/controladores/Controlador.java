@@ -45,17 +45,17 @@ public class Controlador extends Thread {
 
 //#region CONTR
     private Controlador() throws IOException, InterruptedException, BrokenBarrierException{
-        System.out.println("[Controlador>constructor] Comenzando el constructor del Controlador Principal");
+        //System.out.println("[Controlador>constructor] Comenzando el constructor del Controlador Principal");
 
         Controlador.usuario = Config.getCongig().getUsuario();
         //System.out.println("[Controlador>constructor] El usuario es "+ Config.getCongig().getUsuario());        
 
         /* barreraControladores = new CyclicBarrier(2,() -> {
-            System.out.println("[Controlador>barreraControladores] El hilo "+Thread.currentThread().getName() + " acaba de entrar en la barreraControladores");
+            //System.out.println("[Controlador>barreraControladores] El hilo "+Thread.currentThread().getName() + " acaba de entrar en la barreraControladores");
         }); */
 // TODO : 13-05-2024 - Falta rediseñar el PnlCtl y la tabla de Facturas       
         
-        System.out.println("[Controlador>constructor] Terminando el constructor del Controlador Principal");
+        //System.out.println("[Controlador>constructor] Terminando el constructor del Controlador Principal");
 	}
 //#endregion
 
@@ -267,7 +267,7 @@ public static void setUsuario(String user) {
     try {
         cfct = getControladorFacturas();
     } catch (InterruptedException | BrokenBarrierException e) {
-        System.out.println("[Controlador>run] No se ha podido crear el CntrlFCT. El programa se cierra!!!");
+        //System.out.println("[Controlador>run] No se ha podido crear el CntrlFCT. El programa se cierra!!!");
         System.exit(0);
         e.printStackTrace();
     }

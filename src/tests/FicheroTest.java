@@ -37,7 +37,7 @@ public class FicheroTest {
 		String ruta="./config/creds.json";
         String fichero = Fichero.leerJSON(ruta);
  			
-		System.out.println("[FicheroTest>OKcredsJSON] fichero:\n" + fichero);
+		//System.out.println("[FicheroTest>OKcredsJSON] fichero:\n" + fichero);
 		//Además informa de que el fichero no está vacío
 		assertNotEquals("", fichero);
 
@@ -50,7 +50,7 @@ public class FicheroTest {
 		String ruta="./config/" + usuario.toUpperCase() + "/misdatos.json";
         String fichero = Fichero.leerJSON(ruta);
  			
-		System.out.println("[FicheroTest>OKMisDatosJSON] fichero:\n" + fichero);
+		//System.out.println("[FicheroTest>OKMisDatosJSON] fichero:\n" + fichero);
 		//Además informa de que el fichero no está vacío
 		assertNotEquals("", fichero);
 
@@ -71,9 +71,9 @@ public class FicheroTest {
 	
 		assertNotNull(ModeloFacturas.getModelo().leerFacturasSinFiltrar());
 
-		System.out.println("\n*****[FicheroTest]********\nFacturas en la lista final:");
+		//System.out.println("\n*****[FicheroTest]********\nFacturas en la lista final:");
 		for (Factura f : ModeloFacturas.getModelo().leerFacturasSinFiltrar()){
-			System.out.println(f.toString());
+			//System.out.println(f.toString());
 		}
 		
 	}

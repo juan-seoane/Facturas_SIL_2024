@@ -164,7 +164,7 @@ public class Factura extends Vector implements Comparable<Factura> {
      Vector<Factura> vector = new Vector<Factura>();
      vector.add(f);
  
-     System.out.println("[Factura.java>toVector] transformando Factura a Vector: "+vector.toString());
+     //System.out.println("[Factura.java>toVector] transformando Factura a Vector: "+vector.toString());
      return vector;
    }
 //#endregion   
@@ -339,7 +339,7 @@ public class Factura extends Vector implements Comparable<Factura> {
                 i++;
             }
         }
-        System.out.println("[Factura>convertirFCTaCSV] Devolviendo " + lista.size() + " linea(s)");
+        //System.out.println("[Factura>convertirFCTaCSV] Devolviendo " + lista.size() + " linea(s)");
 
         return lista;
     }

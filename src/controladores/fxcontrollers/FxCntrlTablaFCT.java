@@ -73,13 +73,13 @@ public class FxCntrlTablaFCT implements Initializable{
 //#region CONSTR
 //TODO: 22-06-2024 - En el constructor inicializamos los campos que necesitamos listos antes de nada...
 	public FxCntrlTablaFCT() throws InterruptedException, BrokenBarrierException{
-		System.out.println("[FxControladorFacturas>constructor] Comenzando el constructor de FxCntrlTablaFCT");
+		//System.out.println("[FxControladorFacturas>constructor] Comenzando el constructor de FxCntrlTablaFCT");
 		// NOTE - 02-07-24 : Vamos a ver qué ocurre si el constructor de FxCntrlTablaFCT no crea una nueva tabla... parece que nada ...
 		this.cfct = Controlador.getControladorFacturas();
 		this.listaFxFacturas = ModeloFacturas.getModelo().getListaFXFacturas();
 		this.tblvwFct = new TableView<Factura>();
 		//this.FxFacturaListProperty = new SimpleObjectProperty<>(this.listaFxFacturas);
-		System.out.println("[FxControladorFacturas>constructor] Acabando el constructor de FxCntrlTablaFCT");
+		//System.out.println("[FxControladorFacturas>constructor] Acabando el constructor de FxCntrlTablaFCT");
 	}
 //#endregion
 
@@ -140,11 +140,11 @@ public class FxCntrlTablaFCT implements Initializable{
 			//Controlador.barreraControladores.await();
 			cfct = Controlador.getControladorFacturas(this);
 		} catch (InterruptedException | BrokenBarrierException e) {
-			System.out.println("[FxControladorFacturas>initialize] El programa se cierra porque se no ha podido acabar de inicializar el controlador FX de la TablaFCT");
+			//System.out.println("[FxControladorFacturas>initialize] El programa se cierra porque se no ha podido acabar de inicializar el controlador FX de la TablaFCT");
 			System.exit(0);
 		}
 		
-		System.out.println("[FxCntrlTablaFCT>initialize] Saliendo del initialize del ControladorFX de Facturas");
+		//System.out.println("[FxCntrlTablaFCT>initialize] Saliendo del initialize del ControladorFX de Facturas");
 	}
 //#endregion
 
@@ -189,7 +189,7 @@ public class FxCntrlTablaFCT implements Initializable{
 	}
 
 	public void reset(){
-		System.out.println("[FxCntrlTablaFCT>reset] En el reset de contrFX de tablaFCT con hashCode (del contrFX " + this.hashCode());
+		//System.out.println("[FxCntrlTablaFCT>reset] En el reset de contrFX de tablaFCT con hashCode (del contrFX " + this.hashCode());
 		this.haCambiado = false;
 		this.pulsado = 0;
 	}

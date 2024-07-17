@@ -76,7 +76,7 @@ public class FxCntrlVisorFCT implements Initializable{
 	static Stage visorFct;
 	static FxCntrlVisorFCT instancia;
 	static int indexActual = 0;
-//#endregion	
+//#endregion
 
 //#region CONSTR
 //TODO: 22-06-2024 - En el constructor inicializamos los campos que necesitamos listos antes de nada...
@@ -84,19 +84,17 @@ public class FxCntrlVisorFCT implements Initializable{
 		
 		System.out.println("[FxCntrlVisorFCT>constructor] Arrancando el constructor del controlador FX del visorFCT");
 		
-		cfct = Controlador.getControladorFacturas();
+		if(this.cfct==null) this.cfct = Controlador.getControladorFacturas();
 
-		if (visorFct==null){
+ 		if (visorFct==null){
 			ControladorFacturas.visorFCT = new Stage();
 			visorFct = ControladorFacturas.visorFCT;
 			if (visorFct!=null)
 				System.out.println("[FxCntrlVisorFCT>constructor] Asignado el VisorFCT con hashCode: "+ visorFct.hashCode());
 			else System.out.println("[FxCntrlVisorFCT>constructor] El VisorFCT sigue siendo NULL");
 		}
-		
-
 	}
-//#endregion	
+//#endregion
 
 //#region GETTERS/SETTERS
 	public static FxCntrlVisorFCT getFxController() {
@@ -112,19 +110,24 @@ public class FxCntrlVisorFCT implements Initializable{
 
 	public synchronized Stage getVisorFCT() throws InterruptedException, BrokenBarrierException{
 		if (ControladorFacturas.visorFCT==null){
-			boolean ok = cfct.cargarVisorFacturas();
-				if(ok){
-					visorFct = ControladorFacturas.visorFCT;
+			System.out.println("[FxCntrlVisorFCT>getVisorFCT] El valor del visor era NULL.Se crea un visor nuevo");
+			Stage visor = getVisorFacturas();
+				if(visor!=null){
+					visorFct = visor;
+					System.out.println("[FxCntrlVisorFCT>getVisorFCT] Se devuelve un visor nuevo con hashCode "+ visorFct.hashCode());
 					return visorFct;
 				}
 		}else{
-			System.out.println("[FxCntrlVisorFCT>getVisorFCT] El valor del visor era NULL y no fue asignado");
 			if (visorFct!=null)
 				return visorFct;
 		}
 		return null;
 	}
-	
+
+	private Stage getVisorFacturas() {
+		return visorFct;
+	}
+
 	public synchronized TextArea getAreaNota(){
 		return this.txtAreaVNota;
 	}
@@ -144,7 +147,7 @@ public class FxCntrlVisorFCT implements Initializable{
 				indexActual = cfct.getFXcontrlTablaFCT().getIndiceSeleccionadoTabla();
 				System.out.println("[FxCntrlVisorFCT>initialize] Index actual en tabla " + cfct.getFXcontrlTablaFCT().getTableView().hashCode() + " : " + indexActual);
 				if (FxCntrlVisorFCT.getFxController()!=null){
-					FxCntrlVisorFCT.visorFct = cfct.getFXcontrlVisorFCT().getVisorFCT();
+					FxCntrlVisorFCT.visorFct = getVisorFCT();
 					System.out.println("[FxCntrlVisorFCT>initialize] Llamando a actualizarDatosVisor - visor con hashCode: " + FxCntrlVisorFCT.visorFct.hashCode());
 					actualizarDatosVisor(indexActual, ControladorFacturas.facturaActual);
 				}
@@ -223,12 +226,12 @@ public class FxCntrlVisorFCT implements Initializable{
 	public synchronized void actualizarDatosVisor(int index, Factura f) throws InterruptedException, BrokenBarrierException{
 		try{
 				Stage prueba = getVisorFCT();
-				if (prueba!=null) 
+				if (prueba!=null){
 					visorFct = prueba;
-				if(visorFct!=null){
+				//if(visorFct!=null){
 					System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] visorFct de hashCode: " + visorFct.hashCode());
 				}
-				Thread.sleep(500);
+				//Thread.sleep(500);
 				
 //TODO - 12-07-24 : Aquí lo dejo, parece que el visor no está inicializado, o lblVID es siempre null por otro motivo...
 /* 			if(!ControladorFacturas.visorFCT.isShowing())

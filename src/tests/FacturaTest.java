@@ -28,7 +28,7 @@ public class FacturaTest {
 		var fichero = new Fichero(rutaYnombre);
 		ArrayList<String[]> datosCSV = fichero.leerCSV(rutaYnombre);
 		
-		System.out.println("*****[FacturaTest] Datos en el CSV leido : " + datosCSV.size() + " lineas");
+		//System.out.println("*****[FacturaTest] Datos en el CSV leido : " + datosCSV.size() + " lineas");
 
 		assertNotNull(datosCSV);
 		
@@ -37,8 +37,8 @@ public class FacturaTest {
 			Factura f = Factura.convertirCSVaFCT(linea);
 			if(f!=null){
 		        listaPruebaFCT.add(f);
-			    System.out.println("****[FacturaTest] Factura convertida: ");
-			    System.out.println(f.toString());
+			    //System.out.println("****[FacturaTest] Factura convertida: ");
+			    //System.out.println(f.toString());
 			}
 	    }
 	

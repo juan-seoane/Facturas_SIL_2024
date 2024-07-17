@@ -109,13 +109,13 @@ public class PanelControl implements Initializable{
             //Esto sería mostrarla
             //this.ctrlFct.mostrarTablaFacturas();
             if (ok1){
-                System.out.println("[PanelControl>Constructor] Tabla Facturas cargada!!");
+                //System.out.println("[PanelControl>Constructor] Tabla Facturas cargada!!");
                 fxTablaFCTcontr = this.ctrlFct.getFXcontrlTablaFCT();
                 //TODO - 13-07-24 : Aquí el valor de la tableView de Fact y del visorFCT es null!!
-                System.out.println("[PanelControl>Constructor] Tabla Facturas asignada!!");
+                //System.out.println("[PanelControl>Constructor] Tabla Facturas asignada!!");
             }
         } catch (InterruptedException | BrokenBarrierException e) {
-            System.out.println("[PanelControl>Constructor] Tabla y Visor Facturas NO cargados!!");
+            //System.out.println("[PanelControl>Constructor] Tabla y Visor Facturas NO cargados!!");
             e.printStackTrace();
         }
         setNumfacturas(ModeloFacturas.getNumeroFacturas());
@@ -148,7 +148,7 @@ public class PanelControl implements Initializable{
     private void btnCFGpulsado(Event evt) throws InterruptedException, BrokenBarrierException {
         this.ctrlPpal = Controlador.getControlador();
 
-        System.out.println(" [PanelControl] Boton CFG pulsado!");
+        //System.out.println(" [PanelControl] Boton CFG pulsado!");
         botonactivo = 4;
         botonpulsado = true;
     }
@@ -161,7 +161,7 @@ public class PanelControl implements Initializable{
     }
     @FXML
     private void btnRSpulsado(Event evt) {
-        System.out.println(" [PanelControl] Boton DIST pulsado!");        
+        //System.out.println(" [PanelControl] Boton DIST pulsado!");        
         botonactivo = 2;
         botonpulsado = true;
 
@@ -243,7 +243,7 @@ public class PanelControl implements Initializable{
 
 //#region RESET   
     public static void reset(){
-        System.out.println("[PanelControl>reset] Reseteando P/C");
+        //System.out.println("[PanelControl>reset] Reseteando P/C");
         botonpulsado = false;
     }
 //#endregion    

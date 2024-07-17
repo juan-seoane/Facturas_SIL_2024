@@ -317,8 +317,8 @@ public void start(Stage primaryStage) throws IOException {
         else{
             try {
                 File miDir = new File (".");
-                System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " no existe.");
-                System.out.println ("[Acceso>rutaExiste] Directorio actual: " + miDir.getCanonicalPath());
+                //System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " no existe.");
+                //System.out.println ("[Acceso>rutaExiste] Directorio actual: " + miDir.getCanonicalPath());
             }
             catch(Exception e) {
                 //System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " no existe.");
