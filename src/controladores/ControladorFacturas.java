@@ -133,16 +133,16 @@ public class ControladorFacturas extends Thread {
 					var index = tabla.getSelectionModel().getSelectedIndex();
                     ControladorFacturas.facturaActual =  tabla.getSelectionModel().getSelectedItem();
 					FxCntrlTablaFCT.setIndiceActual(index);
-					//System.out.println("[FxCntrlTablaFCT>listener1] Has seleccionado el INDEX: " + FxCntrlTablaFCT.getIndiceActual() + " en la TABLAFCT");
-					//System.out.println("[FxCntrlTablaFCT>listener1] ...desde el hilo " + Thread.currentThread().getName());
+					System.out.println("[FxCntrlTablaFCT>listener1] Has seleccionado el INDEX: " + FxCntrlTablaFCT.getIndiceActual() + " en la TABLAFCT");
+					System.out.println("[FxCntrlTablaFCT>listener1] ...desde el hilo " + Thread.currentThread().getName());
                     try {
                         ((TableView<Factura>)(getFXcontrlTablaFCT().getTableView())).getSelectionModel().selectedIndexProperty().addListener(
                             (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
                                 try {
                                     FxCntrlTablaFCT.setIndiceActual(newValue.intValue());
                                     ControladorFacturas.facturaActual = ((TableView<Factura>)(getFXcontrlTablaFCT().getTableView())).getSelectionModel().getSelectedItem();
-                                    //System.out.println("[FxCntrlTablaFCT>listener2] Has seleccionado el INDEX: " + FxCntrlTablaFCT.getIndiceActual() + " en la TABLAFCT");
-                                    //System.out.println("[FxCntrlTablaFCT>listener2] ...desde el hilo " + Thread.currentThread().getName());
+                                    System.out.println("[FxCntrlTablaFCT>listener2] Has seleccionado el INDEX: " + FxCntrlTablaFCT.getIndiceActual() + " en la TABLAFCT");
+                                    System.out.println("[FxCntrlTablaFCT>listener2] ...desde el hilo " + Thread.currentThread().getName());
                             } catch (InterruptedException | BrokenBarrierException e) {
                                 e.printStackTrace();
                             }

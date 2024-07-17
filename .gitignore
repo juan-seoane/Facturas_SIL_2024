@@ -1,5 +1,7 @@
 #VSCode
-.vscode/*
+/.vscode
+/lib
+/bin
 .pretierrc
 #Netbeans
 nbproject/*
