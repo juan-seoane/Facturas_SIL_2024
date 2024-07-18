@@ -69,7 +69,7 @@ public class FxCntrlVisorFCT implements Initializable{
 //#endregion
 
 //#region CAMPOS_CLASE
-	ControladorFacturas cfct;
+
 	boolean haCambiado = false;
 	int pulsado = 0;
 
@@ -79,20 +79,16 @@ public class FxCntrlVisorFCT implements Initializable{
 //#endregion
 
 //#region CONSTR
-//TODO - 24-06-22 : En el constructor inicializamos los campos que necesitamos listos antes de nada...
+// TODO  - 24-06-22 : En el constructor inicializamos los campos que necesitamos listos antes de nada...
 	public FxCntrlVisorFCT() throws InterruptedException, BrokenBarrierException{
 		
 		System.out.println("[FxCntrlVisorFCT>constructor] Arrancando el constructor del controlador FX del visorFCT");
 		
-		if(this.cfct==null) this.cfct = Controlador.getControladorFacturas();
-
- 		if (visorFct==null){
-			ControladorFacturas.visorFCT = new Stage();
-			visorFct = ControladorFacturas.visorFCT;
-			if (visorFct!=null)
-				System.out.println("[FxCntrlVisorFCT>constructor] Asignado el VisorFCT con hashCode: "+ visorFct.hashCode());
-			else System.out.println("[FxCntrlVisorFCT>constructor] El VisorFCT sigue siendo NULL");
-		}
+// NOTE  - 24-07-18 : ¿Hace falta aquí asignar el Visor?
+/*  		if (visorFct==null){
+			Controlador.getControladorFacturas().cargarVisorFacturas();
+			System.out.println("[FxCntrlVisorFCT>constructor] Asignado el VisorFCT con hashCode: "+ visorFct.hashCode());
+		} */
 	}
 //#endregion
 
@@ -109,23 +105,18 @@ public class FxCntrlVisorFCT implements Initializable{
 	}
 
 	public synchronized Stage getVisorFCT() throws InterruptedException, BrokenBarrierException{
-		if (ControladorFacturas.visorFCT==null){
+		if (visorFct==null){
 			System.out.println("[FxCntrlVisorFCT>getVisorFCT] El valor del visor era NULL.Se crea un visor nuevo");
-			Stage visor = getVisorFacturas();
-				if(visor!=null){
-					visorFct = visor;
-					System.out.println("[FxCntrlVisorFCT>getVisorFCT] Se devuelve un visor nuevo con hashCode "+ visorFct.hashCode());
-					return visorFct;
-				}
-		}else{
-			if (visorFct!=null)
-				return visorFct;
+			boolean ok = Controlador.getControladorFacturas().cargarVisorFacturas();
+			if(ok){
+				System.out.println("[FxCntrlVisorFCT>getVisorFCT] Se devuelve un visor nuevo con hashCode "+ visorFct.hashCode());
+			}
 		}
-		return null;
+		return visorFct;
 	}
 
-	private Stage getVisorFacturas() {
-		return visorFct;
+	public void setVisor(Stage visor) {
+		visorFct = visor;
 	}
 
 	public synchronized TextArea getAreaNota(){
@@ -143,9 +134,9 @@ public class FxCntrlVisorFCT implements Initializable{
 		try {
 			System.out.println("[FxCntrlVisorFCT>Initialize] Empezando la inicializacion del controlador FX del visorFCT");
 			//ANCHOR - tableView
-			if (cfct.getFXcontrlTablaFCT().getTableView()!=null){
-				indexActual = cfct.getFXcontrlTablaFCT().getIndiceSeleccionadoTabla();
-				System.out.println("[FxCntrlVisorFCT>initialize] Index actual en tabla " + cfct.getFXcontrlTablaFCT().getTableView().hashCode() + " : " + indexActual);
+			if (FxCntrlTablaFCT.getFxController().getTableView()!=null){
+				indexActual = FxCntrlTablaFCT.getIndiceActual();
+				System.out.println("[FxCntrlVisorFCT>initialize] Index actual en tabla " + FxCntrlTablaFCT.getFxController().getTableView().hashCode() + " : " + indexActual);
 				if (FxCntrlVisorFCT.getFxController()!=null){
 					FxCntrlVisorFCT.visorFct = getVisorFCT();
 					System.out.println("[FxCntrlVisorFCT>initialize] Llamando a actualizarDatosVisor - visor con hashCode: " + FxCntrlVisorFCT.visorFct.hashCode());
@@ -233,7 +224,7 @@ public class FxCntrlVisorFCT implements Initializable{
 				}
 				//Thread.sleep(500);
 				
-//TODO - 24-07-12 : Aquí lo dejo, parece que el visor no está inicializado, o lblVID es siempre null por otro motivo...
+// TODO  - 24-07-12 : Aquí lo dejo, parece que el visor no está inicializado, o lblVID es siempre null por otro motivo...
 /* 			if(!ControladorFacturas.visorFCT.isShowing())
 				ControladorFacturas.visorFCT.show(); */
 			if(f!=null){

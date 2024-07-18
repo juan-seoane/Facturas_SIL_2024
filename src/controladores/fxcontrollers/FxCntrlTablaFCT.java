@@ -5,6 +5,7 @@ import modelo.records.Factura;
 import controladores.Controlador;
 import controladores.ControladorFacturas;
 
+import java.awt.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +20,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 
 public class FxCntrlTablaFCT implements Initializable{
 
@@ -60,22 +62,21 @@ public class FxCntrlTablaFCT implements Initializable{
 
 //NOTE - 14-07-24 : Singleton
 	static FxCntrlTablaFCT instancia;
-
+	static Stage GUItabla;
+	static TableView<Factura> tableviewFCT;
 	boolean haCambiado = false;
 	int pulsado = 0;
 
 	static int indiceActual = 0;
-	ControladorFacturas cfct;
 	//private Property<ObservableList<Factura>> FxFacturaListProperty;
 	private ObservableList<Factura> listaFxFacturas;
 //#endregion
 
 //#region CONSTR
-//TODO - 24-06-22 : - En el constructor inicializamos los campos que necesitamos listos antes de nada...
+// TODO  - 24-06-22 : - En el constructor inicializamos los campos que necesitamos listos antes de nada...
 	public FxCntrlTablaFCT() throws InterruptedException, BrokenBarrierException{
 		//System.out.println("[FxControladorFacturas>constructor] Comenzando el constructor de FxCntrlTablaFCT");
 		// NOTE - 02-07-24 : Vamos a ver qué ocurre si el constructor de FxCntrlTablaFCT no crea una nueva tabla... parece que nada ...
-		this.cfct = Controlador.getControladorFacturas();
 		this.listaFxFacturas = ModeloFacturas.getModelo().getListaFXFacturas();
 		this.tblvwFct = new TableView<Factura>();
 		//this.FxFacturaListProperty = new SimpleObjectProperty<>(this.listaFxFacturas);
@@ -135,14 +136,14 @@ public class FxCntrlTablaFCT implements Initializable{
 
 		//Arrancar el hilo del ControladorFacturas
 		//System.out.println("[FxCntrlTablaFCT>initialize] Comenzando el initialize del ControladorFX de Facturas");
-		try {
+/* 		try {
 			//NOTE - 07-07-24 : Saco la barrera para los tests de JavaFX 
 			//Controlador.barreraControladores.await();
 			cfct = Controlador.getControladorFacturas(this);
 		} catch (InterruptedException | BrokenBarrierException e) {
 			//System.out.println("[FxControladorFacturas>initialize] El programa se cierra porque se no ha podido acabar de inicializar el controlador FX de la TablaFCT");
 			System.exit(0);
-		}
+		} */
 		
 		//System.out.println("[FxCntrlTablaFCT>initialize] Saliendo del initialize del ControladorFX de Facturas");
 	}
@@ -196,36 +197,40 @@ public class FxCntrlTablaFCT implements Initializable{
 //#endregion
 
 //#region GET/SET	
-public static FxCntrlTablaFCT getFxController() throws InterruptedException, BrokenBarrierException {
+public static FxCntrlTablaFCT getFxController() {
 	if (instancia==null){
-		instancia = new FxCntrlTablaFCT();
+		try {
+			instancia = new FxCntrlTablaFCT();
+		} catch (InterruptedException | BrokenBarrierException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	return instancia;
 }
 
 //ANCHOR - tableView
-	public synchronized TableView<Factura> getTableView() throws InterruptedException, BrokenBarrierException{
+	public synchronized TableView<Factura> getTableView() {
 		//System.out.println("[FxCntrlTablaFCT>getTableView] la tabla no es NULL - devolviendo su valor hashCode de tablaFCT: " + this.tblvwFct.hashCode());
-		this.tblvwFct = cfct.getFXcontrlTablaFCT().tblvwFct;
 		return this.tblvwFct;
 	}
-	
-	public int getIndiceSeleccionadoTabla() {
-		return  indiceActual;
-	}
 
-	public Factura getFacturaSeleccionadaTabla() throws NullPointerException, IOException{
+	public Factura getFacturaSeleccionadaTabla(){
+		Factura f = null;
 		if (this.tblvwFct.isVisible()){
-			Factura selectedItem = this.tblvwFct.getSelectionModel().getSelectedItem();
+			f = this.tblvwFct.getSelectionModel().getSelectedItem();
 			//System.out.println("[FxCntrlTablaFCT>getFacturaSeleccionadaTabla] Como this.tblvwFct.isVisible(): " + this.tblvwFct.isVisible() + " se muestra la factura seleccionada:\n"+ selectedItem.toString());
-			return selectedItem;
 		}
 		else{
 			//OJO : Estoy enviando la segunda factura al Visor, al arrancar...
-			Factura f = cfct.m.getFactura(1);
-			//System.out.println("[FxCntrlTablaFCT>getFacturaSeleccionadaTabla] Como this.tblvwFct.isVisible(): " + this.tblvwFct.isVisible() + " se muestra la *(segunda) factura:" + f.toString());
-			return f;
+			try {
+				f = ModeloFacturas.getModelo().getFactura(1);
+			} catch (NullPointerException | IOException e) {
+				e.printStackTrace();
+			}
+			//System.out.println("[FxCntrlTablaFCT>getFacturaSeleccionadaTabla] Como this.tblvwFct.isVisible(): " + this.tblvwFct.isVisible() + " se muestra la *(segunda) factura:" + f.toString());		
 		}
+		return f;
 	}
 
 	public void seleccionarIndiceTabla(int nuevoindice) throws NullPointerException, IOException {
@@ -242,6 +247,13 @@ public static FxCntrlTablaFCT getFxController() throws InterruptedException, Bro
 	public static void setIndiceActual(int index) {
 		indiceActual = index;
 	}
+	public static void setTableView(TableView<Factura> tvfct) {
+		tableviewFCT = tvfct;
+	}
+
+	public Stage getGUItabla() {
+		return GUItabla;
+	}
 //#endregion
 
 //#region ACT_TABLA
@@ -255,5 +267,10 @@ public static FxCntrlTablaFCT getFxController() throws InterruptedException, Bro
 		lblNumFact.setText(datos[6]);
 	}
 //#endregion
+
+	public void setGUItabla(Stage stage) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'setGUItabla'");
+	}
 
 }

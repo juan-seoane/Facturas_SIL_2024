@@ -21,10 +21,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-/**
- * @author juanseoane
- */
-
 public class PanelControl implements Initializable{
 
 //#region CAMPOS_FXML
@@ -47,43 +43,37 @@ public class PanelControl implements Initializable{
     static Image icon;
     //static TrayIcon trayIcon;
     static Popup popMenu;
-    public static Stage ventanaPCtl;
     public static Scene escena1;
-// TODO - 24-06-30 : Los controladoresFx de FCT deberían estar en el ControladorFacturas, no aquí...
-    static FxCntrlTablaFCT fxTablaFCTcontr;
-
-    static FxCntrlVisorFCT fxVisorFCTcontr;
 
     static PanelControl instancia_pc = null;
+
     static int modo;
     static boolean botonpulsado = false;
     static int botonactivo = 1;
+// FIXME - 24-07-18 - También había un Stage llamado ventanaPanelControl (o algo así)   
     static Stage GUIpanel;
 
-    Config configActual;
-    Controlador ctrlPpal;
-    ControladorFacturas ctrlFct;
     String usuarioActual;
 //#endregion
     
-//TODO - 24-04-12 : ¿Porqué no puede seguir siendo un Singleton?
-//TODO - 24-04-12 : Hay que definir un usuariActual, y una configActual
+// TODO  - 24-04-12 : ¿Porqué no puede seguir siendo un Singleton?
+// TODO  - 24-04-12 : Hay que definir un usuariActual, y una configActual
 
 //#region CONSTR
     public PanelControl() {
         this.usuarioActual = Controlador.getUsuario();
-// TODO - 24-05-29 : Luego habrá que cambiar esto de abajo a modo NAV por defecto...
+// TODO  - 24-05-29 : Luego habrá que cambiar esto de abajo a modo NAV por defecto...
         PanelControl.modo = Controlador.INGR;
         try {
-            this.configActual = Config.getConfig(this.usuarioActual);
+            Config.getConfig(this.usuarioActual);
         } catch (NullPointerException | IOException e) {
             //System.out.println("[PanelControl>Constructor] Excepcion creando el P/C, imposible obtener la config actual");
             e.printStackTrace();
         }
-//TODO - 24-06-21 : Estas asignaciones me hacen falta
+// TODO  - 24-06-21 : Estas asignaciones me hacen falta
         try {
-            this.ctrlPpal = Controlador.getControlador();
-            this.ctrlFct = Controlador.getControladorFacturas();
+            Controlador.getControlador();
+            Controlador.getControladorFacturas();
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
@@ -93,25 +83,30 @@ public class PanelControl implements Initializable{
 //#region INITIALIZE
     @FXML
     public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO - 24-04-09 : Crear un Controlador general, y decidir cómo abrirá las tablas, etc...
-        // TODO - 24-04-09 : Crear un controladorFicheros en un nuevo hilo para que gestione el Guardado Automático
-        // TODO: Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
-        // TODO: Arreglar la inicialización de la GUI del PanelControl... No funciona
-        // TODO - 24-04-12 : Lo dejo aquí (19:13H)
-        setAño((Integer)this.configActual.configData.getAño().getAño());
-        setTrimestre(this.configActual.configData.getAño().getTrimestre());
+        // TODO  - 24-04-09 : Crear un Controlador general, y decidir cómo abrirá las tablas, etc...
+        // TODO  - 24-04-09 : Crear un controladorFicheros en un nuevo hilo para que gestione el Guardado Automático
+        // TODO  - Cambiar el diseño de los ToggleButton al pulsarse y el mensaje que arrojan
+        // TODO  - Arreglar la inicialización de la GUI del PanelControl... No funciona
+        //  TODO  - 24-04-12 : Lo dejo aquí (19:13H)
 
-        setUsuario(this.configActual.usuario.toLowerCase());
+        try {
+            setAño((Integer)Config.getConfig(usuarioActual).configData.getAño().getAño());
+            setTrimestre(Config.getConfig(usuarioActual).configData.getAño().getTrimestre());
+        } catch (NumberFormatException | NullPointerException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         //sólo cargar tablas, no mostrarlas...
         try {
-            boolean ok1 = this.ctrlFct.cargarTablaFacturas();
-           
+            boolean ok1 = Controlador.getControladorFacturas().cargarTablaFacturas();
+
             //Esto sería mostrarla
-            //this.ctrlFct.mostrarTablaFacturas();
+            //Controlador.getControladorFacturas().mostrarTablaFacturas();
+            
             if (ok1){
                 //System.out.println("[PanelControl>Constructor] Tabla Facturas cargada!!");
-                fxTablaFCTcontr = this.ctrlFct.getFXcontrlTablaFCT();
-                //TODO - 24-07-13 : Aquí el valor de la tableView de Fact y del visorFCT es null!!
+                // TODO  - 24-07-13 : Aquí el valor de la tableView de Fact y del visorFCT es null!!
                 //System.out.println("[PanelControl>Constructor] Tabla Facturas asignada!!");
             }
         } catch (InterruptedException | BrokenBarrierException e) {
@@ -146,7 +141,6 @@ public class PanelControl implements Initializable{
 //#region EVT_BTNS
     @FXML    
     private void btnCFGpulsado(Event evt) throws InterruptedException, BrokenBarrierException {
-        this.ctrlPpal = Controlador.getControlador();
 
         //System.out.println(" [PanelControl] Boton CFG pulsado!");
         botonactivo = 4;
@@ -169,7 +163,7 @@ public class PanelControl implements Initializable{
     @FXML
     private void btnFCTpulsado(Event evt) throws InterruptedException, BrokenBarrierException {
         //System.out.println(" [PanelControl] Boton FCT pulsado!");
-        this.ctrlFct = Controlador.getControladorFacturas();
+
         if (!((ToggleButton)(evt.getSource())).isSelected()){
             btnFCT.setStyle("-fx-background-color: transparent; -fx-border-color: #063970; -fx-border-radius: 10; -fx-border-width: 3"); 
             //System.out.println( " [PanelControl] FCT desactivado!");
@@ -182,7 +176,7 @@ public class PanelControl implements Initializable{
             botonactivo = 1;
             botonpulsado = true;
         }
- // TODO - 24-05-29 : Hay que desactivar el botón mientras está en uso, y colorearlo de amarillo (quizás pueda ser un ToggleButton)...       
+ //  TODO  - 24-05-29 : Hay que desactivar el botón mientras está en uso, y colorearlo de amarillo (quizás pueda ser un ToggleButton)...       
     }
 
     @FXML
