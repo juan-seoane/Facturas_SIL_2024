@@ -20,8 +20,8 @@ public class Main {
   
     public static void main(String[] args) throws IOException {
         
-        try{
-            GraphiteLookAndFeel graphite = new GraphiteLookAndFeel();
+/*         try{
+             GraphiteLookAndFeel graphite = new GraphiteLookAndFeel();
             UIManager.setLookAndFeel(graphite);
         }catch(Exception e){
             //System.out.println(" [Main] Error "+e);
@@ -31,7 +31,8 @@ public class Main {
 
         splash.run();
         splash.setAlwaysOnTop(true);
-        splash.setVisible(false);
+        splash.setVisible(false); */ 
+    // FIXME - 24-07-20 : El Splash no funciona en Limux... cambiarlo a JavaFX
     // FIXME - 24-07-20 : El visorFCT sólo se abre si se cierra con Cerrar, no con el aspa de su ventana... ¿habrá que cambiar la 'defaultOperationOnClose'?...
     // FIXME - 24-07-18 : He quitado todos los campos redundantes, de manera que siempre se acceda , desde los getters de cada clase, al mismo objeto...
     // FIXME - 24-07-17 : Cuando cierras el VisorFCT y lo vuelves a abrir, habiendo seleccionado otra factura, no actualiza la Factura en el visor...¿?
