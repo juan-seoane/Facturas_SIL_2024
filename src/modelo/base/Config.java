@@ -45,10 +45,10 @@ import modelo.records.UIData;
     try {
       if (!Fichero.dirExists(dirCFGpers)){
         Fichero.crearCarpeta(dirCFGpers);
-        System.out.println("[Config>Config(user)] No existe carpeta personal para la Config del usuario " + user + "...Ha sido creada!");
+        //System.out.println("[Config>Config(user)] No existe carpeta personal para la Config del usuario " + user + "...Ha sido creada!");
       }
     } catch (NullPointerException | IOException e) {
-      System.out.println("[Config>Config(user)] Excepcion Comprobando el directorio de la config");
+      //System.out.println("[Config>Config(user)] Excepcion Comprobando el directorio de la config");
       e.printStackTrace();
     }
   // Archivo 'rutasconfig.json'    
@@ -63,7 +63,7 @@ import modelo.records.UIData;
         Fichero.guardarJSON(this.rutasconfig.toJSON(), rutaCFG);
       }
     }else{
-      System.out.println("[Config>Config(user)] El fichero rutasconfig.json del usuario " + user +" no existe!!!\nSe creará una configuración estándar");
+      //System.out.println("[Config>Config(user)] El fichero rutasconfig.json del usuario " + user +" no existe!!!\nSe creará una configuración estándar");
       this.rutasconfig = getRutasConfigStd(user);
       Fichero.guardarJSON(this.rutasconfig.toJSON(), rutaCFG);
     }
@@ -159,14 +159,14 @@ import modelo.records.UIData;
     Año año = new Año(24, 2);
 
     ConfigData cfDataPrueba = new ConfigData("TESTuSER", año, rutas, tiposIVAprueba, origenesPrueba);
-//    System.out.println("[Config.java] Asignando ConfigData Estándar");
+//    //System.out.println("[Config.java] Asignando ConfigData Estándar");
     return cfDataPrueba;
   }
 
   public synchronized MisDatos getMisDatosStd() {
 
     MisDatos msDtsPrueba = new MisDatos("admin", new NIF( 12345678, "X", false),"nombreEmpresaPrueba");
-//    System.out.println(" [Config.java] Asignando MisDatos Estándar");
+//    //System.out.println(" [Config.java] Asignando MisDatos Estándar");
     return msDtsPrueba;  
   }
 
@@ -176,21 +176,21 @@ import modelo.records.UIData;
     var anchosColprueba = getAnchoColumnasStandard();
       
     UIData uiDataPrueba = new UIData(nombresColprueba,anchosColprueba);
-//    System.out.println(" [Config.java] Asignando UIData Estándar");
+//    //System.out.println(" [Config.java] Asignando UIData Estándar");
     return uiDataPrueba;
     }
 
   public synchronized String[] getNombresColumnasStandard(){
 
     String[] nCols={"ID","#Fact","fecha","#RS","NifRS","RS","concepto","esDev","#extr","base","varIVA","tipoIVA","IVA","SubTotal","base N.I.","t ret","Retenc","Total","#Nota","Nota"};	
-//    System.out.println(" [Config.java] Asignando Nombres de Columna Estándar");
+//    //System.out.println(" [Config.java] Asignando Nombres de Columna Estándar");
     return nCols;
   }
 
   public synchronized Integer[] getAnchoColumnasStandard(){
 
     Integer[] aCols={10,50,40,10,50,70,50,10,10,80,10,20,50,70,60,10,30,80,10,60};
-//    System.out.println(" [Config.java] Asignando Anchos de Columna Estándar");
+//    //System.out.println(" [Config.java] Asignando Anchos de Columna Estándar");
     return aCols; 
   }
 
@@ -198,7 +198,7 @@ import modelo.records.UIData;
     String ruta = this.rutasconfig.getRutaUIData();
     String datos = Fichero.leerJSON(ruta);
     UIData resp = new Gson().fromJson(datos, UIData.class);
-//    System.out.println("[Config.java] Asignando UIData del consiguiente archivo\n");
+//    //System.out.println("[Config.java] Asignando UIData del consiguiente archivo\n");
     
     return resp;
     }
@@ -207,7 +207,7 @@ import modelo.records.UIData;
     String ruta = this.rutasconfig.getRutaMisDatos();
     String datos = Fichero.leerJSON(ruta);
     MisDatos resp = new Gson().fromJson(datos, MisDatos.class);
-//    System.out.println("[Config.java] Asignando MisDatos del consiguiente archivo:\n");
+//    //System.out.println("[Config.java] Asignando MisDatos del consiguiente archivo:\n");
     
     return resp;
   }
@@ -216,7 +216,7 @@ import modelo.records.UIData;
     String ruta = this.rutasconfig.getRutaConfigData();
     String datos = Fichero.leerJSON(ruta);
     ConfigData resp = new Gson().fromJson(datos, ConfigData.class);
-//    System.out.print("[Config.java>getConfigData()] : Datos leídos en " + this.rutasconfig.getRutaConfigData());
+//    //System.out.print("[Config.java>getConfigData()] : Datos leídos en " + this.rutasconfig.getRutaConfigData());
 
     return resp;
   }
@@ -232,20 +232,20 @@ public String getUsuario(){
   public String getRutaRS(){
 
     String rs = getConfigData().getRutas().getRS();
-//    System.out.println(" [Config.java] Asignando Ruta RS desde la config");
+//    //System.out.println(" [Config.java] Asignando Ruta RS desde la config");
     return rs;
   }
 
   public String getRutaFCT(){
 
     String fct = getConfigData().getRutas().getFCT();
-//    System.out.println(" [Config.java] Asignando Ruta FCT desde la config");
+//    //System.out.println(" [Config.java] Asignando Ruta FCT desde la config");
     return fct;
   }
   
   public String getRutaCJA(){
     String cja = getConfigData().getRutas().getCJA();
-//    System.out.println(" [Config.java] Asignando Ruta CJA desde la config");
+//    //System.out.println(" [Config.java] Asignando Ruta CJA desde la config");
     return cja;
   }
 //#endregion
@@ -270,13 +270,13 @@ public String getUsuario(){
 // TODO- 24-04-20 : Rehacer 'datosFormateados', enviar la config a formatearse como JSON, o incluir una std_config 
 // TODO- 24-04-23 : Rehacer el método toString() para adaptarlo a la salida en JSON
     String datos1 = p_config.rutasconfig.toJSON();
-//    System.out.println("[Config.java]->\n" + datos1);
+//    //System.out.println("[Config.java]->\n" + datos1);
     String datos2 = p_config.getConfigData().toJSON();
-//    System.out.println("[Config.java]->\n" + datos2);
+//    //System.out.println("[Config.java]->\n" + datos2);
     String datos3 = p_config.getMisDatos().toJSON();
-//    System.out.println("[Config.java]->\n" + datos3);
+//    //System.out.println("[Config.java]->\n" + datos3);
     String datos4 = p_config.getUiData().toJSON();
-//    System.out.println("[Config.java]->\n" + datos4);
+//    //System.out.println("[Config.java]->\n" + datos4);
     
     // Crea los ficheros de Configuracion (también si no existen)
     if (!Fichero.fileExists(ruta1)){
@@ -379,7 +379,7 @@ public String getUsuario(){
 //#region LEER_CREDS()
   public static synchronized Credenciales leerCredenciales(String ruta){
     String ficheroResp = Fichero.leerJSON(ruta);
-//    System.out.println(" [Config.java] Crenciales leídas: \n" + ficheroResp);
+//    //System.out.println(" [Config.java] Crenciales leídas: \n" + ficheroResp);
     
     Gson gson = new Gson();
     // TODO- 24-04-11 : Revisar esto: Si es Arraylist.class o Contrasena.class

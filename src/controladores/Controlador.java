@@ -26,22 +26,19 @@ public class Controlador extends Thread {
 //#endregion        
 
 //#region CAMPOS
-    //static ControladorFicheros cfch;
-    static ControladorFacturas cfct;
+
     static Controlador instancia;
    
-    //static ControladorDistribuidores cd;
-    //static ControladorCaja ccj;
     static PanelControl pc;
-    //static VisorNotas notas;
+
     static int seccion = FACT;
 
-    static String usuario;
+    public static String usuario;
 //    public static CyclicBarrier barreraControladores;
 //endregion
 
-// TODO - 24-06-04 : Comprobar los hilos que se generan (ControladorFCT, ControladorDIST, etc...)... Parece que sólo funciona el P/C
-// TODO - 24-06-04 : Hacer Singleton
+//  TODO  - 24-06-04 : Comprobar los hilos que se generan (ControladorFCT, ControladorDIST, etc...)... Parece que sólo funciona el P/C
+//  TODO  - 24-06-04 : Hacer Singleton
 
 //#region CONTR
     private Controlador() throws IOException, InterruptedException, BrokenBarrierException{
@@ -53,7 +50,7 @@ public class Controlador extends Thread {
         /* barreraControladores = new CyclicBarrier(2,() -> {
             //System.out.println("[Controlador>barreraControladores] El hilo "+Thread.currentThread().getName() + " acaba de entrar en la barreraControladores");
         }); */
-// TODO - 24-05-13 : Falta rediseñar el PnlCtl y la tabla de Facturas       
+//  TODO  - 24-05-13 : Falta rediseñar el PnlCtl y la tabla de Facturas       
         
         //System.out.println("[Controlador>constructor] Terminando el constructor del Controlador Principal");
 	}
@@ -73,9 +70,9 @@ public class Controlador extends Thread {
             try {
                 instancia = new Controlador();
             } catch (IOException | InterruptedException | BrokenBarrierException e) {
-                //System.out.println("[Controlador.java>getControlador()] Excepcion generando la instancia del Controlador Principal");
+                System.out.println("[Controlador>getControlador()] Excepcion generando la instancia del Controlador Principal");
                 System.exit(0);
-//                e.printStackTrace();
+                e.printStackTrace();
             }
         }
 		return instancia;
@@ -96,19 +93,13 @@ public class Controlador extends Thread {
 //#endregion
 
 //#region GET_CFCT
-	public static synchronized ControladorFacturas getControladorFacturas() throws InterruptedException, BrokenBarrierException{
-        if (cfct == null){
-            cfct = ControladorFacturas.getControlador();
-        }
-		return cfct;
+	public static synchronized ControladorFacturas getControladorFacturas() {
+		ControladorFacturas cfct = ControladorFacturas.getControlador();
+        return cfct;
 	}
     //ANCHOR - 14-07-24 : FxCntrlTablaFCT
-    public static ControladorFacturas getControladorFacturas(FxCntrlTablaFCT fxc) throws InterruptedException, BrokenBarrierException {
-        if (cfct == null){
-            cfct = ControladorFacturas.getControlador();
-        }
-
-        cfct.setFXcontrlTablaFCT(fxc);
+    public static ControladorFacturas getControladorFacturas(FxCntrlTablaFCT fxc)  {
+        ControladorFacturas cfct = ControladorFacturas.getControlador(fxc);
         return cfct;
     }
 //#endregion
@@ -152,6 +143,7 @@ public static void setUsuario(String user) {
     }
 
     public static void quit(){
+        System.out.println("[Controlador>quit] Aplicación finalizada");
         System.exit(0);
     }
 //#endregion
@@ -263,23 +255,18 @@ public static void setUsuario(String user) {
     @Override
     public void run() {
 // REVIEW - 24-07-05 : Asignaciones al empezar a ejecutarse el hilo
-//TODO - 24-06-21 : Estas asignaciones me hacen falta
-    try {
-        cfct = getControladorFacturas();
-    } catch (InterruptedException | BrokenBarrierException e) {
-        //System.out.println("[Controlador>run] No se ha podido crear el CntrlFCT. El programa se cierra!!!");
-        System.exit(0);
-        e.printStackTrace();
-    }
-    cfct.setName("Ctrl_FCT"); 
-    cfct.start();
+// TODO  - 24-06-21 : Estas asignaciones me hacen falta
+
+        Controlador.getControladorFacturas().setName("Ctrl_FCT");
+        Controlador.getControladorFacturas().start();
+
     //REVIEW - 24-06-04 : Tuve que cambiar el controlador de la clase PanelControl a public            
     pc = getPanelControl();
         while(true){
             if (getPanelControl().botonpulsado()){
                 switch (getPanelControl().seleccion()){
                     case 1 :
-// TODO - 24-06-27 : Aquí hay que activar la Tabla/Visor (dependiendo del modo INGR/NAV) de Facturas
+//  TODO  - 24-06-27 : Aquí hay que activar la Tabla/Visor (dependiendo del modo INGR/NAV) de Facturas
                         seccion = FACT;
                         if (PanelControl.getModo() == NAV){
                             //Visor y Tabla FCT visibles
@@ -290,13 +277,15 @@ public static void setUsuario(String user) {
                             //this.cfct = getControladorFacturas();
                         }
                         //ANCHOR - tableView
-                        cfct.mostrarTablaFacturas();
+                        System.out.println("[Controlador>run] btn FCT activado!");
+                        ControladorFacturas.getControlador().mostrarTablaFacturas();
                         //Las demás ventanas se cierran
                         //El P/C se resetea ->pulsado = false
                         PanelControl.reset();
                         break;
                     case 2 :
                         seccion = DIST;
+                        System.out.println("[Controlador>run] btn DIST pulsado");
                         //cfct.visible(false);
                         //ControladorDistribuidores.setEstado(1);
                         //cd.visible(true);
@@ -305,15 +294,17 @@ public static void setUsuario(String user) {
                         break;
                     case 3 :
                         seccion = NOTAS;
+                        System.out.println("[Controlador>run] btn NTS pulsado");
                         //cfct.visible(false);
                         //ControladorDistribuidores.setEstado(0);
                         //cd.visible(false);
                         //ccj.visible(false);
-                        //verNotas();                            
+                        //verNotas();
                         PanelControl.reset();
                         break;
                     case 4 :
                         seccion = CONFIG;
+                        System.out.println("[Controlador>run] btn CFG pulsado");
                         //cfct.visible(false);
                         //ControladorDistribuidores.setEstado(0);
                         //cd.visible(false);
@@ -324,33 +315,30 @@ public static void setUsuario(String user) {
                         break;
                     case 5:
                         seccion = CAJA;
+                        System.out.println("[Controlador>run] btn CJA pulsado");
                         //ccj.visible(true);
                         //cfct.visible(false);
                         //ControladorDistribuidores.setEstado(0);
                         //cd.visible(false);
                         PanelControl.reset();
                         break;
-                    case 6:  
+                    case 6:
                         //autosave();
                         PanelControl.reset();
                         break;
                     case 7:
                         if (PanelControl.getModo() == NAV){
-                            if (seccion == FACT){
-                                //cfct.visible(true);
-                            }
+                            PanelControl.setModo(INGR);
+                        } else {
+                            PanelControl.setModo(NAV);
                         }
-                        else {
-                            if (seccion == FACT){
-                                //cfct.visible(true);
-                            }
-                        }
+                        System.out.println("[Controlador>run] btn DIST pulsado");
                         PanelControl.reset();
                         break;
                     case 11:
                     //ANCHOR - tableView
-                        //System.out.println("[Controlador.java>run()] btn FCT desactivado!");
-                        cfct.ocultarTablaFacturas();
+                        System.out.println("[Controlador>run] btn FCT desactivado!");
+                        Controlador.getControladorFacturas().ocultarTablaFacturas();
                         PanelControl.reset();
                         break;
                     default:
@@ -362,16 +350,17 @@ public static void setUsuario(String user) {
 //#region LATENCIA<400ms
             try {
                 //System.out.println("[controlador] En el sleep: ");
-                Thread.sleep(400);
+                Thread.sleep(300);
                 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                System.out.println("[Controlador>run] Aplicación finalizada");
                 System.exit(0);
             }
 //#endregion
         }
     }
-//#endregion   
+//#endregion
 
 //#region (AUTOSAVE)
 /*    

@@ -35,7 +35,7 @@ public class ModeloFacturas {
     static Stack<Factura> pilafacturasant = new Stack<Factura>();
     static Stack<Factura> pilafacturassig = new Stack<Factura>();
     static Vector<Factura> vectorfacturas;
-    static Vector vectorcolumnas;
+    static Vector<String> vectorcolumnas;
     static int ultimaID;
     static int numeroFacturas = 0;
 //#endregion
@@ -208,7 +208,7 @@ public class ModeloFacturas {
     }
     //#endregion 
 
-//#region filtrar   
+//#region (filtrar)   
     public List<Factura> filtrar(List<Factura> lista) {
     
     //TODO - 24-06-14 : - Habría que convertir este ArrayList<String[]> a un ArrayList<Factura>...
@@ -268,7 +268,7 @@ public class ModeloFacturas {
     }
 //#endregion
 
-//#region fct_ops 
+//#region (fct_ops) 
     public boolean insertarFacturas(ArrayList<Factura> facturas) throws NumberFormatException, IOException {
         if ((numeroFacturas = facturas.size()) > 0) {
             Collections.sort(facturas);
@@ -336,7 +336,7 @@ public class ModeloFacturas {
     }
 //#endregion
 
-//#region RecogerFORM
+//#region (RecogerFORM)
 /*
     public Factura recogerFormulario(FormularioFact form) {
         boolean isCIF;
@@ -460,6 +460,5 @@ public class ModeloFacturas {
         return columnas;
     }
 //#endregion
-
 
 }

@@ -71,8 +71,10 @@ private void arrancarControlador() throws IOException, InterruptedException, Bro
            ctrThread.setName("Ctrl_Ppal");
            ctrThread.start();
    
-           if (!cargarPanelControl())
-               System.exit(0);
+           if (!cargarPanelControl()){
+                System.out.println("[Acceso>arrancarControlador] Aplicacion finalizada");
+                Platform.exit();
+           }
        }
    //#endregion
 
@@ -93,7 +95,8 @@ private void pulsartecla() throws IOException {
     iniciarPrograma();
     
     if (!entrar()){
-        System.exit(0);
+        System.out.println("[Acceso>pulsartecla] Autenticacion erronea. Se cierra la Aplicacion");
+        Platform.exit();
     }
 }
 
@@ -175,8 +178,9 @@ public void start(Stage primaryStage) throws IOException {
         try {
             Config.getConfig(Acceso.usuario);
         } catch (NullPointerException | IOException e) {
-            System.exit(0);
             e.printStackTrace();
+            System.out.println("[Acceso>acierto] Problema al cargar la Config. Se cierra la Aplicacion");
+            Platform.exit();
         }
         cambiarEscena(Acceso.scene2);
         Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 24!\nPulse una tecla para continuar...");
@@ -205,9 +209,10 @@ public void start(Stage primaryStage) throws IOException {
             arrancarControlador();
         } catch (IOException | InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
+            System.out.println("[Acceso>login] Problema al iniciar programa. Se cierra la Aplicacion");
+            Platform.exit();
         }
         Acceso.ventanaAcceso.close();
-        //Platform.exit();
     }
 //#endregion
 
