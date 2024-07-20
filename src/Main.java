@@ -32,6 +32,7 @@ public class Main {
         splash.run();
         splash.setAlwaysOnTop(true);
         splash.setVisible(false);
+    // FIXME - 24-07-20 : El visorFCT sólo se abre si se cierra con Cerrar, no con el aspa de su ventana... ¿habrá que cambiar la 'defaultOperationOnClose'?...
     // FIXME - 24-07-18 : He quitado todos los campos redundantes, de manera que siempre se acceda , desde los getters de cada clase, al mismo objeto...
     // FIXME - 24-07-17 : Cuando cierras el VisorFCT y lo vuelves a abrir, habiendo seleccionado otra factura, no actualiza la Factura en el visor...¿?
     // FIXME - 24-07-01 : Falta en el VisorFCT : informar la 'Categoría' de la Factura y reemplazar Labels por TextFields
