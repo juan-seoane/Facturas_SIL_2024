@@ -5,7 +5,6 @@ import modelo.records.Factura;
 import controladores.Controlador;
 import controladores.ControladorFacturas;
 
-import java.awt.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -63,7 +62,6 @@ public class FxCntrlTablaFCT implements Initializable{
 //NOTE - 14-07-24 : Singleton
 	static FxCntrlTablaFCT instancia;
 	static Stage GUItabla;
-	static TableView<Factura> tableviewFCT;
 	boolean haCambiado = false;
 	int pulsado = 0;
 
@@ -75,12 +73,13 @@ public class FxCntrlTablaFCT implements Initializable{
 //#region CONSTR
 // TODO  - 24-06-22 : - En el constructor inicializamos los campos que necesitamos listos antes de nada...
 	public FxCntrlTablaFCT() throws InterruptedException, BrokenBarrierException{
-		//System.out.println("[FxControladorFacturas>constructor] Comenzando el constructor de FxCntrlTablaFCT");
+		System.out.println("[FxControladorFacturas>constructor] Comenzando el constructor de FxCntrlTablaFCT");
 		// NOTE - 02-07-24 : Vamos a ver qué ocurre si el constructor de FxCntrlTablaFCT no crea una nueva tabla... parece que nada ...
 		this.listaFxFacturas = ModeloFacturas.getModelo().getListaFXFacturas();
-		this.tblvwFct = new TableView<Factura>();
+		if (this.tblvwFct==null)
+			this.tblvwFct = new TableView<Factura>();
 		//this.FxFacturaListProperty = new SimpleObjectProperty<>(this.listaFxFacturas);
-		//System.out.println("[FxControladorFacturas>constructor] Acabando el constructor de FxCntrlTablaFCT");
+		System.out.println("[FxControladorFacturas>constructor] Acabando el constructor de FxCntrlTablaFCT");
 	}
 //#endregion
 
@@ -109,20 +108,20 @@ public class FxCntrlTablaFCT implements Initializable{
 //addColums2table
 /*
 		this.tblvwFct.getColumns().add(colID);
-		tblvwFct.getColumns().add(colNumFact);
-		tblvwFct.getColumns().add(colFecha);
-		tblvwFct.getColumns().add(colRS);
-		tblvwFct.getColumns().add(colCat);
-		tblvwFct.getColumns().add(colDev);
-		tblvwFct.getColumns().add(colNumExtr);
-		tblvwFct.getColumns().add(colBase);
-		tblvwFct.getColumns().add(colTipoIVA);
-		tblvwFct.getColumns().add(colIVA);
-		tblvwFct.getColumns().add(colST);
-		tblvwFct.getColumns().add(colTipoRet);
-		tblvwFct.getColumns().add(colRetenc);
-		tblvwFct.getColumns().add(colTotal);
-		tblvwFct.getColumns().add(colNota);
+		this.tblvwFct.getColumns().add(colNumFact);
+		this.tblvwFct.getColumns().add(colFecha);
+		this.tblvwFct.getColumns().add(colRS);
+		this.tblvwFct.getColumns().add(colCat);
+		this.tblvwFct.getColumns().add(colDev);
+		this.tblvwFct.getColumns().add(colNumExtr);
+		this.tblvwFct.getColumns().add(colBase);
+		this.tblvwFct.getColumns().add(colTipoIVA);
+		this.tblvwFct.getColumns().add(colIVA);
+		this.tblvwFct.getColumns().add(colST);
+		this.tblvwFct.getColumns().add(colTipoRet);
+		this.tblvwFct.getColumns().add(colRetenc);
+		this.tblvwFct.getColumns().add(colTotal);
+		this.tblvwFct.getColumns().add(colNota);
 */
 
 		//this.tblvwFct.itemsProperty().bind(this.FxFacturaListProperty); // The Binding
@@ -142,7 +141,7 @@ public class FxCntrlTablaFCT implements Initializable{
 			cfct = Controlador.getControladorFacturas(this);
 		} catch (InterruptedException | BrokenBarrierException e) {
 			//System.out.println("[FxControladorFacturas>initialize] El programa se cierra porque se no ha podido acabar de inicializar el controlador FX de la TablaFCT");
-			System.exit(0);
+			Platform.exit(0);
 		} */
 		
 		//System.out.println("[FxCntrlTablaFCT>initialize] Saliendo del initialize del ControladorFX de Facturas");
@@ -152,30 +151,35 @@ public class FxCntrlTablaFCT implements Initializable{
 //#region EVT_BTN
 	@FXML
 	public void btnVisorFctPulsado(Event ev){
+		System.out.println("[FxCntrTablaFCT] Btn Visor pulsado en contrFXtabla->" + this.hashCode());
 		this.haCambiado = true;
 		this.pulsado = 1;
 	}
 
 	@FXML
 	public void btnNuevaFctPulsado(Event ev){
+		System.out.println("[FxCntrTablaFCT] Btn Nueva Factura pulsado en contrFXtabla->" + this.hashCode());
 		this.haCambiado = true;
 		this.pulsado = 2;
 	}	
 
 	@FXML
 	public void btnEditarFctPulsado(Event ev){
+		System.out.println("[FxCntrTablaFCT] Btn Editar Factura pulsado en contrFXtabla->" + this.hashCode());
 		this.haCambiado = true;
 		this.pulsado = 3;
 	}
 
 	@FXML
 	public void btnBorrarFctPulsado(Event ev){
+		System.out.println("[FxCntrTablaFCT] Btn Borrar Factura pulsado en contrFXtabla->" + this.hashCode());
 		this.haCambiado = true;
 		this.pulsado = 4;
 	}
 
 	@FXML
 	public void btnFiltrosFctPulsado(Event ev){
+		System.out.println("[FxCntrTablaFCT] Btn Filtros pulsado en contrFXtabla->" + this.hashCode());
 		this.haCambiado = true;
 		this.pulsado = 5;
 	}
@@ -190,28 +194,33 @@ public class FxCntrlTablaFCT implements Initializable{
 	}
 
 	public void reset(){
-		//System.out.println("[FxCntrlTablaFCT>reset] En el reset de contrFX de tablaFCT con hashCode (del contrFX " + this.hashCode());
+		System.out.println("[FxCntrlTablaFCT>reset] En el reset de contrFX de tablaFCT con hashCode (del contrFXtabla): " + this.hashCode());
 		this.haCambiado = false;
 		this.pulsado = 0;
 	}
 //#endregion
 
 //#region GET/SET	
-public static FxCntrlTablaFCT getFxController() {
-	if (instancia==null){
-		try {
-			instancia = new FxCntrlTablaFCT();
-		} catch (InterruptedException | BrokenBarrierException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public static FxCntrlTablaFCT getFxController() {
+		if (instancia==null){
+			try {
+				instancia = new FxCntrlTablaFCT();
+			} catch (InterruptedException | BrokenBarrierException e) {
+				e.printStackTrace();
+			}
 		}
+		return instancia;
 	}
-	return instancia;
-}
+
+	public static void setFxController(FxCntrlTablaFCT contr) {
+		instancia = contr;
+	}
 
 //ANCHOR - tableView
 	public synchronized TableView<Factura> getTableView() {
-		//System.out.println("[FxCntrlTablaFCT>getTableView] la tabla no es NULL - devolviendo su valor hashCode de tablaFCT: " + this.tblvwFct.hashCode());
+		System.out.println("[FxCntrlTablaFCT>getTableView] Devolviendo desde contrFxtabla->" + this.hashCode() +" - tableView->" + this.tblvwFct.hashCode());
+		ControladorFacturas.getControlador().colocarListenerEnTablaFCT(this.tblvwFct);
+		ControladorFacturas.setFXcontrlTablaFCT(this);
 		return this.tblvwFct;
 	}
 
@@ -247,12 +256,16 @@ public static FxCntrlTablaFCT getFxController() {
 	public static void setIndiceActual(int index) {
 		indiceActual = index;
 	}
-	public static void setTableView(TableView<Factura> tvfct) {
-		tableviewFCT = tvfct;
+	public void setTableView(TableView<Factura> tvfct) {
+		this.tblvwFct = tvfct;
 	}
 
 	public Stage getGUItabla() {
 		return GUItabla;
+	}
+
+	public static void setGUItabla(Stage stg) {
+		GUItabla = stg;
 	}
 //#endregion
 
@@ -267,10 +280,5 @@ public static FxCntrlTablaFCT getFxController() {
 		lblNumFact.setText(datos[6]);
 	}
 //#endregion
-
-	public void setGUItabla(Stage stage) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'setGUItabla'");
-	}
 
 }

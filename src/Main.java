@@ -40,7 +40,7 @@ public class Main {
     // TODO  - 24-07-01 : Falta en el Main     : Organizar el arranque de las GUI's (y los hilos de los controladores)... A lo mejor puedo invocar el GUI de Acceso con runLater y dejar el Application.launch()para el controlador...
         Application.launch(Acceso.class);
     // NOTE - Desde aquí no debería funcionar hasta que se acabe la aplicación JavaFX
-        //System.out.println("[Main.java] Aplicación finalizada");
+        System.out.println("[Main.java] Aplicación finalizada");
         System.exit(0);
                
     }

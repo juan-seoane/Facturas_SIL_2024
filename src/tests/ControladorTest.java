@@ -28,20 +28,20 @@ public class ControladorTest {
 
 	@Before
 	public void setUp() throws NullPointerException, IOException, InterruptedException, BrokenBarrierException{
-		System.out.println("[ControladorTest] Comenzando el setUp");
+		//System.out.println("[ControladorTest] Comenzando el setUp");
 		this.config = Config.getConfig("admin");
 		this.cntrlPpal = Controlador.getControlador();
 	}
 
 	@Test
 	public void CntrlPpalCargaOK() throws InterruptedException, BrokenBarrierException{
-		System.out.println("[ControladorTest] Comenzando el test de carga del Controlador Principal");
+		//System.out.println("[ControladorTest] Comenzando el test de carga del Controlador Principal");
 		assertNotNull(this.config);
 		assertNotNull(this.cntrlPpal);
 		this.cntrlFact = Controlador.getControladorFacturas();
 		assertNotNull(this.cntrlFact);
 		assertEquals(this.cntrlFact,ControladorFacturas.getControlador());
-		this.modFact = this.cntrlFact.m;
+		this.modFact = ModeloFacturas.getModelo();
 		assertNotNull(this.modFact);
 		assertEquals(this.modFact,ModeloFacturas.getModelo());
 

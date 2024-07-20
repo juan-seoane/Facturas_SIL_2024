@@ -33,7 +33,7 @@ public class Controlador extends Thread {
 
     static int seccion = FACT;
 
-    static String usuario;
+    public static String usuario;
 //    public static CyclicBarrier barreraControladores;
 //endregion
 
@@ -70,9 +70,9 @@ public class Controlador extends Thread {
             try {
                 instancia = new Controlador();
             } catch (IOException | InterruptedException | BrokenBarrierException e) {
-                //System.out.println("[Controlador.java>getControlador()] Excepcion generando la instancia del Controlador Principal");
+                System.out.println("[Controlador>getControlador()] Excepcion generando la instancia del Controlador Principal");
                 System.exit(0);
-//                e.printStackTrace();
+                e.printStackTrace();
             }
         }
 		return instancia;
@@ -94,22 +94,12 @@ public class Controlador extends Thread {
 
 //#region GET_CFCT
 	public static synchronized ControladorFacturas getControladorFacturas() {
-		ControladorFacturas cfct = null;
-        try {
-            cfct = ControladorFacturas.getControlador();
-        } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
-        }
+		ControladorFacturas cfct = ControladorFacturas.getControlador();
         return cfct;
 	}
     //ANCHOR - 14-07-24 : FxCntrlTablaFCT
     public static ControladorFacturas getControladorFacturas(FxCntrlTablaFCT fxc)  {
-        ControladorFacturas cfct = null;
-        try {
-            cfct = ControladorFacturas.getControlador(fxc);
-        } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
-        }
+        ControladorFacturas cfct = ControladorFacturas.getControlador(fxc);
         return cfct;
     }
 //#endregion
@@ -153,6 +143,7 @@ public static void setUsuario(String user) {
     }
 
     public static void quit(){
+        System.out.println("[Controlador>quit] Aplicación finalizada");
         System.exit(0);
     }
 //#endregion
@@ -286,13 +277,15 @@ public static void setUsuario(String user) {
                             //this.cfct = getControladorFacturas();
                         }
                         //ANCHOR - tableView
-                        Controlador.getControladorFacturas().mostrarTablaFacturas();
+                        System.out.println("[Controlador>run] btn FCT activado!");
+                        ControladorFacturas.getControlador().mostrarTablaFacturas();
                         //Las demás ventanas se cierran
                         //El P/C se resetea ->pulsado = false
                         PanelControl.reset();
                         break;
                     case 2 :
                         seccion = DIST;
+                        System.out.println("[Controlador>run] btn DIST pulsado");
                         //cfct.visible(false);
                         //ControladorDistribuidores.setEstado(1);
                         //cd.visible(true);
@@ -301,6 +294,7 @@ public static void setUsuario(String user) {
                         break;
                     case 3 :
                         seccion = NOTAS;
+                        System.out.println("[Controlador>run] btn NTS pulsado");
                         //cfct.visible(false);
                         //ControladorDistribuidores.setEstado(0);
                         //cd.visible(false);
@@ -310,6 +304,7 @@ public static void setUsuario(String user) {
                         break;
                     case 4 :
                         seccion = CONFIG;
+                        System.out.println("[Controlador>run] btn CFG pulsado");
                         //cfct.visible(false);
                         //ControladorDistribuidores.setEstado(0);
                         //cd.visible(false);
@@ -320,6 +315,7 @@ public static void setUsuario(String user) {
                         break;
                     case 5:
                         seccion = CAJA;
+                        System.out.println("[Controlador>run] btn CJA pulsado");
                         //ccj.visible(true);
                         //cfct.visible(false);
                         //ControladorDistribuidores.setEstado(0);
@@ -332,20 +328,16 @@ public static void setUsuario(String user) {
                         break;
                     case 7:
                         if (PanelControl.getModo() == NAV){
-                            if (seccion == FACT){
-                                //cfct.visible(true);
-                            }
+                            PanelControl.setModo(INGR);
+                        } else {
+                            PanelControl.setModo(NAV);
                         }
-                        else {
-                            if (seccion == FACT){
-                                //cfct.visible(true);
-                            }
-                        }
+                        System.out.println("[Controlador>run] btn DIST pulsado");
                         PanelControl.reset();
                         break;
                     case 11:
                     //ANCHOR - tableView
-                        //System.out.println("[Controlador.java>run()] btn FCT desactivado!");
+                        System.out.println("[Controlador>run] btn FCT desactivado!");
                         Controlador.getControladorFacturas().ocultarTablaFacturas();
                         PanelControl.reset();
                         break;
@@ -358,10 +350,11 @@ public static void setUsuario(String user) {
 //#region LATENCIA<400ms
             try {
                 //System.out.println("[controlador] En el sleep: ");
-                Thread.sleep(400);
+                Thread.sleep(300);
                 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                System.out.println("[Controlador>run] Aplicación finalizada");
                 System.exit(0);
             }
 //#endregion

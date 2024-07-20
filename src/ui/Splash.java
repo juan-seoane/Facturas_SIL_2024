@@ -98,7 +98,7 @@ public class Splash extends JWindow implements Runnable{
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Splash.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(Splash.class.getName()).log(Level.SEVERE, null, ex);
                 }          
             
     }

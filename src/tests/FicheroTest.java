@@ -88,7 +88,7 @@ public class FicheroTest {
 		modeloFCT = ModeloFacturas.getModelo();
 
 		List<Factura> listaFCT = ModeloFacturas.getModelo().leerFacturasSinFiltrar();
-	 	System.out.print("\n*****[FicheroTest]******\nDatos a guardar en CSV:");
+	 	//System.out.print("\n*****[FicheroTest]******\nDatos a guardar en CSV:");
 
 		ArrayList<String[]>datosCSV = modeloFCT.ConvertirListaFCTaCSV((ArrayList<Factura>)listaFCT);
 		Boolean ok = fichero.guardarCSV(datosCSV);

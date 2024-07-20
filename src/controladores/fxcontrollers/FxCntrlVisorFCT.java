@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.BrokenBarrierException;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -82,13 +83,13 @@ public class FxCntrlVisorFCT implements Initializable{
 // TODO  - 24-06-22 : En el constructor inicializamos los campos que necesitamos listos antes de nada...
 	public FxCntrlVisorFCT() throws InterruptedException, BrokenBarrierException{
 		
-		System.out.println("[FxCntrlVisorFCT>constructor] Arrancando el constructor del controlador FX del visorFCT");
+		//System.out.println("[FxCntrlVisorFCT>constructor] Arrancando el constructor del controlador FX del visorFCT");
 		
 // NOTE  - 24-07-18 : ¿Hace falta aquí asignar el Visor?
-/*  		if (visorFct==null){
+/*   		if (visorFct==null){
 			Controlador.getControladorFacturas().cargarVisorFacturas();
 			System.out.println("[FxCntrlVisorFCT>constructor] Asignado el VisorFCT con hashCode: "+ visorFct.hashCode());
-		} */
+		}  */
 	}
 //#endregion
 
@@ -103,15 +104,23 @@ public class FxCntrlVisorFCT implements Initializable{
 		}
 		return instancia;
 	}
-
-	public synchronized Stage getVisorFCT() throws InterruptedException, BrokenBarrierException{
-		if (visorFct==null){
-			System.out.println("[FxCntrlVisorFCT>getVisorFCT] El valor del visor era NULL.Se crea un visor nuevo");
-			boolean ok = Controlador.getControladorFacturas().cargarVisorFacturas();
+	
+	public static void setFXcontroller(FxCntrlVisorFCT cntr) {
+		instancia = cntr;
+		System.out.println("[FxCntrlVisorFCT>setFxcontroller] Se asigna un contrlFXvisor -> " + cntr.hashCode());
+	}
+	
+	public synchronized Stage getVisorFCT() {
+ 		if (visorFct==null){
+			System.out.println("[FxCntrlVisorFCT>getVisorFCT] El valor del visor era NULL. Se tiene que crear un visor nuevo");
+/* 			boolean ok = false;
+			ok = Controlador.getControladorFacturas().cargarVisorFacturas();
 			if(ok){
-				System.out.println("[FxCntrlVisorFCT>getVisorFCT] Se devuelve un visor nuevo con hashCode "+ visorFct.hashCode());
-			}
-		}
+				System.out.println("[FxCntrlVisorFCT>getVisorFCT] Se devuelve un visor nuevo -> "+ visorFct.hashCode());
+			} */
+		} 
+		if (visorFct!=null)
+			System.out.println("[FxCntrlVisorFCT>getVisorFCT] Se devuelve el visorFct ->  "+ visorFct.hashCode());
 		return visorFct;
 	}
 
@@ -132,30 +141,29 @@ public class FxCntrlVisorFCT implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
-			System.out.println("[FxCntrlVisorFCT>Initialize] Empezando la inicializacion del controlador FX del visorFCT");
+			//System.out.println("[FxCntrlVisorFCT>Initialize] Empezando la inicializacion del controlador FX del visorFCT");
 			//ANCHOR - tableView
 			if (FxCntrlTablaFCT.getFxController().getTableView()!=null){
 				indexActual = FxCntrlTablaFCT.getIndiceActual();
 				System.out.println("[FxCntrlVisorFCT>initialize] Index actual en tabla " + FxCntrlTablaFCT.getFxController().getTableView().hashCode() + " : " + indexActual);
 				if (FxCntrlVisorFCT.getFxController()!=null){
 					FxCntrlVisorFCT.visorFct = getVisorFCT();
-					System.out.println("[FxCntrlVisorFCT>initialize] Llamando a actualizarDatosVisor - visor con hashCode: " + FxCntrlVisorFCT.visorFct.hashCode());
 					actualizarDatosVisor(indexActual, ControladorFacturas.facturaActual);
 				}
 			}else{
 				System.out.println("[FxCntrlVisorFCT>initialize] tabla de valor NULL. El programa se cerrará");
-				System.exit(0);
+				Platform.exit();
 			}
-			System.out.println("[FxCntrlVisorFCT>Initialize] Acabando la inicializacion del controlador FX del visorFCT ");
+			//System.out.println("[FxCntrlVisorFCT>Initialize] Acabando la inicializacion del controlador FX del visorFCT ");
 		} catch (InterruptedException | BrokenBarrierException e) {
 			e.printStackTrace();
 		}
 		
 /* 		try {
-			System.out.println("[FxCntrlVisorFCT>initialize>runLater] Entrando en la barreraVisor el hilo " + Thread.currentThread().getName());
+			//System.out.println("[FxCntrlVisorFCT>initialize>runLater] Entrando en la barreraVisor el hilo " + Thread.currentThread().getName());
 			ControladorFacturas.barreraVisor.await();
 		} catch (InterruptedException | BrokenBarrierException e) {
-			System.exit(0);
+			Platform.exit(0);
 		} */
 	}
 //#endregion
@@ -163,14 +171,14 @@ public class FxCntrlVisorFCT implements Initializable{
 //#region EventosBTN
 	@FXML
 	public void btnCerraVPulsado(Event ev){
-
+		System.out.println("[FxCntrVisorFCT] Btn Cerrar Visor pulsado! Se cierra el visor del contrFXvisor -> " + this.hashCode());
 		this.haCambiado = true;
 		this.pulsado = 1;
 	}
 
 	@FXML
 	public void btnNuevaFctVPulsado(Event ev){
-
+		System.out.println("[FxCntrVisorFCT] Btn Nueva Factura pulsado en el contrFXvisor -> " + this.hashCode());
 		this.haCambiado = true;
 		this.pulsado = 2;
 	}	
@@ -178,13 +186,13 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML
 	public void btnEditarFctVPulsado(Event ev){
 
-
 		this.haCambiado = true;
 		this.pulsado = 3;
 	}
 
 	@FXML
 	public void btnBorrarFctPulsado(Event ev){
+		System.out.println("[FxCntrVisorFCT] Btn Borrar Factura pulsado en el contrFXvisor -> " + this.hashCode());
 		this.haCambiado = true;
 		this.pulsado = 4;
 	}
@@ -215,12 +223,11 @@ public class FxCntrlVisorFCT implements Initializable{
 
 //#region Act_VISOR
 	public synchronized void actualizarDatosVisor(int index, Factura f) throws InterruptedException, BrokenBarrierException{
-		try{
 				Stage prueba = getVisorFCT();
 				if (prueba!=null){
 					visorFct = prueba;
-				//if(visorFct!=null){
-					System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] visorFct de hashCode: " + visorFct.hashCode());
+ 				if(visorFct!=null){
+					System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] visorFct -> " + visorFct.hashCode() + " - cntrFXvisor -> " + this.hashCode());
 				}
 				//Thread.sleep(500);
 				
@@ -238,8 +245,6 @@ public class FxCntrlVisorFCT implements Initializable{
 			}else{
 				System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] No se muestra ninguna factura");
 			}
-		} catch ( NullPointerException | InterruptedException | BrokenBarrierException  e) {
-			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] Excepc " + e + " en la carga de la Factura en el VisorFCT.");
 		}
 	}
 
