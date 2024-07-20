@@ -1,7 +1,7 @@
 #VSCode
-#/.vscode
+/.vscode
 #especifico_SO
-#/lib
+/lib
 /bin
 .pretierrc
 #Netbeans
