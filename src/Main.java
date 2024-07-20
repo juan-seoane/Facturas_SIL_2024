@@ -17,7 +17,7 @@ public class Main {
   
     public static void main(String[] args) throws IOException {
         
-        try{
+/*        try{
             GraphiteLookAndFeel graphite = new GraphiteLookAndFeel();
             UIManager.setLookAndFeel(graphite);
         }catch(Exception e){
@@ -28,7 +28,7 @@ public class Main {
 
         window.run();
         window.setAlwaysOnTop(true);
-        window.setVisible(false);
+        window.setVisible(false); */
     // FIXME - 24-07-17 : Cuando cierras el VisorFCT y lo vuelves a abrir, habiendo seleccionado otra factura, no actualiza la Factura en el visor...¿?
     // FIXME - 24-07-01 : Falta en el VisorFCT : informar la 'Categoría' de la Factura y reemplazar Labels por TextFields
     // TODO - 24-07-01 : Falta en el VisorFCT : moverse a travéws de la tablaFCT con las flechas
