@@ -256,10 +256,7 @@ public class ControladorFacturas extends Thread {
                 
             switch(FxCntrlTablaFCT.getFxController().getPulsado()){
                 case 1:
-                    if (GUIvisor==null){
-                        cargarVisorFacturas();
-                        System.out.println("[ControladorFacturas>run] El visor era NULL. Se ha llamado a la funcion cargarVisorFacturas.");
-                    }
+                    cargarVisorFacturas();
                     mostrarVisorFacturas(FxCntrlTablaFCT.getIndiceActual(), ControladorFacturas.facturaActual);
                     System.out.println("[ControladorFacturas>run] Se muestra el Visor de Facturas");
                     actualizarVisor(FxCntrlTablaFCT.getIndiceActual());
@@ -692,7 +689,6 @@ public class ControladorFacturas extends Thread {
 
 //#region CARG_V/FCT
     public synchronized boolean cargarVisorFacturas(){
-        if(getVisorFCT() == null){
             Platform.runLater(new Runnable(){
                 @Override
                 public void run() {
@@ -709,17 +705,16 @@ public class ControladorFacturas extends Thread {
                     // REVIEW - 24-07-19 : Asignar V/FCT y contrFX/V 
 
                     GUIvisor = visor;
+                    setVisorFCT(visor);
                     ControladorFacturas.setFXcontrlVisorFCT(cntrFXv);
+
                     if(visor!=null&&GUIvisor!=null)
-                        //System.out.println("[ControladorFacturas>cargarVisorFacturas] asignado valor temp de visorFCT: " +visor.hashCode() + " -> con el valor final (en CFCT>GUIvisor) de: " + Controlador.getControladorFacturas().getVisorFCT().hashCode());
+                        System.out.println("[ControladorFacturas>cargarVisorFacturas] asignado valor temp de visorFCT: " +visor.hashCode() + " -> con el valor final (en CFCT>GUIvisor) de: " + Controlador.getControladorFacturas().getVisorFCT().hashCode());
                     if(cntrFXv!=null&&cntrFXvisor!=null)
-                        System.out.println("[ControladorFacturas>cargarVisorFacturas] asignado valor de cntrlFXv: " + cntrFXv.hashCode() + " con el valor final de CFCT>cntrFXvisor: " + Controlador.getControladorFacturas().getFXcontrlVisorFCT().hashCode());
+                        System.out.println("[ControladorFacturas>cargarVisorFacturas] asignado valor temp de cntrlFXv: " + cntrFXv.hashCode() + " con el valor final de CFCT>cntrFXvisor: " + Controlador.getControladorFacturas().getFXcontrlVisorFCT().hashCode());
                 }
             });
             return true;
-        }else{
-            return false;
-        }
     }
 //#endregion
 
@@ -743,7 +738,8 @@ public class ControladorFacturas extends Thread {
                     });
                     //NOTE - 07-07-24 : Hacemos una pausa en el hilo del CFCT, no en el de la FXApplication (para ver si se inicializa el visor)
                     try {
-                        Thread.sleep(1500);
+                        // NOTE  - 24-07-20 : OJO!!! Este tiempo (1 seg.) dependerá de la velocidad del procesador de cada PC
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -771,8 +767,11 @@ public class ControladorFacturas extends Thread {
             @Override
             public void run() {
                     Controlador.getControladorFacturas().getVisorFCT().hide();
+                    GUIvisor = null;
+                    FxCntrlVisorFCT.getFxController().setVisor(null);
             }
         });
+
         System.out.println("[ControladorFacturas>ocultarVisorFCT] Se oculta el VisorFCT " + Controlador.getControladorFacturas().getVisorFCT().hashCode());
     }
 //#endregion
