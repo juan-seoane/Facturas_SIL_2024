@@ -205,7 +205,7 @@ public class Acceso implements Initializable{
 
     public static Scene crearScene1 (Parent root) {
         
-        Scene esc1 = new Scene(root);
+        Scene esc1 = new Scene(root,525,550);
         //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
         System.out.println("[Acceso>crearScene1] escena1 creada : " + esc1.hashCode());
         return esc1;

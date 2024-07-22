@@ -1,9 +1,10 @@
 
-import java.io.IOException;
-
 import controladores.Controlador;
 import controladores.fxcontrollers.Acceso;
 import controladores.fxcontrollers.SplashFX;
+
+import java.io.IOException;
+
 import javafx.application.Application;
 
 public class Main {
@@ -14,19 +15,7 @@ public class Main {
     public static boolean credsOK;
   
     public static void main(String[] args) throws IOException {
-        
-/*        try{
-            GraphiteLookAndFeel graphite = new GraphiteLookAndFeel();
-            UIManager.setLookAndFeel(graphite);
-        }catch(Exception e){
-            //System.out.println(" [Main] Error "+e);
-        }
-        
-        Splash window = new Splash();
 
-        window.run();
-        window.setAlwaysOnTop(true);
-        window.setVisible(false); */
     // FIXME - 24-07-20 : Dos cosas que percibo en Linux: Las imágenes de los JFX no se cargan (seguramente no usan rutas relativas), y las ventanas tienen un título central superior '<1>', que habrá que quitar o cambiar...    
     // FIXME - 24-07-20 : En Linux no funciona el Splash    
     // FIXME - 24-07-17 : Cuando cierras el VisorFCT y lo vuelves a abrir, habiendo seleccionado otra factura, no actualiza la Factura en el visor...¿?

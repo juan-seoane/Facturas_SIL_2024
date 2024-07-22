@@ -19,23 +19,22 @@ import javafx.util.Duration;
 
 public class SplashFX extends Application{
 	
+	Rectangle2D screenBounds;
 	Image imagen;
 	Stage stage;
 
 	@Override
 	public void start(Stage primaryStage) {
 		// Obtiene las dimensiones de la pantalla
-	Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-
+		screenBounds = Screen.getPrimary().getVisualBounds();
 		// Crea una nueva escena
 		imagen = cargarImagenAleatoria();
 		double imgwidth = imagen.getWidth();
         double imgheight = imagen.getHeight();
-		
 		Parent root = ImagenARoot(imagen);
 		Scene scene = new Scene(root, imgwidth, imgheight);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Bienvenido a FacturasSil v2.4");
+		//primaryStage.setTitle("Bienvenido a FacturasSil v2.4");
 		// Centra la ventana en la pantalla
 		primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
 		primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
@@ -50,21 +49,24 @@ public class SplashFX extends Application{
 	}
 
 	private void loadMainView(Stage primaryStage) {
-		
 		// Cargar el fxml
 		String ruta = "../../resources/Acceso.fxml";
 		FxmlHelper fxmlhelper = new FxmlHelper(ruta);
 		Parent login = fxmlhelper.cargarFXML();
-
 		// Cargar la vista principal
 		Scene scene = Acceso.crearScene1(login);
-		primaryStage.setScene(scene);
-		//asignamos al Stage principal
-		Stage st = primaryStage;
+		//Creamos un nuevo Stage
+		Stage st = new Stage();
+		st.setScene(scene);
+		//asignamos dimensiones y estilo al Stage 
+		st.setX((screenBounds.getWidth() - 525 )/ 2);
+		st.setY((screenBounds.getHeight() - 550 )/ 2);
+		st.initStyle(StageStyle.UNDECORATED);
 		st.setResizable(false);
 		st.setAlwaysOnTop(true);
 
-		//mostramos el Stage principal
+		//ocultamos el Splash y mostramos el Stage
+		primaryStage.hide();
 		st.show();
 		Acceso.ventanaAcceso = st;
 		Acceso.canvasAcceso = Acceso.getCanvas();
@@ -73,17 +75,15 @@ public class SplashFX extends Application{
 
 	private synchronized Image cargarImagenAleatoria(){
 
-		Image image;
-		FileInputStream in = null;
+		Image img;
 		int i = (int)(Math.floor(Math.random()*5+1));
 		String ruta = "../../imagenes/splash"+i+".jpg";
 		System.out.println("[Splash>cargarImagenAleatoria] Ruta de la Imagen : " + ruta);
-		image = new Image(getClass().getResource(ruta).toExternalForm());
+		img = new Image(getClass().getResource(ruta).toExternalForm());
 
-		return image;
+		return img;
 	}
 
-    
     private Parent ImagenARoot(Image image) {
         
 		// Crea un ImageView y ajusta la imagen al tamaño de la escena
@@ -96,10 +96,5 @@ public class SplashFX extends Application{
 
 		// Ajusta el Pane a la escena
 		return (Parent)pane;
-		
-
-
 	}
-
-
 }
