@@ -230,11 +230,11 @@ public class FxApplicationTest extends ApplicationTest{
 		assertTrue(listaFXFCT.get(0) instanceof Factura);
 		ctrlFxTablaFct.tblvwFct.setItems(listaFXFCT);
 		
-		Thread.sleep(1000);
+		Thread.sleep(2500);
 		clickOn("#btnVisorFct");
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK] boton Visor pulsado!!");
 		
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******FINAL*****");
 	}
 
@@ -281,13 +281,13 @@ public class FxApplicationTest extends ApplicationTest{
 		//FIXME - 24-07-17 : No funciona esto, después de 'mostrarVisorFCT()'' debería poder asignarse un contrFXvisorFCT, no debería ser NULL 
 		//ctrlFxVisorFct = Controlador.getControladorFacturas().getFXcontrlVisorFCT();
 		//assertNotNull(ctrlFxVisorFct);
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 		verifyThat("#lblVID", (Label label) -> {
 			String text = label.getText();
 			return (text.contains("2"));
 		});
 
-		Thread.sleep(2000);
+		Thread.sleep(2500);
 		clickOn("#btnVCerrar");
 		System.out.println("[FxApplicationTest>visorFCTcargaOK] boton Cerrar VisorFCT pulsado!!");
 		

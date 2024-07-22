@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
@@ -25,10 +26,10 @@ import java.awt.HeadlessException;
 import java.io.IOException;
 
 public class ControladorFacturas extends Thread {
-//NOTE - 14-07-24 : Singleton
+//NOTE - 24-07-14 : Singleton
     static ControladorFacturas instancia;
 //#region CAMPOS_CFCT
-//NOTE -14-07-24 : Se intenta que los campos sean privados y que sólo se acceda a ellos mediante getters ... sobre todo los que pueden llevar a conflictos, como los contrFX
+//NOTE - 24-07-14 : Se intenta que los campos sean privados y que sólo se acceda a ellos mediante getters ... sobre todo los que pueden llevar a conflictos, como los contrFX
     Controlador ctrlPpal;
     public PanelControl pc;
     static VentanaFiltros filtros;
@@ -55,7 +56,7 @@ public class ControladorFacturas extends Thread {
         }); */
     
         m = ModeloFacturas.getModelo();
-        //ANCHOR - 14-07-24 : FxCntrlTablaFCT
+        //ANCHOR - 24-07-14 : FxCntrlTablaFCT
         if(GUIon){
             FXcontrlTablaFCT = FxCntrlTablaFCT.getFxController();
             //System.out.println("[ControladorFacturas>constructor] El ControladorFX de la tablaFCT fue asignado correctamente");
@@ -84,18 +85,18 @@ public class ControladorFacturas extends Thread {
             instancia = new ControladorFacturas();
         }
         GUIon = true;
-        //ANCHOR - 14-07-24 : FxCntrlTablaFCT
+        //ANCHOR - 24-07-14 : FxCntrlTablaFCT
         instancia.setFXcontrlTablaFCT(FXcontrlTablaFCT);
         return instancia;
     }
 //#endregion
 
 //#region get/set_ContrFX
-    //ANCHOR - 14-07-24 : FxCntrlTablaFCT
+    //ANCHOR - 24-07-14 : FxCntrlTablaFCT
     public synchronized FxCntrlTablaFCT getFXcontrlTablaFCT() throws InterruptedException, BrokenBarrierException{
         return FXcontrlTablaFCT;
     }
-    //ANCHOR - 14-07-24 : FxCntrlVisorFCT
+    //ANCHOR - 24-07-14 : FxCntrlVisorFCT
     public synchronized FxCntrlVisorFCT getFXcontrlVisorFCT(){
         return FXcontrlVisorFCT;
     }
@@ -107,7 +108,7 @@ public class ControladorFacturas extends Thread {
         return this.tableViewFCT;
     }
 
-    //ANCHOR - 14-07-24 : FxCntrlTablaFCT
+    //ANCHOR - 24-07-14 : FxCntrlTablaFCT
     public synchronized void setFXcontrlTablaFCT(FxCntrlTablaFCT contr){
         FXcontrlTablaFCT = contr;
     }
@@ -148,7 +149,7 @@ public class ControladorFacturas extends Thread {
                             }
                             }
                         );
-					// NOTE - 03-07-24 - Quito el reset() al controlador de la tablaFX, para que no se arme un bucle...     
+					// NOTE - 24-07-03 - Quito el reset() al controlador de la tablaFX, para que no se arme un bucle...     
                     } catch (InterruptedException | BrokenBarrierException e) {
                         e.printStackTrace();
                     }
@@ -166,7 +167,7 @@ public class ControladorFacturas extends Thread {
         try {
             this.pc = Controlador.getPanelControl();
             this.ctrlPpal = Controlador.getControlador();
-            //NOTE - 07-07-24 : Saco la barrera para los tests de JavaFX
+            //NOTE - 24-07-07 : Saco la barrera para los tests de JavaFX
             //Controlador.barreraControladores.await();
             /* if (GUIon) this.tableViewFCT = FXcontrlTablaFCT.getTableView(); */
         } catch (InterruptedException | BrokenBarrierException e) {
@@ -285,7 +286,6 @@ public class ControladorFacturas extends Thread {
             // FIXME - 24-07-03 : Hacer que el Visor funcione también como formulario (quizás haya que ponerle un botón enviar cuando Edites o Insertes una Factura)
             if(FXcontrlVisorFCT!=null && FXcontrlVisorFCT.HaCambiado()) {
 				//System.out.println("[ControladorFacturas>run] recogiendo evento del visorFCT en el Controlador de Facturas - pulsado caso " + FXcontrlVisorFCT.getPulsado());
-                int elem = FXcontrlTablaFCT.getIndiceSeleccionadoTabla();
                 //System.out.println("[ControladorFacturas>visorSwitch] indice seleccionado en tablaFCT " + FXcontrlTablaFCT.tblvwFct.hashCode() +  " : " + elem);
                 switch(FXcontrlVisorFCT.getPulsado()){
                     case 1:
@@ -624,7 +624,7 @@ public class ControladorFacturas extends Thread {
                     //System.out.println("[CFCT>cargarTablaFacturas] Stage de Tabla con hashcode :" + tabla.hashCode());
                     tablaFCT = tabla;
                     //System.out.println("[CFCT>cargarTablaFacturas] Stage de Tabla asignado a ControladorFacturas.tablaFCT con valor :" + tablaFCT.hashCode());
-                    //ANCHOR - 14-07-24 : Asignar contrFX de T/FCT a CFCT
+                    //ANCHOR - 24-07-14 : Asignar contrFX de T/FCT a CFCT
                     setFXcontrlTablaFCT(contrFxtablaTemp);
                     if(FXcontrlTablaFCT==null){
                         //System.out.println("[CFCT>cargarTablaFacturas] El contrlFX de la tablaFCT es NULL. El programa se cierra!!!");
@@ -666,6 +666,7 @@ public synchronized void mostrarTablaFacturas() {
             //FIXME -  24-07-02 : Tendré que SINCRONIZAR MEDIANTE BARRERAS, para controlar que los hilos esperen hasta que esté activo el modeloFCT, o los elementos de la GUI correspondiente
             //ANCHOR - Mostrar T/FCT
             //System.out.println("[controladorFacturas>mostrarTablaFacturas] tableView con hashCode " + tableViewFCT.hashCode());
+            tablaFCT.setTitle("Tabla de Facturas");
             tablaFCT.show();
             //System.out.println("[controladorFacturas>mostrarTablaFacturas]Stage de tablaFCt " + tablaFCT.hashCode());
 
@@ -705,7 +706,14 @@ public synchronized boolean cargarVisorFacturas() throws InterruptedException, B
                 Scene escena = new Scene(root);
                 visor = new Stage();
                 visor.setScene(escena);
-                visor.setResizable(true);
+                visor.setResizable(false);
+                visor.setOnCloseRequest((ev)->{
+                    try {
+                        FxCntrlVisorFCT.getFxController().getVisorFCT().hide();
+                    } catch (InterruptedException | BrokenBarrierException e) {
+                        e.printStackTrace();
+                    }
+                });
 
                 //ANCHOR - Asignar V/FCT y contrFX/V/FCT
                 try {
@@ -726,23 +734,24 @@ public synchronized boolean cargarVisorFacturas() throws InterruptedException, B
 public synchronized void mostrarVisorFCT(int index, Factura f){   
     try {
         //System.out.println("[ControladorFacturas>mostrarVisorFCT] entrando en la barreraVisor desde el hilo " + Thread.currentThread().getName());
-        //NOTE - 13-07-24 : Ojo, hay que actualizar la facturta Actual del Controlador de Facturas manualmente...
+        //NOTE - 24-07-13 : Ojo, hay que actualizar la facturta Actual del Controlador de Facturas manualmente...
         ControladorFacturas.facturaActual = f;
         FxCntrlTablaFCT.setIndiceActual(index);
-        //NOTE - 13-07-24 : Ojo, hay que actualizar el index Actual del ControladorFX de la TablaFCT manualmente...
+        //NOTE - 24-07-13 : Ojo, hay que actualizar el index Actual del ControladorFX de la TablaFCT manualmente...
         cargarVisorFacturas();
         
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
 
+                ControladorFacturas.visorFCT.setTitle("Visor de Facturas");
                 ControladorFacturas.visorFCT.show();
                
                     System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] Llamando a actualizarDatosVisor: ");
                     System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] index: "+index + "\nfactura: \n" + f.toString());
             }
         });
-        //NOTE - 07-07-24 : Hacemos una pausa en el hilo del CFCT, no en el de la FXApplication (para ver si se inicializa el visor)
+        //NOTE - 24-07-07 : Hacemos una pausa en el hilo del CFCT, no en el de la FXApplication (para ver si se inicializa el visor)
         Thread.sleep(1000);
 
         Platform.runLater(new Runnable(){

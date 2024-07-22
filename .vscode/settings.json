@@ -1,7 +1,7 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "/usr/lib/jvm/javafx-sdk-21.0.4/lib/**/*.jar"
+        "/usr/lib/jvm/javafx-sdk-22.0.2/lib/**/*.jar"
     ],
     "java.format.settings.url": ".vscode/java-formatter.xml",
     "[java]": {
@@ -9,5 +9,6 @@
     },
     "files.exclude": {
         "**/*.class": true
-    }
+    },
+    "java.debug.settings.onBuildFailureProceed": true
 }

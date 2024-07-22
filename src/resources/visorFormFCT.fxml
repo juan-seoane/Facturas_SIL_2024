@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="744.0" prefWidth="695.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fxcontrollers.FxCntrlVisorFCT">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fxcontrollers.FxCntrlVisorFCT">
    <children>
       <VBox layoutX="121.0" layoutY="143.0" prefHeight="724.0" prefWidth="695.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -93,9 +93,9 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="apnExtractos" prefHeight="181.0" prefWidth="695.0">
+            <AnchorPane fx:id="apnExtractos" prefHeight="182.0" prefWidth="700.0">
                <children>
-                  <Pane layoutX="139.0" layoutY="8.8" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="695.0" AnchorPane.bottomAnchor="177.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="9.0">
+                  <Pane layoutX="139.0" layoutY="-1.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="700.0" AnchorPane.bottomAnchor="186.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
                      <children>
                         <Label alignment="CENTER" layoutX="3.0" layoutY="-3.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="695.0" text="EXTRACTOS">
                            <font>
@@ -104,7 +104,7 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane layoutY="40.0" prefHeight="41.0" prefWidth="695.0">
+                  <Pane layoutY="25.0" prefHeight="41.0" prefWidth="695.0">
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
@@ -152,7 +152,7 @@
                         </HBox>
                      </children>
                   </Pane>
-                  <Pane layoutY="82.0" prefHeight="41.0" prefWidth="695.0">
+                  <Pane layoutY="66.0" prefHeight="41.0" prefWidth="695.0">
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
@@ -200,7 +200,7 @@
                         </HBox>
                      </children>
                   </Pane>
-                  <Pane layoutY="124.0" prefHeight="41.0" prefWidth="695.0">
+                  <Pane layoutY="107.0" prefHeight="41.0" prefWidth="695.0">
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
@@ -248,7 +248,7 @@
                         </HBox>
                      </children>
                   </Pane>
-                  <Pane layoutY="166.0" prefHeight="41.0" prefWidth="695.0">
+                  <Pane layoutY="148.0" prefHeight="41.0" prefWidth="695.0">
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
@@ -298,18 +298,18 @@
                   </Pane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="apnTotales" prefHeight="117.0" prefWidth="695.0">
+            <AnchorPane fx:id="apnTotales" prefHeight="157.0" prefWidth="700.0">
                <children>
-                  <Pane prefHeight="42.0" prefWidth="695.0">
+                  <Pane layoutY="-8.0" prefHeight="39.0" prefWidth="695.0">
                      <children>
-                        <Label alignment="CENTER" layoutX="-1.0" layoutY="-3.0" prefHeight="48.0" prefWidth="698.0" text="TOTALES">
+                        <Label alignment="CENTER" layoutX="-1.0" prefHeight="39.0" prefWidth="698.0" text="TOTALES">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
-                  <Pane layoutY="40.0" prefHeight="39.0" prefWidth="695.0">
+                  <Pane layoutY="31.0" prefHeight="39.0" prefWidth="695.0">
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
@@ -347,7 +347,7 @@
                         </HBox>
                      </children>
                   </Pane>
-                  <Pane layoutY="79.0" prefHeight="39.0" prefWidth="695.0">
+                  <Pane layoutX="3.0" layoutY="70.0" prefHeight="39.0" prefWidth="695.0">
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
@@ -397,20 +397,59 @@
                   </Pane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="apnNota" prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane fx:id="apnNota" prefHeight="40.0" prefWidth="200.0">
                <children>
-                  <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="695.0">
+                  <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="700.0">
                      <children>
-                        <Label alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="698.0" text="NOTA">
+                        <Label alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="698.0" text="NOTA">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
-                  <Pane layoutY="42.0" prefHeight="166.0" prefWidth="695.0">
+                  <Pane layoutY="51.0" prefHeight="157.0" prefWidth="695.0">
                      <children>
-                        <TextArea fx:id="txtAreaVNota" layoutX="1.0" prefHeight="167.0" prefWidth="695.0" text="texto de prueba">
+                        <HBox layoutX="5.0" layoutY="111.0" prefHeight="42.0" prefWidth="688.0">
+                           <children>
+                              <Button fx:id="btnVizda" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnIzdaVPulsado" prefHeight="40.0" prefWidth="58.0" text="&lt;" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Arial Black" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnVNueva" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnNuevaFctVPulsado" prefHeight="40.0" prefWidth="78.0" text="NUEVA" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Arial Black" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Label fx:id="lblVTitulo" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="229.0" text="VISOR DE FACTURAS" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Arial Black" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="btnVEditar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnEditarFctVPulsado" prefHeight="40.0" prefWidth="86.0" text="EDITAR" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Arial Black" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnVCerrar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnCerraVPulsado" prefHeight="40.0" prefWidth="86.0" text="CERRAR" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Arial Black" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnVBorrar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnBorrarFctPulsado" prefHeight="40.0" prefWidth="86.0" text="BORRAR" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Arial Black" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnVdcha" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnDchaVPulsado" prefHeight="40.0" prefWidth="58.0" text="&gt;" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Arial Black" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <TextArea fx:id="txtAreaVNota" layoutX="4.0" layoutY="-6.0" prefHeight="110.0" prefWidth="688.0" text="texto de prueba">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
@@ -419,50 +458,7 @@
                   </Pane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="apnControles" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="43.0" prefWidth="695.0">
-               <children>
-                  <HBox layoutY="3.0" prefHeight="42.0" prefWidth="695.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="3.0">
-                     <children>
-                        <Button fx:id="btnVizda" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnIzdaVPulsado" prefHeight="40.0" prefWidth="58.0" text="&lt;" textAlignment="CENTER">
-                           <font>
-                              <Font name="Arial Black" size="14.0" />
-                           </font></Button>
-                        <Button fx:id="btnVNueva" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnNuevaFctVPulsado" prefHeight="40.0" prefWidth="78.0" text="NUEVA" textAlignment="CENTER">
-                           <font>
-                              <Font name="Arial Black" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnVEditar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnEditarFctVPulsado" prefHeight="40.0" prefWidth="86.0" text="EDITAR" textAlignment="CENTER">
-                           <font>
-                              <Font name="Arial Black" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnVBorrar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnBorrarFctPulsado" prefHeight="40.0" prefWidth="86.0" text="BORRAR" textAlignment="CENTER">
-                           <font>
-                              <Font name="Arial Black" size="14.0" />
-                           </font>
-                        </Button>
-                        <Label fx:id="lblVTitulo" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="243.0" text="VISOR DE FACTURAS" textAlignment="CENTER" HBox.hgrow="SOMETIMES">
-                           <font>
-                              <Font name="Arial Black" size="14.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="btnVCerrar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnCerraVPulsado" prefHeight="40.0" prefWidth="86.0" text="CERRAR" textAlignment="CENTER">
-                           <font>
-                              <Font name="Arial Black" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnVdcha" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnDchaVPulsado" prefHeight="40.0" prefWidth="58.0" text="&gt;" textAlignment="CENTER" HBox.hgrow="NEVER">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                           <font>
-                              <Font name="Arial Black" size="14.0" />
-                           </font></Button>
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
+            <AnchorPane fx:id="apnControles" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="700.0" />
          </children>
       </VBox>
    </children>

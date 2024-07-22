@@ -5,26 +5,10 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
-
-import groovy.util.ObservableList;
-import modelo.records.Año;
-import modelo.records.ConfigData;
-import modelo.records.Factura;
-import modelo.records.MisDatos;
-import modelo.records.NIF;
-import modelo.records.RutasConfig;
-import modelo.records.RutasTrabajo;
-import modelo.records.UIData;
 
 import static java.nio.file.StandardCopyOption.*;
 

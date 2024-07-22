@@ -16,8 +16,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,9 +26,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-public class Acceso extends Application implements Initializable{
+public class Acceso implements Initializable{
 
 //#region CAMPOS_FXML
     @FXML private TextField txtUsuario;
@@ -39,9 +41,8 @@ public class Acceso extends Application implements Initializable{
 //#endregion
 
 //#region OTROS_CAMPOS
-    private static Stage ventanaAcceso;
+    public static Stage ventanaAcceso;
 
-    private static Scene scene1;
     private static Scene scene2;
 
     public static TextArea canvasAcceso;
@@ -54,16 +55,23 @@ public class Acceso extends Application implements Initializable{
 //#region INIT
     //TODO: Lo de abajo sólo funciona si se implementa el Interfaz "Inicializable" (implements Initilizable)
     @FXML
-    public void initialize(URL location, ResourceBundle resources) {     
+    public void initialize(URL location, ResourceBundle resources) {  
+        canvasAcceso = this.txtArea;   
         //TODO: No sé cómo hacer para poner el foco al arrancar en ese campo de texto... la siguiente línea no funciona
         //txtUsuario.requestFocus();
-        canvasAcceso = this.txtArea;
+        
+        canvasAcceso.sceneProperty().addListener((observableScene, oldScene, newScene) -> {
+            if (newScene != null) {
+                // 'txtUsuario' está ahora en una escena, podemos obtener el Stage
+                Acceso.ventanaAcceso = (Stage) newScene.getWindow();
+            }
+        });
         //System.out.println("[Acceso - initialize()] canvasAcceso activado: " + (canvasAcceso!=null) );
     }    
 //#endregion
 
 //#region RUN_CTLLR
-private void arrancarControlador() throws IOException, InterruptedException, BrokenBarrierException{
+    private void arrancarControlador() throws IOException, InterruptedException, BrokenBarrierException{
     // TODO - 24-05-13 : Aquí arroja una 'IOException' que afecta al hilo general del programa... Habría que ver cómo evitar que se propague a las llamadas anteriores...       
            
            Controlador ctrThread = Controlador.getControlador();
@@ -73,66 +81,46 @@ private void arrancarControlador() throws IOException, InterruptedException, Bro
    
            if (!cargarPanelControl())
                System.exit(0);
-       }
+    }
    //#endregion
 
 //#region GETTERS/SETTERS
-public static String getUsuario() {
-    //Este procedimiento tiene que leer el usuario antes de cerrarse la ventana...
-    return Acceso.usuario;
-}
+    public static String getUsuario() {
+        //Este procedimiento tiene que leer el usuario antes de cerrarse la ventana...
+        return Acceso.usuario;
+    }
 
-public static TextArea getCanvas(){   
-    return Acceso.canvasAcceso;
-}
+    public static TextArea getCanvas(){ 
+        return canvasAcceso;
+    }
 //#endregion
 
 //#region EVT_BTNS
-private void pulsartecla() throws IOException {
+    private void pulsartecla() throws IOException {
 
-    iniciarPrograma();
-    
-    if (!entrar()){
-        System.exit(0);
+        iniciarPrograma();
+        
+        if (!entrar()){
+            System.exit(0);
+        }
     }
-}
 
-@FXML
-private void pulsarBotonOK() throws InterruptedException, HeadlessException, NullPointerException, IOException{
-    probar();
-}
-
-@FXML
-private void pulsarEnter(KeyEvent ke) throws InterruptedException, HeadlessException, NullPointerException, IOException{
-    if(ke.getCode()==KeyCode.ENTER){
-        pulsarBotonOK();
-        ke.consume(); // <-- stops passing the event to next node
+    @FXML
+    private void pulsarBotonOK() throws InterruptedException, HeadlessException, NullPointerException, IOException{
+        probar();
     }
-}
 
-public static void imprimir(TextArea tA, String cont) {
-    tA.appendText("\n"+cont);
-}
+    @FXML
+    private void pulsarEnter(KeyEvent ke) throws InterruptedException, HeadlessException, NullPointerException, IOException{
+        if(ke.getCode()==KeyCode.ENTER){
+            pulsarBotonOK();
+            ke.consume(); // <-- stops passing the event to next node
+        }
+    }
 
-@Override
-public void start(Stage primaryStage) throws IOException {
-
-    Acceso.ventanaAcceso = primaryStage;
-    Acceso.ventanaAcceso.setTitle("Acceso a FacturasSIL");
-
-    // prevent automatic exit of application when last window is closed
-    Platform.setImplicitExit(false);
-
-    Acceso.scene1 = crearScene1();
-    Acceso.scene2 = crearScene2();
-
-    Acceso.ventanaAcceso.setScene(Acceso.scene1);
-    //this.ventanaAcceso.initModality(Modality.APPLICATION_MODAL);
-    Acceso.ventanaAcceso.setResizable(false);
-
-    Acceso.ventanaAcceso.show();
-
-}
+    public static void imprimir(String cont) {
+        getCanvas().appendText("\n"+cont);
+    }
 //#endregion
 
 //#region LOGIN
@@ -161,11 +149,12 @@ public void start(Stage primaryStage) throws IOException {
     }
 
     private void fallo() {
+        scene2 = crearScene2();
         cambiarEscena(Acceso.scene2);
         //System.out.println("[Acceso.java: intentos>=5 y cred NO] El proceso de Autenticación ha fallado!");
         //System.out.println("[Acceso.java] El programa se cerrará!");
-        Acceso.imprimir( Acceso.getCanvas(), "\nEl proceso de Autenticación ha fallado!");
-        Acceso.imprimir( Acceso.getCanvas(), "\nEl programa se cerrará!\nPulse cualquier tecla para continuar..."); 
+        Acceso.imprimir("\nEl proceso de Autenticación ha fallado!");
+        Acceso.imprimir("\nEl programa se cerrará!\nPulse cualquier tecla para continuar..."); 
         Acceso.ventanaAcceso.requestFocus(); 
     }
 
@@ -178,14 +167,15 @@ public void start(Stage primaryStage) throws IOException {
             System.exit(0);
             e.printStackTrace();
         }
+        scene2 = crearScene2();
         cambiarEscena(Acceso.scene2);
-        Acceso.imprimir( Acceso.getCanvas(), "...Ok...Entrando!\nBienvenido a FacturasSIL 24!\nPulse una tecla para continuar...");
+        Acceso.imprimir("...Ok...Entrando!\nBienvenido a FacturasSIL 24!\nPulse una tecla para continuar...");
         //System.out.println("[Acceso.java: intentos<5 y cred OK]...OK, entrando...");
         Acceso.ventanaAcceso.requestFocus();  
     }
 
     private void reintento() throws InterruptedException {
-        Acceso.imprimir(this.txtArea, "\nDatos incorrectos: " + this.txtUsuario.getText() +" - " + this.txtPassword.getText() + "\n...Por favor vuelva a intentarlo... (intentos: "+intentos+")");
+        Acceso.imprimir("\nDatos incorrectos: " + this.txtUsuario.getText() +" - " + this.txtPassword.getText() + "\n...Por favor vuelva a intentarlo... (intentos: "+intentos+")");
         Acceso.intentos++;
 
         this.txtUsuario.clear();
@@ -212,49 +202,40 @@ public void start(Stage primaryStage) throws IOException {
 //#endregion
 
 //#region HELPERS
-    private Scene crearScene1 () throws IOException{
-        FXMLLoader loader1 = new FXMLLoader();
-        loader1.setLocation(getClass().getResource("../../resources/Acceso.fxml"));
-        
-       
-        Parent root1 = loader1.load();
-        Scene escena1 = new Scene(root1);
-        //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
 
+    public static Scene crearScene1 (Parent root) {
         
-        return escena1;
+        Scene esc1 = new Scene(root);
+        //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
+        System.out.println("[Acceso>crearScene1] escena1 creada : " + esc1.hashCode());
+        return esc1;
+        
     }
 
-    private Scene crearScene2() throws IOException{
-        FXMLLoader loader2 = new FXMLLoader();
-        loader2.setLocation(getClass().getResource("../../resources/Acceso2.fxml"));
-               
-        Parent root2 = loader2.load();
-        Scene escena2 = new Scene(root2);
+    private Scene crearScene2() {
+        FxmlHelper loader2 = new FxmlHelper("../../resources/Acceso2.fxml");      
+        Parent root2 = loader2.cargarFXML();
+        Scene esc2 = new Scene(root2);
         //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
-
-        return escena2;
+        System.out.println("[Acceso>crearScene2] escena2 creada : " + esc2.hashCode());
+        return esc2;
     }
 
     private void cambiarEscena(Scene es) {
         //TODO: Probando con un elemento de la GUI no estático
         Stage stage = (Stage) this.txtArea.getScene().getWindow();
-        
+        System.out.println("[Acceso>cambiarEscena] Leido stage: " + stage.hashCode());
         Acceso.ventanaAcceso = stage;
-
+        System.out.println("[Acceso>cambiarEscena] Asignado a stage: " + ventanaAcceso.hashCode());
         //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
         Acceso.ventanaAcceso.setScene(es);
-        //ventanaAcceso.initModality(Modality.APPLICATION_MODAL);
-        Acceso.ventanaAcceso.setResizable(false);
-        Acceso.ventanaAcceso.setTitle("Acceso a FacturasSIL");
-        
+
         Acceso.ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
             public void handle(KeyEvent ke){
 //                //System.out.println("[Acceso.java>cambiarEscena()]Key Pressed: " + ke.getCode());
                 try {
                     pulsartecla();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 
@@ -281,11 +262,8 @@ public void start(Stage primaryStage) throws IOException {
 */
         String ruta  = "../../resources/PanelControl.fxml";
         //System.out.println("[Acceso>cargarPanelControl] ruta  : " + ruta);
-//        String ruta2 = "/resources/fxmltablaFCT.fxml";
-//        //System.out.println("[Acceso>cargarPanelControl] ruta2 : " + ruta2);
 
         FxmlHelper FXMLpc = new FxmlHelper(ruta);
-        //FxmlHelper FXMLcfct = new FxmlHelper(ruta2);
 
         Parent root;
 
@@ -294,7 +272,7 @@ public void start(Stage primaryStage) throws IOException {
         Scene escena = new Scene(root);
         Stage vPC = Controlador.setStage(escena, true);
         vPC.setResizable(false);
-        // TODO - 24-05-30 : Aquí se ajusta el modo de la ventana de P/C
+        // REVIEW - 24-05-30 : Aquí se ajusta el modo de la ventana de P/C
 
         vPC.setOnCloseRequest(e -> System.exit(0));
         PanelControl.setGUI(vPC);
@@ -315,16 +293,8 @@ public void start(Stage primaryStage) throws IOException {
             //System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " existe.");
         }
         else{
-            try {
-                File miDir = new File (".");
-                //System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " no existe.");
-                //System.out.println ("[Acceso>rutaExiste] Directorio actual: " + miDir.getCanonicalPath());
-            }
-            catch(Exception e) {
-                //System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " no existe.");
-                //System.out.println("[Acceso>rutaExiste] Excepcion " + e + " durante el proceso.");
-                e.printStackTrace();
-            }
+            //System.out.println("[Acceso>rutaExiste] El archivo " + ruta + " no existe.");
+            //System.out.println ("[Acceso>rutaExiste] Directorio actual: " + miDir.getCanonicalPath());
         }
     }
 //#endregion

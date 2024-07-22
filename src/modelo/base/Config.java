@@ -1,14 +1,5 @@
 package modelo.base;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import controladores.fxcontrollers.Acceso;
 import modelo.records.Año;
 import modelo.records.ConfigData;
 import modelo.records.Contrasena;
@@ -19,12 +10,19 @@ import modelo.records.RutasConfig;
 import modelo.records.RutasTrabajo;
 import modelo.records.UIData;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
   // TODO -24-04-22 : configdata.json y misdatos.json deberían contener un JsonArray de sus respectivos objetos
 
   public class Config {
 
 //#region CAMPOS DE LA CLASE  
-// TODO: Para que los cargue desde el JSON, estos valores deberían ser Strings, y con getters recoger los datos correspondientes
   public String usuario;
   public ConfigData configData;
   public MisDatos misDatos;
@@ -251,14 +249,10 @@ public String getUsuario(){
 //#endregion
 
   // TODO- 24-04-10 : Ver cómo buscar la lista de contrasenas de un usuario...  
-
   // TODO- 24-04-19 : Sopesar si debería generar un archivo 'std_config.json' con la configuración inicial (la de admin:admin)
   // TODO- 24-04-19 : RecConfig cuándo se llama?  
 
 //#region REC_CONFIG()
-  // TODO- 24-04-23 : Aquí debería guardar los 4 archivos JSON: rutasconfig, configdata, misdatos, uidata...
-  // TODO - 24-05-02 : También probando con 'synchronized', para que no accedan a este método 2 hilos simultáneamente...  
-  
   public static synchronized boolean recConfig(String p_usuario,Config p_config) throws NullPointerException, IOException{
     // Crea las carpetas personales (si no existen)
     crearCarpetasPersonales(p_usuario);
@@ -299,10 +293,8 @@ public String getUsuario(){
     String fiTrab2 = p_config.getConfigData().getRutas().getRS();
     String fiTrab3 = p_config.getConfigData().getRutas().getCJA();
     
-    // TODO- 24-05-02 : Por ahora ocultamos la creación de los archivos de trabajo...
-    
     if(Fichero.crearCarpeta(dirTrab)&&Fichero.crearFichero(fiTrab1)&&Fichero.crearFichero(fiTrab2)&&Fichero.crearFichero(fiTrab3)){
-      //System.out.println(" [Config.java>recConfig] Archivos de trabajo personales en orden para usuario "+p_usuario);
+      System.out.println(" [Config>recConfig] Archivos de trabajo personales en orden para usuario "+p_usuario);
     } 
     return true;
   }
@@ -343,13 +335,10 @@ public String getUsuario(){
 
 //#region LEER_CFG_JSON()
   public static synchronized RutasConfig leerRutasCFGjson(String ruta){
-// TODO- 24-04-11 : Crear métodos estáticos para guardar/leer las credenciales en el archivo base config.json
 // TODO : Si no existe el fichero, devolver 'false' y crearlo 
     RutasConfig resp;
     File fichCFG = new File(ruta);
     if (fichCFG.exists()){
-      String fichero = Fichero.leerJSON(ruta);
-      Gson gson = new Gson();
 //TODO- 24-05-04 : Parece que el problema está aquí, cuando intenta leer el archivo 'rutasconfig.json'
  
       String json = Fichero.leerJSON(ruta);
@@ -380,10 +369,7 @@ public String getUsuario(){
   public static synchronized Credenciales leerCredenciales(String ruta){
     String ficheroResp = Fichero.leerJSON(ruta);
 //    System.out.println(" [Config.java] Crenciales leídas: \n" + ficheroResp);
-    
     Gson gson = new Gson();
-    // TODO- 24-04-11 : Revisar esto: Si es Arraylist.class o Contrasena.class
-  
     Credenciales credenciales = gson.fromJson(ficheroResp, Credenciales.class);
     //System.out.println("[Config>leerCredenciales] Credenciales leidas!"/* + credenciales.toString()*/);
     return credenciales;
@@ -394,15 +380,12 @@ public String getUsuario(){
   public static boolean guardarCredenciales(String user) {
 	
     String ruta="./config/creds.json";
-
     Credenciales creds= new Credenciales();
     File f=new File(ruta);
     if (f.exists()&&f.isFile()){
       creds = leerCredenciales(ruta);
     }
     creds.creds.add(new Contrasena(user, user));
-    
-    // TODO- 24-04-11 : Falta guardar en formato JSON
     if(Fichero.guardarJSON(creds.toString(), ruta))
       return true;
     else

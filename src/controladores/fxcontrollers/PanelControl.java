@@ -269,6 +269,8 @@ public class PanelControl implements Initializable{
 
 //#region HELPERS
     public void mostrar() {
+        // FIXME - 24-07-20 : Este título está fuera de sitio ¿¿¿???
+        GUIpanel.setTitle("Panel de Control");
         GUIpanel.show();
     }
 //#endregion

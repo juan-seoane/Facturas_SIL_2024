@@ -3,7 +3,7 @@ package modelo.records;
 import java.util.ArrayList;
 
 import modelo.base.Config;
-//TODO - 2024-04-19 : - Plantearse si puede ser un Java Record (habría que prescindir del Setter)
+
 public class Credenciales{
 
 	public ArrayList<Contrasena> creds;
