@@ -32,7 +32,7 @@
                                  <children>
                                     <ImageView fx:id="imgvAcceso" fitHeight="120.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@./../../imagenes/cafeSIL.png" />
+                                          <Image url="@../imagenes/cafeSIL.png" />
                                        </image>
                                        <viewport>
                                           <Rectangle2D height="135.0" width="135.0" />

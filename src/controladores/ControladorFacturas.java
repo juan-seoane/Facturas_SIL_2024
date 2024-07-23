@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.awt.HeadlessException;
 import java.io.IOException;
@@ -119,6 +120,7 @@ public class ControladorFacturas extends Thread {
 
     public synchronized void setVisorFCT(Stage v){
         visorFCT = v;
+        FxCntrlVisorFCT.setVisorFCT(v);
     }
     //ANCHOR - tableView
     public synchronized void setTableViewFCT(TableView<Factura> tvfct){
@@ -691,7 +693,7 @@ public synchronized void ocultarTablaFacturas() {
 }
 //#endregion
 
-//#region C+M_V/FCT
+//#region CARG_V/FCT
 public synchronized boolean cargarVisorFacturas() throws InterruptedException, BrokenBarrierException {
     if(visorFCT == null){
         Platform.runLater(new Runnable(){
@@ -707,12 +709,10 @@ public synchronized boolean cargarVisorFacturas() throws InterruptedException, B
                 visor = new Stage();
                 visor.setScene(escena);
                 visor.setResizable(false);
+                visor.initStyle(StageStyle.UNDECORATED);
+                visor.setAlwaysOnTop(true);
                 visor.setOnCloseRequest((ev)->{
-                    try {
-                        FxCntrlVisorFCT.getFxController().getVisorFCT().hide();
-                    } catch (InterruptedException | BrokenBarrierException e) {
-                        e.printStackTrace();
-                    }
+                    FxCntrlVisorFCT.getFxController().getVisorFCT().hide();
                 });
 
                 //ANCHOR - Asignar V/FCT y contrFX/V/FCT
@@ -730,7 +730,9 @@ public synchronized boolean cargarVisorFacturas() throws InterruptedException, B
             return false;
         }
     }
+//#endregion
 
+//#region MOSTR_V/FCT
 public synchronized void mostrarVisorFCT(int index, Factura f){   
     try {
         //System.out.println("[ControladorFacturas>mostrarVisorFCT] entrando en la barreraVisor desde el hilo " + Thread.currentThread().getName());
@@ -743,12 +745,11 @@ public synchronized void mostrarVisorFCT(int index, Factura f){
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-
                 ControladorFacturas.visorFCT.setTitle("Visor de Facturas");
                 ControladorFacturas.visorFCT.show();
-               
-                    System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] Llamando a actualizarDatosVisor: ");
-                    System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] index: "+index + "\nfactura: \n" + f.toString());
+                setVisorFCT(visorFCT);
+                System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] Llamando a actualizarDatosVisor: ");
+                System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] index: "+index + "\nfactura: \n" + f.toString());
             }
         });
         //NOTE - 24-07-07 : Hacemos una pausa en el hilo del CFCT, no en el de la FXApplication (para ver si se inicializa el visor)
@@ -758,6 +759,8 @@ public synchronized void mostrarVisorFCT(int index, Factura f){
             @Override
             public void run() {
                 try {
+                    FXcontrlVisorFCT.setTFEditables(false);
+                    FXcontrlVisorFCT.borrarTextfields();
                     FXcontrlVisorFCT.actualizarDatosVisor(index, f);
                     //System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] se muestra el visorFCT del contrFX con hashCode: " + FxCntrlVisorFCT.getFxController().getVisorFCT().hashCode());
                 } catch (InterruptedException | BrokenBarrierException  e) {

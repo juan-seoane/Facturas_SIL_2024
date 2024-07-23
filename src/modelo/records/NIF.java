@@ -35,9 +35,9 @@ public class NIF implements Comparable<NIF> {
       this.isCIF = isCIF;
   }
   
-  public String dameLetraNIF() {
+  public static String dameLetraNIF(int num) {
 
-    switch(this.getNumero()%23) {
+    switch(num%23) {
       case 0: return "T";
       case 1: return "R";
       case 2: return "W";
@@ -67,7 +67,7 @@ public class NIF implements Comparable<NIF> {
 
   public boolean comprobarNIF() {
       if (!this.isCIF()){
-        if (dameLetraNIF().equals(this.getLetra())){
+        if (dameLetraNIF(this.numero).equals(this.getLetra())){
           System.out.println("OK, la letra se corresponde con el número");
           return true;
         }else {

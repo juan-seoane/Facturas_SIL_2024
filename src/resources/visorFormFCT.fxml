@@ -113,41 +113,25 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVBase1" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="111.0" text="##########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVBase1" prefHeight="42.0" prefWidth="105.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="tipoIVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTipoIVA1" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="80.0" text="####">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTipoIVA1" prefHeight="42.0" prefWidth="78.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVIVA1" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="98.0" text="########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVIVA1" prefHeight="42.0" prefWidth="104.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="70.0" text="subTotal">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVST1" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="176.0" text="############">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVST1" prefHeight="48.0" prefWidth="162.0" />
                            </children>
                         </HBox>
                      </children>
@@ -161,41 +145,25 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVBase2" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="111.0" text="##########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVBase2" prefHeight="42.0" prefWidth="105.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="tipoIVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTipoIVA2" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="80.0" text="####">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTipoIVA2" prefHeight="42.0" prefWidth="78.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVIVA2" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="98.0" text="########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVIVA2" prefHeight="42.0" prefWidth="104.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="70.0" text="subTotal">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVST2" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="176.0" text="############">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVST2" prefHeight="48.0" prefWidth="162.0" />
                            </children>
                         </HBox>
                      </children>
@@ -209,41 +177,25 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVBase3" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="111.0" text="##########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVBase3" prefHeight="42.0" prefWidth="105.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="tipoIVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTipoIVA3" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="80.0" text="####">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTipoIVA3" prefHeight="42.0" prefWidth="78.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVIVA3" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="98.0" text="########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVIVA3" prefHeight="42.0" prefWidth="104.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="70.0" text="subTotal">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVST3" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="176.0" text="############">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVST3" prefHeight="48.0" prefWidth="162.0" />
                            </children>
                         </HBox>
                      </children>
@@ -257,41 +209,25 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVBase4" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="111.0" text="##########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVBase4" prefHeight="42.0" prefWidth="105.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="tipoIVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTipoIVA4" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="80.0" text="####">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTipoIVA4" prefHeight="42.0" prefWidth="78.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblIVVA4" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="98.0" text="########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVIVA4" prefHeight="42.0" prefWidth="104.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="70.0" text="subTotal">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVST4" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="176.0" text="############">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVST4" prefHeight="48.0" prefWidth="162.0" />
                            </children>
                         </HBox>
                      </children>
@@ -309,40 +245,32 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane layoutY="31.0" prefHeight="39.0" prefWidth="695.0">
+                  <Pane layoutY="31.0" prefHeight="30.0" prefWidth="695.0">
                      <children>
-                        <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
+                        <HBox layoutX="1.0" layoutY="-1.0" prefHeight="30.0" prefWidth="695.0">
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="BASE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTotalesBase" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="206.0" text="##########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTotalesBase" prefHeight="32.0" prefWidth="161.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="91.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTotalesIVA" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="98.0" text="########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="70.0" text="subTotal">
+                              <TextField fx:id="tfVTotalesIVA" prefHeight="32.0" prefWidth="139.0" />
+                              <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="117.0" text="subTotal" textAlignment="RIGHT">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTotalesST" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="176.0" text="############">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTotalesST" prefHeight="30.0" prefWidth="156.0">
+                                 <HBox.margin>
+                                    <Insets left="20.0" right="8.0" />
+                                 </HBox.margin>
+                              </TextField>
                            </children>
                         </HBox>
                      </children>
@@ -351,46 +279,34 @@
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="89.0" text="BASENI">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="88.0" text="BASENI">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTotalesBaseNI" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="112.0" text="########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTotalesBaseNI" prefHeight="42.0" prefWidth="142.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="89.0" text="tipoRET">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTotalesTipoRet" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="88.0" text="####">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTotalesTipoRet" prefHeight="42.0" prefWidth="69.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="107.0" text="Retenciones">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTotalesRetenciones" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="124.0" text="########">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTotalesRetenciones" prefHeight="42.0" prefWidth="114.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="70.0" text="TOTAL">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="lblVTotal" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="198.0" text="#############">
-                                 <font>
-                                    <Font name="Arial Black" size="14.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="tfVTotal" prefHeight="40.0" prefWidth="166.0">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </TextField>
                            </children>
                         </HBox>
                      </children>
@@ -432,14 +348,14 @@
                                     <Font name="Arial Black" size="14.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btnVCerrar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnCerraVPulsado" prefHeight="40.0" prefWidth="86.0" text="CERRAR" textAlignment="CENTER">
+                              <Button fx:id="btnVBorrar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnBorrarFctPulsado" prefHeight="40.0" prefWidth="86.0" text="BORRAR" textAlignment="CENTER">
                                  <font>
                                     <Font name="Arial Black" size="14.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btnVBorrar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnBorrarFctPulsado" prefHeight="40.0" prefWidth="86.0" text="BORRAR" textAlignment="CENTER">
+                              <Button fx:id="btnVCerrar" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnCerraVPulsado" prefHeight="40.0" prefWidth="86.0" text="CERRAR" textAlignment="CENTER">
                                  <font>
-                                    <Font name="Arial Black" size="14.0" />
+                                    <Font name="System Bold" size="14.0" />
                                  </font>
                               </Button>
                               <Button fx:id="btnVdcha" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnDchaVPulsado" prefHeight="40.0" prefWidth="58.0" text="&gt;" textAlignment="CENTER">

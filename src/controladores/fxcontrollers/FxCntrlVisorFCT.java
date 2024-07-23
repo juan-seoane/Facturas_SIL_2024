@@ -5,12 +5,16 @@ import controladores.Controlador;
 import controladores.ControladorFacturas;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.BrokenBarrierException;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -32,30 +36,30 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML TextField tfNIF;
 	@FXML TextField tfRS;
 
-	@FXML Label lblVBase1;
-	@FXML Label lblVTipoIVA1;
-	@FXML Label lblVIVA1;
-	@FXML Label lblVST1;
-	@FXML Label lblVBase2;
-	@FXML Label lblVTipoIVA2;
-	@FXML Label lblVIVA2;
-	@FXML Label lblVST2;
-	@FXML Label lblVBase3;
-	@FXML Label lblVTipoIVA3;
-	@FXML Label lblVIVA3;
-	@FXML Label lblVST3;
-	@FXML Label lblVBase4;
-	@FXML Label lblVTipoIVA4;
-	@FXML Label lblVIVA4;
-	@FXML Label lblVST4;
-
-	@FXML Label lblVTotalesBase;
-	@FXML Label lblVTotalesIVA;
-	@FXML Label lblVTotalesST;
-	@FXML Label lblVTotalesBaseNI;
-	@FXML Label lblVTotalesTipoRet;
-	@FXML Label lblVTotalesRetenciones;
-	@FXML Label lblVTotal;
+	@FXML TextField tfVBase1;
+	@FXML TextField tfVTipoIVA1;
+	@FXML TextField tfVIVA1;
+	@FXML TextField tfVST1;
+	@FXML TextField tfVBase2;
+	@FXML TextField tfVTipoIVA2;
+	@FXML TextField tfVIVA2;
+	@FXML TextField tfVST2;
+	@FXML TextField tfVBase3;
+	@FXML TextField tfVTipoIVA3;
+	@FXML TextField tfVIVA3;
+	@FXML TextField tfVST3;
+	@FXML TextField tfVBase4;
+	@FXML TextField tfVTipoIVA4;
+	@FXML TextField tfVIVA4;
+	@FXML TextField tfVST4;
+	
+	@FXML TextField tfVTotalesBase;
+	@FXML TextField tfVTotalesIVA;
+	@FXML TextField tfVTotalesST;
+	@FXML TextField tfVTotalesBaseNI;
+	@FXML TextField tfVTotalesTipoRet;
+	@FXML TextField tfVTotalesRetenciones;
+	@FXML TextField tfVTotal;
 
 	@FXML TextArea txtAreaVNota;
 
@@ -73,6 +77,7 @@ public class FxCntrlVisorFCT implements Initializable{
 	boolean haCambiado = false;
 	int pulsado = 0;
 
+	ArrayList<TextField> todoslostextfields;
 	static Stage visorFct;
 	static FxCntrlVisorFCT instancia;
 	static int indexActual = 0;
@@ -108,7 +113,7 @@ public class FxCntrlVisorFCT implements Initializable{
 		return instancia;
 	}
 
-	public synchronized Stage getVisorFCT() throws InterruptedException, BrokenBarrierException{
+	public synchronized Stage getVisorFCT(){
 		if (ControladorFacturas.visorFCT==null){
 			System.out.println("[FxCntrlVisorFCT>getVisorFCT] El valor del visor era NULL.Se crea un visor nuevo");
 			Stage visor = getVisorFacturas();
@@ -124,6 +129,9 @@ public class FxCntrlVisorFCT implements Initializable{
 		return null;
 	}
 
+	public static void setVisorFCT(Stage v) {
+		visorFct = v;
+	}
 	private Stage getVisorFacturas() {
 		return visorFct;
 	}
@@ -158,14 +166,7 @@ public class FxCntrlVisorFCT implements Initializable{
 			System.out.println("[FxCntrlVisorFCT>Initialize] Acabando la inicializacion del controlador FX del visorFCT ");
 		} catch (InterruptedException | BrokenBarrierException e) {
 			e.printStackTrace();
-		}
-		
-/* 		try {
-			System.out.println("[FxCntrlVisorFCT>initialize>runLater] Entrando en la barreraVisor el hilo " + Thread.currentThread().getName());
-			ControladorFacturas.barreraVisor.await();
-		} catch (InterruptedException | BrokenBarrierException e) {
-			System.exit(0);
-		} */
+		}	
 	}
 //#endregion
 
@@ -224,31 +225,27 @@ public class FxCntrlVisorFCT implements Initializable{
 
 //#region Act_VISOR
 	public synchronized void actualizarDatosVisor(int index, Factura f) throws InterruptedException, BrokenBarrierException{
-		try{
-				Stage prueba = getVisorFCT();
-				if (prueba!=null){
-					visorFct = prueba;
-				//if(visorFct!=null){
-					System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] visorFct de hashCode: " + visorFct.hashCode());
-				}
-				//Thread.sleep(500);
+		Stage prueba = getVisorFCT();
+		if (prueba!=null){
+			visorFct = prueba;
+		//if(visorFct!=null){
+			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] visorFct de hashCode: " + visorFct.hashCode());
+		}
+		//Thread.sleep(500);
 				
 //TODO - 24-07-12 : Aquí lo dejo, parece que el visor no está inicializado, o lblVID es siempre null por otro motivo...
-/* 			if(!ControladorFacturas.visorFCT.isShowing())
-				ControladorFacturas.visorFCT.show(); */
-			if(f!=null){
-			//ANCHOR - tableView
-				actualizarDatosFacturaVisor(f);
-				actualizarDatosEmpresaVisor(f);
-				actualizarExtractosVisor(f);
-				actualizarTotalesVisor(f);
-				actualizarNotaVisor(f);
-				System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] Se muestra la Factura num " + index + " :\n" + f.toString());
-			}else{
-				System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] No se muestra ninguna factura");
-			}
-		} catch ( NullPointerException | InterruptedException | BrokenBarrierException  e) {
-			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] Excepc " + e + " en la carga de la Factura en el VisorFCT.");
+/* 		if(!ControladorFacturas.visorFCT.isShowing())
+		ControladorFacturas.visorFCT.show(); */
+		if(f!=null){
+		//ANCHOR - tableView
+			actualizarDatosFacturaVisor(f);
+			actualizarDatosEmpresaVisor(f);
+			actualizarExtractosVisor(f);
+			actualizarTotalesVisor(f);
+			actualizarNotaVisor(f);
+			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] Se muestra la Factura num " + index + " :\n" + f.toString());
+		}else{
+			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] No se muestra ninguna factura");
 		}
 	}
 
@@ -268,57 +265,57 @@ public class FxCntrlVisorFCT implements Initializable{
 	private void actualizarExtractosVisor(Factura f){
 		switch(f.getExtractos().size()){
 			case 4:
-				this.lblVBase4.setText(f.getExtractos().get(3).getBase()+"");
-				this.lblVTipoIVA4.setText(f.getExtractos().get(3).getTipoIVA()+"");
-				this.lblVIVA4.setText(f.getExtractos().get(3).getIVA()+"");
-				this.lblVST4.setText(f.getExtractos().get(3).getTotal()+"");
+				this.tfVBase4.setText(f.getExtractos().get(3).getBase()+"");
+				this.tfVTipoIVA4.setText(f.getExtractos().get(3).getTipoIVA()+"");
+				this.tfVIVA4.setText(f.getExtractos().get(3).getIVA()+"");
+				this.tfVST4.setText(f.getExtractos().get(3).getTotal()+"");
 			case 3: 
-				this.lblVBase3.setText(f.getExtractos().get(2).getBase()+"");
-				this.lblVTipoIVA3.setText(f.getExtractos().get(2).getTipoIVA()+"");
-				this.lblVIVA3.setText(f.getExtractos().get(2).getIVA()+"");
-				this.lblVST3.setText(f.getExtractos().get(2).getTotal()+"");			
+				this.tfVBase3.setText(f.getExtractos().get(2).getBase()+"");
+				this.tfVTipoIVA3.setText(f.getExtractos().get(2).getTipoIVA()+"");
+				this.tfVIVA3.setText(f.getExtractos().get(2).getIVA()+"");
+				this.tfVST3.setText(f.getExtractos().get(2).getTotal()+"");			
 			case 2:
-				this.lblVBase2.setText(f.getExtractos().get(1).getBase()+"");
-				this.lblVTipoIVA2.setText(f.getExtractos().get(1).getTipoIVA()+"");
-				this.lblVIVA2.setText(f.getExtractos().get(1).getIVA()+"");
-				this.lblVST2.setText(f.getExtractos().get(1).getTotal()+"");			
+				this.tfVBase2.setText(f.getExtractos().get(1).getBase()+"");
+				this.tfVTipoIVA2.setText(f.getExtractos().get(1).getTipoIVA()+"");
+				this.tfVIVA2.setText(f.getExtractos().get(1).getIVA()+"");
+				this.tfVST2.setText(f.getExtractos().get(1).getTotal()+"");			
 			case 1:
-				this.lblVBase1.setText(f.getExtractos().get(0).getBase()+"");
-				this.lblVTipoIVA1.setText(f.getExtractos().get(0).getTipoIVA()+"");
-				this.lblVIVA1.setText(f.getExtractos().get(0).getIVA()+"");
-				this.lblVST1.setText(f.getExtractos().get(0).getTotal()+"");			
+				this.tfVBase1.setText(f.getExtractos().get(0).getBase()+"");
+				this.tfVTipoIVA1.setText(f.getExtractos().get(0).getTipoIVA()+"");
+				this.tfVIVA1.setText(f.getExtractos().get(0).getIVA()+"");
+				this.tfVST1.setText(f.getExtractos().get(0).getTotal()+"");			
 				break;
 			case 0: 
-				this.lblVBase1.setText(f.getTotales().getBase()+"");
+				this.tfVBase1.setText(f.getTotales().getBase()+"");
 				// FIXME - 24-07-03 : Si el array de Extractos es 0...¿dónde se guarda el tipoIVA?
-				//this.lblVTipoIVA1.setText(f.getExtractos().get(0).getTipoIVA()+"");
-				this.lblVIVA1.setText(f.getTotales().getIVA()+"");
-				this.lblVST1.setText(f.getTotales().getTotal()+"");
+				this.tfVTipoIVA1.setText(f.getTotales().getTipoIVA()+"");
+				this.tfVIVA1.setText(f.getTotales().getIVA()+"");
+				this.tfVST1.setText(f.getTotales().getTotal()+"");
 				break;
 			default:
-				//System.out.println("[FxCntrlVisorFCT>actualizarExtractosVisor] Error en el num de extractos de la factura seleccionada");
+				System.out.println("[FxCntrlVisorFCT>actualizarExtractosVisor] Error en el num de extractos de la factura seleccionada");
 				break;
 		}
 	}
 
 	private void actualizarTotalesVisor(Factura f) throws NullPointerException{
-		this.lblVTotalesBase.setText(f.getTotales().getBase()+"");
-		this.lblVTotalesIVA.setText(f.getTotales().getIVA()+"");
-		this.lblVTotalesST.setText(f.getTotales().getSubtotal()+"");
-		this.lblVTotalesBaseNI.setText(f.getTotales().getBaseNI()+"");
-		this.lblVTotalesTipoRet.setText(f.getTotales().getRet()+"");
-		this.lblVTotalesRetenciones.setText(f.getTotales().getRetenciones()+"");
-		this.lblVTotal.setText(f.getTotales().getTotal()+"");
+		this.tfVTotalesBase.setText(f.getTotales().getBase()+"");
+		this.tfVTotalesIVA.setText(f.getTotales().getIVA()+"");
+		this.tfVTotalesST.setText(f.getTotales().getSubtotal()+"");
+		this.tfVTotalesBaseNI.setText(f.getTotales().getBaseNI()+"");
+		this.tfVTotalesTipoRet.setText(f.getTotales().getRet()+"");
+		this.tfVTotalesRetenciones.setText(f.getTotales().getRetenciones()+"");
+		this.tfVTotal.setText(f.getTotales().getTotal()+"");
 		//lblVTitulo.setText("num de fact: " + datos[6]);
 
 	}
 
 	public void actualizarTotalesVisor(String[] datos) throws NullPointerException{
-		lblVTotalesBase.setText(datos[0]);
-		lblVTotalesIVA.setText(datos[1]);
-		lblVTotalesST.setText(datos[2]);
-		lblVTotalesBaseNI.setText(datos[3]);
-		lblVTotalesRetenciones.setText(datos[4]);
+		tfVTotalesBase.setText(datos[0]);
+		tfVTotalesIVA.setText(datos[1]);
+		tfVTotalesST.setText(datos[2]);
+		tfVTotalesBaseNI.setText(datos[3]);
+		tfVTotalesRetenciones.setText(datos[4]);
 
 	}
 
@@ -328,5 +325,41 @@ public class FxCntrlVisorFCT implements Initializable{
 		else this.txtAreaVNota.setText("--SIN NOTA--");	
 	}
 //#endregion 
+
+//#region HELPERS
+    private void addTextFields(Node node, ArrayList<TextField> textFields) {
+        if (node instanceof TextField) {
+            textFields.add((TextField) node);
+        } else if (node instanceof Parent) {
+            for (Node child : ((Parent) node).getChildrenUnmodifiable()) {
+                addTextFields(child, textFields);
+            }
+        }
+    }
+
+	public void borrarTextfields(){
+		todoslostextfields = new ArrayList<>();
+        Scene scene = getVisorFCT().getScene();
+        if (scene != null) {
+            addTextFields(scene.getRoot(), todoslostextfields);
+        }
+		for(TextField tf : todoslostextfields){
+			tf.setText("");
+		}
+		System.out.println("[FxCntrlVisorFCT>borrarTextfields] borrados los tf en Visor " + visorFct.hashCode());
+	}
+
+	public void setTFEditables(boolean editable){
+		todoslostextfields = new ArrayList<>();
+        Scene scene = getVisorFCT().getScene();
+        if (scene != null) {
+            addTextFields(scene.getRoot(), todoslostextfields);
+        }	
+		for (TextField tf : todoslostextfields){
+			tf.setEditable(editable);
+		}
+		System.out.println("[FxCntrlVisorFCT>setTFEditables] actualizados los tf a ed:" + editable + " en Visor " + visorFct.hashCode());
+	}
+//#endregion
 
 }

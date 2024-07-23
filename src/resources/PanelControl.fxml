@@ -109,7 +109,7 @@
             </Label>
             <ImageView fitHeight="88.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" smooth="false" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
                <image>
-                  <Image url="@../../imagenes/cafeSIL.png" />
+                  <Image url="@../imagenes/cafeSIL.png" />
                </image>
                <GridPane.margin>
                   <Insets bottom="5.0" left="10.0" />
