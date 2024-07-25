@@ -29,6 +29,7 @@ public class FxCntrlVisorFCT implements Initializable{
 
 	@FXML TextField tfNumFactura;
 	@FXML TextField tfFecha;
+	@FXML TextField tfCategoria;
 
 	@FXML Label lblVIDRS;
 
@@ -112,6 +113,10 @@ public class FxCntrlVisorFCT implements Initializable{
 		}
 		return instancia;
 	}
+
+	public static void setFXcontr(FxCntrlVisorFCT contr) {
+       instancia = contr;
+    }
 
 	public synchronized Stage getVisorFCT(){
 		if (ControladorFacturas.visorFCT==null){
@@ -253,6 +258,7 @@ public class FxCntrlVisorFCT implements Initializable{
 		this.lblVID.setText(f.getID()+"");
 		this.tfNumFactura.setText(f.getNumeroFactura()+"");
 		this.tfFecha.setText(f.getFecha().toString());
+		this.tfCategoria.setText(f.getCategoria().getTipo());
 	}
 
 	private void actualizarDatosEmpresaVisor(Factura f){
@@ -361,5 +367,6 @@ public class FxCntrlVisorFCT implements Initializable{
 		System.out.println("[FxCntrlVisorFCT>setTFEditables] actualizados los tf a ed:" + editable + " en Visor " + visorFct.hashCode());
 	}
 //#endregion
+
 
 }

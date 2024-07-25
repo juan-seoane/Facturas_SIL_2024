@@ -37,7 +37,6 @@ public class Acceso implements Initializable{
     @FXML private PasswordField txtPassword;
     @FXML private Button btnOK;
     @FXML public TextArea txtArea;
-    @FXML public static boolean aceptado = false;
 //#endregion
 
 //#region OTROS_CAMPOS
@@ -50,6 +49,7 @@ public class Acceso implements Initializable{
     public static int intentos = 1;
 
     private boolean credsOK;
+    public static boolean aceptado = false;    
 //#endregion
 
 //#region INIT
@@ -106,14 +106,19 @@ public class Acceso implements Initializable{
     }
 
     @FXML
-    private void pulsarBotonOK() throws InterruptedException, HeadlessException, NullPointerException, IOException{
-        probar();
+    private void pulsarbotonOK() throws InterruptedException, HeadlessException, NullPointerException, IOException{
+        if (entrar()){
+            pulsartecla();
+            System.out.println("[Acceso] Entrando...????");
+        }else{
+            probar();
+        }
     }
 
     @FXML
     private void pulsarEnter(KeyEvent ke) throws InterruptedException, HeadlessException, NullPointerException, IOException{
         if(ke.getCode()==KeyCode.ENTER){
-            pulsarBotonOK();
+            pulsarbotonOK();
             ke.consume(); // <-- stops passing the event to next node
         }
     }
@@ -134,15 +139,15 @@ public class Acceso implements Initializable{
        // Acceso.imprimir(txtArea, "[Acceso.java>probar()]Datos introducidos : "+ userF.getText()+ " - "+passF.getText());
 
         //System.out.println("[Acceso.java>probar()] Contenido del Área de Texto: "+ this.txtArea.getText());
-        //Acceso.imprimir(this.txtArea, "texto introducido : "+ userF.getText() + " - " +passF.getText()+" - intentos: "+ intentos);
+        Acceso.imprimir("texto introducido : "+ userF.getText() + " - " +passF.getText()+" - intentos: "+ intentos);
         //System.out.println("[Acceso.java>probar()] texto introducido : "+ userF.getText() + " - " +passF.getText());
 //TODO: OJO! Usuario siempre se contrasta en mayúsculas (aunque esté escrito en minúsculas)
         ComprobacionesAcceso check = new ComprobacionesAcceso();
         credsOK = check.comprobarCredenciales(user, pass);
 
-        if (!credsOK&&Acceso.intentos<3)
+        if (!credsOK&&intentos<3)
             reintento();
-        else if(!credsOK&&Acceso.intentos>=3)
+        else if(!credsOK&&intentos>=3)
             fallo();
         else 
             acierto();
@@ -150,33 +155,28 @@ public class Acceso implements Initializable{
 
     private void fallo() {
         scene2 = crearScene2();
-        cambiarEscena(Acceso.scene2);
-        //System.out.println("[Acceso.java: intentos>=5 y cred NO] El proceso de Autenticación ha fallado!");
-        //System.out.println("[Acceso.java] El programa se cerrará!");
-        Acceso.imprimir("\nEl proceso de Autenticación ha fallado!");
-        Acceso.imprimir("\nEl programa se cerrará!\nPulse cualquier tecla para continuar..."); 
-        Acceso.ventanaAcceso.requestFocus(); 
+        cambiarEscena(scene2);
+        //System.out.println("[Acceso>fallo] intentos>=5 y cred NO] El proceso de Autenticación ha fallado!");
+        //System.out.println("[Acceso>fallo] El programa se cerrará!");
+        imprimir("\nEl proceso de Autenticación ha fallado!");
+        imprimir("\nEl programa se cerrará!\nPulse cualquier tecla para continuar..."); 
+        ventanaAcceso.requestFocus(); 
     }
 
     private void acierto() {
-        Acceso.usuario=txtUsuario.getText();
-        Acceso.aceptado = true;
-        try {
-            Config.getConfig(Acceso.usuario);
-        } catch (NullPointerException | IOException e) {
-            System.exit(0);
-            e.printStackTrace();
-        }
+        usuario=txtUsuario.getText();
+        aceptado = true;
+        Config.getConfig(usuario);
         scene2 = crearScene2();
-        cambiarEscena(Acceso.scene2);
-        Acceso.imprimir("...Ok...Entrando!\nBienvenido a FacturasSIL 24!\nPulse una tecla para continuar...");
-        //System.out.println("[Acceso.java: intentos<5 y cred OK]...OK, entrando...");
-        Acceso.ventanaAcceso.requestFocus();  
+        cambiarEscena(scene2);
+        imprimir("[Acceso>acierto] Ok...Entrando!\nBienvenido a FacturasSIL 24!\nPulse una tecla para continuar...");
+        System.out.println("[Acceso>acierto] intentos<5 y cred OK]...OK, entrando...pulse una tecla para continuar");
+        ventanaAcceso.requestFocus();  
     }
 
     private void reintento() throws InterruptedException {
-        Acceso.imprimir("\nDatos incorrectos: " + this.txtUsuario.getText() +" - " + this.txtPassword.getText() + "\n...Por favor vuelva a intentarlo... (intentos: "+intentos+")");
-        Acceso.intentos++;
+        imprimir("\nDatos incorrectos: " + this.txtUsuario.getText() +" - " + this.txtPassword.getText() + "\n...Por favor vuelva a intentarlo... (intentos: "+intentos+")");
+        intentos++;
 
         this.txtUsuario.clear();
         this.txtPassword.clear();
@@ -184,7 +184,7 @@ public class Acceso implements Initializable{
     }
     
     public boolean entrar(){
-        if(Acceso.aceptado)
+        if(aceptado)
             return true;
         else
             return false;
@@ -196,7 +196,7 @@ public class Acceso implements Initializable{
         } catch (IOException | InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }
-        Acceso.ventanaAcceso.close();
+        ventanaAcceso.close();
         //Platform.exit();
     }
 //#endregion
@@ -207,7 +207,7 @@ public class Acceso implements Initializable{
         
         Scene esc1 = new Scene(root,525,550);
         //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
-        System.out.println("[Acceso>crearScene1] escena1 creada : " + esc1.hashCode());
+        //System.out.println("[Acceso>crearScene1] escena1 creada : " + esc1.hashCode());
         return esc1;
         
     }
@@ -217,22 +217,22 @@ public class Acceso implements Initializable{
         Parent root2 = loader2.cargarFXML();
         Scene esc2 = new Scene(root2);
         //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
-        System.out.println("[Acceso>crearScene2] escena2 creada : " + esc2.hashCode());
+        //System.out.println("[Acceso>crearScene2] escena2 creada : " + esc2.hashCode());
         return esc2;
     }
 
     private void cambiarEscena(Scene es) {
         //TODO: Probando con un elemento de la GUI no estático
         Stage stage = (Stage) this.txtArea.getScene().getWindow();
-        System.out.println("[Acceso>cambiarEscena] Leido stage: " + stage.hashCode());
-        Acceso.ventanaAcceso = stage;
-        System.out.println("[Acceso>cambiarEscena] Asignado a stage: " + ventanaAcceso.hashCode());
+        //System.out.println("[Acceso>cambiarEscena] Leido stage: " + stage.hashCode());
+        ventanaAcceso = stage;
+        //System.out.println("[Acceso>cambiarEscena] Asignado a stage: " + ventanaAcceso.hashCode());
         //scene.getStylesheets().add(getClass().getResource("acceso.css").toExternalForm());
-        Acceso.ventanaAcceso.setScene(es);
+        ventanaAcceso.setScene(es);
 
-        Acceso.ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
+        ventanaAcceso.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
             public void handle(KeyEvent ke){
-//                //System.out.println("[Acceso.java>cambiarEscena()]Key Pressed: " + ke.getCode());
+                System.out.println("[Acceso>cambiarEscena] Key Pressed: " + ke.getCode());
                 try {
                     pulsartecla();
                 } catch (IOException e) {
@@ -298,5 +298,4 @@ public class Acceso implements Initializable{
         }
     }
 //#endregion
-
 }

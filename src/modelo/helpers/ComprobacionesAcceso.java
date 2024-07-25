@@ -25,6 +25,7 @@ public class ComprobacionesAcceso {
 		String rutaDirPers = "./config/"+user.toUpperCase();
 		String rutasCFG = "./config/"+user.toUpperCase()+"/"+"rutasconfig.json";
 
+
 		Acceso.imprimir("\nDatos introducidos : " + user + " - " + pass +"\n(...espere 2 seg...)");
 		try {
 			Thread.sleep(2000);

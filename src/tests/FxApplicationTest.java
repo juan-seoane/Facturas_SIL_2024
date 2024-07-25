@@ -9,6 +9,7 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.TimeoutException;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -35,6 +36,7 @@ import controladores.fxcontrollers.Acceso;
 import controladores.fxcontrollers.FxCntrlTablaFCT;
 import controladores.fxcontrollers.FxCntrlVisorFCT;
 import controladores.fxcontrollers.PanelControl;
+import controladores.fxcontrollers.SplashFX;
 import controladores.helpers.FxmlHelper;
 import modelo.ModeloFacturas;
 import modelo.base.Config;
@@ -58,13 +60,14 @@ public class FxApplicationTest extends ApplicationTest{
 	public static long hashCodePC;
 	public static long hashCodeTabla;
 	public static long hashCodeVisor;
+	public static ObservableList<Factura> listaFXFCT;
 //Lo ejecuta antes de todo el conjunto de Tests
 	@BeforeAll
 	public static void setUp() throws Exception {
 
 		System.out.println("[FxApplicationTest>setUp]******INICIO*****");
 
-		ApplicationTest.launch(Acceso.class, "");
+		ApplicationTest.launch(SplashFX.class, "");
 
 		System.out.println("[FxApplicationTest>setUp]******FINAL*****");
 	
@@ -84,14 +87,14 @@ public class FxApplicationTest extends ApplicationTest{
 */
 	@Test
 	@Order(1)
-	public void loginAdminOK() throws InterruptedException{
-
+	public void visorFCTCargaOK() throws InterruptedException{
+//#region parte1:loginOK
+		Thread.sleep(7000);
 		System.out.println("[FxApplicationTest>loginAdminOK]******INICIO*****");
 
 		//var ok = find("#txtUsuario");
 		//System.out.println("[FxApplicationTest] txtUsuario existe: " + ok);
 
-		
 		moveTo("#txtUsuario");
 		//clickOn("#txtUsuario)");
 		type(KeyCode.A,KeyCode.D,KeyCode.M,KeyCode.I,KeyCode.N);
@@ -100,173 +103,115 @@ public class FxApplicationTest extends ApplicationTest{
 		type(KeyCode.A,KeyCode.D,KeyCode.M,KeyCode.I,KeyCode.N);
 		moveTo("#btnOK");
 		clickOn("#btnOK");
-		clickOn("#txtArea");
-	
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}	
 		verifyThat("#txtArea", (TextArea textArea) -> {
 			String text = textArea.getText();
-			return (text.contains("admin - admin"));
+			return (text.contains("Ok"));
 		});
+		clickOn("#btnOK");
+		System.out.println("[FxApplicationTest>PCcargaOK] Esperando a cargar el Panel de Control\r");
 		Thread.sleep(2000);
 		System.out.println("[FxApplicationTest>loginAdminOK]******FINAL*****");
-
-	}
-	
-	@Test
-	@Order(2)
-	public void pcCargaOK() throws NullPointerException, IOException, InterruptedException, BrokenBarrierException{
-		
+//#endregion
+//#region parte2_PccargaOK
 		System.out.println("[FxApplicationTest>PCcargaOK]******INICIO*****");
-		System.out.println("[FxApplicationTest>PCcargaOK] Esperando a cargar el Panel de Control\r");
-
-		Platform.runLater(new Runnable(){
-			@Override
-			public void run(){
-				try {
-					config = Config.getConfig("admin");
-					ctrlPpal = Controlador.getControlador();
-					ctrlFct = Controlador.getControladorFacturas();
-					pc = Controlador.getPanelControl();
-					var arrayFxml = cargarFXML("../../resources/PanelControl.fxml");
-					Scene escenaPC = setEscena((Parent)arrayFxml[0]);
-					Stage GUIpc = showStage(escenaPC,true);
-					PanelControl.setGUI(GUIpc);
-					pc.mostrar();
-				} catch (NullPointerException | IOException | InterruptedException | BrokenBarrierException e) {
-					e.printStackTrace();
-				}
-				hashCodePC = pc.hashCode();
-				System.out.println("[FxApplicationTest>pcCargaOK] hashCodePC: " + hashCodePC);
-				assertNotNull(pc);
-				assertNotNull(ctrlFct);
-				assertNotNull(ctrlPpal);
-				assertNotNull(config);
-				
-				//pc.mostrar();
-			}
-		}); 
-		Thread.sleep(2000);
+		config = Config.getConfig("admin");
+		ctrlPpal = Controlador.getControlador();
+		ctrlFct = Controlador.getControladorFacturas();
+		pc = Controlador.getPanelControl();
+		assertNotNull(pc);
+		hashCodePC = pc.hashCode();
+		System.out.println("[FxApplicationTest>pcCargaOK] hashCodePC: " + hashCodePC);
+		PCgui = PanelControl.getPanelControl().getGUI();
+		assertNotNull(PCgui);
+		assertNotNull(ctrlFct);
+		assertNotNull(ctrlPpal);
+		assertNotNull(config);
 		System.out.println("[FxApplicationTest>PCcargaOK]******FINAL*****");
-	}
-
-	@Test
-	@Order(3)
-	public void pcFunciona() throws InterruptedException, NullPointerException, IOException, BrokenBarrierException{
+//#endregion
+//#region parte3_pcFunciona
 		System.out.println("[FxApplicationTest>pcFunciona]******INICIO*****");
 		do{
-			System.out.print("[FxApplicationTest>pcFunciona] Esperando a cargar el Panel Control\r");
+			System.out.print("[FxApplicationTest>pcFunciona] Esperando a cargar el ControladorFacturas");
 		}while((ctrlFct=ControladorFacturas.getControlador())==null);
 		ctrlPpal = Controlador.getControlador();
 		config = Config.getConfig(usuario);
-		Platform.runLater(new Runnable(){
-			@Override
-			public void run(){
-				try {
-					config = Config.getConfig("admin");
-					ctrlPpal = Controlador.getControlador();
-					pc = PanelControl.getPanelControl();
-					hashCodePC = pc.hashCode(); 
-					assertEquals(hashCodePC,pc.hashCode());
-					var arrayFxml = cargarFXML("../../resources/PanelControl.fxml");
-					Scene escenaPC = setEscena((Parent)arrayFxml[0]);
-					Stage GUIpc = showStage(escenaPC,true);
-					PanelControl.setGUI(GUIpc);
-					pc.mostrar();
-					ctrlFct = Controlador.getControladorFacturas();
-				} catch (NullPointerException | IOException | InterruptedException | BrokenBarrierException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-/*		try {
-			Thread.sleep(2000);
-			clickOn("#btnFCT");
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			//e.printStackTrace();
-		}
+		config = Config.getConfig("admin");
+		ctrlPpal = Controlador.getControlador();
+		pc = PanelControl.getPanelControl();
+		hashCodePC = pc.hashCode(); 
+		assertEquals(hashCodePC,pc.hashCode());
+		clickOn("#btnFCT");
+		Thread.sleep(1000);
 		verifyThat("#btnFCT", (ToggleButton tbtn) -> {
 			boolean act = tbtn.isSelected();
 			return act;
 		});
-
-		//assertNotNull(this.PCgui);
-*/		System.out.println("[FxApplicationTest>pcFunciona]******FINAL*****");
+		System.out.println("[FxApplicationTest>PCfunciona] Esperando a cargar la TablaFCT");
 		Thread.sleep(2000);
-
-	}
-
-	@Test
-	@Order(4)
-	public void tablaFCTcarganOK() throws InterruptedException, NullPointerException, IOException, BrokenBarrierException {
-
+		System.out.println("[FxApplicationTest>pcFunciona]******FINAL*****");
+		
+//#endregion
+//#region parte4_tablaFCTcargaOK
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******INICIO*****");
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK] Esperando a cargar la TablaFCT\r");
-		
-		Platform.runLater(new Runnable(){
+		/*Platform.runLater(new Runnable(){
 			@Override
 			public void run(){
 					var arrayFxml = cargarFXML("../../resources/fxmltablaFCT.fxml");
 					Scene escenaTFCT = setEscena((Parent)arrayFxml[0]);
 					showStage(escenaTFCT,false);
 			}
-		});
-		config = Config.getConfig("admin");
+		});*/
+		/*config = Config.getConfig("admin");
 		ctrlPpal = Controlador.getControlador();
 		ctrlFct = ControladorFacturas.getControlador();
-		ctrlFxTablaFct = ctrlFct.getFXcontrlTablaFCT();
-
-		
+		ctrlFxTablaFct = ctrlFct.getFXcontrlTablaFCT();*/
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK] hashCodeVisor: " + hashCodeVisor);
 		modeloFCT = ModeloFacturas.getModelo();
-
 		assertNotNull(ctrlPpal);
 		assertNotNull(config);
 		assertNotNull(ctrlFct);
 		assertNotNull(pc);
 		assertNotNull(modeloFCT);
-		var listaFXFCT = modeloFCT.getListaFXFacturas();
+		listaFXFCT = modeloFCT.getListaFXFacturas();
 		ctrlFxTablaFct = ctrlFct.getFXcontrlTablaFCT();
 		assertNotNull(ctrlFxTablaFct);
 		assertTrue(listaFXFCT.get(0) instanceof Factura);
-		ctrlFxTablaFct.tblvwFct.setItems(listaFXFCT);
-		
-		Thread.sleep(2500);
+		ctrlFxTablaFct.tblvwfct.setItems(listaFXFCT);
+		Thread.sleep(3000);
 		clickOn("#btnVisorFct");
-		System.out.println("[FxApplicationTest>tablaFCTcargaOK] boton Visor pulsado!!");
-		
+		System.out.println("[FxApplicationTest>tablaFCTcargaOK] boton Visor pulsado!! Esperando a que cargue el visorFCT.");	
 		Thread.sleep(2000);
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******FINAL*****");
-	}
-
-	@Test
-	@Order(5)
-	public void visorFCTcarganOK() throws InterruptedException, NullPointerException, IOException, BrokenBarrierException {
-
+//#endregion
+//#region parte5_visorFCTcargaOK
 		System.out.println("[FxApplicationTest>visorFCTcargaOK]******INICIO*****");
 		System.out.println("[FxApplicationTest>visorFCTcargaOK] Esperando a cargar el visorFCT\r");
 		
-		Platform.runLater(new Runnable(){
+		/*Platform.runLater(new Runnable(){
 			@Override
 			public void run(){
 				var arrayFxml = cargarFXML("../../resources/visorFormFCT.fxml");
 				Scene escenaVFCT = setEscena((Parent)arrayFxml[0]);
 				showStage(escenaVFCT,true);
 			}
-		});
+		});*/
 		config = Config.getConfig("admin");
 		ctrlPpal = Controlador.getControlador();
 		ctrlFct = ControladorFacturas.getControlador();
 		ctrlFxTablaFct = ctrlFct.getFXcontrlTablaFCT();
 		modeloFCT = ModeloFacturas.getModelo();
-
 		assertNotNull(ctrlPpal);
 		assertNotNull(config);
 		assertNotNull(ctrlFct);
 		assertNotNull(pc);
 		assertNotNull(modeloFCT);
-
-		var listaFXFCT = modeloFCT.getListaFXFacturas();
-
+		listaFXFCT = modeloFCT.getListaFXFacturas();
 		//NOTE - 24-07-13 : actualizamos el VisorFCT con la FacturaActual...
 		int iact = FxCntrlTablaFCT.getIndiceActual();
 		Factura fact = listaFXFCT.get(1);
@@ -275,7 +220,6 @@ public class FxApplicationTest extends ApplicationTest{
 		//NOTE - 24-07-13 : comprobamos que no sean 'null'
 		assertEquals(0,iact);
 		assertNotNull(fact);
-
 		ctrlFct.mostrarVisorFCT(iact, fact);
 		assertTrue(listaFXFCT.get(0) instanceof Factura);
 		//FIXME - 24-07-17 : No funciona esto, después de 'mostrarVisorFCT()'' debería poder asignarse un contrFXvisorFCT, no debería ser NULL 
@@ -286,14 +230,14 @@ public class FxApplicationTest extends ApplicationTest{
 			String text = label.getText();
 			return (text.contains("2"));
 		});
-
 		Thread.sleep(2500);
 		clickOn("#btnVCerrar");
-		System.out.println("[FxApplicationTest>visorFCTcargaOK] boton Cerrar VisorFCT pulsado!!");
-		
-		System.out.println("[FxApplicationTest>visorFCTcargaOK]******FINAL*****");
+		System.out.println("[FxApplicationTest>visorFCTcargaOK] boton Cerrar VisorFCT pulsado!! Esperando a que se cierre el visor.");
 		Thread.sleep(2000);
+		System.out.println("[FxApplicationTest>visorFCTcargaOK]******FINAL*****");		
+//#endregion
 	}
+
 //Lo ejecuta despues de todo el conjunto de Tests
 	@AfterAll
 	public static void afterTests() throws InterruptedException, TimeoutException {

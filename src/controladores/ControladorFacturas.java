@@ -16,9 +16,11 @@ import javax.swing.JOptionPane;
 
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -37,7 +39,7 @@ public class ControladorFacturas extends Thread {
     public ModeloFacturas m;
     static FxCntrlTablaFCT FXcontrlTablaFCT;
     static FxCntrlVisorFCT FXcontrlVisorFCT;
-    Stage tablaFCT;
+    public static Stage tablaFCT;
     //ANCHOR - visor FCT
     public static Stage visorFCT;
     //ANCHOR - tableView
@@ -69,21 +71,29 @@ public class ControladorFacturas extends Thread {
 //#endregion
 
 //#region GETTERS_CFCT
-    public static synchronized ControladorFacturas getControlador() throws InterruptedException, BrokenBarrierException {
+    public static synchronized ControladorFacturas getControlador(){
 
         if (instancia == null) {
             //System.out.println("[ControladorFacturas>getControlador()] Instancia vacia, creando una nueva instancia generica (sin GUI asociada)");
-            instancia = new ControladorFacturas();
+            try {
+                instancia = new ControladorFacturas();
+            } catch (InterruptedException | BrokenBarrierException e) {
+                e.printStackTrace();
+            }
         }
         
         return instancia;
     }
 
-    public static synchronized ControladorFacturas getControlador(FxCntrlTablaFCT fxcntrfct) throws InterruptedException, BrokenBarrierException {
+    public static synchronized ControladorFacturas getControlador(FxCntrlTablaFCT fxcntrfct){
 
         if (instancia == null) {
             //System.out.println("[ControladorFacturas>getControlador(fxcontr)] Instancia vacia, creando una nueva instancia generica con GUI asociada!");
-            instancia = new ControladorFacturas();
+            try {
+                instancia = new ControladorFacturas();
+            } catch (InterruptedException | BrokenBarrierException e) {
+                e.printStackTrace();
+            }
         }
         GUIon = true;
         //ANCHOR - 24-07-14 : FxCntrlTablaFCT
@@ -94,7 +104,7 @@ public class ControladorFacturas extends Thread {
 
 //#region get/set_ContrFX
     //ANCHOR - 24-07-14 : FxCntrlTablaFCT
-    public synchronized FxCntrlTablaFCT getFXcontrlTablaFCT() throws InterruptedException, BrokenBarrierException{
+    public synchronized FxCntrlTablaFCT getFXcontrlTablaFCT() {
         return FXcontrlTablaFCT;
     }
     //ANCHOR - 24-07-14 : FxCntrlVisorFCT
@@ -106,16 +116,21 @@ public class ControladorFacturas extends Thread {
     }
 
     public synchronized TableView<Factura> getTableViewFCT(){
+        if (this.tableViewFCT==null)
+            this.tableViewFCT = new TableView<Factura>();
         return this.tableViewFCT;
     }
 
     //ANCHOR - 24-07-14 : FxCntrlTablaFCT
     public synchronized void setFXcontrlTablaFCT(FxCntrlTablaFCT contr){
         FXcontrlTablaFCT = contr;
+        FxCntrlTablaFCT.setFXcontr(contr);
     }
 
     public synchronized void setFXcontrlVisorFCT(FxCntrlVisorFCT contr){
         FXcontrlVisorFCT = contr;
+        FxCntrlVisorFCT.setFXcontr(contr);
+
     }
 
     public synchronized void setVisorFCT(Stage v){
@@ -133,30 +148,25 @@ public class ControladorFacturas extends Thread {
         tabla.getSelectionModel().selectedItemProperty().addListener(
             (obs, oldSelection, newSelection) -> {
 				if (newSelection != null) {
-					var index = tabla.getSelectionModel().getSelectedIndex();
+					int index = tabla.getSelectionModel().getSelectedIndex();
                     ControladorFacturas.facturaActual =  tabla.getSelectionModel().getSelectedItem();
-					FxCntrlTablaFCT.setIndiceActual(index);
+                    //Colocar index en el lblIndex de la tablaFCT
+                    FxCntrlTablaFCT.getFxController().setIndiceActual(index);
 					System.out.println("[FxCntrlTablaFCT>listener1] Has seleccionado el INDEX: " + FxCntrlTablaFCT.getIndiceActual() + " en la TABLAFCT");
 					System.out.println("[FxCntrlTablaFCT>listener1] ...desde el hilo " + Thread.currentThread().getName());
-                    try {
                         ((TableView<Factura>)(getFXcontrlTablaFCT().getTableView())).getSelectionModel().selectedIndexProperty().addListener(
                             (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-                                try {
-                                    FxCntrlTablaFCT.setIndiceActual(newValue.intValue());
+                                    int ind = newValue.intValue();
                                     ControladorFacturas.facturaActual = ((TableView<Factura>)(getFXcontrlTablaFCT().getTableView())).getSelectionModel().getSelectedItem();
+                                    //Colocar index en el lblIndex de la tablaFCT
+                                    FxCntrlTablaFCT.getFxController().setIndiceActual(ind);
                                     System.out.println("[FxCntrlTablaFCT>listener2] Has seleccionado el INDEX: " + FxCntrlTablaFCT.getIndiceActual() + " en la TABLAFCT");
                                     System.out.println("[FxCntrlTablaFCT>listener2] ...desde el hilo " + Thread.currentThread().getName());
-                            } catch (InterruptedException | BrokenBarrierException e) {
-                                e.printStackTrace();
-                            }
-                            }
+                    }
                         );
 					// NOTE - 24-07-03 - Quito el reset() al controlador de la tablaFX, para que no se arme un bucle...     
-                    } catch (InterruptedException | BrokenBarrierException e) {
-                        e.printStackTrace();
-                    }
                 }else{
-					//System.out.println("[FxCntrlTablaFCT>initialize listener] Parece que no se ha detectado la selección, a pesar de haber recogido el evento");
+					System.out.println("[FxCntrlTablaFCT>initialize listener] Parece que no se ha detectado la selección, a pesar de haber recogido el evento");
 				}
 			});
     }
@@ -166,16 +176,13 @@ public class ControladorFacturas extends Thread {
     @Override
     public void run() {
 //REVIEW - 24-07-05 : Asignaciones cuando empieza a ejecutarse el hilo
-        try {
-            this.pc = Controlador.getPanelControl();
-            this.ctrlPpal = Controlador.getControlador();
-            //NOTE - 24-07-07 : Saco la barrera para los tests de JavaFX
-            //Controlador.barreraControladores.await();
-            /* if (GUIon) this.tableViewFCT = FXcontrlTablaFCT.getTableView(); */
-        } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
-        }
-    
+
+        this.pc = Controlador.getPanelControl();
+        this.ctrlPpal = Controlador.getControlador();
+        //NOTE - 24-07-07 : Saco la barrera para los tests de JavaFX
+        //Controlador.barreraControladores.await();
+        /* if (GUIon) this.tableViewFCT = FXcontrlTablaFCT.getTableView(); */
+
         while (true) {
 //#endregion
 
@@ -615,7 +622,9 @@ public class ControladorFacturas extends Thread {
                     Parent root;
                     root = loader.cargarFXML();
                     FxCntrlTablaFCT contrFxtablaTemp = (FxCntrlTablaFCT)loader.getFXcontr();
-                    //System.out.println("[ControladorFacturas] Controlador FX para tabla de FCT asignado: " + FXcontrlTablaFCT.hashCode());
+                    FxCntrlTablaFCT.setFXcontr(contrFxtablaTemp);
+                    setFXcontrlTablaFCT(contrFxtablaTemp);
+                    System.out.println("[ControladorFacturas] Controlador FX para tabla de FCT asignado: cntrFXtabla->" + FXcontrlTablaFCT.hashCode());
                     Scene escena = new Scene(root);
                     tabla = new Stage();
                     tabla.setScene(escena);
@@ -623,36 +632,29 @@ public class ControladorFacturas extends Thread {
                     // TODO - 24-05-30 : Aquí se ajusta el modo de la ventana de la TablaFCT
                     //this.tablaFCT.initModality(Modality.NONE);
                     //ANCHOR - Asignar Stage T/FCT a CFCT
-                    //System.out.println("[CFCT>cargarTablaFacturas] Stage de Tabla con hashcode :" + tabla.hashCode());
-                    tablaFCT = tabla;
-                    //System.out.println("[CFCT>cargarTablaFacturas] Stage de Tabla asignado a ControladorFacturas.tablaFCT con valor :" + tablaFCT.hashCode());
+                    System.out.println("[CFCT>cargarTablaFacturas] Stage de Tabla con hashcode :" + tabla.hashCode());
+                    ControladorFacturas.tablaFCT = tabla;
+                    
+                    System.out.println("[CFCT>cargarTablaFacturas] Stage de Tabla asignado a ControladorFacturas.tablaFCT con valor : StageTabla->" + tablaFCT.hashCode() + " - tblVw->" + contrFxtablaTemp.getTableView().hashCode());
                     //ANCHOR - 24-07-14 : Asignar contrFX de T/FCT a CFCT
-                    setFXcontrlTablaFCT(contrFxtablaTemp);
                     if(FXcontrlTablaFCT==null){
-                        //System.out.println("[CFCT>cargarTablaFacturas] El contrlFX de la tablaFCT es NULL. El programa se cierra!!!");
+                        System.out.println("[CFCT>cargarTablaFacturas] El contrlFX de la tablaFCT es NULL. El programa se cierra!!!");
                         System.exit(0);
-                    }
-
-                    //ANCHOR - Asignar tableView a CFCT
-                    try {
-                        setTableViewFCT(FXcontrlTablaFCT.getTableView());
-                    } catch (InterruptedException | BrokenBarrierException e) {
-                        e.printStackTrace();
-                    }
-    
+                    }                   
                     //ANCHOR - tableView
                     //TODO - 24-07-13 : Aquí la TableView, al principio, es NULL, y el valor que se le va a asignar, también....
-                    try {
-                        colocarListenerEnTablaFCT(ControladorFacturas.getControlador().tableViewFCT);
-                    } catch (InterruptedException | BrokenBarrierException e) {
-                        e.printStackTrace();
-                    }
+
+
                     //System.out.println("[ControladorFacturas>cargarTablaFacturas] Cargada y asignada la tabla FCT con hashCode " + tableViewFCT.hashCode());
                     }
                 });
+                System.out.println("[ControladorFacturas>cargarTablaFacturas>runLater]...LLAMANDO A INFOTABLA");
+                imprimirInfoTabla();
             return true;
         }
         else {
+            System.out.println("[ControladorFacturas>cargarTablaFacturas]...LLAMANDO A INFOTABLA");
+            imprimirInfoTabla();
             //FIXME - 24-07-14 : Falta algo aquí... arreglar - Falta comprobar si es el controladorFX correcto
             return false;
         }
@@ -668,29 +670,35 @@ public synchronized void mostrarTablaFacturas() {
             //FIXME -  24-07-02 : Tendré que SINCRONIZAR MEDIANTE BARRERAS, para controlar que los hilos esperen hasta que esté activo el modeloFCT, o los elementos de la GUI correspondiente
             //ANCHOR - Mostrar T/FCT
             //System.out.println("[controladorFacturas>mostrarTablaFacturas] tableView con hashCode " + tableViewFCT.hashCode());
-            tablaFCT.setTitle("Tabla de Facturas");
-            tablaFCT.show();
-            //System.out.println("[controladorFacturas>mostrarTablaFacturas]Stage de tablaFCt " + tablaFCT.hashCode());
+            ControladorFacturas.tablaFCT.setTitle("Tabla de Facturas");
+            ControladorFacturas.tablaFCT.show();
+            colocarListenerEnTablaFCT(FxCntrlTablaFCT.getFxController().getTableView());
+            System.out.println("[controladorFacturas>mostrarTablaFacturas] Mostrando Stage de tablaFCt " + tablaFCT.hashCode());
 
         }
     });
+    System.out.println("[ControladorFacturas>mostrarTablaFacturas]...LLAMANDO A INFOTABLA");
+    imprimirInfoTabla();
     //REVIEW - 24-06-09 : Hay que cargar el modeloFCT para que no sea NULL eventualmente (en los test)
     m = ModeloFacturas.getModelo();
     }
 
-public synchronized void ocultarTablaFacturas() {
-    Platform.runLater(new Runnable(){
-        @Override
-        public void run(){
-            //System.out.println("[ControladorFacturas>ocultarTablaFacturas] Se oculta  la tabla FCT de hashCode " + tableViewFCT.hashCode() + "\n******************");
-            tablaFCT.hide();
+    public synchronized void ocultarTablaFacturas() {
+        System.out.println("[ControladorFacturas>ocultarTablaFacturas] Se oculta  el StageTabla->" + tablaFCT.hashCode());
+        System.out.println("[ControladorFacturas>ocultararTablaFacturas]...LLAMANDO A INFOTABLA");
+        imprimirInfoTabla();
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run(){
+                System.out.println("[ControladorFacturas>ocultarTablaFacturas>runLater] Oculto el StageTabla->" + tablaFCT.hashCode());
+                ControladorFacturas.tablaFCT.hide();
+            }
         }
-    }
-    );
+        );
+        
+        //this.tableViewFCT = null;
     
-    //this.tableViewFCT = null;
-   
-}
+    }
 //#endregion
 
 //#region CARG_V/FCT
@@ -716,12 +724,8 @@ public synchronized boolean cargarVisorFacturas() throws InterruptedException, B
                 });
 
                 //ANCHOR - Asignar V/FCT y contrFX/V/FCT
-                try {
-                    Controlador.getControladorFacturas().setVisorFCT(visor);
-                    Controlador.getControladorFacturas().setFXcontrlVisorFCT((FxCntrlVisorFCT)(loader.getFXcontr()));
-                } catch (InterruptedException | BrokenBarrierException e) {
-                    e.printStackTrace();
-                }
+                Controlador.getControladorFacturas().setVisorFCT(visor);
+                Controlador.getControladorFacturas().setFXcontrlVisorFCT((FxCntrlVisorFCT)(loader.getFXcontr()));
                 System.out.println("[ControladorFacturas>cargarVisorFacturas] asignado ContrlFact.visorFCT: " + ControladorFacturas.visorFCT.hashCode());             
                 }
             });
@@ -738,7 +742,7 @@ public synchronized void mostrarVisorFCT(int index, Factura f){
         //System.out.println("[ControladorFacturas>mostrarVisorFCT] entrando en la barreraVisor desde el hilo " + Thread.currentThread().getName());
         //NOTE - 24-07-13 : Ojo, hay que actualizar la facturta Actual del Controlador de Facturas manualmente...
         ControladorFacturas.facturaActual = f;
-        FxCntrlTablaFCT.setIndiceActual(index);
+        FxCntrlTablaFCT.getFxController().setIndiceActual(index);
         //NOTE - 24-07-13 : Ojo, hay que actualizar el index Actual del ControladorFX de la TablaFCT manualmente...
         cargarVisorFacturas();
         
@@ -749,7 +753,7 @@ public synchronized void mostrarVisorFCT(int index, Factura f){
                 ControladorFacturas.visorFCT.show();
                 setVisorFCT(visorFCT);
                 System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] Llamando a actualizarDatosVisor: ");
-                System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] index: "+index + "\nfactura: \n" + f.toString());
+                System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] index: "+index + "\nfactura: \n" + ((f==null)?"NULL":f.toString()));
             }
         });
         //NOTE - 24-07-07 : Hacemos una pausa en el hilo del CFCT, no en el de la FXApplication (para ver si se inicializa el visor)
@@ -783,6 +787,22 @@ public synchronized void ocultarVisorFCT() throws InterruptedException, BrokenBa
     });
     System.out.println("[ControladorFacturas>ocultarVisorFCT] Se oculta el VisorFCT " + visorFCT.hashCode());
 }
+//#endregion
+
+//#region HELPERS
+    public void imprimirInfoTabla(){
+        System.out.println("[ControladorFacturas]****Info Tabla****");
+        System.out.println("ControladorFacturas]   tableview->"+((tableViewFCT==null)?"NULL":tableViewFCT.hashCode()));
+        System.out.println("ControladorFacturas]  Stagetabla->"+((tablaFCT==null)?"NULL":tablaFCT.hashCode()));
+        System.out.println("ControladorFacturas] cntrFxtabla->"+((FXcontrlTablaFCT==null)?"NULL":FXcontrlTablaFCT.hashCode()));
+        System.out.println("ControladorFacturas] listaFXfact->"+((ModeloFacturas.getModelo().getListaFXFacturas()==null)?"NULL":ModeloFacturas.getModelo().getListaFXFacturas().hashCode()));
+        if (FXcontrlTablaFCT!=null)
+            FXcontrlTablaFCT.imprimirInfoTabla();
+        else
+            System.out.println("----No hay datos del cntFXtabla*---");
+        System.out.println("[ControladorFacturas]*****Fin Info*****");
+
+    }
 //#endregion
 
 //#region (VISIB)

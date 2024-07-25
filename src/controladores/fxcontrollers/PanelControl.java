@@ -21,10 +21,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-/**
- * @author juanseoane
- */
-
 public class PanelControl implements Initializable{
 
 //#region CAMPOS_FXML
@@ -47,7 +43,6 @@ public class PanelControl implements Initializable{
     static Image icon;
     //static TrayIcon trayIcon;
     static Popup popMenu;
-    public static Stage ventanaPCtl;
     public static Scene escena1;
 // TODO - 24-06-30 : Los controladoresFx de FCT deberían estar en el ControladorFacturas, no aquí...
     static FxCntrlTablaFCT fxTablaFCTcontr;
@@ -74,19 +69,11 @@ public class PanelControl implements Initializable{
         this.usuarioActual = Controlador.getUsuario();
 // TODO - 24-05-29 : Luego habrá que cambiar esto de abajo a modo NAV por defecto...
         PanelControl.modo = Controlador.INGR;
-        try {
-            this.configActual = Config.getConfig(this.usuarioActual);
-        } catch (NullPointerException | IOException e) {
-            //System.out.println("[PanelControl>Constructor] Excepcion creando el P/C, imposible obtener la config actual");
-            e.printStackTrace();
-        }
+        this.configActual = Config.getConfig(this.usuarioActual);
 //TODO - 24-06-21 : Estas asignaciones me hacen falta
-        try {
-            this.ctrlPpal = Controlador.getControlador();
-            this.ctrlFct = Controlador.getControladorFacturas();
-        } catch (InterruptedException | BrokenBarrierException e) {
-            e.printStackTrace();
-        }
+        this.ctrlPpal = Controlador.getControlador();
+        this.ctrlFct = Controlador.getControladorFacturas();
+
     }
 //#endregion
 
@@ -130,7 +117,10 @@ public class PanelControl implements Initializable{
         this.lblEntradas.setText(i +"");
     }
     public void setTrimestre(int i){
-        this.lblTrimestre.setText(i+"");
+        if (i==0)
+            this.lblTrimestre.setText("TODOS");
+        else
+            this.lblTrimestre.setText(i+"");
     }
     public void setUsuario(String user){
        this.lblUsuario.setText(user +"");
@@ -138,6 +128,11 @@ public class PanelControl implements Initializable{
     public static int getModo(){
         return PanelControl.modo;
     }
+
+    public Stage getGUI() {
+        return GUIpanel;
+    }
+    
     public static void setGUI(Stage vPC) {
         GUIpanel = vPC;
      }
@@ -274,4 +269,5 @@ public class PanelControl implements Initializable{
         GUIpanel.show();
     }
 //#endregion
+
 }

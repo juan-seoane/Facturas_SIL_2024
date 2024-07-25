@@ -117,7 +117,7 @@ import com.google.gson.JsonObject;
   // TODO - 24-04-11 : Pensar cómo meter usuario
   // TODO - 24-04-18 : Hacer un Diagrama de Flujo de todo el proceso de Config, para ajustar
   // TODO - 24-05-02 : Estoy probando con 'synchronized' intentando que no use la config mientras se genera...
-  public static Config getConfig(String user) throws NullPointerException, IOException {
+  public static Config getConfig(String user) {
     if(Config.configActual==null || !Config.configActual.getUsuario().equals(user))
       configActual = new Config(user);
     

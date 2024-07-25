@@ -12,13 +12,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1066.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fxcontrollers.FxCntrlTablaFCT">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="1066.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fxcontrollers.FxCntrlTablaFCT">
    <children>
       <VBox layoutX="35.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="650.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane prefHeight="600.0" prefWidth="900.0">
+            <AnchorPane prefHeight="522.0" prefWidth="1066.0">
                <children>
-                  <TableView fx:id="tblvwFct" prefHeight="599.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tblvwfct" layoutY="12.0" prefHeight="527.0" prefWidth="1066.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="12.0">
                     <columns>
                       <TableColumn fx:id="colID" prefWidth="29.0" text="ID" />
                       <TableColumn fx:id="colNumFact" prefWidth="115.0" text="#" />
@@ -39,14 +39,43 @@
                   </TableView>
                </children>
             </AnchorPane>
-            <Pane prefHeight="115.0" prefWidth="1001.0" style="-fx-background-color: #bfd3e3;" VBox.vgrow="NEVER">
+            <Pane prefHeight="114.0" prefWidth="1066.0" style="-fx-background-color: #bfd3e3;" VBox.vgrow="NEVER">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <children>
                   <VBox prefHeight="77.0" prefWidth="1066.0">
                      <children>
-                        <Pane prefHeight="38.0" prefWidth="1088.0">
+                        <Pane prefHeight="55.0" prefWidth="1066.0">
+                           <children>
+                              <HBox prefHeight="35.0" prefWidth="1066.0">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="35.0" prefWidth="103.0" text="tableView" />
+                                    <Label fx:id="lblInfoTblVw" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="160.0" text="##########">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="35.0" prefWidth="110.0" text="Stage" />
+                                    <Label fx:id="lblInfoStage" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="160.0" text="##########">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font></Label>
+                                    <Label alignment="CENTER" prefHeight="35.0" prefWidth="103.0" text="listaFX" />
+                                    <Label fx:id="lblInfoListaFXfacturas" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="160.0" text="##########">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font></Label>
+                                    <Label alignment="CENTER" prefHeight="35.0" prefWidth="103.0" text="cntrFX" />
+                                    <Label fx:id="lblInfoCntrFXtabla" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="35.0" prefWidth="160.0" text="##########">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font></Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="61.0" prefWidth="1066.0">
                            <children>
                               <Button fx:id="btnBorrarFct" layoutX="948.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#btnBorrarFctPulsado" prefHeight="38.0" prefWidth="100.0" text="BORRAR" />
                               <Button fx:id="btnVisorFct" mnemonicParsing="false" onAction="#btnVisorFctPulsado" prefHeight="39.0" prefWidth="100.0" text="VISOR">
@@ -66,9 +95,15 @@
                                  </font>
                               </Button>
                               <CheckBox fx:id="chkbxFiltrosActivosFct" layoutX="449.0" layoutY="11.0" mnemonicParsing="false" text="Filtros ACTIVOS" />
+                              <Label layoutX="127.0" layoutY="10.0" text="index actual :" />
+                              <Label fx:id="lblIndexT" layoutX="216.0" layoutY="9.0" text="#########">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </Pane>
-                        <Pane prefHeight="43.0" prefWidth="1066.0">
+                        <Pane prefHeight="15.0" prefWidth="1066.0">
                            <children>
                               <HBox prefHeight="39.0" prefWidth="1066.0">
                                  <children>

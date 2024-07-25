@@ -68,7 +68,7 @@ public class Controlador extends Thread {
 //#endregion
 
 //#region GET CTRL_PPAL
-	public static synchronized Controlador getControlador() throws InterruptedException, BrokenBarrierException{
+	public static synchronized Controlador getControlador(){
         if (instancia==null){
             try {
                 instancia = new Controlador();
@@ -96,14 +96,14 @@ public class Controlador extends Thread {
 //#endregion
 
 //#region GET_CFCT
-	public static synchronized ControladorFacturas getControladorFacturas() throws InterruptedException, BrokenBarrierException{
+	public static synchronized ControladorFacturas getControladorFacturas(){
         if (cfct == null){
             cfct = ControladorFacturas.getControlador();
         }
 		return cfct;
 	}
     //ANCHOR - 14-07-24 : FxCntrlTablaFCT
-    public static ControladorFacturas getControladorFacturas(FxCntrlTablaFCT fxc) throws InterruptedException, BrokenBarrierException {
+    public static ControladorFacturas getControladorFacturas(FxCntrlTablaFCT fxc){
         if (cfct == null){
             cfct = ControladorFacturas.getControlador();
         }
@@ -234,7 +234,8 @@ public static void setUsuario(String user) {
     }
     
     public static void verFactura(int index){
-        PanelControl.pulsarboton(1);
+        PanelControl.pulsarboton(1);throws InterruptedException, BrokenBarrierException{
+        if (cfct == null){
         seccion = FACT;
         notas.dispose();
         cfct.visible(true);
@@ -264,13 +265,7 @@ public static void setUsuario(String user) {
     public void run() {
 // REVIEW - 24-07-05 : Asignaciones al empezar a ejecutarse el hilo
 //TODO - 24-06-21 : Estas asignaciones me hacen falta
-    try {
-        cfct = getControladorFacturas();
-    } catch (InterruptedException | BrokenBarrierException e) {
-        //System.out.println("[Controlador>run] No se ha podido crear el CntrlFCT. El programa se cierra!!!");
-        System.exit(0);
-        e.printStackTrace();
-    }
+    cfct = getControladorFacturas();
     cfct.setName("Ctrl_FCT"); 
     cfct.start();
     //REVIEW - 24-06-04 : Tuve que cambiar el controlador de la clase PanelControl a public            

@@ -37,7 +37,7 @@
                         </AnchorPane>
                         <AnchorPane centerShape="false" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="375.0" style="-fx-background-color: #1e81b0;" HBox.hgrow="ALWAYS">
                            <children>
-                              <Button fx:id="btnOK" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#probar" prefHeight="105.0" prefWidth="125.0" style="-fx-background-color: #063970;" text="OK" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <Button fx:id="btnOK" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pulsarbotonOK" prefHeight="105.0" prefWidth="125.0" style="-fx-background-color: #063970;" text="OK" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>

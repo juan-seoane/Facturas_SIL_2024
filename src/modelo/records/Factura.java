@@ -313,7 +313,8 @@ public class Factura extends Vector implements Comparable<Factura> {
         arrayCSV[14] = "" + f.getTotales().getBaseNI();
         arrayCSV[15] = "" + f.getTotales().getRet();
         arrayCSV[16] = "" + f.getTotales().getRetenciones();
-        arrayCSV[17] = "" + f.getTotales().getTotal();
+        // NOTE - 24-07-24 : El Total se marca negativo si es Devolución
+        arrayCSV[-17] = (f.esDevolucion?"-":"") + f.getTotales().getTotal();
         //TODO : 24-06-24 - Sólo debería haber 0 o 1 notas... no tiene sentido el Objeto Nota con un Número y un Texto, llega un String con valor 'null' o el 'Texto'
         //TODO : 24-06-24 - En la tabla puede marcarse el campo Nota con un '*'' si tiene Nota, y cuando el cursor esté encima del asterisco, que se lea la nota como un texto de ayuda al lado del cursor....
         if (f.getNota()!=null){
