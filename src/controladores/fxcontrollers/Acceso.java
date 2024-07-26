@@ -139,7 +139,8 @@ public class Acceso implements Initializable{
        // Acceso.imprimir(txtArea, "[Acceso.java>probar()]Datos introducidos : "+ userF.getText()+ " - "+passF.getText());
 
         //System.out.println("[Acceso.java>probar()] Contenido del Área de Texto: "+ this.txtArea.getText());
-        Acceso.imprimir("texto introducido : "+ userF.getText() + " - " +passF.getText()+" - intentos: "+ intentos);
+        //Acceso.imprimir("texto introducido : "+ userF.getText() + " - " +passF.getText()+" - intentos: "+ intentos);
+        //Thread.sleep(2000);
         //System.out.println("[Acceso.java>probar()] texto introducido : "+ userF.getText() + " - " +passF.getText());
 //TODO: OJO! Usuario siempre se contrasta en mayúsculas (aunque esté escrito en minúsculas)
         ComprobacionesAcceso check = new ComprobacionesAcceso();
@@ -169,7 +170,7 @@ public class Acceso implements Initializable{
         Config.getConfig(usuario);
         scene2 = crearScene2();
         cambiarEscena(scene2);
-        imprimir("[Acceso>acierto] Ok...Entrando!\nBienvenido a FacturasSIL 24!\nPulse una tecla para continuar...");
+        imprimir("Ok...Entrando!\nBienvenido a FacturasSIL 24!\nPulse una tecla para continuar...");
         System.out.println("[Acceso>acierto] intentos<5 y cred OK]...OK, entrando...pulse una tecla para continuar");
         ventanaAcceso.requestFocus();  
     }

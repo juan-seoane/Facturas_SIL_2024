@@ -1,38 +1,7 @@
 package tests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.IOException;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.TimeoutException;
-
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.input.KeyCode;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.testfx.api.FxToolkit;
-import org.testfx.framework.junit5.ApplicationTest;
-import static org.testfx.api.FxAssert.verifyThat;
-
 import controladores.Controlador;
 import controladores.ControladorFacturas;
-import controladores.fxcontrollers.Acceso;
 import controladores.fxcontrollers.FxCntrlTablaFCT;
 import controladores.fxcontrollers.FxCntrlVisorFCT;
 import controladores.fxcontrollers.PanelControl;
@@ -42,9 +11,41 @@ import modelo.ModeloFacturas;
 import modelo.base.Config;
 import modelo.records.Factura;
 
+import java.util.concurrent.TimeoutException;
+
+import javafx.application.Platform;
+import javafx.beans.value.ObservableObjectValue;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testfx.api.FxAssert.verifyThat;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.testfx.api.FxToolkit;
+import org.testfx.framework.junit5.ApplicationTest;
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FxApplicationTest extends ApplicationTest{
 
+//#region CAMPOS
 	public String usuario = "admin";
 	public static Config config;
 	public static Controlador ctrlPpal;
@@ -61,6 +62,8 @@ public class FxApplicationTest extends ApplicationTest{
 	public static long hashCodeTabla;
 	public static long hashCodeVisor;
 	public static ObservableList<Factura> listaFXFCT;
+//#endregion
+
 //Lo ejecuta antes de todo el conjunto de Tests
 	@BeforeAll
 	public static void setUp() throws Exception {
@@ -85,6 +88,7 @@ public class FxApplicationTest extends ApplicationTest{
 		System.out.println("[FxApplicationTest>start]******FINAL*****");
     }
 */
+
 	@Test
 	@Order(1)
 	public void visorFCTCargaOK() throws InterruptedException{
@@ -117,6 +121,7 @@ public class FxApplicationTest extends ApplicationTest{
 		Thread.sleep(2000);
 		System.out.println("[FxApplicationTest>loginAdminOK]******FINAL*****");
 //#endregion
+
 //#region parte2_PccargaOK
 		System.out.println("[FxApplicationTest>PCcargaOK]******INICIO*****");
 		config = Config.getConfig("admin");
@@ -133,6 +138,7 @@ public class FxApplicationTest extends ApplicationTest{
 		assertNotNull(config);
 		System.out.println("[FxApplicationTest>PCcargaOK]******FINAL*****");
 //#endregion
+
 //#region parte3_pcFunciona
 		System.out.println("[FxApplicationTest>pcFunciona]******INICIO*****");
 		do{
@@ -156,6 +162,7 @@ public class FxApplicationTest extends ApplicationTest{
 		System.out.println("[FxApplicationTest>pcFunciona]******FINAL*****");
 		
 //#endregion
+
 //#region parte4_tablaFCTcargaOK
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******INICIO*****");
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK] Esperando a cargar la TablaFCT\r");
@@ -166,12 +173,11 @@ public class FxApplicationTest extends ApplicationTest{
 					Scene escenaTFCT = setEscena((Parent)arrayFxml[0]);
 					showStage(escenaTFCT,false);
 			}
-		});*/
-		/*config = Config.getConfig("admin");
+		})
+		config = Config.getConfig("admin");
 		ctrlPpal = Controlador.getControlador();
 		ctrlFct = ControladorFacturas.getControlador();
 		ctrlFxTablaFct = ctrlFct.getFXcontrlTablaFCT();*/
-		System.out.println("[FxApplicationTest>tablaFCTcargaOK] hashCodeVisor: " + hashCodeVisor);
 		modeloFCT = ModeloFacturas.getModelo();
 		assertNotNull(ctrlPpal);
 		assertNotNull(config);
@@ -183,16 +189,14 @@ public class FxApplicationTest extends ApplicationTest{
 		assertNotNull(ctrlFxTablaFct);
 		assertTrue(listaFXFCT.get(0) instanceof Factura);
 		ctrlFxTablaFct.tblvwfct.setItems(listaFXFCT);
-		Thread.sleep(3000);
-		clickOn("#btnVisorFct");
-		System.out.println("[FxApplicationTest>tablaFCTcargaOK] boton Visor pulsado!! Esperando a que cargue el visorFCT.");	
-		Thread.sleep(2000);
+		modTablaFCT = ctrlFxTablaFct.getTableView();
+		assertNotNull(modTablaFCT);	
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******FINAL*****");
 //#endregion
+
 //#region parte5_visorFCTcargaOK
 		System.out.println("[FxApplicationTest>visorFCTcargaOK]******INICIO*****");
 		System.out.println("[FxApplicationTest>visorFCTcargaOK] Esperando a cargar el visorFCT\r");
-		
 		/*Platform.runLater(new Runnable(){
 			@Override
 			public void run(){
@@ -212,7 +216,9 @@ public class FxApplicationTest extends ApplicationTest{
 		assertNotNull(pc);
 		assertNotNull(modeloFCT);
 		listaFXFCT = modeloFCT.getListaFXFacturas();
-		//NOTE - 24-07-13 : actualizamos el VisorFCT con la FacturaActual...
+		assertNotNull(listaFXFCT.get(3));
+		assertTrue(listaFXFCT.get(3) instanceof Factura);
+		/*//NOTE - 24-07-13 : actualizamos el VisorFCT con la FacturaActual...
 		int iact = FxCntrlTablaFCT.getIndiceActual();
 		Factura fact = listaFXFCT.get(1);
 		//NOTE - 24-07-13 : facturaActual que tenemos que actualizar manualmente
@@ -220,22 +226,37 @@ public class FxApplicationTest extends ApplicationTest{
 		//NOTE - 24-07-13 : comprobamos que no sean 'null'
 		assertEquals(0,iact);
 		assertNotNull(fact);
-		ctrlFct.mostrarVisorFCT(iact, fact);
-		assertTrue(listaFXFCT.get(0) instanceof Factura);
-		//FIXME - 24-07-17 : No funciona esto, después de 'mostrarVisorFCT()'' debería poder asignarse un contrFXvisorFCT, no debería ser NULL 
-		//ctrlFxVisorFct = Controlador.getControladorFacturas().getFXcontrlVisorFCT();
-		//assertNotNull(ctrlFxVisorFct);
-		Thread.sleep(3000);
+		ctrlFct.mostrarVisorFCT(iact, fact);*/
+		//NOTE - 24-07-26 : Esperamos a que acabe de cargar el visorFCT
+		ctrlFxTablaFct = Controlador.getControladorFacturas().getFXcontrlTablaFCT();
+		assertNotNull(ctrlFxTablaFct); 
+		Platform.runLater(new Runnable(){
+			@Override
+			public void run() {
+				ctrlFxTablaFct.setIndiceActual(3);
+				ControladorFacturas.setFacturaActual(listaFXFCT.get(3));
+			}	
+		});
+		Thread.sleep(1000);
+		clickOn("#btnVisorFct");
+		System.out.println("[FxApplicationTest>visorFCTcargaOK] boton Visor pulsado!! Esperando a que cargue el visorFCT.");
+		do{
+			Thread.sleep(1000);
+		}while((ctrlFxVisorFct = Controlador.getControladorFacturas().getFXcontrlVisorFCT())==null);
+		assertNotNull(ctrlFxVisorFct);
+		hashCodeVisor = ctrlFxVisorFct.getVisorFCT().hashCode();
+		System.out.println("[FxApplicationTest>tablaFCTcargaOK] hashCodeVisor: " + hashCodeVisor);
+		//NOTE - 24-07-26 : Esperamos a que el visorFCT cargue todos los datos
+		Thread.sleep(6000);
 		verifyThat("#lblVID", (Label label) -> {
 			String text = label.getText();
-			return (text.contains("2"));
+			return (text.contains("4"));
 		});
-		Thread.sleep(2500);
 		clickOn("#btnVCerrar");
 		System.out.println("[FxApplicationTest>visorFCTcargaOK] boton Cerrar VisorFCT pulsado!! Esperando a que se cierre el visor.");
-		Thread.sleep(2000);
 		System.out.println("[FxApplicationTest>visorFCTcargaOK]******FINAL*****");		
 //#endregion
+
 	}
 
 //Lo ejecuta despues de todo el conjunto de Tests
@@ -254,6 +275,7 @@ public class FxApplicationTest extends ApplicationTest{
 		System.out.println("[FxApplicationTest>afterTests]******FINAL*****");
 	}
 
+//#region HELPERS	
 	public Object[] cargarFXML(String ruta){
 
         System.out.println("[FxApplicationTest>cargarFXML] ruta  : " + ruta);
@@ -273,7 +295,7 @@ public class FxApplicationTest extends ApplicationTest{
 
 		return array;
 	}
-
+/*
 	private Scene setEscena(Parent root) {
 		
 		Scene escena = new Scene(root);
@@ -292,10 +314,12 @@ public class FxApplicationTest extends ApplicationTest{
 		st.show();
 		return st;
 	}
-/*
 	 @SuppressWarnings("unchecked")
 	public <T extends Node> T find(final String fxid){
 		return (T)(lookup(fxid).queryAll().iterator().next());
 	 }
 */
+
+//#endregion
+
 }

@@ -141,6 +141,10 @@ public class ControladorFacturas extends Thread {
     public synchronized void setTableViewFCT(TableView<Factura> tvfct){
         this.tableViewFCT = tvfct;
     }
+
+    public static void setFacturaActual(Factura f) {
+        facturaActual = f;
+    }
     
     private void colocarListenerEnTablaFCT(TableView<Factura> tabla){
         setTableViewFCT(tabla);
@@ -702,7 +706,7 @@ public synchronized void mostrarTablaFacturas() {
 //#endregion
 
 //#region CARG_V/FCT
-public synchronized boolean cargarVisorFacturas() throws InterruptedException, BrokenBarrierException {
+public synchronized boolean cargarVisorFacturas(){
     if(visorFCT == null){
         Platform.runLater(new Runnable(){
             @Override
@@ -738,7 +742,6 @@ public synchronized boolean cargarVisorFacturas() throws InterruptedException, B
 
 //#region MOSTR_V/FCT
 public synchronized void mostrarVisorFCT(int index, Factura f){   
-    try {
         //System.out.println("[ControladorFacturas>mostrarVisorFCT] entrando en la barreraVisor desde el hilo " + Thread.currentThread().getName());
         //NOTE - 24-07-13 : Ojo, hay que actualizar la facturta Actual del Controlador de Facturas manualmente...
         ControladorFacturas.facturaActual = f;
@@ -754,28 +757,24 @@ public synchronized void mostrarVisorFCT(int index, Factura f){
                 setVisorFCT(visorFCT);
                 System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] Llamando a actualizarDatosVisor: ");
                 System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] index: "+index + "\nfactura: \n" + ((f==null)?"NULL":f.toString()));
+                //NOTE - 24-07-26 : Aquí iba un Thread.sleep en el hilo CntrFCT
+                FXcontrlVisorFCT.setTFEditables(false);
+                System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] TextFields no editables");
+                FXcontrlVisorFCT.borrarTextfields();
+                System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] TextFields borrados");
+                FXcontrlVisorFCT.actualizarDatosVisor(index, f);
+                System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] se muestra el visorFCT del contrFX con hashCode: " + FxCntrlVisorFCT.getFxController().getVisorFCT().hashCode());
+
             }
         });
         //NOTE - 24-07-07 : Hacemos una pausa en el hilo del CFCT, no en el de la FXApplication (para ver si se inicializa el visor)
-        Thread.sleep(1000);
-
+        /*Thread.sleep(1000);
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                try {
-                    FXcontrlVisorFCT.setTFEditables(false);
-                    FXcontrlVisorFCT.borrarTextfields();
-                    FXcontrlVisorFCT.actualizarDatosVisor(index, f);
-                    //System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] se muestra el visorFCT del contrFX con hashCode: " + FxCntrlVisorFCT.getFxController().getVisorFCT().hashCode());
-                } catch (InterruptedException | BrokenBarrierException  e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }catch(Exception ex){
-
-    }
-    System.out.println("[ControladorFacturas] Se muestra el VisorFCT cuya instancia en el CFCT tiene el valor " + visorFCT.hashCode());
+                            }
+        });*/
+    //System.out.println("[ControladorFacturas] Se muestra el VisorFCT cuya instancia en el CFCT tiene el valor " + visorFCT.hashCode());
     }
 
 public synchronized void ocultarVisorFCT() throws InterruptedException, BrokenBarrierException{
@@ -785,7 +784,7 @@ public synchronized void ocultarVisorFCT() throws InterruptedException, BrokenBa
                 visorFCT.hide();
         }
     });
-    System.out.println("[ControladorFacturas>ocultarVisorFCT] Se oculta el VisorFCT " + visorFCT.hashCode());
+    //System.out.println("[ControladorFacturas>ocultarVisorFCT] Se oculta el VisorFCT " + visorFCT.hashCode());
 }
 //#endregion
 
