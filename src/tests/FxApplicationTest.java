@@ -291,7 +291,7 @@ public class FxApplicationTest extends ApplicationTest{
 		// NOTE - 24-07-28 : n - num de repeticiones;
 		int n = listaFXFCT.size();
 		System.out.println("[FxApplicationTest>visorFCTfunciona] Cantidad de facturas en la listaFX : " + n);
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		System.out.println("[FxApplicationTest>visorFCTfunciona] A punto de probar los botones de desplazamiento del visorFCT...");
 		NodeQuery APcontroles = find("#apnControles");
 		//NodeQuery botonDcha = lookup("#btnVdcha");
