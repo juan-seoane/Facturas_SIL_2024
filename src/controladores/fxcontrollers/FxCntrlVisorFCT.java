@@ -227,6 +227,8 @@ public class FxCntrlVisorFCT implements Initializable{
 //#region Act_VISOR
 	public synchronized void actualizarDatosVisor(int index, Factura f){
 		Stage prueba = getVisorFCT();
+		borrarTextfields();
+        System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] TextFields borrados");
 		if (prueba!=null){
 			visorFct = prueba;
 			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] visorFct de hashCode: " + visorFct.hashCode());

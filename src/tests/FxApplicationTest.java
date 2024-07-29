@@ -15,7 +15,6 @@ import java.util.concurrent.TimeoutException;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;

@@ -782,11 +782,15 @@ public synchronized boolean cargarVisorFacturas(){
 //#endregion
 
 //#region MOSTR_V/FCT
-public synchronized void mostrarVisorFCT(int index, Factura f){   
+public synchronized boolean mostrarVisorFCT(int index, Factura f){   
         //System.out.println("[ControladorFacturas>mostrarVisorFCT] entrando en la barreraVisor desde el hilo " + Thread.currentThread().getName());
         //NOTE - 24-07-13 : Ojo, hay que actualizar la facturta Actual del Controlador de Facturas manualmente...
         ControladorFacturas.facturaActual = f;
         FxCntrlTablaFCT.getFxController().setIndiceActual(index);
+        if (f==null){
+            System.out.println("[ControladorFacturas>mostrarVisorFCT] No hay factura seleccionada. No se muestra el visor");
+            return false;
+        }
         //NOTE - 24-07-13 : Ojo, hay que actualizar el index Actual del ControladorFX de la TablaFCT manualmente...
         cargarVisorFacturas();
         
@@ -801,13 +805,12 @@ public synchronized void mostrarVisorFCT(int index, Factura f){
                 //NOTE - 24-07-26 : Aquí iba un Thread.sleep en el hilo CntrFCT
                 FXcontrlVisorFCT.setTFEditables(false);
                 System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] TextFields no editables");
-                FXcontrlVisorFCT.borrarTextfields();
-                System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] TextFields borrados");
                 FXcontrlVisorFCT.actualizarDatosVisor(index, f);
                 System.out.println("[ControladorFacturas>mostrarVisorFCT>runLater] se muestra el visorFCT del contrFX con hashCode: " + FxCntrlVisorFCT.getFxController().getVisorFCT().hashCode());
 
             }
         });
+        return true;
         //NOTE - 24-07-07 : Hacemos una pausa en el hilo del CFCT, no en el de la FXApplication (para ver si se inicializa el visor)
         /*Thread.sleep(1000);
         Platform.runLater(new Runnable(){

@@ -72,7 +72,7 @@ public class FxCntrlTablaFCT implements Initializable{
 	boolean haCambiado = false;
 	int pulsado = 0;
 
-	static int indiceActual = 0;
+	static int indiceActual;
 	ControladorFacturas cfct;
 	public ObservableList<Factura> listaFxFacturas;
 //#endregion

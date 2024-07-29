@@ -25,12 +25,14 @@ public class Main {
     // REVIEW - 24-07-23 : Falta colocar en el Visor, el TipoIVA de cada Extracto
     // REVIEW - 24-07-23 : Al meter una Factura en CSV, si es devolución poner un signo negativo en el Total
     // REVIEW - 24-07-01 : Falta en el VisorFCT : informar la 'Categoría' de la Factura y reemplazar Labels (en principio no editables) por TextFields
-    // FIXME  - 24-07-28 : Cuando se muestra el visorFCT aparece otra ventana... (como un new Stage que se crea al cargar o mostrare el visor)
-    // FIXME  - 24-07-28 : Debe de ser por ello que el visor no puede pasar de la factura 2 a la 1 (bajando) o de la 4 a la 1 (subiendo)...
-    // TODO   - 24-07-24 : Hacer una validación de las fechas de las facturas (avisar si no corresponden al trimestre en cuestión)
-    // TODO   - 24-07-01 : Falta en el VisorFCT : moverse a travéws de la tablaFCT con las flechas
-    // TODO   - 24-07-01 : Falta en la TablaFCT : Investigar cómo maximizar la ventana manteniendo el formato y cómo cargar las columnas de la config
+    // REVIEW - 24-07-28 : Cuando se muestra el visorFCT aparece otra ventana... (como un new Stage que se crea al cargar o mostrare el visor)
+    // REVIEW - 24-07-28 : Además el visor no puede pasar de la factura 2 a la 1 (bajando) o de la 4 a la 1 (subiendo)...
+    // REVIEW - 24-07-29 : No se limpian los campos del visor cuando se mueve entre facturas con los controles
+    // REVIEW - 24-07-01 : Falta en el VisorFCT : moverse a travéws de la tablaFCT con las flechas
     // REVIEW - 24-07-01 : Falta en el Main     : Organizar el arranque de las GUI's (y los hilos de los controladores)... A lo mejor puedo invocar el GUI de Acceso con runLater y dejar el Application.launch()para el controlador...
+    // TODO   - 24-07-24 : Hacer una validación de las fechas de las facturas (avisar si no corresponden al trimestre en cuestión)
+    // TODO   - 24-07-01 : Falta en la TablaFCT : Investigar cómo maximizar la ventana manteniendo el formato y cómo cargar las columnas de la config
+        
         Application.launch(SplashFX.class);
     // NOTE : Desde aquí no debería funcionar hasta que se acabe la aplicación JavaFX
         System.out.println("[Main.java] Aplicación finalizada");
