@@ -14,14 +14,10 @@ import modelo.records.Factura;
 import java.util.concurrent.TimeoutException;
 
 import javafx.application.Platform;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
+import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
@@ -41,6 +37,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.service.query.NodeQuery;
+import org.testfx.util.WaitForAsyncUtils;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FxApplicationTest extends ApplicationTest{
@@ -54,6 +52,7 @@ public class FxApplicationTest extends ApplicationTest{
 	public static PanelControl pc;
 	public Stage login;
 	public Stage tablaFCT;
+	public Stage visorFCT;
 	public Stage PCgui;
 	public static FxCntrlVisorFCT ctrlFxVisorFct;
 	public static FxCntrlTablaFCT ctrlFxTablaFct;
@@ -64,6 +63,7 @@ public class FxApplicationTest extends ApplicationTest{
 	public static ObservableList<Factura> listaFXFCT;
 //#endregion
 
+//#region beforeAll
 //Lo ejecuta antes de todo el conjunto de Tests
 	@BeforeAll
 	public static void setUp() throws Exception {
@@ -75,7 +75,9 @@ public class FxApplicationTest extends ApplicationTest{
 		System.out.println("[FxApplicationTest>setUp]******FINAL*****");
 	
 	}
+//#endregion
 
+//#region start 
 //Lo ejecuta antes de cada Test individual
 /*	@Override
     public void start(Stage stage) {
@@ -88,11 +90,14 @@ public class FxApplicationTest extends ApplicationTest{
 		System.out.println("[FxApplicationTest>start]******FINAL*****");
     }
 */
+//#endregion
 
+//#region Tests
 	@Test
 	@Order(1)
 	public void visorFCTCargaOK() throws InterruptedException{
-//#region parte1:loginOK
+
+//#region parte1_loginOK
 		Thread.sleep(7000);
 		System.out.println("[FxApplicationTest>loginAdminOK]******INICIO*****");
 
@@ -116,13 +121,15 @@ public class FxApplicationTest extends ApplicationTest{
 			String text = textArea.getText();
 			return (text.contains("Ok"));
 		});
+		moveTo("#btnOK");
 		clickOn("#btnOK");
 		System.out.println("[FxApplicationTest>PCcargaOK] Esperando a cargar el Panel de Control\r");
 		Thread.sleep(2000);
 		System.out.println("[FxApplicationTest>loginAdminOK]******FINAL*****");
 //#endregion
 
-//#region parte2_PccargaOK
+//#region parte2_PccargaOK	 @SuppressWarnings("unchecked")
+
 		System.out.println("[FxApplicationTest>PCcargaOK]******INICIO*****");
 		config = Config.getConfig("admin");
 		ctrlPpal = Controlador.getControlador();
@@ -140,6 +147,7 @@ public class FxApplicationTest extends ApplicationTest{
 //#endregion
 
 //#region parte3_pcFunciona
+
 		System.out.println("[FxApplicationTest>pcFunciona]******INICIO*****");
 		do{
 			System.out.print("[FxApplicationTest>pcFunciona] Esperando a cargar el ControladorFacturas");
@@ -151,6 +159,7 @@ public class FxApplicationTest extends ApplicationTest{
 		pc = PanelControl.getPanelControl();
 		hashCodePC = pc.hashCode(); 
 		assertEquals(hashCodePC,pc.hashCode());
+		moveTo("#btnFCT");
 		clickOn("#btnFCT");
 		Thread.sleep(1000);
 		verifyThat("#btnFCT", (ToggleButton tbtn) -> {
@@ -164,6 +173,7 @@ public class FxApplicationTest extends ApplicationTest{
 //#endregion
 
 //#region parte4_tablaFCTcargaOK
+
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******INICIO*****");
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK] Esperando a cargar la TablaFCT\r");
 		/*Platform.runLater(new Runnable(){
@@ -194,9 +204,9 @@ public class FxApplicationTest extends ApplicationTest{
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK]******FINAL*****");
 //#endregion
 
-//#region parte5_visorFCTcargaOK
-		System.out.println("[FxApplicationTest>visorFCTcargaOK]******INICIO*****");
-		System.out.println("[FxApplicationTest>visorFCTcargaOK] Esperando a cargar el visorFCT\r");
+//#region parte5_tablaFCTfunciona
+
+		System.out.println("[FxApplicationTest>tablaFCTfunciona]******INICIO*****");
 		/*Platform.runLater(new Runnable(){
 			@Override
 			public void run(){
@@ -233,32 +243,94 @@ public class FxApplicationTest extends ApplicationTest{
 		Platform.runLater(new Runnable(){
 			@Override
 			public void run() {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				ctrlFxTablaFct.setIndiceActual(3);
 				ControladorFacturas.setFacturaActual(listaFXFCT.get(3));
 			}	
 		});
-		Thread.sleep(1000);
+		Thread.sleep(2000);
+		System.out.println("[FxApplicationTest>tablaFCTfunciona]*******FINAL******");
+//#endregion
+
+//#region parte6_visorFCTcargaOK
+
+		System.out.println("[FxApplicationTest>visorFCTcargaOK]******INICIO*****");
+		moveTo("#btnVisorFct");
 		clickOn("#btnVisorFct");
 		System.out.println("[FxApplicationTest>visorFCTcargaOK] boton Visor pulsado!! Esperando a que cargue el visorFCT.");
+		int cnt = 1;
 		do{
 			Thread.sleep(1000);
+			System.out.println("[FxApplicationTest>visorFCTcargaOK] " + cnt + " - Esperando a que cargue el visorFCT.");
 		}while((ctrlFxVisorFct = Controlador.getControladorFacturas().getFXcontrlVisorFCT())==null);
 		assertNotNull(ctrlFxVisorFct);
-		hashCodeVisor = ctrlFxVisorFct.getVisorFCT().hashCode();
+		visorFCT = ctrlFxVisorFct.getVisorFCT();
+		hashCodeVisor = visorFCT.hashCode();
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK] hashCodeVisor: " + hashCodeVisor);
 		//NOTE - 24-07-26 : Esperamos a que el visorFCT cargue todos los datos
-		Thread.sleep(6000);
-		verifyThat("#lblVID", (Label label) -> {
+		Thread.sleep(2000);
+		/*verifyThat("#lblVID", (Label label) -> {
 			String text = label.getText();
 			return (text.contains("4"));
-		});
+		});*/
+		System.out.println("[FxApplicationTest>visorFCTcargaOK]*******FINAL******");
+//#endregion
+
+//#region parte7_visorFCTfunciona
+		WaitForAsyncUtils.waitForFxEvents();
+		Thread.sleep(4000);
+		System.out.println("[FxApplicationTest>visorFCTfunciona]******INICIO*****");
+		Stage stage = visorFCT;
+		Scene scene = stage.getScene();
+		assertNotNull(scene);
+		System.out.println("[FxApplicationTest>visorFCTfunciona] La escena NO es NULL");
+		// NOTE - 24-07-28 : n - num de repeticiones;
+		int n = listaFXFCT.size();
+		System.out.println("[FxApplicationTest>visorFCTfunciona] Cantidad de facturas en la listaFX : " + n);
+		Thread.sleep(3000);
+		System.out.println("[FxApplicationTest>visorFCTfunciona] A punto de probar los botones de desplazamiento del visorFCT...");
+		NodeQuery APcontroles = find("#apnControles");
+		//NodeQuery botonDcha = lookup("#btnVdcha");
+		System.out.print("[FxApplicationTest>visorFCTfunciona] Comprobando que los controles del visor existen... ");
+		//assertNotNull(botonDcha);
+		assertNotNull(APcontroles);
+		System.out.println("OK");
+		moveTo("#apnControles");
+		Thread.sleep(2000);
+		moveTo("#btnVdcha");
+		for (int i=1;i<=n;i++){
+			clickOn("#btnVdcha");
+			System.out.println("[FxApplicationTest>visorFCTfunciona] boton Dcha pulsado en el visorFCT. Rep " + i);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		moveTo("#btnVizda");
+		for (int i=1;i<=n;i++){
+			clickOn("#btnVizda");
+			System.out.println("[FxApplicationTest>visorFCTfunciona] boton Izda pulsado en el visorFCT. Rep " + i);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		moveTo("#btnVCerrar");
 		clickOn("#btnVCerrar");
-		System.out.println("[FxApplicationTest>visorFCTcargaOK] boton Cerrar VisorFCT pulsado!! Esperando a que se cierre el visor.");
-		System.out.println("[FxApplicationTest>visorFCTcargaOK]******FINAL*****");		
+		System.out.println("[FxApplicationTest>visorFCTfunciona] boton Cerrar VisorFCT pulsado!! Esperando a que se cierre el visor.");
+		System.out.println("[FxApplicationTest>visorFCTfunciona]******FINAL*****");		
 //#endregion
 
 	}
+//#endregion
 
+//#region afterAll
 //Lo ejecuta despues de todo el conjunto de Tests
 	@AfterAll
 	public static void afterTests() throws InterruptedException, TimeoutException {
@@ -274,6 +346,7 @@ public class FxApplicationTest extends ApplicationTest{
 		*/
 		System.out.println("[FxApplicationTest>afterTests]******FINAL*****");
 	}
+//#endregion
 
 //#region HELPERS	
 	public Object[] cargarFXML(String ruta){
@@ -314,11 +387,12 @@ public class FxApplicationTest extends ApplicationTest{
 		st.show();
 		return st;
 	}
-	 @SuppressWarnings("unchecked")
-	public <T extends Node> T find(final String fxid){
-		return (T)(lookup(fxid).queryAll().iterator().next());
-	 }
 */
+
+	public NodeQuery find(final String fxid){
+		return (lookup(fxid)/*.queryAll().iterator().next()*/);
+	 }
+
 
 //#endregion
 

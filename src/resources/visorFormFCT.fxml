@@ -11,7 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fxcontrollers.FxCntrlVisorFCT">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="700.0"
+   xmlns="http://javafx.com/javafx/22"
+   xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fxcontrollers.FxCntrlVisorFCT">
    <children>
       <VBox layoutX="121.0" layoutY="143.0" prefHeight="724.0" prefWidth="695.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -57,8 +59,6 @@
                               </Label>
                            </children>
                         </Pane>
-                     </children>
-                     <children>
                         <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="200.0">
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="38.0" text="ID">
@@ -240,11 +240,11 @@
                   </Pane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="apnTotales" prefHeight="157.0" prefWidth="700.0">
+            <AnchorPane fx:id="apnTotales" prefHeight="111.0" prefWidth="700.0">
                <children>
                   <Pane layoutY="-8.0" prefHeight="39.0" prefWidth="695.0">
                      <children>
-                        <Label alignment="CENTER" layoutX="-1.0" prefHeight="39.0" prefWidth="698.0" text="TOTALES">
+                        <Label alignment="CENTER" layoutX="-1.0" prefHeight="30.0" prefWidth="698.0" text="TOTALES">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -319,7 +319,7 @@
                   </Pane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="apnNota" prefHeight="40.0" prefWidth="200.0">
+            <AnchorPane fx:id="apnNota" prefHeight="158.0" prefWidth="700.0">
                <children>
                   <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="700.0">
                      <children>
@@ -330,9 +330,20 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane layoutY="51.0" prefHeight="157.0" prefWidth="695.0">
+               </children>
+               <children>
+                  <TextArea fx:id="txtAreaVNota" layoutX="2.0" layoutY="23.0" prefHeight="110.0" prefWidth="695.0" text="texto de prueba">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextArea>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="apnControles" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="56.0" prefWidth="700.0">
+               <children>
+                  <Pane prefHeight="40.0" prefWidth="695.0">
                      <children>
-                        <HBox layoutX="5.0" layoutY="111.0" prefHeight="42.0" prefWidth="688.0">
+                        <HBox layoutX="5.0" layoutY="-4.0" prefHeight="50.0" prefWidth="688.0">
                            <children>
                               <Button fx:id="btnVizda" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#btnIzdaVPulsado" prefHeight="40.0" prefWidth="58.0" text="&lt;" textAlignment="CENTER">
                                  <font>
@@ -371,16 +382,10 @@
                               </Button>
                            </children>
                         </HBox>
-                        <TextArea fx:id="txtAreaVNota" layoutX="4.0" layoutY="-6.0" prefHeight="110.0" prefWidth="688.0" text="texto de prueba">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </TextArea>
                      </children>
                   </Pane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="apnControles" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="700.0" />
          </children>
       </VBox>
    </children>

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.BrokenBarrierException;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -92,13 +93,11 @@ public class FxCntrlVisorFCT implements Initializable{
 		
 		if(this.cfct==null) this.cfct = Controlador.getControladorFacturas();
 
- 		if (visorFct==null){
-			ControladorFacturas.visorFCT = new Stage();
-			visorFct = ControladorFacturas.visorFCT;
-			if (visorFct!=null)
-				System.out.println("[FxCntrlVisorFCT>constructor] Asignado el VisorFCT con hashCode: "+ visorFct.hashCode());
-			else System.out.println("[FxCntrlVisorFCT>constructor] El VisorFCT sigue siendo NULL");
-		}
+		ControladorFacturas.visorFCT = getVisorFCT();
+		visorFct = ControladorFacturas.visorFCT;
+		if (visorFct!=null)
+			System.out.println("[FxCntrlVisorFCT>constructor] Asignado el VisorFCT con hashCode: "+ visorFct.hashCode());
+		else System.out.println("[FxCntrlVisorFCT>constructor] El VisorFCT sigue siendo NULL");
 	}
 //#endregion
 
@@ -159,9 +158,10 @@ public class FxCntrlVisorFCT implements Initializable{
 			indexActual = cfct.getFXcontrlTablaFCT().getIndiceSeleccionadoTabla();
 			System.out.println("[FxCntrlVisorFCT>initialize] Index actual en tabla " + cfct.getFXcontrlTablaFCT().getTableView().hashCode() + " : " + indexActual);
 			if (FxCntrlVisorFCT.getFxController()!=null){
-				FxCntrlVisorFCT.visorFct = getVisorFCT();
-				System.out.println("[FxCntrlVisorFCT>initialize] Llamando a actualizarDatosVisor - visor con hashCode: " + FxCntrlVisorFCT.visorFct.hashCode());
-				actualizarDatosVisor(indexActual, ControladorFacturas.facturaActual);
+				if((FxCntrlVisorFCT.visorFct = getVisorFCT())!=null){
+					System.out.println("[FxCntrlVisorFCT>initialize] Llamando a actualizarDatosVisor - visor con hashCode: " + FxCntrlVisorFCT.visorFct.hashCode());
+					actualizarDatosVisor(indexActual, ControladorFacturas.facturaActual);
+				}
 			}
 		}else{
 			System.out.println("[FxCntrlVisorFCT>initialize] tabla de valor NULL. El programa se cerrará");
@@ -229,21 +229,25 @@ public class FxCntrlVisorFCT implements Initializable{
 		Stage prueba = getVisorFCT();
 		if (prueba!=null){
 			visorFct = prueba;
-		//if(visorFct!=null){
 			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] visorFct de hashCode: " + visorFct.hashCode());
 		}
 		//Thread.sleep(500);				
 //TODO - 24-07-12 : Aquí lo dejo, parece que el visor no está inicializado, o lblVID es siempre null por otro motivo...
-		/*if(!ControladorFacturas.visorFCT.isShowing())
-		ControladorFacturas.visorFCT.show();*/
+		if(!ControladorFacturas.visorFCT.isShowing())
+		ControladorFacturas.visorFCT.show();
 		if(f!=null){
-		//ANCHOR - tableView
-			actualizarDatosFacturaVisor(f);
-			actualizarDatosEmpresaVisor(f);
-			actualizarExtractosVisor(f);
-			actualizarTotalesVisor(f);
-			actualizarNotaVisor(f);
-			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] Se muestra la Factura num " + index + " :\n" + f.toString());
+			//ANCHOR - tableView
+			Platform.runLater(new Runnable(){
+				@Override
+				public void run(){
+					actualizarDatosFacturaVisor(f);
+					actualizarDatosEmpresaVisor(f);
+					actualizarExtractosVisor(f);
+					actualizarTotalesVisor(f);
+					actualizarNotaVisor(f);
+					System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] Se muestra la Factura num " + index + " :\n" + f.toString());	
+				}
+			});
 		}else{
 			System.out.println("[FxCntrlVisorFCT>actualizarDatosVisor] No se muestra ninguna factura");
 		}

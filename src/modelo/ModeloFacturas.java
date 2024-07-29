@@ -124,10 +124,9 @@ public class ModeloFacturas {
 //#region leerFacturas
     public ObservableList<Factura> getListaFXFacturas(){
         List<Factura> fact_prev = null;
-//TODO - 24-06-16 : - Habrá que filtrar la lista de facturas después
         try {
             fact_prev = leerFacturasSinFiltrar();
-        } catch (NullPointerException | IOException e) {
+        } catch (NullPointerException e) {
             //System.out.println("[ModeloFacturas>getListaFXFacturas] Error al recoger la lista observable (para JFX) de facturas");
             e.printStackTrace();
         }
@@ -149,14 +148,20 @@ public class ModeloFacturas {
         return filtrar(ModeloFacturas.facturas);
     }
 
-    public List<Factura> leerFacturasSinFiltrar() throws NullPointerException, IOException{
+    public List<Factura> leerFacturasSinFiltrar() {
         ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.getUsuario()).getRutaFCT().toString());
         ArrayList<String[]> arrayFct = ficheroFacturas.leerCSV(ficheroFacturas.rutaArchivo);
-        var listaFct = ConvertirArrayCSVenListaFCT(arrayFct);
+        ArrayList<Factura> listaFct= null;
+        try {
+            listaFct = ConvertirArrayCSVenListaFCT(arrayFct);
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
+        }
        
         numeroFacturas = listaFct.size();
         if (numeroFacturas == 0){
             listaFct.add(new Factura());
+            numeroFacturas = listaFct.size();
         }
 
         return listaFct;

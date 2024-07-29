@@ -319,10 +319,12 @@ public class ControladorFacturas extends Thread {
                         //System.out.println("[ControladorFacturas>run] Se borrará la Factura actual");
                         break;
                     case 5:
-                        //System.out.println("[ControladorFacturas>run] La seleccion de la tablaFCT se movera hacia arriba");
+                        if(anteriorFacturaVisor())
+                            System.out.println("[ControladorFacturas>run] La seleccion de la tablaFCT se movera hacia arriba");
                         break;
                     case 6:
-                        //System.out.println("[ControladorFacturas>run] La seleccion de la tablaFCT se movera hacia abajo");
+                        if(siguienteFacturaVisor())
+                            System.out.println("[ControladorFacturas>run] La seleccion de la tablaFCT se movera hacia abajo");
                         break;
                 }
                 FXcontrlVisorFCT.reset();
@@ -342,49 +344,102 @@ public class ControladorFacturas extends Thread {
 //#endregion
 
 //#region (VisorOps)
-    public boolean anteriorFacturaVisor() throws NullPointerException, IOException {
-		//System.out.println("[ControladorFacturas] Ha pulsado en el visorFCT el boton atras. ");
-        int i = FXcontrlTablaFCT.getIndiceSeleccionadoTabla();
-        List<Factura> lista = m.leerFacturas();
-        if (i > 0) {
-// TODO - 24-06-30 : HAY QUE AJUSTAR EL VISOR PARA QUE SELECCIONE LA FACTURA ADECUADA DESDPUES DE ACTIVAR EL FILTRO 
-            int nuevoindice = i-1;
-            //System.out.println(" [ControladorFacturas] Actualizando Visor!");
-            actualizarVisor(nuevoindice);
-            //System.out.println(" [ControladorFacturas] Actualizando tabla");
-            FXcontrlTablaFCT.seleccionarIndiceTabla(nuevoindice);
-        } else {
-            int nuevoindice = lista.size()-1;
-            //System.out.println(" [ControladorFacturas] Actualizando Visor!");
-            actualizarVisor(nuevoindice);
-            //System.out.println(" [ControladorFacturas] Actualizando tabla");
-            FXcontrlTablaFCT.seleccionarIndiceTabla(nuevoindice);
-        }
-        //JOptionPane.showMessageDialog(null,"[ControladorFacturas] Index Visor: "+visor.getIndex()+" Index Tabla: "+tabla.getIndice());
+    public boolean anteriorFacturaVisor(){
+		System.out.println("[ControladorFacturas] Ha pulsado en el visorFCT el boton atras. ");
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run(){
+                int i = FXcontrlTablaFCT.getIndiceSeleccionadoTabla();
+                System.out.println("[ControladorFacturas>anteriorFacturaVisor] Desde el indice " + i);
+                List<Factura> lista = m.leerFacturasSinFiltrar();
+                System.out.println("[ControladorFacturas>anteriorFacturaVisor] Leida Lista de Facturas de tamaño " + lista.size());
+                if (i > 0) {
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            // TODO - 24-06-30 : HAY QUE AJUSTAR EL VISOR PARA QUE SELECCIONE LA FACTURA ADECUADA DESDPUES DE ACTIVAR EL FILTRO 
+                            int nuevoindice = i-1;
+                            TableView<Factura> tv = FxCntrlTablaFCT.getFxController().getTableView();
+                            System.out.println(" [ControladorFacturas] Actualizando tabla - tableView " + tv.hashCode() + " - nuevo index: " + nuevoindice);
+                            FxCntrlTablaFCT.getFxController().seleccionarIndiceTabla(nuevoindice);
+                            Factura f = FxCntrlTablaFCT.getFxController().getFacturaSeleccionadaTabla();
+                            facturaActual = f;
+                            Stage vs = getVisorFCT();
+                            System.out.println(" [ControladorFacturas] Actualizando Visor " + vs.hashCode());
+                            FxCntrlVisorFCT.getFxController().actualizarDatosVisor(nuevoindice, f);
+                        }
+                    });
+                }else{
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            int nuevoindice = lista.size()-1;
+                            TableView<Factura> tv = FxCntrlTablaFCT.getFxController().getTableView();
+                            System.out.println(" [ControladorFacturas] Actualizando tabla - tableView " + tv.hashCode() + " - nuevo index: " + nuevoindice);
+                            FxCntrlTablaFCT.getFxController().seleccionarIndiceTabla(nuevoindice);
+                            Factura f = FXcontrlTablaFCT.getFacturaSeleccionadaTabla();
+                            facturaActual = f;
+                            Stage vs = getVisorFCT();
+                            System.out.println(" [ControladorFacturas] Actualizando Visor " + vs.hashCode());
+                            FxCntrlVisorFCT.getFxController().actualizarDatosVisor(nuevoindice, f);
+                        }
+                    });
+                }
+            }
+        });
+        System.out.println("[ControladorFacturas] Index TablaFCT: " + FXcontrlTablaFCT.getIndiceSeleccionadoTabla());
         FXcontrlTablaFCT.reset();
+        FXcontrlVisorFCT.reset();
         return true;
     }
 
-    public boolean siguienteFacturaVisor() throws NullPointerException, IOException {
-		//System.out.println("[ControladorFacturas] Ha pulsado en el visorFCT el boton adelante.");
-        int i = FXcontrlTablaFCT.getIndiceSeleccionadoTabla();
-        List<Factura> lista = m.leerFacturas();
-        if (i < (lista.size() - 1)) {
-            int nuevoindice = i+1;
-            //System.out.println(" [ControladorFacturas] Actualizando Visor!");
-            actualizarVisor(nuevoindice);
-            //System.out.println(" [ControladorFacturas] Actualizando tabla");
-            FXcontrlTablaFCT.seleccionarIndiceTabla(nuevoindice);
-            //System.out.println(" [ControladorFacturas] Index TablaFCT: " + FXcontrlTablaFCT.getIndiceSeleccionadoTabla());
-        } else {
-            int nuevoindice = 0;
-            //System.out.println(" [ControladorFacturas] Actualizando Visor!");
-            actualizarVisor(0);
-            //System.out.println(" [ControladorFacturas] Actualizando tabla");
-            FXcontrlTablaFCT.seleccionarIndiceTabla(nuevoindice);
-        }
-        //System.out.println("[ControladorFacturas]  Index TablaFCT: " + FXcontrlTablaFCT.getIndiceSeleccionadoTabla());
+    public boolean siguienteFacturaVisor() {
+		System.out.println("[ControladorFacturas] Ha pulsado en el visorFCT el boton adelante.");
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run(){
+                int i = FXcontrlTablaFCT.getIndiceSeleccionadoTabla();
+                System.out.println("[ControladorFacturas>siguienteFacturaVisor] Desde el indice " + i);
+                List<Factura> lista = m.leerFacturasSinFiltrar();
+                System.out.println("[ControladorFacturas>siguienteFacturaVisor] Leida Lista de Facturas de tamaño " + lista.size());
+
+                if (i < (lista.size() - 1)) {
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            int nuevoindice = i+1;
+                            TableView<Factura> tv = FxCntrlTablaFCT.getFxController().getTableView();
+                            System.out.println(" [ControladorFacturas] Actualizando tabla - tableView " + tv.hashCode() + " - nuevo index: " + nuevoindice);
+                            FxCntrlTablaFCT.getFxController().seleccionarIndiceTabla(nuevoindice);
+                            Factura f = FxCntrlTablaFCT.getFxController().getFacturaSeleccionadaTabla();
+                            facturaActual = f;
+                            Stage vs = getVisorFCT();
+                            System.out.println(" [ControladorFacturas] Actualizando Visor " + vs.hashCode());
+                            FxCntrlVisorFCT.getFxController().actualizarDatosVisor(nuevoindice, f);
+                        }
+                    });
+                } else{
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            int nuevoindice = 0;
+                            TableView<Factura> tv = FxCntrlTablaFCT.getFxController().getTableView();
+                            System.out.println(" [ControladorFacturas] Actualizando tabla - tableView " + tv.hashCode() + " - nuevo index: " + nuevoindice);
+                            FxCntrlTablaFCT.getFxController().seleccionarIndiceTabla(nuevoindice);
+                            Factura f = FXcontrlTablaFCT.getFacturaSeleccionadaTabla();
+                            facturaActual = f;
+                            Stage vs = getVisorFCT();
+                            System.out.println(" [ControladorFacturas] Actualizando Visor " + vs.hashCode());
+                            FxCntrlVisorFCT.getFxController().actualizarDatosVisor(nuevoindice, f);
+                        }  
+                    });
+                                    
+                }
+            }
+        });
+        System.out.println("[ControladorFacturas] Index TablaFCT: " + FXcontrlTablaFCT.getIndiceSeleccionadoTabla());
         FXcontrlTablaFCT.reset();
+        FXcontrlVisorFCT.reset();
         return true;
     }
 
@@ -421,21 +476,7 @@ public class ControladorFacturas extends Thread {
                 //System.out.println("[ControladorFacturas>guardarNotaVisor()] ");
                 return true;
             }
-            
-    public boolean actualizarVisor(int index) {
-/*
-        JOptionPane.showMessageDialog(null,"[ControladorFacturas] Actualizando Visor!");
-        Factura f = new Factura();
-        List<Factura> lista = m.leerFacturas();
-        if (lista.size() > 0)
-            f = (Factura) lista.get(index);
-        else 
-            index = 0;
-        visor = VisorFacturas.getVisor(index, f);
-*/
-        //System.out.println("[ControladorFacturas>actualizarVisor()] Actualizar Visor a index "+ index);
-        return true;
-    }    
+              
 //#endregion
 
 //#region (FormOps)
@@ -721,7 +762,7 @@ public synchronized boolean cargarVisorFacturas(){
                 visor = new Stage();
                 visor.setScene(escena);
                 visor.setResizable(false);
-                visor.initStyle(StageStyle.UNDECORATED);
+                //visor.initStyle(StageStyle.UNDECORATED);
                 visor.setAlwaysOnTop(true);
                 visor.setOnCloseRequest((ev)->{
                     FxCntrlVisorFCT.getFxController().getVisorFCT().hide();

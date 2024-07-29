@@ -237,12 +237,13 @@ public class FxCntrlTablaFCT implements Initializable{
 			return f;
 		}
 	}
-
-	public void seleccionarIndiceTabla(int nuevoindice) throws NullPointerException, IOException {
-		if (this.tblvwfct !=null && nuevoindice>0){
+// REVIEW - 24-07-29 : Aquí fallaba y no cogía el index 0 (primera factura)
+	public void seleccionarIndiceTabla(int nuevoindice){
+		if (this.tblvwfct !=null){
 			this.tblvwfct .getSelectionModel().select(nuevoindice);
 			indiceActual = nuevoindice;
 			this.lblIndexT.setText(""+(indiceActual+1));
+			setIndiceActual(nuevoindice);
 			ControladorFacturas.facturaActual = getFacturaSeleccionadaTabla();
 		} 
 	}
