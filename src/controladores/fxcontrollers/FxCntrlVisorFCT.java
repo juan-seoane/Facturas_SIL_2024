@@ -1,6 +1,13 @@
 package controladores.fxcontrollers;
 
+import modelo.records.Extracto;
 import modelo.records.Factura;
+import modelo.records.Fecha;
+import modelo.records.NIF;
+import modelo.records.Nota;
+import modelo.records.RazonSocial;
+import modelo.records.TipoGasto;
+import modelo.records.Totales;
 import controladores.Controlador;
 import controladores.ControladorFacturas;
 
@@ -25,7 +32,7 @@ import javafx.stage.Stage;
 public class FxCntrlVisorFCT implements Initializable{
 
 //#region CAMPOS FXML
-// FIXME - 24-07-02 : Falta cambiar algunas Label por TextField
+// REVIEW - 24-07-02 : Falta cambiar algunas Label por TextField
 	@FXML Label lblVID;
 
 	@FXML TextField tfNumFactura;
@@ -54,6 +61,17 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML TextField tfVTipoIVA4;
 	@FXML TextField tfVIVA4;
 	@FXML TextField tfVST4;
+
+	@FXML Button btnVcalcIVA1;
+	@FXML Button btnVcalcIVA2;
+	@FXML Button btnVcalcIVA3;
+	@FXML Button btnVcalcIVA4;
+
+	@FXML Button btnVcalc1;
+	@FXML Button btnVcalc2;
+	@FXML Button btnVcalc3;
+	@FXML Button btnVcalc4;
+	@FXML Button btnVsumar;
 	
 	@FXML TextField tfVTotalesBase;
 	@FXML TextField tfVTotalesIVA;
@@ -63,6 +81,8 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML TextField tfVTotalesRetenciones;
 	@FXML TextField tfVTotal;
 
+	@FXML Button btnVcalcTOT;
+
 	@FXML TextArea txtAreaVNota;
 
 	@FXML Button btnVizda;
@@ -70,15 +90,21 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML Button btnVEditar;
 	@FXML Button btnVBorrar;
 	@FXML Label lblVTitulo;
-	@FXML Button btnVCerrar;
+	@FXML Button btnVF1;
 	@FXML Button btnVdcha;
 //#endregion
 
 //#region CAMPOS_CLASE
+
+	public static final int VISOR  = 1;
+	public static final int EDITAR = 2;
+	public static final int BORRAR = 3;
+	public static final int NUEVAF = 4;
+	
 	ControladorFacturas cfct;
 	boolean haCambiado = false;
 	int pulsado = 0;
-
+	public static int modo = VISOR;
 	ArrayList<TextField> todoslostextfields;
 	static Stage visorFct;
 	static FxCntrlVisorFCT instancia;
@@ -101,7 +127,7 @@ public class FxCntrlVisorFCT implements Initializable{
 	}
 //#endregion
 
-//#region GETTERS/SETTERS
+//#region GETTERS/SETTERSthis.tfVBase1.getText()
 	public static FxCntrlVisorFCT getFxController() {
 		if (instancia==null){
 			try {
@@ -147,6 +173,11 @@ public class FxCntrlVisorFCT implements Initializable{
 		this.haCambiado = false;
 		this.pulsado = 0;
 	}
+
+	public void setTextoBotonF1(String str) {
+		this.btnVF1.setText(str);
+	}
+
 //#endregion
 
 //#region INI FCT/V
@@ -173,45 +204,92 @@ public class FxCntrlVisorFCT implements Initializable{
 
 //#region EventosBTN
 	@FXML
-	public void btnCerraVPulsado(Event ev){
+	public void btnVF1Pulsado(){
 
 		this.haCambiado = true;
 		this.pulsado = 1;
 	}
 
 	@FXML
-	public void btnNuevaFctVPulsado(Event ev){
+	public void btnNuevaFctVPulsado(){
 
 		this.haCambiado = true;
 		this.pulsado = 2;
+		//modo = NUEVAF;
 	}	
 
 	@FXML
-	public void btnEditarFctVPulsado(Event ev){
-
+	public void btnEditarFctVPulsado(){
 
 		this.haCambiado = true;
 		this.pulsado = 3;
 	}
 
 	@FXML
-	public void btnBorrarFctPulsado(Event ev){
+	public void btnBorrarFctPulsado(){
 		this.haCambiado = true;
 		this.pulsado = 4;
+		//modo = BORRAR;
 	}
 
 	@FXML
-
-	public void btnIzdaVPulsado(Event ev){
-
-		this.haCambiado = true;
-		this.pulsado = 5;
+	public void btnIzdaVPulsado(){
+		if(modo == VISOR){
+			this.haCambiado = true;
+			this.pulsado = 5;
+		} else 
+			System.out.println("[FxCntrlVisorFCT>botonIzdaPulsado] El modo no permite moverse ewntre facturas");
 	}
 
 	@FXML
-	public void btnDchaVPulsado(Event ev){
-		this.haCambiado = true;
-		this.pulsado = 6;
+	public void btnDchaVPulsado(){
+		if(modo == VISOR){
+			this.haCambiado = true;
+			this.pulsado = 6;
+		} else
+			System.out.println("[FxCntrlVisorFCT>botonDchaPulsado] El modo no permite moverse ewntre facturas");
+	}
+
+	@FXML
+	public void btnVcalc1Pulsado(){
+		sumar(1);
+	} 
+	@FXML
+	public void btnVcalc2Pulsado(){
+		sumar(2);
+	} 
+	@FXML
+	public void btnVcalc3Pulsado(){
+		sumar(3);
+	} 
+	@FXML
+	public void btnVcalc4Pulsado(){
+		sumar(4);
+	}
+	@FXML
+	public void btnVsumarPulsado(){
+		sumar(5);
+	}
+	@FXML
+	public void btnVcalcTOTPulsado(){
+		sumar(0);
+	}
+
+	@FXML
+	public void btnVcalcIVA1pulsado(){
+		calcIVA(1);
+	}
+	@FXML
+	public void btnVcalcIVA2pulsado(){
+		calcIVA(2);
+	}
+	@FXML
+	public void btnVcalcIVA3pulsado(){
+		calcIVA(3);
+	}
+	@FXML
+	public void btnVcalcIVA4pulsado(){
+		calcIVA(4);
 	}
 
 	public boolean HaCambiado(){
@@ -354,6 +432,10 @@ public class FxCntrlVisorFCT implements Initializable{
 			tf.setText("");
 		}
 		System.out.println("[FxCntrlVisorFCT>borrarTextfields] borrados los tf en Visor " + visorFct.hashCode());
+		if (this.txtAreaVNota!=null){
+			this.txtAreaVNota.setText("");
+			System.out.println("[FxCntrlVisorFCT>borrarTextfields] borrada tb la Nota en Visor " + visorFct.hashCode());
+		}
 	}
 
 	public void setTFEditables(boolean editable){
@@ -366,8 +448,288 @@ public class FxCntrlVisorFCT implements Initializable{
 			tf.setEditable(editable);
 		}
 		System.out.println("[FxCntrlVisorFCT>setTFEditables] actualizados los tf a ed:" + editable + " en Visor " + visorFct.hashCode());
+		if (this.txtAreaVNota!=null){
+			this.txtAreaVNota.setEditable(editable);
+			System.out.println("[FxCntrlVisorFCT>setTFEditables] actualizado tb la Nota a ed:" + editable + " en Visor " + visorFct.hashCode());
+		}
 	}
 //#endregion
 
+//#region REC_DATOS
+	public Factura recogerDatosVisor(){
+		Factura f = new Factura ();
+		//recoger todos los campos del visor
+		//leer Datos Factura
+		f.setID(Integer.parseInt(this.lblVID.getText()));
+		f.setNumeroFactura(tfNumFactura.getText());
+		f.setCategoria(new TipoGasto(tfCategoria.getText(), tfCategoria.getText()));
+		String fechaStr = tfFecha.getText();
+		String[] fechaArr = fechaStr.split("/");
+		int dia = Integer.parseInt(fechaArr[0]);
+		int mes = Integer.parseInt(fechaArr[1]);
+		int año = Integer.parseInt(fechaArr[2]);
+		f.setFecha(new Fecha(dia, mes, año));
+		f.esDevolucion = ((tfVTotal.getText().contains("-"))?true:false);
+		//leer RS
+		int idrs = Integer.parseInt(lblVIDRS.getText());
+		String nifstr = tfNIF.getText();
+		String[] nifarr = nifstr.split("-");
+		boolean isCIF = ((nifarr[0].length()<nifarr[1].length())?true:false);
+		String letranif;
+		int numnif;
+		if (isCIF){
+			letranif = nifarr[0];
+			numnif = Integer.parseInt(nifarr[1]);
+		} else {
+			numnif = Integer.parseInt(nifarr[0]);
+			letranif = nifarr[1];
+		}
+		NIF nif = new NIF(numnif, letranif, isCIF);
+		String nombre = tfNombreEmpresa.getText();
+		RazonSocial rs = new RazonSocial(idrs, nif, nombre);
+		f.setRS(rs);
+		//leer Extractos
+		ArrayList<Extracto> extr = new ArrayList<Extracto>();
+		if (!tfVST1.getText().equals("")){
+			Extracto ex1 = new Extracto(Double.parseDouble(tfVBase1.getText()), Integer.parseInt(tfVTipoIVA1.getText()),Double.parseDouble(tfVIVA1.getText()),Double.parseDouble(tfVST1.getText()));
+			extr.add(ex1);
+		}
+		if (!tfVST2.getText().equals("")){
+			Extracto ex2 = new Extracto(Double.parseDouble(tfVBase2.getText()), Integer.parseInt(tfVTipoIVA2.getText()),Double.parseDouble(tfVIVA2.getText()),Double.parseDouble(tfVST2.getText()));
+			extr.add(ex2);
+		}
+		if (!tfVST3.getText().equals("")){
+			Extracto ex3 = new Extracto(Double.parseDouble(tfVBase3.getText()), Integer.parseInt(tfVTipoIVA3.getText()),Double.parseDouble(tfVIVA3.getText()),Double.parseDouble(tfVST3.getText()));
+			extr.add(ex3);
+		}
+		if (!tfVST4.getText().equals("")){
+			Extracto ex4 = new Extracto(Double.parseDouble(tfVBase4.getText()), Integer.parseInt(tfVTipoIVA4.getText()),Double.parseDouble(tfVIVA4.getText()),Double.parseDouble(tfVST4.getText()));
+			extr.add(ex4);
+		}
+		f.setExtractos(extr);
+		//leer Totales
+		//STUB - 24-07-29 : Revisar lo de variosIVAs... todavía no está
+		boolean variosIvas = (f.getExtractos().size()>1);
+		Totales tots = new Totales(Double.parseDouble(tfVTotalesBase.getText()), variosIvas, (variosIvas?0:Integer.parseInt(tfVTipoIVA1.getText())),Double.parseDouble(tfVTotalesIVA.getText()),Double.parseDouble(tfVTotalesST.getText()), Double.parseDouble(tfVTotalesBaseNI.getText()),Integer.parseInt(tfVTotalesTipoRet.getText()),Double.parseDouble(tfVTotalesRetenciones.getText()),Double.parseDouble(tfVTotal.getText()));
+		f.setTotales(tots);
+		//leer Nota
+		f.setNota(new Nota(1, txtAreaVNota.getText()));
+		System.out.println("[FxCntrlVisorFCT>recogerDatosVisor] Factura registrada : " + f.toString());
+		return f;	
+	}
+//#endregion
+
+//#region CALCS
+	public void sumar(int i) {
+		if (modo == EDITAR){
+			if(i ==1){
+				if(!(this.tfVBase1.getText().equals("")) && !(this.tfVTipoIVA1.getText().equals("0"))){
+					double st1 = Double.parseDouble(this.tfVBase1.getText()) + Double.parseDouble(this.tfVIVA1.getText());
+					this.tfVST1.setText(""+st1);
+				} else if (this.tfVTipoIVA1.getText().equals("0")){
+					double baseNI = 0.0;
+					if (!(this.tfVTotalesBaseNI.getText().equals(""))){
+						baseNI = Double.parseDouble(this.tfVTotalesBaseNI.getText());
+					}
+					baseNI += Double.parseDouble(this.tfVBase1.getText());
+					this.tfVTipoIVA1.setText("0");
+					this.tfVIVA1.setText("0.0");
+					this.tfVST1.setText(this.tfVBase1.getText());
+					this.tfVTotalesBaseNI.setText(""+baseNI);
+				}
+			}
+			if(i ==2){
+				if(!(this.tfVBase2.getText().equals("")) && !(this.tfVTipoIVA2.getText().equals("0"))){
+					double st2 = Double.parseDouble(this.tfVBase2.getText()) + Double.parseDouble(this.tfVIVA2.getText());
+					this.tfVST2.setText(""+st2);
+				} else if (this.tfVTipoIVA2.getText().equals("0")){
+					double baseNI = 0.0;
+					if (!(this.tfVTotalesBaseNI.getText().equals(""))){
+						baseNI = Double.parseDouble(this.tfVTotalesBaseNI.getText());
+					}
+					baseNI += Double.parseDouble(this.tfVBase2.getText());
+					this.tfVTipoIVA2.setText("0");
+					this.tfVIVA2.setText("0.0");
+					this.tfVST2.setText(this.tfVBase2.getText());
+					this.tfVTotalesBaseNI.setText(""+baseNI);
+				}
+			}
+			if(i == 3){
+				if(!(this.tfVBase3.getText().equals("")) && !(this.tfVTipoIVA3.getText().equals("0"))){
+					double st3 = Double.parseDouble(this.tfVBase3.getText()) + Double.parseDouble(this.tfVIVA3.getText());
+					this.tfVST3.setText(""+st3);
+				} else if (this.tfVTipoIVA3.getText().equals("0")){
+					double baseNI = 0.0;
+					if (!(this.tfVTotalesBaseNI.getText().equals(""))){
+						baseNI = Double.parseDouble(this.tfVTotalesBaseNI.getText());
+					}
+					baseNI += Double.parseDouble(this.tfVBase3.getText());
+					this.tfVTipoIVA3.setText("0");
+					this.tfVIVA3.setText("0.0");
+					this.tfVST3.setText(this.tfVBase3.getText());
+					this.tfVTotalesBaseNI.setText(""+baseNI);
+				}
+			}
+			if (i == 4){
+				if(!(this.tfVBase4.getText().equals("")) && !(this.tfVTipoIVA4.getText().equals("0"))){
+					double st4 = Double.parseDouble(this.tfVBase4.getText()) + Double.parseDouble(this.tfVIVA4.getText());
+					this.tfVST4.setText(""+st4);
+				} else if (this.tfVTipoIVA4.getText().equals("0")){
+					double baseNI = 0.0;
+					if (!(this.tfVTotalesBaseNI.getText().equals(""))){
+						baseNI = Double.parseDouble(this.tfVTotalesBaseNI.getText());
+					}
+					baseNI += Double.parseDouble(this.tfVBase4.getText());
+					this.tfVTipoIVA4.setText("0");
+					this.tfVIVA4.setText("0.0");
+					this.tfVST4.setText(this.tfVBase4.getText());
+					this.tfVTotalesBaseNI.setText(""+baseNI);
+				}
+			}
+			if (i == 5){
+				sumarSubtotales();
+			}	
+			if (i == 0){
+				sumarTotales();
+			}
+		}
+	}
+
+	private void sumarSubtotales() {
+		if (modo == EDITAR){
+			//bases
+			double sumabases = 0.0;
+			if (!(this.tfVBase1.getText().equals(""))){
+				sumabases += Double.parseDouble(this.tfVBase1.getText());
+			}
+			if (!(this.tfVBase2.getText().equals(""))){
+				sumabases += Double.parseDouble(this.tfVBase2.getText());
+			}
+			if (!(this.tfVBase3.getText().equals(""))){
+				sumabases += Double.parseDouble(this.tfVBase3.getText());
+			}
+			if (!(this.tfVBase4.getText().equals(""))){
+				sumabases += Double.parseDouble(this.tfVBase4.getText());
+			}
+			this.tfVTotalesBase.setText("" + sumabases);
+			//tiposIVA
+			//IVAs
+			double sumaivas = 0.0;
+			if (!(this.tfVIVA1.getText().equals(""))){
+				sumaivas += Double.parseDouble(this.tfVIVA1.getText());
+			}
+			if (!(this.tfVIVA2.getText().equals(""))){
+				sumaivas += Double.parseDouble(this.tfVIVA2.getText());
+			}
+			if (!(this.tfVIVA3.getText().equals(""))){
+				sumaivas += Double.parseDouble(this.tfVIVA3.getText());
+			}
+			if (!(this.tfVIVA4.getText().equals(""))){
+				sumaivas += Double.parseDouble(this.tfVIVA4.getText());
+			}
+			this.tfVTotalesIVA.setText("" + sumaivas);
+			//Subtotales
+			double sumasts = 0.0;
+			if (!(this.tfVST1.getText().equals(""))){
+				sumasts += Double.parseDouble(this.tfVST1.getText());
+			}
+			if (!(this.tfVST2.getText().equals(""))){
+				sumasts += Double.parseDouble(this.tfVST2.getText());
+			}
+			if (!(this.tfVST3.getText().equals(""))){
+				sumasts += Double.parseDouble(this.tfVST3.getText());
+			}
+			if (!(this.tfVST4.getText().equals(""))){
+				sumasts += Double.parseDouble(this.tfVST4.getText());
+			}
+			this.tfVTotalesST.setText("" + sumasts);
+		}
+	}
+
+	private void sumarTotales() {
+		if (modo == EDITAR){
+			double total = 0.0;
+			double subtotal = 0.0;
+			double baseNI = 0.0;
+			double retenciones = 0.0;
+			if (!(this.tfVTotalesST.getText()).equals(""))
+				subtotal += Double.parseDouble(this.tfVTotalesST.getText());
+			if (!(this.tfVTotalesBaseNI.getText()).equals(""))
+				baseNI = Double.parseDouble(this.tfVTotalesBaseNI.getText());
+			if (!(this.tfVTotalesRetenciones.getText()).equals(""))
+				retenciones = Double.parseDouble(this.tfVTotalesRetenciones.getText());
+
+			total = subtotal + baseNI - retenciones;
+			this.tfVTotal.setText(""+total);
+		}
+	}
+
+	public void calcIVA(int i) {
+		if (modo == EDITAR){
+			if (i == 1 && !(this.tfVBase1.getText().equals("")) && !(this.tfVTipoIVA1.getText().equals("")) && !(this.tfVTipoIVA1.getText().equals("0"))){
+				double base1 = Double.parseDouble(this.tfVBase1.getText());
+				int tipoiva1 = Integer.parseInt(this.tfVTipoIVA1.getText());
+				double IVA1 = (base1 * tipoiva1) / 100.00;
+				this.tfVIVA1.setText(""+IVA1);
+			} else if (this.tfVTipoIVA1.getText().equals("0")){
+				double baseNI = Double.parseDouble(this.tfVTotalesBaseNI.getText());
+				double asumar = Double.parseDouble(this.tfVBase1.getText());
+				this.tfVBase1.setText("");
+				this.tfVTipoIVA1.setText("");
+				this.tfVIVA1.setText("");
+				this.tfVST1.setText("");
+				baseNI += asumar;
+				this.tfVTotalesBaseNI.setText(""+baseNI);
+			}
+			if (i == 2 && !(this.tfVBase2.getText().equals("")) && !(this.tfVTipoIVA2.getText().equals("")) && !(this.tfVTipoIVA2.getText().equals("0"))){
+				double base2 = Double.parseDouble(this.tfVBase2.getText());
+				int tipoiva2 = Integer.parseInt(this.tfVTipoIVA2.getText());
+				double IVA2 = (base2 * tipoiva2) / 100.00;
+				this.tfVIVA2.setText(""+IVA2);
+			} else if (this.tfVTipoIVA2.getText().equals("0")){
+				double baseNI = Double.parseDouble(this.tfVTotalesBaseNI.getText());
+				double asumar = Double.parseDouble(this.tfVBase2.getText());
+				this.tfVBase2.setText("");
+				this.tfVTipoIVA2.setText("");
+				this.tfVIVA2.setText("");
+				this.tfVST2.setText("");
+				baseNI += asumar;
+				this.tfVTotalesBaseNI.setText(""+baseNI);
+			}
+			if (i == 3 && !(this.tfVBase3.getText().equals("")) && !(this.tfVTipoIVA3.getText().equals("")) && !(this.tfVTipoIVA3.getText().equals("0"))){
+				double base3 = Double.parseDouble(this.tfVBase3.getText());
+				int tipoiva3 = Integer.parseInt(this.tfVTipoIVA3.getText());
+				double IVA3 = (base3 * tipoiva3) / 100.00;
+				this.tfVIVA3.setText(""+IVA3);
+			} else if (this.tfVTipoIVA3.getText().equals("0")){
+				double baseNI = Double.parseDouble(this.tfVTotalesBaseNI.getText());
+				double asumar = Double.parseDouble(this.tfVBase3.getText());
+				this.tfVBase3.setText("");
+				this.tfVTipoIVA3.setText("");
+				this.tfVIVA3.setText("");
+				this.tfVST3.setText("");
+				baseNI += asumar;
+				this.tfVTotalesBaseNI.setText(""+baseNI);
+			}
+			if (i == 4 && !(this.tfVBase4.getText().equals("")) && !(this.tfVTipoIVA4.getText().equals(""))&& !(this.tfVTipoIVA4.getText().equals("0"))){
+				double base4 = Double.parseDouble(this.tfVBase4.getText());
+				int tipoiva4 = Integer.parseInt(this.tfVTipoIVA4.getText());
+				double IVA4 = (base4 * tipoiva4) / 100.00;
+				this.tfVIVA4.setText(""+IVA4);
+			} else if (this.tfVTipoIVA4.getText().equals("0")){
+				double baseNI = Double.parseDouble(this.tfVTotalesBaseNI.getText());
+				double asumar = Double.parseDouble(this.tfVBase4.getText());
+				this.tfVBase4.setText("");
+				this.tfVTipoIVA4.setText("");
+				this.tfVIVA4.setText("");
+				this.tfVST4.setText("");
+				baseNI += asumar;
+				this.tfVTotalesBaseNI.setText(""+baseNI);
+				}
+		}
+	}
+
+
+//#endregion
 
 }

@@ -17,10 +17,12 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
+import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
 
 import static org.junit.Assert.assertNotNull;
@@ -34,6 +36,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.service.query.NodeQuery;
@@ -260,6 +263,7 @@ public class FxApplicationTest extends ApplicationTest{
 		System.out.println("[FxApplicationTest>visorFCTcargaOK]******INICIO*****");
 		moveTo("#btnVisorFct");
 		clickOn("#btnVisorFct");
+		Thread.sleep(3000);
 		System.out.println("[FxApplicationTest>visorFCTcargaOK] boton Visor pulsado!! Esperando a que cargue el visorFCT.");
 		int cnt = 1;
 		do{
@@ -271,30 +275,30 @@ public class FxApplicationTest extends ApplicationTest{
 		hashCodeVisor = visorFCT.hashCode();
 		System.out.println("[FxApplicationTest>tablaFCTcargaOK] hashCodeVisor: " + hashCodeVisor);
 		//NOTE - 24-07-26 : Esperamos a que el visorFCT cargue todos los datos
-		Thread.sleep(2000);
-		/*verifyThat("#lblVID", (Label label) -> {
+		Thread.sleep(3000);
+		verifyThat("#lblVID", (Label label) -> {
 			String text = label.getText();
 			return (text.contains("4"));
-		});*/
+		});
 		System.out.println("[FxApplicationTest>visorFCTcargaOK]*******FINAL******");
 //#endregion
 
-//#region parte7_visorFCTfunciona
-		WaitForAsyncUtils.waitForFxEvents();
-		//Thread.sleep(2000);
-		System.out.println("[FxApplicationTest>visorFCTfunciona]******INICIO*****");
+//#region parte7_contrVisorFCTfuncionan
+		Thread.sleep(2000);
+		System.out.println("[FxApplicationTest>contrVisorFCTfunciona]******INICIO*****");
 		Stage stage = visorFCT;
 		Scene scene = stage.getScene();
 		assertNotNull(scene);
-		System.out.println("[FxApplicationTest>visorFCTfunciona] La escena NO es NULL");
+		System.out.println("[FxApplicationTest>contrVisorFCTfunciona] La escena NO es NULL");
 		// NOTE - 24-07-28 : n - num de repeticiones;
 		int n = listaFXFCT.size();
-		System.out.println("[FxApplicationTest>visorFCTfunciona] Cantidad de facturas en la listaFX : " + n);
-		Thread.sleep(1000);
-		System.out.println("[FxApplicationTest>visorFCTfunciona] A punto de probar los botones de desplazamiento del visorFCT...");
+		System.out.println("[FxApplicationTest>contrVisorFCTfunciona] Cantidad de facturas en la listaFX : " + n);
+		//Thread.sleep(2000);
+		WaitForAsyncUtils.waitForFxEvents();
+		System.out.println("[FxApplicationTest>contrVisorFCTfunciona] A punto de probar los botones de desplazamiento del visorFCT...");
 		NodeQuery APcontroles = find("#apnControles");
 		//NodeQuery botonDcha = lookup("#btnVdcha");
-		System.out.print("[FxApplicationTest>visorFCTfunciona] Comprobando que los controles del visor existen... ");
+		System.out.print("[FxApplicationTest>contrVisorFCTfunciona] Comprobando que los controles del visor existen... ");
 		//assertNotNull(botonDcha);
 		assertNotNull(APcontroles);
 		System.out.println("OK");
@@ -303,7 +307,7 @@ public class FxApplicationTest extends ApplicationTest{
 		moveTo("#btnVdcha");
 		for (int i=1;i<=n;i++){
 			clickOn("#btnVdcha");
-			System.out.println("[FxApplicationTest>visorFCTfunciona] boton Dcha pulsado en el visorFCT. Rep " + i);
+			System.out.println("[FxApplicationTest>contrVisorFCTfunciona] boton Dcha pulsado en el visorFCT. Rep " + i);
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
@@ -313,17 +317,63 @@ public class FxApplicationTest extends ApplicationTest{
 		moveTo("#btnVizda");
 		for (int i=1;i<=n;i++){
 			clickOn("#btnVizda");
-			System.out.println("[FxApplicationTest>visorFCTfunciona] boton Izda pulsado en el visorFCT. Rep " + i);
+			System.out.println("[FxApplicationTest>contrVisorFCTfunciona] boton Izda pulsado en el visorFCT. Rep " + i);
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		moveTo("#btnVCerrar");
-		clickOn("#btnVCerrar");
-		System.out.println("[FxApplicationTest>visorFCTfunciona] boton Cerrar VisorFCT pulsado!! Esperando a que se cierre el visor.");
-		System.out.println("[FxApplicationTest>visorFCTfunciona]******FINAL*****");		
+		System.out.println("[FxApplicationTest>contrVisorFCTfunciona]******FINAL*****");
+//#endregion
+
+//#region parte8_edFactVisFunciona
+		System.out.println("FxApplicationTest>edFactVisfunciona]*****INICIO*****");
+		System.out.println("FxApplicationTest>edFactVisfunciona] comprobando la ruta del archivo FCT");
+		
+		assertEquals("datos/ADMIN/FCT20240.csv",Config.getConfig(Controlador.getUsuario()).getRutaFCT());
+		Thread.sleep(2000);
+		moveTo("#btnVizda");
+		clickOn("#btnVizda");
+		Thread.sleep(2000);
+		System.out.println("[FxApplicationTest>edFactVisfunciona] Comenzando a editar la Factura");
+		moveTo("#btnVEditar");
+		clickOn("#btnVEditar");
+		Thread.sleep(4000);
+		//teclea en la Nota "Una "
+		moveTo("#txtAreaVNota");
+		clickOn("#txtAreaVNota");
+		FxRobot robot = new FxRobot();
+		type(KeyCode.SPACE,KeyCode.MINUS,KeyCode.SPACE);
+		robot.press(KeyCode.SHIFT).press(KeyCode.P).release(KeyCode.P).release(KeyCode.SHIFT);
+		type(KeyCode.R,KeyCode.U,KeyCode.E,KeyCode.B,KeyCode.A,KeyCode.SPACE);
+		//pulsa el btn OK
+		moveTo("#btnVF1");
+		clickOn("#btnVF1");
+		Thread.sleep(3000);
+		//pulsa el boton cerrar
+		moveTo("#btnVF1");
+		clickOn("#btnVF1");
+		System.out.println("[FxApplicationTest>edFactVisfunciona] boton Cerrar VisorFCT pulsado!! Esperando a que se cierre el visor.");
+		Thread.sleep(2000);
+		moveTo("#btnVisorFct");
+		clickOn("#btnVisorFct");
+		System.out.println("[FxApplicationTest>edFactVisfunciona] boton VisorFCT pulsado!! Esperando a que se abra otra vez el visor.");
+		Thread.sleep(6000);
+//#endregion
+
+//#region parte9_cerrarTodo
+		//pulsa el boton cerrar
+		moveTo("#btnVF1");
+		clickOn("#btnVF1");
+		System.out.println("[FxApplicationTest>edFactVisfunciona] boton Cerrar VisorFCT pulsado!! Esperando a que se cierre el visor.");
+		Thread.sleep(2000);
+		moveTo("#btnFCT");
+		clickOn("#btnFCT");
+		System.out.println("[FxApplicationTest>edFactVisfunciona] boton FCT pulsado en el Panel!! Esperando a que se cierre la tabla.");
+		Thread.sleep(2000);
+
+		System.out.println("[FxApplicationTest>edFactVisfunciona]******FINAL*****");		
 //#endregion
 
 	}

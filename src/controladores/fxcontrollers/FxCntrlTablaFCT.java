@@ -42,6 +42,7 @@ public class FxCntrlTablaFCT implements Initializable{
 	@FXML private TableColumn<Factura, Double> colTotal;
 	@FXML private TableColumn<Factura, String> colNota;
 
+	@FXML private Button btnImprimirFct;
 	@FXML private Button btnVisorFct;
 	@FXML private Button btnNuevaFct;
     @FXML private Button btnBorrarFct;
@@ -177,6 +178,12 @@ public class FxCntrlTablaFCT implements Initializable{
 		this.haCambiado = true;
 		this.pulsado = 5;
 	}
+	
+	@FXML
+	public void btnImprimirFctPulsado(){
+		this.haCambiado = true;
+		this.pulsado = 6;
+	}
 
 	public boolean HaCambiado(){
 		return this.haCambiado;
@@ -219,7 +226,7 @@ public class FxCntrlTablaFCT implements Initializable{
 	}
 
 	public Factura getFacturaSeleccionadaTabla(){
-		if (this.tblvwfct .isVisible()){
+		if (this.tblvwfct.isVisible()){
 			Factura selectedItem = this.tblvwfct .getSelectionModel().getSelectedItem();
 			//System.out.println("[FxCntrlTablaFCT>getFacturaSeleccionadaTabla] Como this.tblvwfct .isVisible(): " + this.tblvwfct .isVisible() + " se muestra la factura seleccionada:\n"+ selectedItem.toString());
 			return selectedItem;
@@ -239,13 +246,13 @@ public class FxCntrlTablaFCT implements Initializable{
 	}
 // REVIEW - 24-07-29 : Aquí fallaba y no cogía el index 0 (primera factura)
 	public void seleccionarIndiceTabla(int nuevoindice){
-		if (this.tblvwfct !=null){
-			this.tblvwfct .getSelectionModel().select(nuevoindice);
+		if (this.tblvwfct.isVisible()){
+			this.tblvwfct.getSelectionModel().select(nuevoindice);
 			indiceActual = nuevoindice;
 			this.lblIndexT.setText(""+(indiceActual+1));
+			ControladorFacturas.facturaActual = getFacturaSeleccionadaTabla(); 
+		}
 			setIndiceActual(nuevoindice);
-			ControladorFacturas.facturaActual = getFacturaSeleccionadaTabla();
-		} 
 	}
 
 	public static int getIndiceActual() {

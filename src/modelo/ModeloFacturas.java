@@ -296,13 +296,13 @@ public class ModeloFacturas {
     } 
 
     public boolean editarFactura(ArrayList<Factura> listafacturas, Factura factura, int index) throws NumberFormatException, IOException {
-        //System.out.println(" [ModeloFacturas] Indice en Modelo : " + index);
-
+        System.out.println(" [ModeloFacturas>editarFactura] Index de factura : " + index);
         listafacturas.set(index, factura);
         Collections.sort(listafacturas);
-        if (ficheroFacturas.escribir(listafacturas)) {
+        var datosLista = ConvertirListaFCTaCSV(listafacturas);
+        
+        if (ficheroFacturas.guardarCSV(datosLista)) {
             leerFacturasSinFiltrar();
-            PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
             return true;
         }
         return false;

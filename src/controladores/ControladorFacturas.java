@@ -234,7 +234,7 @@ public class ControladorFacturas extends Thread {
                     case 2:	//siguiente
                         siguienteFacturaVisor();
                         visor.reset();
-                        visible(true);
+                        visible(true)            PanelControl.getPanelControl().setNumfacturas(numeroFacturas);;
                         break;
                     case 3: //editar factura
                         editarFacturaVisor();
@@ -279,15 +279,21 @@ public class ControladorFacturas extends Thread {
                     //System.out.println("[ControladorFacturas>run] Se muestra el Formulario de Nueva Facturas");
                     break;
                 case 3:
-    //FIXME - 24-07-03 : Falta el botón de 'Imprimir Tabla' en la tablaFCT
+                    System.out.println("[ControladorFacturas>run] Se comienza a editar la factura seleccionada. TableView->" + tableViewFCT.hashCode());
+                    int index = FXcontrlTablaFCT.getIndiceSeleccionadoTabla();
+                    Factura f = FXcontrlTablaFCT.getFacturaSeleccionadaTabla();
+                    if(mostrarVisorFCT(index, f))
+                        FxCntrlVisorFCT.getFxController().btnEditarFctVPulsado();
+
                     break;
                 case 4:
 
                     break;
                 case 5:
-                    //System.out.println("[ControladorFacturas>run] Se muestra la Ventana de Filtros. TableView con hashCode " + tableViewFCT.hashCode());
+                    System.out.println("[ControladorFacturas>run] Se muestra la Ventana de Filtros. TableView->" + tableViewFCT.hashCode());
                     break;
                 case 6:
+                    System.out.println("[ControladorFacturas>run] Se imprime la TablaFCT. TableView->" + tableViewFCT.hashCode());
                     break;
                 }
 
@@ -296,24 +302,29 @@ public class ControladorFacturas extends Thread {
 //#endregion
 
 //#region VISOR_SWITCH
-            // FIXME - 24-07-03 : Hacer que el Visor funcione también como formulario (quizás haya que ponerle un botón enviar cuando Edites o Insertes una Factura)
             if(FXcontrlVisorFCT!=null && FXcontrlVisorFCT.HaCambiado()) {
 				//System.out.println("[ControladorFacturas>run] recogiendo evento del visorFCT en el Controlador de Facturas - pulsado caso " + FXcontrlVisorFCT.getPulsado());
                 //System.out.println("[ControladorFacturas>visorSwitch] indice seleccionado en tablaFCT " + FXcontrlTablaFCT.tblvwFct.hashCode() +  " : " + elem);
                 switch(FXcontrlVisorFCT.getPulsado()){
                     case 1:
-                        try {
-                            ocultarVisorFCT();
-                        } catch (InterruptedException | BrokenBarrierException e) {
-                            e.printStackTrace();
+                        if (FxCntrlVisorFCT.modo == FxCntrlVisorFCT.VISOR){
+                            try {
+                                ocultarVisorFCT();
+                                System.out.println("[ControladorFacturas>run>visorSwitch] Se cerrará el Visor de Facturas");
+                            } catch (InterruptedException | BrokenBarrierException e) {
+                                e.printStackTrace();
+                            }
+                        }else if(FxCntrlVisorFCT.modo == FxCntrlVisorFCT.EDITAR){
+                            if(acabarEdicionFacturaVisor())
+                                System.out.println("[ControladorFacturas>run>visorSwitch] Factura Editada!");    
                         }
-                        //System.out.println("[ControladorFacturas>run] Se cerrará el Visor de Facturas");
                         break;
                     case 2:
                         //System.out.println("[ControladorFacturas>run] Se activará el Formulario de Nueva Factura");
                         break;
                     case 3:
-                        //System.out.println("[ControladorFacturas>run] Se activará la Ediion del VisorFCT para la Factura actual");
+                        System.out.println("[ControladorFacturas>run] Se activará la Ediion del VisorFCT para la Factura actual");
+                        editarFacturaVisor();
                         break;
                     case 4:
                         //System.out.println("[ControladorFacturas>run] Se borrará la Factura actual");
@@ -444,11 +455,55 @@ public class ControladorFacturas extends Thread {
     }
 
     public boolean editarFacturaVisor() {
-/*        form.setEstado("editando");
-        form.insertarFactura(m.getFactura(visor.getIndex()));
-        form.setVisible(true);
-        form.toFront(); */
+		FxCntrlVisorFCT.modo = FxCntrlVisorFCT.EDITAR;
+		//cambiamos el texto del boton F1 a OK
+        Platform.runLater(new Runnable(){
+            @Override
+            public void run(){
+                FXcontrlVisorFCT.setTextoBotonF1("OK");
+                try {
+                    FXcontrlVisorFCT.setTFEditables(true);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         return true;
+    }
+
+    public boolean acabarEdicionFacturaVisor(){
+
+        Factura f = FXcontrlVisorFCT.recogerDatosVisor();
+        var listafact = ((ArrayList<Factura>)(m.leerFacturasSinFiltrar()));
+        // STUB - Arreglar la asignación de index, filtradas las facturas no son necesariamente correlativos, ID de la factura e index de la tabla
+        int index = f.getID()-1;
+        try {
+            m.editarFactura(listafact, f, (index));
+        } catch (NumberFormatException | IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        if (f!=null){
+            System.out.println("[ControladorFacturas>run>visorSwitch] Se cambia la factura " + f.getID());
+            Platform.runLater(new Runnable(){
+                @Override
+                public void run(){
+                    FXcontrlVisorFCT.setTFEditables(false);
+                    FXcontrlVisorFCT.setTextoBotonF1("CERRAR");
+                    FxCntrlVisorFCT.modo = FxCntrlVisorFCT.VISOR;
+                    //recargar la lista de facturas y refrescar la tabla
+                    ObservableList<Factura> listaFXnueva = ModeloFacturas.getModelo().getListaFXFacturas();
+                    FXcontrlTablaFCT.setListaFXFacturas(listaFXnueva);
+                    FXcontrlTablaFCT.getTableView().setItems(listaFXnueva);
+                    FXcontrlTablaFCT.getTableView().refresh();
+                    FXcontrlTablaFCT.actualizarInfoTabla();
+                    String[] nuevosTotales = ModeloFacturas.getModelo().calcularTotales();
+                    FXcontrlTablaFCT.actualizarTotales(nuevosTotales);
+                    FXcontrlTablaFCT.seleccionarIndiceTabla((index));
+                }
+            });
+        }
+        return true;       
     }
 
     public boolean borrarFacturaVisor() throws NumberFormatException, IOException {
@@ -480,20 +535,30 @@ public class ControladorFacturas extends Thread {
 //#endregion
 
 //#region (FormOps)
-    public boolean recogerFormyEditar(Factura f) throws NumberFormatException, IOException {
-/*		JOptionPane.showMessageDialog(null,"[ControladorFacturas] Enviado :: Indice en Controlador: "+visor.getIndex());
-        Factura facturaTemp = m.recogerFormulario(form);
-        int sel = m.facturas.indexOf(f);
-        m.facturas.remove(f);
-        m.facturas.add(facturaTemp);
-        m.insertarFacturas((ArrayList<Factura>)m.facturas);
-        
-        //System.out.println(" [ControladorFacturas] Index3: "+visor.getIndex());
-        actualizarTabla(sel);
-        limpiarFormyActualizar(tabla.getIndice());
+    public boolean recogerFormyBorrar(Factura f) throws NumberFormatException, IOException {
+		System.out.println("[ControladorFacturas>recogerFormYEditar] Enviada factura : " + f.getID());
+        var listaFact = m.leerFacturasSinFiltrar();
+        int sel = listaFact.indexOf(f);
+        listaFact.remove(f);
+        // STUB - 24-07-29 : reorganizar las facturas en la lista
         return true;
-*/
-        //System.out.println("[ControladorFacturas>recogerFormyEditar()] ");
+    }
+
+    public synchronized boolean recogerFormyEditar(){
+        Factura facturaTemp = FXcontrlVisorFCT.recogerDatosVisor();
+        ArrayList<Factura> listaFact = ((ArrayList<Factura>)(m.leerFacturasSinFiltrar()));
+        // FIXME - 24-07-29 : Cómo cojo el Index, si cuando se filtra no es igual a la ID???
+        int index = facturaTemp.getID()-1;
+        try {
+            m.editarFactura(listaFact, facturaTemp, index);
+        } catch (NumberFormatException | IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(" [ControladorFacturas>recogerFormyEditar] actualizada factura : " + index);
+        // STUB - 24-07-29 : actualizar los datos de la tabla
+        // STUB - 24-07-29 : volver a colocar el boton F1 como cerrar
+        // STUB - 24-07-29 : volver al modo VISOR
+        // STUB - 24-07-29 : TFs no editables en visor
         return true;
     }
  

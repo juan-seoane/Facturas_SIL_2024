@@ -423,25 +423,19 @@ public synchronized ArrayList<String[]> leerCSV(String rutaYnombre){
 //#region guardarCSV
     public synchronized boolean guardarCSV(ArrayList<String[]> datos){
 
-        ////System.out.println("[Fichero>guardarCSV] Datos a guardar: " + datos);
-        
+        System.out.println("[Fichero>guardarCSV] Datos a guardar: " + datos);
         String archCSV = this.rutaArchivo;
-        ////System.out.println("[Fichero>guardarCSV] Archivo CSV a guardar en ruta "+ archCSV +" de " + datos.size() + " lineas");
-        
+        System.out.println("[Fichero>guardarCSV] Archivo CSV a guardar en ruta "+ archCSV +" de " + datos.size() + " lineas");
         CSVWriter writer;
         try {
             writer = new CSVWriter(new FileWriter(archCSV));
-            
             for (String[] linea : datos){
             writer.writeNext(linea);
             }
-
             writer.close();
-
             return true;
         } catch (IOException e) {
-        
-            //System.out.println("[Fichero.java>guardarCSV] Excepcion " + e + " guardando el archivo CSV " + archCSV);
+            System.out.println("[Fichero.java>guardarCSV] Excepcion " + e + " guardando el archivo CSV " + archCSV);
             return false;
         }
     }
