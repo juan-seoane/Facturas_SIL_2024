@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-  // TODO -24-04-22 : configdata.json y misdatos.json deberían contener un JsonArray de sus respectivos objetos
+  // REVIEW - 24-04-22 : configdata.json y misdatos.json deberían contener un JsonArray de sus respectivos objetos
 
   public class Config {
 
@@ -33,7 +33,7 @@ import com.google.gson.JsonObject;
   public static Config configActual = null;
 //#endregion
 
-  // TODO - 24-06-29 : Repasar el constructor y los getConfig... parece que el usuario tiene que designarse en otro lado...
+  // REVIEW - 24-06-29 : Repasar el constructor y los getConfig... parece que el usuario tiene que designarse en otro lado...
 //#region CONSTRUCTOR_NC_DE_CONFIG
   private Config(String user) {
     
@@ -74,7 +74,7 @@ import com.google.gson.JsonObject;
       }else
         this.configData = getConfigData();
   // Archivo 'misdatos.json' 
-  //TODO: ¿Porqué tienen que estar los datos fiscales del usuario todo el tiempo en memoria? No deberían cargarse hasta que sean necesarios...
+  // REVIEW: ¿Porqué tienen que estar los datos fiscales del usuario todo el tiempo en memoria? No deberían cargarse hasta que sean necesarios...
     String rutamisdatos = "./config/" + user.toUpperCase() + "/misdatos.json";
     File f_misdatos = new File(rutamisdatos);
     if (!(f_misdatos.exists())||(f_misdatos==null)){       
@@ -102,8 +102,8 @@ import com.google.gson.JsonObject;
     Fichero.crearFichero(rutaDirTrab, trab1); //ya comprueba si existe o no...
     Fichero.crearFichero(rutaDirTrab, trab2); //ya comprueba si existe o no...
     Fichero.crearFichero(rutaDirTrab, trab3); //ya comprueba si existe o no...
-  // TODO - 24-06-16 : Cambiar la extension de los archivos de trabajo a .csv
-  // TODO - 24-05-06 : Hay que hacer un método para borrar MisDatos (no tiene sentido que se guarden todo el tiempo en memoria)  
+  // REVIEW - 24-06-16 : Cambiar la extension de los archivos de trabajo a .csv
+  // REVIEW - 24-05-06 : Hay que hacer un método para borrar MisDatos (no tiene sentido que se guarden todo el tiempo en memoria)  
     
   //Se borra el objeto 'MisDatos' 
     this.misDatos = null;
@@ -113,10 +113,10 @@ import com.google.gson.JsonObject;
 //#endregion
 
 //#region GET_CONFIG
-  // TODO - 24-04-11 : Parece que, ahora mismo, no tiene sentido llamar a un constructor sin definir el usuario...
-  // TODO - 24-04-11 : Pensar cómo meter usuario
-  // TODO - 24-04-18 : Hacer un Diagrama de Flujo de todo el proceso de Config, para ajustar
-  // TODO - 24-05-02 : Estoy probando con 'synchronized' intentando que no use la config mientras se genera...
+  // REVIEW - 24-04-11 : Parece que, ahora mismo, no tiene sentido llamar a un constructor sin definir el usuario...
+  // REVIEW - 24-04-11 : Pensar cómo meter usuario
+  // REVIEW - 24-04-18 : Hacer un Diagrama de Flujo de todo el proceso de Config, para ajustar
+  // REVIEW - 24-05-02 : Estoy probando con 'synchronized' intentando que no use la config mientras se genera...
   public static Config getConfig(String user) {
     if(Config.configActual==null || !Config.configActual.getUsuario().equals(user))
       configActual = new Config(user);
@@ -221,8 +221,8 @@ import com.google.gson.JsonObject;
 //#endregion
 
 //#region OTROS GETTERS 
-// TODO - 24-05-13 : Acabo de quitar getConfigActual()
-// TODO - 24-04-28 : Controlar que esté todo bien después de quitar el static de algunos métodos get
+// REVIEW - 24-05-13 : Acabo de quitar getConfigActual()
+// REVIEW - 24-04-28 : Controlar que esté todo bien después de quitar el static de algunos métodos get
 public String getUsuario(){
     return this.usuario;
   }
@@ -335,11 +335,11 @@ public String getUsuario(){
 
 //#region LEER_CFG_JSON()
   public static synchronized RutasConfig leerRutasCFGjson(String ruta){
-// TODO : Si no existe el fichero, devolver 'false' y crearlo 
+// REVIEW : Si no existe el fichero, devolver 'false' y crearlo 
     RutasConfig resp;
     File fichCFG = new File(ruta);
     if (fichCFG.exists()){
-//TODO- 24-05-04 : Parece que el problema está aquí, cuando intenta leer el archivo 'rutasconfig.json'
+// REVIEW - 24-05-04 : Parece que el problema está aquí, cuando intenta leer el archivo 'rutasconfig.json'
  
       String json = Fichero.leerJSON(ruta);
       //System.out.println("[Config>leerRutasConfigJson] Fichero JSON leído");
@@ -401,7 +401,7 @@ public String getUsuario(){
 //#region TOSTR()
 @Override
 public String toString(){
-  // TODO - 24-06-29 : Hay que hacer los toString de uidata, configdata, rutasCongig
+  // REVIEW - 24-06-29 : Hay que hacer los toString de uidata, configdata, rutasCongig
   String resp = "Config del usuario " + this.usuario +" :\n ConfigData :\n" + this.configData.toString() + "\nmisDatos:\n" + ((this.misDatos!=null)?this.misDatos.toString():" - NULL -") + "\nuiData:\n" + this.uiData.toString() + "\nrutasConfig:\n" + this.rutasconfig.toString() + "\nElementos en Lista static de configuraciones: " + ((Config.configuraciones!=null)?Config.configuraciones.size():" - NULL -") + "\nstatic configActual not NULL: " + ((Config.configActual!=null)?"S":"N");
   return resp;
 }

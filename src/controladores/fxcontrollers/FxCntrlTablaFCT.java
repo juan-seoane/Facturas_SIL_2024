@@ -37,6 +37,7 @@ public class FxCntrlTablaFCT implements Initializable{
 	@FXML private TableColumn<Factura, Integer> colTipoIVA;
 	@FXML private TableColumn<Factura, Double> colIVA;
 	@FXML private TableColumn<Factura, Double> colST;
+	@FXML private TableColumn<Factura, Double> colBaseNI;
 	@FXML private TableColumn<Factura, Integer> colTipoRet;
 	@FXML private TableColumn<Factura, Double> colRetenc;
 	@FXML private TableColumn<Factura, Double> colTotal;
@@ -79,10 +80,10 @@ public class FxCntrlTablaFCT implements Initializable{
 //#endregion
 
 //#region CONSTR
-//TODO - 24-06-22 : - En el constructor inicializamos los campos que necesitamos listos antes de nada...
+// REVIEW - 24-06-22 : - En el constructor inicializamos los campos que necesitamos listos antes de nada...
 	public FxCntrlTablaFCT(){
 		//System.out.println("[FxControladorFacturas>constructor] Comenzando el constructor de FxCntrlTablaFCT");
-		// NOTE - 02-07-24 : Vamos a ver qué ocurre si el constructor de FxCntrlTablaFCT no crea una nueva tabla... parece que nada ...
+		// REVIEW - 02-07-24 : Vamos a ver qué ocurre si el constructor de FxCntrlTablaFCT no crea una nueva tabla... parece que nada ...
 		this.cfct = Controlador.getControladorFacturas();
 		this.listaFxFacturas = ModeloFacturas.getModelo().getListaFXFacturas();
 		this.tblvwfct  = Controlador.getControladorFacturas().getTableViewFCT();
@@ -107,6 +108,7 @@ public class FxCntrlTablaFCT implements Initializable{
 		colTipoIVA.setCellValueFactory(cellData -> cellData.getValue().getFxTipoIVA());
 		colIVA.setCellValueFactory(cellData -> cellData.getValue().getFxIVA());
 		colST.setCellValueFactory(cellData -> cellData.getValue().getFxST());
+		colBaseNI.setCellValueFactory(cellData -> cellData.getValue().getFxBaseNI());
 		colTipoRet.setCellValueFactory(cellData -> cellData.getValue().getFxTipoRet());
 		colRetenc.setCellValueFactory(cellData -> cellData.getValue().getFxRetenc());
 		colTotal.setCellValueFactory(cellData -> cellData.getValue().getFxTotal());
@@ -213,6 +215,10 @@ public class FxCntrlTablaFCT implements Initializable{
 		instancia = contr;
 	}
 
+	public Stage getTablaFCT(){
+		return instancia.getTablaFCT();
+	}
+
 //ANCHOR - tableView
 	public synchronized TableView<Factura> getTableView(){
 		//System.out.println("[FxCntrlTablaFCT>getTableView] la tabla no es NULL - devolviendo su valor hashCode de tablaFCT: " + this.tblvwfct .hashCode());
@@ -261,7 +267,7 @@ public class FxCntrlTablaFCT implements Initializable{
 
 	public void setIndiceActual(int index) {
 		this.lblIndexT.setText(""+(index+1));
-		// TODO - 24-07-25 : ¿¿Refrescar tabla después de actualizar etiqueta??
+		// ¿¿Refrescar tabla después de actualizar etiqueta??
 		indiceActual = index;
 	}
 

@@ -40,9 +40,6 @@ public class Controlador extends Thread {
 //    public static CyclicBarrier barreraControladores;
 //endregion
 
-// TODO - 24-06-04 : Comprobar los hilos que se generan (ControladorFCT, ControladorDIST, etc...)... Parece que sólo funciona el P/C
-// TODO - 24-06-04 : Hacer Singleton
-
 //#region CONTR
     private Controlador() throws IOException, InterruptedException, BrokenBarrierException{
         //System.out.println("[Controlador>constructor] Comenzando el constructor del Controlador Principal");
@@ -53,7 +50,7 @@ public class Controlador extends Thread {
         /* barreraControladores = new CyclicBarrier(2,() -> {
             //System.out.println("[Controlador>barreraControladores] El hilo "+Thread.currentThread().getName() + " acaba de entrar en la barreraControladores");
         }); */
-// TODO - 24-05-13 : Falta rediseñar el PnlCtl y la tabla de Facturas       
+      
         
         //System.out.println("[Controlador>constructor] Terminando el constructor del Controlador Principal");
 	}
@@ -264,7 +261,6 @@ public static void setUsuario(String user) {
     @Override
     public void run() {
 // REVIEW - 24-07-05 : Asignaciones al empezar a ejecutarse el hilo
-//TODO - 24-06-21 : Estas asignaciones me hacen falta
     cfct = getControladorFacturas();
     cfct.setName("Ctrl_FCT"); 
     cfct.start();
@@ -274,7 +270,7 @@ public static void setUsuario(String user) {
             if (getPanelControl().botonpulsado()){
                 switch (getPanelControl().seleccion()){
                     case 1 :
-// TODO - 24-06-27 : Aquí hay que activar la Tabla/Visor (dependiendo del modo INGR/NAV) de Facturas
+// Aquí hay que activar la Tabla/Visor (dependiendo del modo INGR/NAV) de Facturas
                         seccion = FACT;
                         if (PanelControl.getModo() == NAV){
                             //Visor y Tabla FCT visibles

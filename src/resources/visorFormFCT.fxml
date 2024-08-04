@@ -112,12 +112,12 @@
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="BASE">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="50.0" text="BASE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfVBase1" prefHeight="42.0" prefWidth="105.0" />
+                              <TextField fx:id="tfVBase1" prefHeight="42.0" prefWidth="100.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="tipoIVA">
                                  <font>
                                     <Font size="14.0" />
@@ -125,14 +125,15 @@
                               </Label>
                               <TextField fx:id="tfVTipoIVA1" prefHeight="42.0" prefWidth="40.0" />
                               <Button fx:id="btnVcalcIVA1" mnemonicParsing="false" onAction="#btnVcalcIVA1pulsado" prefHeight="42.0" prefWidth="40.0" text="&gt;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="IVA">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="50.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfVIVA1" prefHeight="42.0" prefWidth="104.0" />
-                              <Button fx:id="btmVcalc1" mnemonicParsing="false" onAction="#btnVcalc1Pulsado" prefHeight="41.0" prefWidth="68.0" text="=" />
-                              <TextField fx:id="tfVST1" prefHeight="48.0" prefWidth="162.0" />
+                              <TextField fx:id="tfVIVA1" prefHeight="42.0" prefWidth="75.0" />
+                              <Button fx:id="btmVcalc1" mnemonicParsing="false" onAction="#btnVcalc1Pulsado" prefHeight="41.0" prefWidth="45.0" text="=" />
+                              <TextField fx:id="tfVST1" prefHeight="48.0" prefWidth="125.0" />
+                              <TextField fx:id="tfVCon1" prefHeight="48.0" prefWidth="125.0" promptText="...concepto" />
                            </children>
                         </HBox>
                      </children>
@@ -141,12 +142,12 @@
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="BASE">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="50.0" text="BASE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfVBase2" prefHeight="42.0" prefWidth="105.0" />
+                              <TextField fx:id="tfVBase2" prefHeight="42.0" prefWidth="100.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="tipoIVA">
                                  <font>
                                     <Font size="14.0" />
@@ -154,14 +155,15 @@
                               </Label>
                               <TextField fx:id="tfVTipoIVA2" prefHeight="42.0" prefWidth="40.0" />
                               <Button fx:id="btnVcalcIVA2" mnemonicParsing="false" onAction="#btnVcalcIVA2pulsado" prefHeight="42.0" prefWidth="40.0" text="&gt;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="IVA">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="50.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfVIVA2" prefHeight="42.0" prefWidth="104.0" />
-                              <Button fx:id="btmVcalc2" mnemonicParsing="false" onAction="#btnVcalc2Pulsado" prefHeight="41.0" prefWidth="68.0" text="=" />
-                              <TextField fx:id="tfVST2" prefHeight="48.0" prefWidth="162.0" />
+                              <TextField fx:id="tfVIVA2" prefHeight="42.0" prefWidth="75.0" />
+                              <Button fx:id="btmVcalc2" mnemonicParsing="false" onAction="#btnVcalc2Pulsado" prefHeight="41.0" prefWidth="45.0" text="=" />
+                              <TextField fx:id="tfVST2" prefHeight="48.0" prefWidth="125.0" />
+                              <TextField fx:id="tfVCon2" prefHeight="48.0" prefWidth="125.0" promptText="...concepto" />
                            </children>
                         </HBox>
                      </children>
@@ -170,12 +172,12 @@
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="BASE">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="50.0" text="BASE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfVBase3" prefHeight="42.0" prefWidth="105.0" />
+                              <TextField fx:id="tfVBase3" prefHeight="42.0" prefWidth="100.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="tipoIVA">
                                  <font>
                                     <Font size="14.0" />
@@ -183,14 +185,15 @@
                               </Label>
                               <TextField fx:id="tfVTipoIVA3" prefHeight="42.0" prefWidth="40.0" />
                               <Button fx:id="btnVcalcIVA3" mnemonicParsing="false" onAction="#btnVcalcIVA3pulsado" prefHeight="42.0" prefWidth="40.0" text="&gt;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="IVA">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="50.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfVIVA3" prefHeight="42.0" prefWidth="104.0" />
-                              <Button fx:id="btmVcalc3" mnemonicParsing="false" onAction="#btnVcalc3Pulsado" prefHeight="41.0" prefWidth="68.0" text="=" />
-                              <TextField fx:id="tfVST3" prefHeight="48.0" prefWidth="162.0" />
+                              <TextField fx:id="tfVIVA3" prefHeight="42.0" prefWidth="75.0" />
+                              <Button fx:id="btmVcalc3" mnemonicParsing="false" onAction="#btnVcalc3Pulsado" prefHeight="41.0" prefWidth="45.0" text="=" />
+                              <TextField fx:id="tfVST3" prefHeight="48.0" prefWidth="125.0" />
+                              <TextField fx:id="tfVCon3" prefHeight="48.0" prefWidth="125.0" promptText="...concepto" />
                            </children>
                         </HBox>
                      </children>
@@ -199,12 +202,12 @@
                      <children>
                         <HBox layoutX="1.0" layoutY="-1.0" prefHeight="42.0" prefWidth="695.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="BASE">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="50.0" text="BASE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfVBase4" prefHeight="42.0" prefWidth="105.0" />
+                              <TextField fx:id="tfVBase4" prefHeight="42.0" prefWidth="100.0" />
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="tipoIVA">
                                  <font>
                                     <Font size="14.0" />
@@ -212,14 +215,15 @@
                               </Label>
                               <TextField fx:id="tfVTipoIVA4" prefHeight="42.0" prefWidth="40.0" />
                               <Button fx:id="btnVcalcIVA4" mnemonicParsing="false" onAction="#btnVcalcIVA4pulsado" prefHeight="42.0" prefWidth="40.0" text="&gt;" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="52.0" text="IVA">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="50.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfVIVA4" prefHeight="42.0" prefWidth="104.0" />
-                              <Button fx:id="btmVcalc4" mnemonicParsing="false" onAction="#btnVcalc4Pulsado" prefHeight="41.0" prefWidth="68.0" text="=" />
-                              <TextField fx:id="tfVST4" prefHeight="48.0" prefWidth="162.0" />
+                              <TextField fx:id="tfVIVA4" prefHeight="42.0" prefWidth="75.0" />
+                              <Button fx:id="btmVcalc4" mnemonicParsing="false" onAction="#btnVcalc4Pulsado" prefHeight="41.0" prefWidth="45.0" text="=" />
+                              <TextField fx:id="tfVST4" prefHeight="48.0" prefWidth="125.0" />
+                              <TextField fx:id="tfVCon4" prefHeight="48.0" prefWidth="125.0" promptText="...concepto" />
                            </children>
                         </HBox>
                      </children>
@@ -247,14 +251,20 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfVTotalesBase" prefHeight="32.0" prefWidth="161.0" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="91.0" text="IVA">
+                              <TextField fx:id="tfVTotalesBase" prefHeight="30.0" prefWidth="123.0" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="63.0" text="tipoIVA">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="tfVTotalesTipoIVA" prefHeight="30.0" prefWidth="68.0" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="63.0" text="IVA">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
                               <TextField fx:id="tfVTotalesIVA" prefHeight="32.0" prefWidth="139.0" />
-                              <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="117.0" text="subTotal" textAlignment="RIGHT">
+                              <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="84.0" text="subTotal" textAlignment="RIGHT">
                                  <font>
                                     <Font size="14.0" />
                                  </font>

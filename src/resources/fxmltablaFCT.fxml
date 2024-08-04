@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="1066.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fxcontrollers.FxCntrlTablaFCT">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="1135.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.fxcontrollers.FxCntrlTablaFCT">
    <children>
       <VBox layoutX="35.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="650.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -20,21 +20,22 @@
                <children>
                   <TableView fx:id="tblvwfct" layoutY="12.0" prefHeight="527.0" prefWidth="1066.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="12.0">
                     <columns>
-                      <TableColumn fx:id="colID" prefWidth="29.0" text="ID" />
-                      <TableColumn fx:id="colNumFact" prefWidth="115.0" text="#" />
-                        <TableColumn fx:id="colFecha" prefWidth="69.0" text="fecha" />
-                        <TableColumn fx:id="colRS" prefWidth="146.0" text="nombreEmpresa" />
-                        <TableColumn fx:id="colCat" minWidth="4.79998779296875" prefWidth="140.0" text="categoría" />
-                        <TableColumn fx:id="colDev" prefWidth="29.59991455078125" text="dev" />
+                      <TableColumn fx:id="colID" prefWidth="40.0" resizable="false" text="ID" />
+                      <TableColumn fx:id="colNumFact" prefWidth="107.0" text="#" />
+                        <TableColumn fx:id="colFecha" prefWidth="79.0" text="fecha" />
+                        <TableColumn fx:id="colRS" prefWidth="144.0" text="nombreEmpresa" />
+                        <TableColumn fx:id="colCat" minWidth="4.79998779296875" prefWidth="132.0" text="categoría" />
+                        <TableColumn fx:id="colDev" prefWidth="28.0" resizable="false" style="-fx-alignment: CENTER;" text="dev" />
                         <TableColumn fx:id="colNumExtr" prefWidth="40.79998779296875" text="#Extr" />
                         <TableColumn fx:id="colBase" prefWidth="77.0" text="Base" />
                         <TableColumn fx:id="colTipoIVA" prefWidth="36.0" text="tIva" />
                         <TableColumn fx:id="colIVA" prefWidth="56.0" text="IVA" />
                         <TableColumn fx:id="colST" prefWidth="79.0" text="SubTotal" />
+                        <TableColumn fx:id="colBaseNI" prefWidth="77.0" text="BaseNI" />
                         <TableColumn fx:id="colTipoRet" prefWidth="36.0" text="\%ret" />
-                        <TableColumn fx:id="colRetenc" prefWidth="57.0" text="retenc" />
-                        <TableColumn fx:id="colTotal" prefWidth="96.0" text="TOT" />
-                        <TableColumn fx:id="colNota" prefWidth="60.0" text="nt" />
+                        <TableColumn fx:id="colRetenc" prefWidth="78.0" text="retenc" />
+                        <TableColumn fx:id="colTotal" prefWidth="102.0" text="TOT" />
+                        <TableColumn fx:id="colNota" prefWidth="25.0" resizable="false" text="nt" />
                     </columns>
                   </TableView>
                </children>

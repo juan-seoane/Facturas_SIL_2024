@@ -33,6 +33,7 @@ public class Factura extends Vector implements Comparable<Factura> {
     private ObservableValue<Integer> FxTipoRet;
     private ObservableValue<Double> FxTotal;
     private SimpleStringProperty FxNota;
+    private ObservableValue<Double> FxBaseNI;
     private ObservableValue<Double> FxST;
     private ObjectProperty<Double> FxIVA;
     private ObservableValue<Integer> FxTipoIVA;
@@ -45,7 +46,7 @@ public class Factura extends Vector implements Comparable<Factura> {
     private SimpleStringProperty FxNumFact;
     private ObservableValue<Integer> FxID;
 //#endregion
-
+    
 //#region CONSTR
     public Factura(Integer ID, String numeroFactura, Fecha fecha, RazonSocial RS, TipoGasto categoria, boolean esDevolucion, ArrayList<Extracto> extractos, Totales totales, Nota nota) {
         this.ID = ID;
@@ -142,17 +143,17 @@ public class Factura extends Vector implements Comparable<Factura> {
     @Override
     public String toString(){
         String cadenaResp = this.ID + "," + this.numeroFactura + "," +  this.fecha.toString() + "," + this.RS.getID() + "," + this.RS.getNif() + "," + this.RS.getNombre() + "," + this.categoria.getTipo() + "," + (this.esDevolucion?"S":"N") + "," + this.extractos.size() + ", TOTS-> " + this.totales.getBase() + "," + ((this.totales.isVariosIVAs())?"S":"N,"+this.totales.getTipoIVA()) + "," + this.totales.getIVA() + "," + this.totales.getRet() + "," + this.totales.getRetenciones() + "," + this.totales.getTotal() + "," + ((this.nota!=null)?this.nota.getTexto():"sinNOTA");
-        //TODO - 24-06-15 : - ojo que sólo puede haber una Nota...
-        if (this.extractos.size()>0){
+        // ojo que sólo puede haber una Nota...
+        if (this.extractos.size()>1){
             for (int i=0; i<this.extractos.size(); i++){
-                cadenaResp += "\nEXTR->" + this.extractos.get(i).getBase() + "," + this.extractos.get(i).getTipoIVA() + "," + this.extractos.get(i).getIVA() + "," + this.extractos.get(i).getTotal()+ "#";
+                cadenaResp += "\nEXTR->" + this.extractos.get(i).getBase() + "," + this.extractos.get(i).getTipoIVA() + "," + this.extractos.get(i).getIVA() + "," + this.extractos.get(i).getSubtotal()+ "#";
             }
         }
 
         return cadenaResp;
     }
 
-// TODO - 24-05-07 : - Revisar la forma de comparar facturas
+// Revisar la forma de comparar facturas
     @Override
     public int compareTo(Factura b){
       return (this.fecha.compareTo(b.getFecha()));
@@ -196,7 +197,7 @@ public class Factura extends Vector implements Comparable<Factura> {
 	}
 
 	public StringProperty getFxDev() {
-		this.FxEsDev = new SimpleStringProperty(this.esDevolucion?"S":"N");
+		this.FxEsDev = new SimpleStringProperty(this.esDevolucion?"X":"");
         return this.FxEsDev;
 	}
 
@@ -224,6 +225,11 @@ public class Factura extends Vector implements Comparable<Factura> {
         return this.FxST;
     }
 
+    public ObservableValue<Double> getFxBaseNI() {
+        this.FxBaseNI = new SimpleDoubleProperty(this.getTotales().getBaseNI()).asObject();
+        return this.FxBaseNI;
+    }
+
 	public ObservableValue<Integer> getFxTipoRet() {
 		this.FxTipoRet = new SimpleIntegerProperty(this.getTotales().getRet()).asObject();
         return this.FxTipoRet;
@@ -240,7 +246,7 @@ public class Factura extends Vector implements Comparable<Factura> {
 	}
 
 	public StringProperty getFxNota() {
-		this.FxNota = new SimpleStringProperty(this.nota!=null?"S":"N");
+		this.FxNota = new SimpleStringProperty(this.nota!=null?"*":"");
         return this.FxNota ;
 	}
 //#endregion
@@ -262,29 +268,28 @@ public class Factura extends Vector implements Comparable<Factura> {
                 int mes = Integer.parseInt(fecha[1]);
                 int año = Integer.parseInt(fecha[2]);
                 int rsid = Integer.parseInt(linea[3]);
-                //TODO - 24-06-14 : - revisar esto, sólo vale para NIF, no para CIF... Habrá que hacer un método nuevo que convierta un array de cadenas de texto en un objeto NIF
-                //TODO - 24-06-19 : - Además habría que ver si existe ya la RS (según el ID) 
+                // Revisar esto, sólo vale para NIF, no para CIF... Habrá que hacer un método nuevo que convierta un array de cadenas de texto en un objeto NIF
+                // Además habría que ver si existe ya la RS (según el ID) 
                 String[] rsnif = linea[4].split("-");
-                int numnif = Integer.parseInt(rsnif[0]);
-                NIF nifRS = new NIF(numnif, rsnif[1],false);
+                NIF nifRS = NIF.array2nif(rsnif);
                 String rsnombre = linea[5];
                 Nota nota;
                 if (linea[18].equals("0")){
-                        nota =null;
+                        nota = null;
                 }else{
-                    nota = new Nota(Integer.parseInt(linea[18]), linea[19]);
+                    nota = new Nota(/*Integer.parseInt(linea[18]),*/ linea[19]);
                 }
-                //TODO - 24-06-14 : - revisar esto, sólo vale para cuando hay notas... Hacer un método para leer la nota si existe, y si no, hacerla null
-                //TODO - 24-06-15 : - Se podría poner el TipoIVA como un Integer en vez de una clase TipoIVA...
-                f = new Factura(Integer.parseInt(linea[0]),linea[1],new Fecha(dia, mes, año),new RazonSocial(rsid,nifRS,rsnombre),new TipoGasto(linea[6],linea[6]),(linea[7].equals("S"))?true:false,extractos, new Totales(Double.parseDouble(linea[9]),(linea[10].equals("S"))?true:false,Integer.parseInt(linea[11]),Double.parseDouble(linea[12]),Double.parseDouble(linea[13]),Double.parseDouble(linea[14]),Integer.parseInt(linea[15]),Double.parseDouble(linea[16]),Double.parseDouble(linea[17])),(nota==null)?null:nota);            
+                // Revisar esto, sólo vale para cuando hay notas... Hacer un método para leer la nota si existe, y si no, hacerla null
+                // Se podría poner el TipoIVA como un Integer en vez de una clase TipoIVA...
+                f = new Factura(Integer.parseInt(linea[0]),linea[1],new Fecha(dia, mes, año),new RazonSocial(rsid,nifRS,rsnombre),new TipoGasto(linea[6],linea[6]),(linea[7].equals("S"))?true:false,extractos, new Totales(Double.parseDouble(linea[9]),(linea[10].equals("S"))?true:false,Integer.parseInt(linea[11]),Double.parseDouble(linea[12]),Double.parseDouble(linea[13]),Double.parseDouble(linea[14]),Integer.parseInt(linea[15]),Double.parseDouble(linea[16]),Double.parseDouble(linea[17]),linea[6]),((nota==null)?null:nota));            
         }else{
             //se lee el extracto
             //System.out.println("[Factura>ConvertirCSVaFCT] --- leyendo extracto num " + linea[1] + "---");
             f = ModeloFacturas.facturas_prev.getLast();
             extractos = f.getExtractos();
-            extractos.add(new Extracto(Double.parseDouble(linea[9]),Integer.parseInt(linea[11]),Double.parseDouble(linea[12]),Double.parseDouble(linea[13])));
+            extractos.add(new Extracto(Double.parseDouble(linea[9]),Integer.parseInt(linea[11]),Double.parseDouble(linea[12]),Double.parseDouble(linea[13]), linea[6]));
             f.setExtractos(extractos);
-        //TODO - 24-06-15 : - ojo con este paso: se quita la última entrada de la lista de facturas...
+        // REVIEW - 24-06-15 : - ojo con este paso: se quita la última entrada de la lista de facturas...
             ModeloFacturas.facturas_prev.removeLast();
             
         }
@@ -315,26 +320,28 @@ public class Factura extends Vector implements Comparable<Factura> {
         arrayCSV[16] = "" + f.getTotales().getRetenciones();
         // NOTE - 24-07-24 : El Total se marca negativo si es Devolución
         arrayCSV[17] = (f.esDevolucion?(((f.getTotales().getTotal())>0)?"-":""):"") + f.getTotales().getTotal();
-        //TODO : 24-06-24 - Sólo debería haber 0 o 1 notas... no tiene sentido el Objeto Nota con un Número y un Texto, llega un String con valor 'null' o el 'Texto'
-        //TODO : 24-06-24 - En la tabla puede marcarse el campo Nota con un '*'' si tiene Nota, y cuando el cursor esté encima del asterisco, que se lea la nota como un texto de ayuda al lado del cursor....
+        // REVIEW : 24-06-24 - Sólo debería haber 0 o 1 notas... no tiene sentido el Objeto Nota con un Número y un Texto, llega un String con valor 'null' o el 'Texto'
+        // REVIEW : 24-06-24 - En la tabla puede marcarse el campo Nota con un '*'' si tiene Nota, y cuando el cursor esté encima del asterisco, que se lea la nota como un texto de ayuda al lado del cursor....
         if (f.getNota()!=null){
-            arrayCSV[18] = ""+f.getNota().getNumero();
+            //arrayCSV[18] = ""+f.getNota().getNumero();
+        // REVIEW - 24-07-31 : Así que el número de la Nota siempre es 0 o 1...
+            arrayCSV[18] = "1";
             arrayCSV[19] = f.getNota().getTexto();
         }else if(f.getNota()==null){
             arrayCSV[18] = "0";
         }
         lista.add(arrayCSV);
         
-        if (f.extractos.size()>1){
+        if (f.extractos.size()>0){
             int i = 1;    
             for (Extracto ex : f.extractos){
                 arrayCSV = new String[20];
                 arrayCSV[1] = ""+i;
-                arrayCSV[6] = "extracto";
+                arrayCSV[6] = ex.getConcepto();
                 arrayCSV[9] = "" + ex.getBase();
                 arrayCSV[11] = "" + ex.getTipoIVA();
                 arrayCSV[12] = "" + ex.getIVA();
-                arrayCSV[13] = "" + ex.getTotal();
+                arrayCSV[13] = "" + ex.getSubtotal();
         
                 lista.add(arrayCSV);
                 i++;

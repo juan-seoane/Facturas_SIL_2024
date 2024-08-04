@@ -19,7 +19,7 @@ public class RazonSocial implements Comparable<RazonSocial> {
     private int[] tiposIVA;
 
     public RazonSocial() {
-        this(0, new NIF(0000, "A", false), "nombre de la empresa", "nombre Razon Social", "900-000000", "direccion del distribuidor", "99999", "Ourense", null, new Totales(), new Nota( 0, ""), "COMPRAS", null);
+        this(0, new NIF(0000, "A", false), "nombre de la empresa", "nombre Razon Social", "900-000000", "direccion del distribuidor", "99999", "Ourense", null, new Totales(), new Nota(""), "COMPRAS", null);
     }
 
     public RazonSocial(Integer ID, NIF nif,String nombre) {
@@ -168,7 +168,7 @@ public class RazonSocial implements Comparable<RazonSocial> {
 
     }
     
-// TODO - 2024-05-07 : - Revisar la forma de comparar RS
+// Revisar la forma de comparar RS
     @Override
     public int compareTo(RazonSocial b){
         if (this.equals(b)){

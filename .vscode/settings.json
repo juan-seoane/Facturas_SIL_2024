@@ -7,6 +7,13 @@
     "[java]": {
         "editor.insertSpaces": false,
     },
+    "java.project.sourcePaths": [
+        "src",
+        "config",
+        "datos",
+        "escaneos",
+        "informes"
+    ],
     "files.exclude": {
         "**/*.class": true
     },

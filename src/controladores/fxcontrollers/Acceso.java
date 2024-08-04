@@ -53,11 +53,11 @@ public class Acceso implements Initializable{
 //#endregion
 
 //#region INIT
-    //TODO: Lo de abajo sólo funciona si se implementa el Interfaz "Inicializable" (implements Initilizable)
+    // REVIEW: Lo de abajo sólo funciona si se implementa el Interfaz "Inicializable" (implements Initilizable)
     @FXML
     public void initialize(URL location, ResourceBundle resources) {  
         canvasAcceso = this.txtArea;   
-        //TODO: No sé cómo hacer para poner el foco al arrancar en ese campo de texto... la siguiente línea no funciona
+        // REVIEW: No sé cómo hacer para poner el foco al arrancar en ese campo de texto... la siguiente línea no funciona
         //txtUsuario.requestFocus();
         
         canvasAcceso.sceneProperty().addListener((observableScene, oldScene, newScene) -> {
@@ -72,7 +72,7 @@ public class Acceso implements Initializable{
 
 //#region RUN_CTLLR
     private void arrancarControlador() throws IOException, InterruptedException, BrokenBarrierException{
-    // TODO - 24-05-13 : Aquí arroja una 'IOException' que afecta al hilo general del programa... Habría que ver cómo evitar que se propague a las llamadas anteriores...       
+    // REVIEW - 24-05-13 : Aquí arroja una 'IOException' que afecta al hilo general del programa... Habría que ver cómo evitar que se propague a las llamadas anteriores...       
            
            Controlador ctrThread = Controlador.getControlador();
    
@@ -142,7 +142,7 @@ public class Acceso implements Initializable{
         //Acceso.imprimir("texto introducido : "+ userF.getText() + " - " +passF.getText()+" - intentos: "+ intentos);
         //Thread.sleep(2000);
         //System.out.println("[Acceso.java>probar()] texto introducido : "+ userF.getText() + " - " +passF.getText());
-//TODO: OJO! Usuario siempre se contrasta en mayúsculas (aunque esté escrito en minúsculas)
+// REVIEW: OJO! Usuario siempre se contrasta en mayúsculas (aunque esté escrito en minúsculas)
         ComprobacionesAcceso check = new ComprobacionesAcceso();
         credsOK = check.comprobarCredenciales(user, pass);
 
@@ -223,7 +223,7 @@ public class Acceso implements Initializable{
     }
 
     private void cambiarEscena(Scene es) {
-        //TODO: Probando con un elemento de la GUI no estático
+        // REVIEW: Probando con un elemento de la GUI no estático
         Stage stage = (Stage) this.txtArea.getScene().getWindow();
         //System.out.println("[Acceso>cambiarEscena] Leido stage: " + stage.hashCode());
         ventanaAcceso = stage;

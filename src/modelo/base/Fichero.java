@@ -15,7 +15,7 @@ import static java.nio.file.StandardCopyOption.*;
 /*
  * @author Juan Seoane
  */
-//TODO: 09/04/24 - Guardar en formato json
+// REVIEW - 09/04/24 : Guardar en formato json
 public class Fichero<T> {
 
     public String rutaArchivo;
@@ -416,7 +416,7 @@ public synchronized ArrayList<String[]> leerCSV(String rutaYnombre){
         //System.out.println("[Fichero.java>leerCSV()] Excepcion " + e + " leyendo el archivo " + rutaYnombre);
     }
     cerrarInputStream();
-    //TODO - 2024-06-14 : - (Hay que devolver ya una lista de facturas) En fichero.leerCSV se devuelve un ArrayList<String[]> genérico, luego cada Modelo lo pasa a su ArrayList<T> parametrizado a la clase que convenga, Factura, RS, EntradaCaja...
+    // REVIEW - 2024-06-14 : (Hay que devolver ya una lista de facturas) En fichero.leerCSV se devuelve un ArrayList<String[]> genérico, luego cada Modelo lo pasa a su ArrayList<T> parametrizado a la clase que convenga, Factura, RS, EntradaCaja...
     return resp;
     }
 //#endregion 
