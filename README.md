@@ -49,7 +49,8 @@ También se actualizan las GUI con JavaFX, en vez de Swing, y se usan FXtest + J
                                             "escaneos",
                                             "informes"
                                         ],
-
+    // FIXME  - 24-08-04 [General] : En Windows,  trasladar la carpeta 'datos/'
+    
     // TODO   - 24-08-01 [General,FxCntrlVisorFCT] : NuevaFactura
     // TODO   - 24-07-24 [General,FxCntrlVisorFCT] : Validaciónes de las facturas : fechas, numeros, nif, etc...
     // TODO   - 24-07-30 [General,FxCntrlVisorFCT] : Automatizar la entrada de extractos: sumar los de mismo tipo de IVA, calcular tipoIVA desde Base+IVA, Incluir Sumas de Totales, Añadir Conceptos cuando se suman extractos...
