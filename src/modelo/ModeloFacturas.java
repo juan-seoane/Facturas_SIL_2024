@@ -4,20 +4,14 @@ import controladores.*;
 import controladores.fxcontrollers.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Modality;
 import modelo.base.Config;
 import modelo.base.Fichero;
-import modelo.filtros.FiltroCategoria;
-import modelo.filtros.FiltroDistribuidor;
-import modelo.filtros.FiltroFecha;
-import modelo.records.Extracto;
 import modelo.records.Factura;
-import modelo.records.Fecha;
-import modelo.records.NIF;
-import modelo.records.Nota;
 import modelo.records.RazonSocial;
-import modelo.records.TipoGasto;
-import modelo.records.Totales;
-
 import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
@@ -27,15 +21,15 @@ public class ModeloFacturas {
 //#region CAMPOS
     static ModeloFacturas instancia;
     static ArrayList<Factura> facturas;
-    //FIXME - 14-07-24 : En algún momento tendré que arreglar esto... facturas_prev puede no hacer falta...
+    // En algún momento tendré que arreglar esto... facturas_prev puede no hacer falta...
     public static ArrayList<Factura> facturas_prev;
     private ArrayList<String[]> arrayFacturas;
     static Fichero<Factura> ficheroFacturas;
-    //TODO  - 24-04-11 : - Repasar los vectores de Facturas y demás...
+    // Repasar los vectores de Facturas y demás...
     static Stack<Factura> pilafacturasant = new Stack<Factura>();
     static Stack<Factura> pilafacturassig = new Stack<Factura>();
     static Vector<Factura> vectorfacturas;
-    static Vector<String> vectorcolumnas;
+    //static Vector vectorcolumnas;
     static int ultimaID;
     static int numeroFacturas = 0;
 //#endregion
@@ -79,6 +73,8 @@ public class ModeloFacturas {
     }
 
     public static synchronized int getNumeroFacturas() {
+        facturas = (ArrayList<Factura>) leerFacturasSinFiltrar();
+        numeroFacturas = facturas.size();
         return numeroFacturas;
     }
 
@@ -124,10 +120,9 @@ public class ModeloFacturas {
 //#region leerFacturas
     public ObservableList<Factura> getListaFXFacturas(){
         List<Factura> fact_prev = null;
-//TODO - 24-06-16 : - Habrá que filtrar la lista de facturas después
         try {
             fact_prev = leerFacturasSinFiltrar();
-        } catch (NullPointerException | IOException e) {
+        } catch (NullPointerException e) {
             //System.out.println("[ModeloFacturas>getListaFXFacturas] Error al recoger la lista observable (para JFX) de facturas");
             e.printStackTrace();
         }
@@ -149,14 +144,15 @@ public class ModeloFacturas {
         return filtrar(ModeloFacturas.facturas);
     }
 
-    public List<Factura> leerFacturasSinFiltrar() throws NullPointerException, IOException{
+    public static List<Factura> leerFacturasSinFiltrar() {
         ficheroFacturas = new Fichero<Factura>(Config.getConfig(Controlador.getUsuario()).getRutaFCT().toString());
         ArrayList<String[]> arrayFct = ficheroFacturas.leerCSV(ficheroFacturas.rutaArchivo);
-        var listaFct = ConvertirArrayCSVenListaFCT(arrayFct);
-       
+        ArrayList<Factura> listaFct= null;
+        listaFct = ConvertirArrayCSVenListaFCT(arrayFct);
         numeroFacturas = listaFct.size();
         if (numeroFacturas == 0){
             listaFct.add(new Factura());
+            numeroFacturas = listaFct.size();
         }
 
         return listaFct;
@@ -190,12 +186,17 @@ public class ModeloFacturas {
 //#endregion
 
 //#region ArrayCSVaFCT
-    private synchronized ArrayList<Factura> ConvertirArrayCSVenListaFCT(ArrayList<String[]> arrayFacturas) throws NullPointerException, IOException {
+    private synchronized static ArrayList<Factura> ConvertirArrayCSVenListaFCT(ArrayList<String[]> arrayFacturas){
         facturas_prev = new ArrayList<Factura>();
         if (arrayFacturas.size()>0){
             for (String[] linea : arrayFacturas)
             {
-                var resp = Factura.convertirCSVaFCT(linea);
+                Factura resp =null;
+                try {
+                    resp = Factura.convertirCSVaFCT(linea);
+                } catch (NullPointerException | IOException e) {
+                    e.printStackTrace();
+                }
                 if (resp!=null){
                     facturas_prev.add(resp);
                 }
@@ -208,10 +209,10 @@ public class ModeloFacturas {
     }
     //#endregion 
 
-//#region (filtrar)   
+//#region filtrar   
     public List<Factura> filtrar(List<Factura> lista) {
     
-    //TODO - 24-06-14 : - Habría que convertir este ArrayList<String[]> a un ArrayList<Factura>...
+    // REVIEW - 24-06-14 : - Habría que convertir este ArrayList<String[]> a un ArrayList<Factura>...
 
         for (int i = 0; i < lista.size(); i++){
             Factura f1 = lista.get(i);
@@ -229,7 +230,7 @@ public class ModeloFacturas {
         int i = 0;
         for (Factura f : lista){
             i++;
-// TODO - 24-05-06 : - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+// REVIEW - 24-05-06 : - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
             f.setID(i);
             ultID = i;
         }
@@ -260,7 +261,7 @@ public class ModeloFacturas {
             }
             else lista4 = lista3;
 
-// TODO : ACORDARSE DE ACTUALIZAR LOS TOTALES DESPUES DE FILTRAR! 
+//ACORDARSE DE ACTUALIZAR LOS TOTALES DESPUES DE FILTRAR! 
             return lista4;
         }
 */
@@ -268,13 +269,13 @@ public class ModeloFacturas {
     }
 //#endregion
 
-//#region (fct_ops) 
+//#region fct_ops 
     public boolean insertarFacturas(ArrayList<Factura> facturas) throws NumberFormatException, IOException {
         if ((numeroFacturas = facturas.size()) > 0) {
             Collections.sort(facturas);
         }
         //JOptionPane.showMessageDialog(null, "Espere unos segundos mientras se ordena la lista!");
-// TODO - 24-05-06 : - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+// REVIEW - 24-05-06 : - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
 //        for (int i = 0; i < numeroFacturas; i++) {
 //            facturas.get(i).setID(i + 1);
 //        }
@@ -283,7 +284,7 @@ public class ModeloFacturas {
     }
 
     public boolean anexarFactura(modelo.records.Factura factura) throws NumberFormatException, IOException {
-// TODO - 24-05-06 : - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
+// REVIEW - 24-05-06 : - Hay que reemplazar estas operaciones con setters... No existen en un Java record...
 //        factura.setID(this.ultimaID++);
         numeroFacturas++;
         PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
@@ -291,13 +292,13 @@ public class ModeloFacturas {
     } 
 
     public boolean editarFactura(ArrayList<Factura> listafacturas, Factura factura, int index) throws NumberFormatException, IOException {
-        //System.out.println(" [ModeloFacturas] Indice en Modelo : " + index);
-
+        System.out.println(" [ModeloFacturas>editarFactura] Index de factura : " + index);
         listafacturas.set(index, factura);
         Collections.sort(listafacturas);
-        if (ficheroFacturas.escribir(listafacturas)) {
+        var datosLista = ConvertirListaFCTaCSV(listafacturas);
+        
+        if (ficheroFacturas.guardarCSV(datosLista)) {
             leerFacturasSinFiltrar();
-            PanelControl.getPanelControl().setNumfacturas(numeroFacturas);
             return true;
         }
         return false;
@@ -318,25 +319,58 @@ public class ModeloFacturas {
             JOptionPane.showMessageDialog(null,"No se han actualizado las facturas");
     }
     
-    public boolean borrarFactura(Factura factura, int index) throws NumberFormatException, IOException {
+    public boolean borrarFactura(Factura factura){
         pilafacturasant.push(factura);
-        //System.out.println(" [ModeloFacturas] Indice en Modelo : " + index);
-        int res = JOptionPane.showConfirmDialog(null,
-                "Desea realmente borrar la factura?", "Advertencia!", JOptionPane.YES_NO_OPTION);
-
-        if (res == JOptionPane.YES_OPTION) {
+        System.out.println(" [ModeloFacturas>borrarFactura] borrando factura:\n" + factura.toString());
+         // Crear una alerta de tipo confirmación
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Advertencia!");
+        alert.setHeaderText("[ModeloFacturas]");
+        alert.setContentText("¿Desea realmente borrar la factura?");
+        alert.initModality(Modality.APPLICATION_MODAL);
+        if (ControladorFacturas.visorFCT.isShowing())
+            alert.initOwner(ControladorFacturas.visorFCT);
+        else
+            alert.initOwner(ControladorFacturas.tablaFCT);
+        // Mostrar la alerta y esperar la respuesta del usuario
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // El usuario seleccionó "Sí"
             facturas.remove(factura);
-            JOptionPane.showMessageDialog(null, "Borrando factura!");
+            // Hay que cambiar las ID de las facturas (no necesariamente ordenarlas)
+            Collections.sort(facturas);
+            /*// Crear una alerta de tipo información
+            Alert alert2 = new Alert(AlertType.INFORMATION);
+            alert2.setTitle("Atención!!");
+            alert2.setHeaderText("[ModeloFacturas]");
+            alert2.setContentText("Borrando factura!");
+            // Mostrar la alerta y esperar a que el usuario la cierre
+            alert2.showAndWait();*/
+            System.out.println("Borrando factura!");
             numeroFacturas--;
-            insertarFacturas((ArrayList<Factura>) facturas);
-            return true;
+            var datosLista = ConvertirListaFCTaCSV(facturas);
+        
+            if (ficheroFacturas.guardarCSV(datosLista)) {
+                leerFacturasSinFiltrar();
+                return true;
+            }
+            return false;
         } else {
+            // El usuario seleccionó "No" o cerró el cuadro de diálogo
+            /*// Crear una alerta de tipo información
+            Alert alert2 = new Alert(AlertType.INFORMATION);
+            alert2.setTitle("Atención!!");
+            alert2.setHeaderText("[ModeloFacturas]");
+            alert2.setContentText("Operación de borrado de Factura cancelada.");
+            // Mostrar la alerta y esperar a que el usuario la cierre
+            alert2.showAndWait();*/
+            System.out.println("Operacion de borrado de Factura cancelada.");
             return false;
         }
     }
 //#endregion
 
-//#region (RecogerFORM)
+//#region RecogerFORM
 /*
     public Factura recogerFormulario(FormularioFact form) {
         boolean isCIF;
@@ -356,7 +390,7 @@ public class ModeloFacturas {
         if (form.esDevolucion()){
             textoNota = "Devolucion - "+textoNota;
         }
-        //TODO  - 24-04-11 : - Cambiar los datos de los formularios por datos obtenidos de la GUI JFX
+        // REVIEW  - 24-04-11 : - Cambiar los datos de los formularios por datos obtenidos de la GUI JFX
         int dia = form.dia();
         int mes = form.mes();
         int año = form.año();
@@ -366,9 +400,9 @@ public class ModeloFacturas {
         form.limpiarFormulario();
 
         Fecha fecha = new Fecha(dia, mes, año);
-//TODO - 24-04-11 : - Necesito un método (estático, a poder ser) para generar automáticamente el ID de cada Nota
+// Necesito un método (estático, a poder ser) para generar automáticamente el ID de cada Nota
         RazonSocial rs = completarRS(new RazonSocial(1, new NIF(numero, letra, isCIF), razon, new Nota(0,"")));
-        // TODO : HAY QUE CONSEGUIR INTRODUCIR TODA LA RAZON SOCIAL COMO APARECE EN DISTRIBUIDORES 
+        // HAY QUE CONSEGUIR INTRODUCIR TODA LA RAZON SOCIAL COMO APARECE EN DISTRIBUIDORES 
         ArrayList<Extracto> subfacturas = form.getSubfacturas();
 
         Totales totales = form.getTotales();
@@ -429,7 +463,7 @@ public class ModeloFacturas {
 //#endregion
 
 //#region genVectorFact 
- //TODO - 24-06-14 : - repasar esta función, puede que no funcione...
+ // repasar esta función, puede que no funcione...
     public Vector<Factura> generarVectorFacturas() {
         var vectorfacturas = new Vector<Factura>();
         
@@ -460,5 +494,6 @@ public class ModeloFacturas {
         return columnas;
     }
 //#endregion
+
 
 }

@@ -19,11 +19,11 @@ public class RazonSocial implements Comparable<RazonSocial> {
     private int[] tiposIVA;
 
     public RazonSocial() {
-        this(0, new NIF(0000, "A", false), "nombre de la empresa", "nombre Razon Social", "900-000000", "direccion del distribuidor", "99999", "Ourense", null, new Totales(), new Nota( 0, ""), "COMPRAS", null);
+        this(0, new NIF(0000, "A", false), "nombre de la empresa", "nombre Razon Social", "900-000000", "direccion del distribuidor", "99999", "Ourense", null, new Totales(), new Nota(""), "COMPRAS", null);
     }
 
-    public RazonSocial(Integer ID, NIF nif,String nombre,String razon, Nota nota) {
-        this(ID, nif, nombre, razon.toUpperCase(), "900-000000", "direccion del distribuidor", "99999", "Ourense", null, new Totales(), nota, "COMPRAS", null);
+    public RazonSocial(Integer ID, NIF nif,String nombre) {
+        this(ID, nif, nombre, nombre.toUpperCase(), "900-000000", "direccion del distribuidor", "99999", "Ourense", null, new Totales(), null, "-", null);
     } 
 
     public RazonSocial(int ID, NIF nif, String nombre, String razon, String direccion, String CP, String poblacion, String telefono, HashMap<String, String> otrosDatos, Totales totales, Nota nota, String categoria, int[] tiposIVA) {
@@ -168,7 +168,7 @@ public class RazonSocial implements Comparable<RazonSocial> {
 
     }
     
-// TODO - 2024-05-07 : - Revisar la forma de comparar RS
+// Revisar la forma de comparar RS
     @Override
     public int compareTo(RazonSocial b){
         if (this.equals(b)){

@@ -1,5 +1,5 @@
 package modelo.records;
-// TODO - 2024-05-07 : - Hacer un método estático para chequear si los archivos de Trabajo de un Usuario determinado existen... public static archivosTrabajoExisten(String user)()
+// REVIEW - 24-05-07 : Hacer un método estático para chequear si los archivos de Trabajo de un Usuario determinado existen... public static archivosTrabajoExisten(String user)()
 public class RutasTrabajo {
     private String FCT;
     private String RS;

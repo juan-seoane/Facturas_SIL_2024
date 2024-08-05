@@ -5,33 +5,17 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
-
-import groovy.util.ObservableList;
-import modelo.records.Año;
-import modelo.records.ConfigData;
-import modelo.records.Factura;
-import modelo.records.MisDatos;
-import modelo.records.NIF;
-import modelo.records.RutasConfig;
-import modelo.records.RutasTrabajo;
-import modelo.records.UIData;
 
 import static java.nio.file.StandardCopyOption.*;
 
 /*
  * @author Juan Seoane
  */
-//TODO: 09/04/24 - Guardar en formato json
+// REVIEW - 09/04/24 : Guardar en formato json
 public class Fichero<T> {
 
     public String rutaArchivo;
@@ -432,32 +416,26 @@ public synchronized ArrayList<String[]> leerCSV(String rutaYnombre){
         //System.out.println("[Fichero.java>leerCSV()] Excepcion " + e + " leyendo el archivo " + rutaYnombre);
     }
     cerrarInputStream();
-    //TODO - 2024-06-14 : - (Hay que devolver ya una lista de facturas) En fichero.leerCSV se devuelve un ArrayList<String[]> genérico, luego cada Modelo lo pasa a su ArrayList<T> parametrizado a la clase que convenga, Factura, RS, EntradaCaja...
+    // REVIEW - 2024-06-14 : (Hay que devolver ya una lista de facturas) En fichero.leerCSV se devuelve un ArrayList<String[]> genérico, luego cada Modelo lo pasa a su ArrayList<T> parametrizado a la clase que convenga, Factura, RS, EntradaCaja...
     return resp;
     }
 //#endregion 
 //#region guardarCSV
     public synchronized boolean guardarCSV(ArrayList<String[]> datos){
 
-        ////System.out.println("[Fichero>guardarCSV] Datos a guardar: " + datos);
-        
+        System.out.println("[Fichero>guardarCSV] Datos a guardar: " + datos);
         String archCSV = this.rutaArchivo;
-        ////System.out.println("[Fichero>guardarCSV] Archivo CSV a guardar en ruta "+ archCSV +" de " + datos.size() + " lineas");
-        
+        System.out.println("[Fichero>guardarCSV] Archivo CSV a guardar en ruta "+ archCSV +" de " + datos.size() + " lineas");
         CSVWriter writer;
         try {
             writer = new CSVWriter(new FileWriter(archCSV));
-            
             for (String[] linea : datos){
             writer.writeNext(linea);
             }
-
             writer.close();
-
             return true;
         } catch (IOException e) {
-        
-            //System.out.println("[Fichero.java>guardarCSV] Excepcion " + e + " guardando el archivo CSV " + archCSV);
+            System.out.println("[Fichero.java>guardarCSV] Excepcion " + e + " guardando el archivo CSV " + archCSV);
             return false;
         }
     }

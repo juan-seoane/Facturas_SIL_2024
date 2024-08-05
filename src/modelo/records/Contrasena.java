@@ -4,8 +4,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//TODO: 09/04/24 - Si las Contrasenas se guardan en formato json, no es necesaria la encriptación
-//TODO: 12/04/24 - Contrasena sin encriptar (por ahora) y sin Ñ (da error en el JSON)
+// REVIEW : 09/04/24 - Si las Contrasenas se guardan en formato json, no es necesaria la encriptación
+// REVIEW : 12/04/24 - Contrasena sin encriptar (por ahora) y sin Ñ (daba error en el JSON)
 
 public class Contrasena{
 

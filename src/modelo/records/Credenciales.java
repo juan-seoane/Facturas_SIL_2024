@@ -3,7 +3,7 @@ package modelo.records;
 import java.util.ArrayList;
 
 import modelo.base.Config;
-//TODO - 2024-04-19 : - Plantearse si puede ser un Java Record (habría que prescindir del Setter)
+
 public class Credenciales{
 
 	public ArrayList<Contrasena> creds;
@@ -26,7 +26,7 @@ public class Credenciales{
 		else
 			return false;
 	}
-	//TODO - 2024-04-19 : - Comprobar que pase a String en el mismo formato que el JSON de credenciales
+	// REVIEW - 2024-04-19 : Comprobar que pase a String en el mismo formato que el JSON de credenciales
 	@Override
 	public String toString(){
 		String listaContr ="";

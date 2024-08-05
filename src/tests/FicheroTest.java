@@ -77,7 +77,7 @@ public class FicheroTest {
 		}
 		
 	}
-//TODO - 24-06-14 : - repasar este test, y comprobar el proceso de creacion de nuevos archivos de config y de trabajo, parece que se crean ficheros que no deberían existir en el directorio raiz, en vez de en el de cada usuario...
+// REVIEW - 24-06-14 : Repasar este test, y comprobar el proceso de creacion de nuevos archivos de config y de trabajo, parece que se crean ficheros que no deberían existir en el directorio raiz, en vez de en el de cada usuario...
 	@Test
 	void OKguardarCSV() throws NullPointerException, IOException, InterruptedException, BrokenBarrierException{
 		OKleerCSV();
@@ -88,7 +88,7 @@ public class FicheroTest {
 		modeloFCT = ModeloFacturas.getModelo();
 
 		List<Factura> listaFCT = ModeloFacturas.getModelo().leerFacturasSinFiltrar();
-	 	//System.out.print("\n*****[FicheroTest]******\nDatos a guardar en CSV:");
+	 	System.out.print("\n*****[FicheroTest]******\nDatos a guardar en CSV:");
 
 		ArrayList<String[]>datosCSV = modeloFCT.ConvertirListaFCTaCSV((ArrayList<Factura>)listaFCT);
 		Boolean ok = fichero.guardarCSV(datosCSV);

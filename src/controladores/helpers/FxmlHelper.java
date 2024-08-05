@@ -15,10 +15,10 @@ public class FxmlHelper {
 		this.ruta = ruta;
 	/*
 		try {
-			//System.out.println("[FxmlHelper>constructor] Fichero " + this.ruta + " existe: " + Fichero.fileExists(ruta));
+			System.out.println("[FxmlHelper>constructor] Fichero " + this.ruta + " existe: " + Fichero.fileExists(ruta));
 			
 		} catch (NullPointerException | IOException e) {
-			//System.out.println("[FxmlHelper>constructor] Excepcion comprobando ruta: " + ruta);
+			System.out.println("[FxmlHelper>constructor] Excepcion comprobando ruta: " + ruta);
 			e.printStackTrace();
 		}
 	*/
@@ -35,7 +35,7 @@ public class FxmlHelper {
 		try {
 		root = this.loader.load();
 		} catch (IOException ex) {
-			//System.out.println("[FxmlHelper>cargarFXML]: Excepcion del tipo " + ex + " al cargar FXML " + this.ruta);
+			System.out.println("[FxmlHelper>cargarFXML]: Excepcion del tipo " + ex + " al cargar FXML " + this.ruta);
 			ex.printStackTrace();
 		}
 

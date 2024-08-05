@@ -1,14 +1,9 @@
-/**
- * @author juanseoane
- */
 
-import java.io.IOException;
-import javax.swing.UIManager;
-import com.jtattoo.plaf.graphite.GraphiteLookAndFeel;
-
-import ui.Splash;
 import controladores.Controlador;
 import controladores.fxcontrollers.Acceso;
+import java.io.IOException;
+import controladores.fxcontrollers.SplashFX;
+
 import javafx.application.Application;
 
 public class Main {
@@ -19,29 +14,9 @@ public class Main {
     public static boolean credsOK;
   
     public static void main(String[] args) throws IOException {
-        
-/*         try{
-             GraphiteLookAndFeel graphite = new GraphiteLookAndFeel();
-            UIManager.setLookAndFeel(graphite);
-        }catch(Exception e){
-            //System.out.println(" [Main] Error "+e);
-        }
-        
-        Splash splash = new Splash();
 
-        splash.run();
-        splash.setAlwaysOnTop(true);
-        splash.setVisible(false); */ 
-    // FIXME - 24-07-20 : El Splash no funciona en Limux... cambiarlo a JavaFX
-    // FIXME - 24-07-20 : El visorFCT sólo se abre si se cierra con Cerrar, no con el aspa de su ventana... ¿habrá que cambiar la 'defaultOperationOnClose'?...
-    // FIXME - 24-07-18 : He quitado todos los campos redundantes, de manera que siempre se acceda , desde los getters de cada clase, al mismo objeto...
-    // FIXME - 24-07-17 : Cuando cierras el VisorFCT y lo vuelves a abrir, habiendo seleccionado otra factura, no actualiza la Factura en el visor...¿?
-    // FIXME - 24-07-01 : Falta en el VisorFCT : informar la 'Categoría' de la Factura y reemplazar Labels por TextFields
-    // TODO  - 24-07-01 : Falta en el VisorFCT : moverse a travéws de la tablaFCT con las flechas
-    // TODO  - 24-07-01 : Falta en la TablaFCT : Investigar cómo maximizar la ventana manteniendo el formato
-    // TODO  - 24-07-01 : Falta en el Main     : Organizar el arranque de las GUI's (y los hilos de los controladores)... A lo mejor puedo invocar el GUI de Acceso con runLater y dejar el Application.launch()para el controlador...
-        Application.launch(Acceso.class);
-    // NOTE - Desde aquí no debería funcionar hasta que se acabe la aplicación JavaFX
+        Application.launch(SplashFX.class);
+    // NOTE : Desde aquí no debería funcionar hasta que se acabe la aplicación JavaFX
         System.out.println("[Main.java] Aplicación finalizada");
         System.exit(0);
                

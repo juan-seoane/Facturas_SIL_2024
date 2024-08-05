@@ -4,8 +4,7 @@ import ocr.OcrApp;
  * Se trata de una prueba en la que se extrae solamente el total de la factura en .png
  * Hubo que ajustar las dimensiones un par de veces para que no hubiera errores
  */
-/*TODO: esta prueba parce indicar la necesidad de una Base de Datos donde se registren los tipos de facturas 
-y las coordenadas a escanear y el tipo de dato que se extrae, ademas de una GUI que se encargue de ello */
+
 public class OcrTest {
     
     static String respuesta;

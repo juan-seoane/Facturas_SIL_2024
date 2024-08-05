@@ -18,33 +18,29 @@ public class FacturaTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void convertirCSVok() throws NullPointerException, IOException, InterruptedException, BrokenBarrierException{
+		//Se inicializan config y controladores
 		String usuario = "admin";
-		String rutaYnombre = "./datos/" + usuario.toUpperCase() + "/FCT242.csv";
+		String rutaYnombre = "datos/" + usuario.toUpperCase() + "/FCT20240.csv";
 		var config = Config.getConfig(usuario);
 		var contrlPpal = Controlador.getControlador();
 		Controlador.setUsuario("admin");
 		var modeloFCT = ModeloFacturas.getModelo();
-
+		//Se lee el fichero CSV
 		var fichero = new Fichero(rutaYnombre);
 		ArrayList<String[]> datosCSV = fichero.leerCSV(rutaYnombre);
-		
-		//System.out.println("*****[FacturaTest] Datos en el CSV leido : " + datosCSV.size() + " lineas");
-
+		//comprobación
 		assertNotNull(datosCSV);
-		
+		//Se convierte el CSV a una lista de Facturas
 		var listaPruebaFCT = new ArrayList<Factura>();
 		for(String[] linea : datosCSV){
 			Factura f = Factura.convertirCSVaFCT(linea);
 			if(f!=null){
 		        listaPruebaFCT.add(f);
-			    //System.out.println("****[FacturaTest] Factura convertida: ");
-			    //System.out.println(f.toString());
+			    System.out.println("****[FacturaTest] Factura convertida: ");
+			    System.out.println(f.toString());
 			}
 	    }
-	
-
+		//Se comprueba...
 	    assertNotNull(listaPruebaFCT);
-
 	}
-
 }

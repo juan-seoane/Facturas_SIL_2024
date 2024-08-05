@@ -1,6 +1,10 @@
 {
     "java.project.sourcePaths": [
-        "src"
+                                            "src",
+                                            "config",
+                                            "datos",
+                                            "escaneos",
+                                            "informes"
     ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [

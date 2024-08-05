@@ -1,16 +1,18 @@
 package modelo.records;
 
 public class Extracto implements Comparable<Extracto> {
-    private double base;
-    private int tipoiva;
-    private double iva;
-    private double total;
+    public String concepto;
+    public double base;
+    public int tipoiva;
+    public double iva;
+    public double subtotal;
 
-    public Extracto(double base, int tipoiva, double iva, double total) {
+    public Extracto(double base, int tipoiva, double iva, double subtotal, String concepto) {
         this.base = base;
         this.tipoiva = tipoiva;
         this.iva = iva;
-        this.total = total;
+        this.subtotal = subtotal;
+        this.concepto = concepto;
     }
 
     public double getBase() {
@@ -37,22 +39,36 @@ public class Extracto implements Comparable<Extracto> {
         this.iva = iva;
     }
 
-    public double getTotal() {
-        return total;
+    public double getSubtotal() {
+        return subtotal;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setSubbtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
-// TODO - 2024-05-07 : - Revisar la forma de comparar extractos
+
+    public String getConcepto() {
+        return this.concepto;
+    }
+
+    public void setConcepto(String c){
+        this.concepto = c;
+    }
+    
+    public void calcularSubtotales() {
+        this.subtotal = (this.base + (this.base * this.tipoiva)/100 );
+    }
+
+
+// Revisar la forma de comparar extractos
     @Override
 	public int compareTo(Extracto b){
 		
 		if (b == null)
 			return 1;
-		else if (this.total < b.getTotal())
+		else if (this.subtotal < b.getSubtotal())
 			return -1;
-		else if (this.total == b.getTotal())
+		else if (this.subtotal == b.getSubtotal())
 			return 0;
 		else return 1;
 	

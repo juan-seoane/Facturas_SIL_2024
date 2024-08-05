@@ -35,9 +35,9 @@ public class NIF implements Comparable<NIF> {
       this.isCIF = isCIF;
   }
   
-  public String dameLetraNIF() {
+  public static String dameLetraNIF(int num) {
 
-    switch(this.getNumero()%23) {
+    switch(num%23) {
       case 0: return "T";
       case 1: return "R";
       case 2: return "W";
@@ -65,9 +65,40 @@ public class NIF implements Comparable<NIF> {
     return "?";
   }
 
+  public static NIF array2nif(String[] array){
+    boolean iscif=false;
+    String l ="A";
+    int num = 11111111;
+    if (array==null || array.length !=2){
+      System.out.println("[NIF>array2nif] El array es NULL o no tiene 2 campos");
+      return null;
+    }
+    if (array[0].length()>array[1].length()){
+      l = array[1];
+      try{
+        num = Integer.parseInt(array[0]);
+      }catch( NumberFormatException ex){
+        ex.printStackTrace();
+        return null;
+      }
+      iscif = false;
+    } 
+    else if (array[1].length()>array[0].length()){
+      l = array[0];
+      try{
+        num = Integer.parseInt(array[1]);
+      }catch( NumberFormatException ex){
+        ex.printStackTrace();
+        return null;
+      }
+      iscif = true;
+    }
+    return (new NIF(num, l, iscif));
+  }
+
   public boolean comprobarNIF() {
       if (!this.isCIF()){
-        if (dameLetraNIF().equals(this.getLetra())){
+        if (dameLetraNIF(this.numero).equals(this.getLetra())){
           System.out.println("OK, la letra se corresponde con el número");
           return true;
         }else {
@@ -79,7 +110,6 @@ public class NIF implements Comparable<NIF> {
           return true;
       }
   }
-
 
   @Override
   public int compareTo(NIF b){

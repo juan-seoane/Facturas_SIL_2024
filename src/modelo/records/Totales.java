@@ -1,42 +1,27 @@
 package modelo.records;
 
-//TODO - 2024-05-07 : - La clase Totales...¿heredaba de la clase Extracto?
-//import modelo.Extracto;
+// REVIEW - 2024-05-07 : La clase Totales...¿heredaba de la clase Extracto?
 
-public class Totales {
-  private double base;
+public class Totales extends Extracto{
   private boolean variosIVAs;
-  private int tipoIVA;
-  private double iva;
-  private double subtotal;
   private double baseNI;
   private int ret;
   private double retenciones;
   private double total;
 
   public Totales(){
-    this(0.0, false,0, 0.0, 0.0, 0.0, 0, 0.0, 0.0);
+    this(0.0, false,0, 0.0, 0.0, 0.0, 0, 0.0, 0.0, "");
   }
 
-  public Totales(double base, boolean variosIVAs, int tipoIVA, double iva, double subtotal, double baseNI, int ret, double retenciones, double total) {
-      this.base = base;
-      this.variosIVAs = variosIVAs;
-      this.tipoIVA = tipoIVA;
-      this.iva = iva;
-      this.subtotal = subtotal;
-      this.baseNI = baseNI;
-      this.ret = ret;
-      this.retenciones = retenciones;
-      this.total = total;
+  public Totales(double base, boolean variosIVAs, int tipoIVA, double iva, double subtotal, double baseNI, int ret, double retenciones, double total, String categoria) {
+    super(base, tipoIVA, iva, subtotal, categoria); 
+    this.variosIVAs = variosIVAs;
+    this.baseNI = baseNI;
+    this.ret = ret;
+    this.retenciones = retenciones;
+    this.total = total;
   }
 
-  public double getBase() {
-      return base;
-  }
-
-  public void setBase(double base) {
-      this.base = base;
-  }
 
   public boolean isVariosIVAs() {
       return variosIVAs;
@@ -44,30 +29,6 @@ public class Totales {
 
   public void setVariosIVAs(boolean variosIVAs) {
       this.variosIVAs = variosIVAs;
-  }
-
-  public int getTipoIVA() {
-      return tipoIVA;
-  }
-
-  public void setTipoIVA(int tipoIVA) {
-      this.tipoIVA = tipoIVA;
-  }
-
-  public double getIVA() {
-      return iva;
-  }
-
-  public void setIVA(double iva) {
-      this.iva = iva;
-  }
-
-  public double getSubtotal() {
-      return subtotal;
-  }
-
-  public void setSubtotal(double subtotal) {
-      this.subtotal = subtotal;
   }
 
   public double getBaseNI() {
@@ -102,11 +63,11 @@ public class Totales {
       this.total = total;
   }
 
-  //TODO - 2024-05-07 : - Puede que necesite calcular los totales pasando otros parámetros...
-  public static double calcularTotales(double base, int tipoIVA) {
-	  return (base + (base * tipoIVA)/100 );
+  public void calcularTotal(){
+    this.total = (this.subtotal + this.baseNI)*((this.ret+100)/100);
   }
 
+  // REVIEW - 24-05-07 : Puede que necesite calcular los totales pasando otros parámetros...
   public static boolean comprobarTotales(Totales tot) {
 	  return ((tot.getBase() + tot.getIVA() - tot.getRetenciones() == tot.getTotal()) && (tot.getBase() * tot.getTipoIVA()/100 == tot.getIVA()) && (tot.getBase()*tot.getRet()/100 == tot.getRetenciones()));
   }

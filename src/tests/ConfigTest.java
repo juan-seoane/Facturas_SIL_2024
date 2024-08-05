@@ -82,7 +82,7 @@ public class ConfigTest {
 		String ruta = "./config/creds.json";
 		String ficheroResp = Fichero.leerJSON(ruta);
 
-    	//System.out.println("[ConfigTest>leerCredencialesOK] fichero json de creds:\n"+ficheroResp+"\n-------------------");
+    	System.out.println("[ConfigTest>leerCredencialesOK] fichero json de creds:\n"+ficheroResp+"\n-------------------");
 
 		assertNotNull(ficheroResp);
     	Gson gson = new Gson();
@@ -91,15 +91,15 @@ public class ConfigTest {
 		/*
         int i=0;
         for (Contrasena contrasena : credenciales.creds) {
-			//System.out.println("Contra num "+i);
-            //System.out.println("Usuario: " + contrasena.usuario);
-            //System.out.println("Contraseña: " + contrasena.contra);
-			//System.out.println("-----------------------------");
+			System.out.println("Contra num "+i);
+            System.out.println("Usuario: " + contrasena.usuario);
+            System.out.println("Contraseña: " + contrasena.contra);
+			System.out.println("-----------------------------");
 			i++;
         }
 		*/
-    // TODO - 2024-04-11 : - Revisar esto: Si es Arraylist.class o Contrasena.class
-	// TODO - 2024-04-21 : - Parece que hay un problema al leer las credenciales... El fichero lo lee bien, pero el Objeto 'Credenciales' lo coge mal...
+    // REVIEW - 24-04-11 : Revisar esto: Si es Arraylist.class o Contrasena.class
+	// REVIEW - 24-04-21 : Parece que hay un problema al leer las credenciales... El fichero lo lee bien, pero el Objeto 'Credenciales' lo coge mal...
     
     	//System.out.println("\n---------------\ncredenciales:\n"+credenciales.toString());
 		if(credenciales.creds.size()>1)
@@ -163,27 +163,27 @@ public class ConfigTest {
 		user="admin";
 		Config cfgPrueba;
 		if((cfgPrueba = Config.getConfig(user))!=null){
-			//System.out.println("[ConfigTest>configToStringOK] config(user).toString():\n" + cfgPrueba.toString());
+			System.out.println("[ConfigTest>configToStringOK] config(user).toString():\n" + cfgPrueba.toString());
 			assertEquals( user, cfgPrueba.usuario);
 		}
 	}
 
 	@Test
 	void ConfigFilesOK() throws NullPointerException, IOException{
-	// TODO - 2024-04-28 : - El problema es pasar a 'final String' un dato que viene del JSON en forma de 'String' (sin 'final')
+	// REVIEW - 24-04-28 : El problema es pasar a 'final String' un dato que viene del JSON en forma de 'String' (sin 'final')
 		Config cfgPrueba = Config.getConfig(user);
 
 		String cfgjson = cfgPrueba.rutasconfig.toJSON();
-		//System.out.println("[ConfigTest>configToStringOK] rutasconfig:\n" + cfgjson);
+		System.out.println("[ConfigTest>configToStringOK] rutasconfig:\n" + cfgjson);
 
 		String cfgdtjson = cfgPrueba.configData.toJSON();
-		//System.out.println("[ConfigTest>configToStringOK] configdata:\n" + cfgdtjson);
+		System.out.println("[ConfigTest>configToStringOK] configdata:\n" + cfgdtjson);
 
 		String msdtsjson = cfgPrueba.getMisDatos().toJSON();
-		//System.out.println("[ConfigTest>configToStringOK] misdatos:\n" + msdtsjson);
+		System.out.println("[ConfigTest>configToStringOK] misdatos:\n" + msdtsjson);
 
 		String uidtjson = cfgPrueba.uiData.toJSON();
-		//System.out.println(uidtjson);
+		System.out.println(uidtjson);
 
 		assertEquals(user, cfgPrueba.usuario);
 		
@@ -202,27 +202,27 @@ public class ConfigTest {
 		String rutacfg4 = "config/"+cfgPrueba.usuario.toUpperCase()+"/uidata.json";
 		File fcfg4 = new File(rutacfg4);
 		assertTrue(fcfg4.exists());
-// TODO - 2024-05-02 : - Hay que guardar las credenciales y los ficheros de trsbajo
+// REVIEW - 24-05-02 : Hay que guardar las credenciales y los ficheros de trabajo
 	}
-// TODO - 2024-04-24 : - crear método toJSON() en cada record anterior, para luego grabar los ficheros
+// REVIEW - 24-04-24 : Crear método toJSON() en cada record anterior, para luego grabar los ficheros
 	@Test
 	void WorkingFilesOK() throws NullPointerException, IOException{
 
 	while(Config.getConfig(user)==null){
-		//System.out.print("");
+		System.out.print("");
 	}
 	Config cfgPrueba = Config.getConfig(user);
 
 	File f1 = new File(cfgPrueba.configData.getRutas().getFCT());
-	//System.out.println("[ConfigTest] Chequeando el archivo "+ f1.getPath());
+	System.out.println("[ConfigTest] Chequeando el archivo "+ f1.getPath());
 	assertTrue(f1.exists());
 
 	File f2 = new File(cfgPrueba.configData.getRutas().getRS());
-	//System.out.println("[ConfigTest] Chequeando el archivo "+ f2.getPath());
+	System.out.println("[ConfigTest] Chequeando el archivo "+ f2.getPath());
 	assertTrue(f2.exists());
 
 	File f3 = new File(cfgPrueba.configData.getRutas().getCJA());
-	//System.out.println("[ConfigTest] Chequeando el archivo "+ f3.getPath());
+	System.out.println("[ConfigTest] Chequeando el archivo "+ f3.getPath());
 	assertTrue(f3.exists());
 	}
 

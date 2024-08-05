@@ -68,9 +68,9 @@ public class ConfigData{
 
 //#region toJSON()
 	public String toJSON() {
-		// TODO - 2024-04-28 : - Falta el objeto 'TiposGasto' (clase 'Concepto') antes de 'tiposIVA'
-		// TODO  - 2024-05-03 : - El campo 'origenesCaja' falta por serializar (no salen con comillas)
-		// TODO  - 2024-05-03 : - El archivo RS.rs debería copiarse y renovarse cada año... 
+		// REVIEW - 2024-04-28 : Falta el objeto 'TiposGasto' (clase 'Concepto') antes de 'tiposIVA'
+		// REVIEW - 2024-05-03 : El campo 'origenesCaja' falta por serializar (no salen con comillas)
+		// REVIEW - 2024-05-03 : El archivo RS.rs debería copiarse y renovarse cada año... 
 		String cadenaResp = "{\n\t\"user\": \"" + this.user +  "\",\n\t\"año\": { \"año\": 2024, \"trimestre\": 2 },\n\t\"rutas\": {\n\t\t\"FCT\": \"./datos/" + this.user.toUpperCase() + "/FCT" + this.año.getAño() + this.año.getTrimestre() + ".fct\",\n\t\t\"RS\":  \"./datos/" + this.user.toUpperCase() + "/RS.rs\",\n\t\t\"CJA\": \"./datos/" + this.user.toUpperCase() + "/CJA" + this.año.getAño() + this.año.getTrimestre() + ".cja\"\n\t\t},\n\t\"tiposIVA\": " + this.tiposIVA + ",\n\t\"origenesCaja\": [ \"caja\", \"otros\" ]\n}";
 		System.out.println("[ConfigData.java]->\n"+cadenaResp);
 		return cadenaResp;
