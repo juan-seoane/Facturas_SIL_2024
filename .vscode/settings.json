@@ -71,5 +71,13 @@
     "java.jdt.ls.java.home": "D:\\Program Files\\JavaJDK\\bellsoft-jdk21.0.3+10-win-x64-full\\jdk-21.0.3-full",
     "[java]": {
         "editor.defaultFormatter": "mwpb.java-prettier-formatter"
+    },
+    "commentAnchors.tags.anchors": {
+    "ANCHOR": {
+        "scope": "file",
+        "iconColor": "default",
+        "highlightColor": "#A8C023",
+        "styleMode": "comment"
     }
+}
 }

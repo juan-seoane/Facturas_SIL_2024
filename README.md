@@ -1,3 +1,4 @@
+<!-- #region INFO -->
 ## Getting Started
 
 Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
@@ -37,13 +38,15 @@ escanear una factura física, y, después de un OCR que convierte sus datos rele
 en un objeto Factura, ésta se añade automáticamente a la lista de facturas...
 También se actualizan las GUI con JavaFX, en vez de Swing, y se usan FXtest + JUnit5 para pruebas unitarias. Esta vez se usa VSCode con Java, en vez de Netbeans IDE.
 
+<!-- #endregion -->
+
+<!-- #region TODO's -->
 ## TODO's y demás
 
     // FIXME  - 24-08-03 [General,ControladorFacturas>537] Actualizar aquí las ID de las facturas siguientes 
     // FIXME  - 24-08-03 [General,ModeloFacturas>335]: Cambiar las ID de las facturas (no ordenarlas). Además, si se ordenan, debe ser por ID
+    // FIXME  - 24-08-05 [VisorFCT] : Esconder los botones 'EDITAR' y ?BORRAR' del visorFCT mientras edita...
 
-    // FIXME  - 24-08-04 [General] : En Windows,  trasladar la carpeta 'datos/'
-    
     // TODO   - 24-08-01 [General,FxCntrlVisorFCT] : NuevaFactura
     // TODO   - 24-07-24 [General,FxCntrlVisorFCT] : Validaciónes de las facturas : fechas, numeros, nif, etc...
     // TODO   - 24-07-30 [General,FxCntrlVisorFCT] : Automatizar la entrada de extractos: sumar los de mismo tipo de IVA, calcular tipoIVA desde Base+IVA, Incluir Sumas de Totales, Añadir Conceptos cuando se suman extractos...
@@ -69,6 +72,7 @@ También se actualizan las GUI con JavaFX, en vez de Swing, y se usan FXtest + J
     // TODO   - 24-05-07 [EntradaCaja, Extracto, Factura, MisDatos, NIF, RS] : Revisar la forma de comparar estas clases
     // TODO   - 24-06-19 [Factura>266] : Además habría que ver si existe ya la RS (según el ID)
 
+    // REVIEW - 24-08-04 [General] : En Windows,  trasladar la carpeta 'datos/'
     // REVIEW - 24-08-04 [General] : En Windows, incluir en el settings.json: "java.project.sourcePaths"
     // REVIEW - 24-08-03 [ControladorFacturas>522] : Hacer que los Alert estén siempre en primer plano (AOF)
     // REVIEW - 24-08-01 [General,FxCntrlVisorFCT] : BorrrarFactura
@@ -109,4 +113,5 @@ También se actualizan las GUI con JavaFX, en vez de Swing, y se usan FXtest + J
     // REVIEW - 24-06-04 [Controlador] : Comprobar los hilos que se generan (ControladorFCT, ControladorDIST, etc...)... Parece que sólo funciona el P/C
     // REVIEW - 24-06-04 [Controlador] : Hacer Singleton
     
+<!-- #endregion -->
         

@@ -93,7 +93,7 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML Button btnVNueva;
 	@FXML Button btnVEditar;
 	@FXML Button btnVBorrar;
-	@FXML Label lblVTitulo;
+	// @FXML Label lblVTitulo;
 	@FXML Button btnVF1;
 	@FXML Button btnVdcha;
 //#endregion
@@ -532,7 +532,7 @@ public class FxCntrlVisorFCT implements Initializable{
 		Totales tots = new Totales(Double.parseDouble(tfVTotalesBase.getText()), variosIvas, (variosIvas?0:Integer.parseInt(tfVTipoIVA1.getText())),Double.parseDouble(tfVTotalesIVA.getText()),Double.parseDouble(tfVTotalesST.getText()), Double.parseDouble(tfVTotalesBaseNI.getText()),Integer.parseInt(tfVTotalesTipoRet.getText()),Double.parseDouble(tfVTotalesRetenciones.getText()),Double.parseDouble(tfVTotal.getText()),tfCategoria.getText());
 		f.setTotales(tots);
 		//leer Nota
-		if (txtAreaVNota.getText().equals(""))
+		if (txtAreaVNota.getText().equals("") || txtAreaVNota.getText().contains("-SIN NOTA-"))
 			f.setNota(null);
 		else f.setNota(new Nota(txtAreaVNota.getText()));
 		System.out.println("[FxCntrlVisorFCT>recogerDatosVisor] Factura registrada : " + f.toString());
