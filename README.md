@@ -8,12 +8,9 @@ Welcome to the VS Code Java world. Here is a guideline to help you get started t
 The workspace contains two folders by default, where:
 
 - `src`: the folder to maintain sources, multiplatform
-
 - `imagenes`: la carpeta donde se guardan los archivos de imagen (.png, .jpg, etc...)
 - `escaneos`: la carpeta con las facturas escaneadas, en formato .png
-// REVIEW - 24-07-20 : Falta la carpeta 'informes'
 - `informes`: la carpeta con los PDF de cada informe
-
 - `config`: un archivo 'credenciales.json' con los pares (user:pass) para autenticarse,
             y carpetas para cada usuario con sus archivos de configuración en formato .json
 - `datos`: carpetas para cada usuario con sus archivos de trabajo en formato .json
@@ -43,16 +40,14 @@ También se actualizan las GUI con JavaFX, en vez de Swing, y se usan FXtest + J
 <!-- #region TODO's -->
 ## TODO's y demás
 
-    // FIXME  - 24-08-03 [General,ControladorFacturas>537] Actualizar aquí las ID de las facturas siguientes 
-    // FIXME  - 24-08-03 [General,ModeloFacturas>335]: Cambiar las ID de las facturas (no ordenarlas). Además, si se ordenan, debe ser por ID
-    // FIXME  - 24-08-05 [VisorFCT] : Esconder los botones 'EDITAR' y ?BORRAR' del visorFCT mientras edita...
+    // FIXME  - 24-08-08 [General] : Al mostrar la tablaFCT (y al Editar) tiene q ordenar la listaFCT (por fechas)...
 
     // TODO   - 24-08-01 [General,FxCntrlVisorFCT] : NuevaFactura
     // TODO   - 24-07-24 [General,FxCntrlVisorFCT] : Validaciónes de las facturas : fechas, numeros, nif, etc...
     // TODO   - 24-07-30 [General,FxCntrlVisorFCT] : Automatizar la entrada de extractos: sumar los de mismo tipo de IVA, calcular tipoIVA desde Base+IVA, Incluir Sumas de Totales, Añadir Conceptos cuando se suman extractos...
 
-    // STUB   - 24-07-31 [ControladorFacturas>478] : Arreglar la asignac de index, filtradas las facts no son necesariamente correlativos, ID de la factura e index de la tabla
-    // STUB   - 24-07-29 [ControladorFacturas>543] : reorganizar las facturas en la lista después de borrar una factura
+    // STUB   - 24-07-31 [ControladorFacturas>483] : Arreglar la asignac de index, filtradas las facts no son necesariamente correlativos, ID de la factura e index de la tabla
+    // STUB   - 24-07-29 [ControladorFacturas>551] : reorganizar las facturas en la lista después de borrar una factura
 
     // TODO   - 24-07-31 [General,PanelControl>265] método (estático o no) en cada contrFX que muestre la GUI correspondiente (GUIx.mnostrar())
     // TODO   - 24-06-14 [General,ModeloFacturas>34,437] : Plantearse si se necesita un VectorFacturas (antes se usaba para la GUI de Swing)
@@ -72,8 +67,13 @@ También se actualizan las GUI con JavaFX, en vez de Swing, y se usan FXtest + J
     // TODO   - 24-05-07 [EntradaCaja, Extracto, Factura, MisDatos, NIF, RS] : Revisar la forma de comparar estas clases
     // TODO   - 24-06-19 [Factura>266] : Además habría que ver si existe ya la RS (según el ID)
 
+    // REVIEW - 24-08-08 [TablaFCT] : El botón EDITAR (aún no en negrita) sólo abre el visor
+    // REVIEW - 24-08-05 [VisorFCT] : Esconder los botones 'EDITAR' y 'BORRAR' del visorFCT mientras edita...
+    // REVIEW - 24-08-03 [General,ControladorFacturas>537] Actualizar aquí las ID de las facturas siguientes 
+    // REVIEW - 24-08-03 [General,ModeloFacturas>335]: Cambiar las ID de las facturas (no ordenarlas). Además, si se ordenan, debe ser por ID
     // REVIEW - 24-08-04 [General] : En Windows,  trasladar la carpeta 'datos/'
     // REVIEW - 24-08-04 [General] : En Windows, incluir en el settings.json: "java.project.sourcePaths"
+    // REVIEW - 24-07-20 : Falta la carpeta 'informes' en el 'sourcePath' del programa...
     // REVIEW - 24-08-03 [ControladorFacturas>522] : Hacer que los Alert estén siempre en primer plano (AOF)
     // REVIEW - 24-08-01 [General,FxCntrlVisorFCT] : BorrrarFactura
     // REVIEW - 24-07-29 [ControladorFacturas>499-502,558-561] : Operaciones para el final de recogerFormYeditar

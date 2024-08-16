@@ -73,11 +73,47 @@
         "editor.defaultFormatter": "mwpb.java-prettier-formatter"
     },
     "commentAnchors.tags.anchors": {
-    "ANCHOR": {
-        "scope": "file",
-        "iconColor": "default",
-        "highlightColor": "#A8C023",
-        "styleMode": "comment"
-    }
-}
-}
+			"ANCHOR": {
+				"iconColor": "default",
+				"highlightColor": "#A8C023",
+				"scope": "file"
+			},
+			"TODO": {
+				"iconColor": "orange",
+				"highlightColor": "#FFA100",
+				"scope": "workspace"
+			},
+			"FIXME": {
+				"iconColor": "red",
+				"highlightColor": "#F44336",
+				"scope": "workspace",
+			},
+			"STUB": {
+				"iconColor": "purple",
+				"highlightColor": "#BA68C8",
+				"scope": "workspace"
+			},
+			"NOTE": {
+				"iconColor": "blue",
+				"highlightColor": "#3EA8FF",
+				"scope": "file"
+			},
+			"REVIEW": {
+				"iconColor": "green",
+				"highlightColor": "#64DD17",
+				"scope": "workspace"
+			},
+			"SECTION": {
+				"iconColor": "blurple",
+				"highlightColor": "#896afc",
+				"scope": "workspace",
+				"behavior": "region"
+			},
+			"LINK": {
+				"iconColor": "#2ecc71",
+				"highlightColor": "#2ecc71",
+				"scope": "workspace",
+				"behavior": "link"
+			}
+		}
+	}

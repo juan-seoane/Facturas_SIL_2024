@@ -90,9 +90,12 @@ public class FxCntrlVisorFCT implements Initializable{
 	@FXML TextArea txtAreaVNota;
 
 	@FXML Button btnVizda;
-	@FXML Button btnVNueva;
-	@FXML Button btnVEditar;
-	@FXML Button btnVBorrar;
+	@FXML 
+	public Button btnVNueva;
+	@FXML
+	public Button btnVEditar;
+	@FXML
+	public Button btnVBorrar;
 	// @FXML Label lblVTitulo;
 	@FXML Button btnVF1;
 	@FXML Button btnVdcha;

@@ -7,9 +7,11 @@ import controladores.ControladorFacturas;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.concurrent.BrokenBarrierException;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -132,7 +134,12 @@ public class FxCntrlTablaFCT implements Initializable{
 		tblvwfct .getColumns().add(colTotal);
 		tblvwfct .getColumns().add(colNota);
 */
+		for (TableColumn<Factura, ?> column : tblvwfct.getColumns()) {
+			column.setSortable(false);
+		}
+
 		ObservableList<Factura> listaFXtemp = ModeloFacturas.getModelo().getListaFXFacturas();
+		FXCollections.sort(listaFXtemp, Comparator.comparing(Factura::getFecha));
 		tblvwfct.setItems(listaFXtemp);
 		tblvwfct.refresh();
 		setListaFXFacturas(listaFXtemp);
