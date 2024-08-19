@@ -13,8 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 
-@SuppressWarnings("rawtypes")
-public class Factura extends Vector implements Comparable<Factura> {
+public class Factura implements Comparable<Factura> {
 
 //#region CAMPOS
     private Integer ID;
@@ -153,10 +152,15 @@ public class Factura extends Vector implements Comparable<Factura> {
         return cadenaResp;
     }
 
-// Revisar la forma de comparar facturas
+// Revisar la forma de comparar facturas - las facturas se ordenan por fechas con el método sort()
+// Las facturas se ordenan por fechas. Si las fechas son iguales, se ordenan por el NIF de la RazonSocial
     @Override
     public int compareTo(Factura b){
-      return (this.fecha.compareTo(b.getFecha()));
+        if ((this.fecha.compareTo(b.getFecha()))<0) 
+            return -1;
+        if ((this.fecha.compareTo(b.getFecha()))>0) 
+            return 1;
+        return (this.RS.getNif().compareTo(b.getRS().getNif()));
    }
 //#endregion
 

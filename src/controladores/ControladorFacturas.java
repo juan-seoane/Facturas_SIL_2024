@@ -14,6 +14,7 @@ import java.util.concurrent.CyclicBarrier;
 
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -169,7 +170,7 @@ public class ControladorFacturas extends Thread {
                         );
 					// NOTE - 24-07-03 - Quito el reset() al controlador de la tablaFX, para que no se arme un bucle...     
                 }else{
-					System.out.println("[FxCntrlTablaFCT>initialize listener] Parece que no se ha detectado la selección, a pesar de haber recogido el evento");
+					System.out.println("[FxCntrlTablaFCT>initialize listener] Parece que no se ha detectado la factura seleccionada, a pesar de haber recogido el evento");
 				}
 			});
     }
@@ -282,8 +283,7 @@ public class ControladorFacturas extends Thread {
                     int index = FXcontrlTablaFCT.getIndiceSeleccionadoTabla();
                     Factura f = FXcontrlTablaFCT.getFacturaSeleccionadaTabla();
                     if(mostrarVisorFCT(index, f))
-                        FxCntrlVisorFCT.getFxController().btnEditarFctVPulsado();
-
+                        editarFacturaVisor();
                     break;
                 case 4:
                     System.out.println("[ControladorFacturas>run] Se borra la Factura actual -> " + FxCntrlTablaFCT.getFxController().getIndiceSeleccionadoTabla() + " - TableView->" + tableViewFCT.hashCode());
@@ -310,7 +310,7 @@ public class ControladorFacturas extends Thread {
                         if (FxCntrlVisorFCT.modo == FxCntrlVisorFCT.VISOR){
                             try {
                                 ocultarVisorFCT();
-                                System.out.println("[ControladorFacturas>run>visorSwitch] Se cerrará el Visor de Facturas");
+                                System.out.println("[ControladorFacturas>run>visorSwitch] Cerrando el Visor de Facturas");
                             } catch (InterruptedException | BrokenBarrierException e) {
                                 e.printStackTrace();
                             }
@@ -464,6 +464,10 @@ public class ControladorFacturas extends Thread {
                 FXcontrlVisorFCT.setTextoBotonF1("OK");
                 try {
                     FXcontrlVisorFCT.setTFEditables(true);
+                    // Hacemos los botones del visor que no sirven no visibles
+                    FXcontrlVisorFCT.btnVNueva.setVisible(false);
+                    FXcontrlVisorFCT.btnVEditar.setVisible(false);
+                    FXcontrlVisorFCT.btnVBorrar.setVisible(false);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
@@ -479,7 +483,7 @@ public class ControladorFacturas extends Thread {
         // STUB - Arreglar la asignación de index, filtradas las facturas no son necesariamente correlativos, ID de la factura e index de la tabla
         int index = f.getID()-1;
         try {
-            m.editarFactura(listafact, f, (index));
+            m.editarFactura(listafact, f, index);
         } catch (NumberFormatException | IOException e) {
             e.printStackTrace();
             return false;
@@ -491,9 +495,14 @@ public class ControladorFacturas extends Thread {
                 public void run(){
                     FXcontrlVisorFCT.setTFEditables(false);
                     FXcontrlVisorFCT.setTextoBotonF1("CERRAR");
+                    // volvemos a hacer los botones visiblEs
+                    FXcontrlVisorFCT.btnVNueva.setVisible(true);
+                    FXcontrlVisorFCT.btnVEditar.setVisible(true);
+                    FXcontrlVisorFCT.btnVBorrar.setVisible(true);
                     FxCntrlVisorFCT.modo = FxCntrlVisorFCT.VISOR;
                     //recargar la lista de facturas y refrescar la tabla
                     ObservableList<Factura> listaFXnueva = ModeloFacturas.getModelo().getListaFXFacturas();
+                    FXCollections.sort(listaFXnueva, Comparator.comparing(Factura::getFecha));
                     FXcontrlTablaFCT.setListaFXFacturas(listaFXnueva);
                     FXcontrlTablaFCT.getTableView().setItems(listaFXnueva);
                     FXcontrlTablaFCT.getTableView().refresh();

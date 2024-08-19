@@ -1,9 +1,8 @@
 
 import controladores.Controlador;
 import controladores.fxcontrollers.Acceso;
-import controladores.fxcontrollers.SplashFX;
-
 import java.io.IOException;
+import controladores.fxcontrollers.SplashFX;
 
 import javafx.application.Application;
 

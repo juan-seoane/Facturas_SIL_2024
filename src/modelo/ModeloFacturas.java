@@ -295,6 +295,11 @@ public class ModeloFacturas {
         System.out.println(" [ModeloFacturas>editarFactura] Index de factura : " + index);
         listafacturas.set(index, factura);
         Collections.sort(listafacturas);
+        int idf=1;
+        for (Factura f : listafacturas){
+            f.setID(idf);
+            idf++;
+        }
         var datosLista = ConvertirListaFCTaCSV(listafacturas);
         
         if (ficheroFacturas.guardarCSV(datosLista)) {
@@ -339,6 +344,11 @@ public class ModeloFacturas {
             facturas.remove(factura);
             // Hay que cambiar las ID de las facturas (no necesariamente ordenarlas)
             Collections.sort(facturas);
+            int i=1;
+            for (Factura f : facturas){
+                f.setID(i);
+                i++;
+            }
             /*// Crear una alerta de tipo información
             Alert alert2 = new Alert(AlertType.INFORMATION);
             alert2.setTitle("Atención!!");

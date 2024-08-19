@@ -2,8 +2,6 @@ package controladores.fxcontrollers;
 
 import controladores.helpers.FxmlHelper;
 
-import java.io.FileInputStream;
-
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -18,11 +16,14 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class SplashFX extends Application{
-	
+
+//#region CAMPOS	
 	Rectangle2D screenBounds;
 	Image imagen;
 	Stage stage;
+//#endregion
 
+//#region START
 	@Override
 	public void start(Stage primaryStage) {
 		// Obtiene las dimensiones de la pantalla
@@ -36,8 +37,8 @@ public class SplashFX extends Application{
 		primaryStage.setScene(scene);
 		//primaryStage.setTitle("Bienvenido a FacturasSil v2.4");
 		// Centra la ventana en la pantalla
-		primaryStage.setX((screenBounds.getWidth() - primaryStage.getWidth()) / 2);
-		primaryStage.setY((screenBounds.getHeight() - primaryStage.getHeight()) / 2);
+		primaryStage.setX((screenBounds.getWidth() - 800) / 2);
+		primaryStage.setY((screenBounds.getHeight() - 523) / 2);
 		//modo sin controles
 		primaryStage.initStyle(StageStyle.UNDECORATED);
 		//muestra el Splash
@@ -72,7 +73,9 @@ public class SplashFX extends Application{
 		Acceso.canvasAcceso = Acceso.getCanvas();
 
 	}
+//#endregion
 
+//#region HELPERS
 	private synchronized Image cargarImagenAleatoria(){
 
 		Image img;
@@ -97,4 +100,6 @@ public class SplashFX extends Application{
 		// Ajusta el Pane a la escena
 		return (Parent)pane;
 	}
+	//#endregion
+
 }
