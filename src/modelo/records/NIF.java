@@ -35,9 +35,11 @@ public class NIF implements Comparable<NIF> {
       this.isCIF = isCIF;
   }
   
-  public static String dameLetraNIF(int num) {
+  public static String dameLetraNIF(long num) {
 
-    switch(num%23) {
+    int opt = (int)(num%23);
+
+    switch(opt) {
       case 0: return "T";
       case 1: return "R";
       case 2: return "W";

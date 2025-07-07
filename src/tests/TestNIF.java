@@ -8,7 +8,7 @@ public class TestNIF {
 
 	@Test
 	public void dameLetraNIFok(){
-		int num= 11000011;
+		long num=44454841;
 
 		String letra = NIF.dameLetraNIF(num);
 		System.out.println("[testNIF] " + num + " - " + letra);
